@@ -1,5 +1,5 @@
 // Smoke test (DevOps addendum D2). Grows with the product: onboarding (A2/M4), CRM stage
-// changes (M5) and a test-mode postcard (M8) are added by those milestones.
+// changes (M5), a test-mode postcard (M8) and the map (M9) are added by those milestones.
 import { expect, test } from "@playwright/test";
 
 const email = process.env.E2E_EMAIL ?? "qa@216leads.test";
@@ -183,4 +183,19 @@ test("homeowner opt-out page answers the same for any address", async ({ page })
   await page.getByLabel("ZIP code").fill("44107");
   await page.getByRole("button", { name: "Stop mail" }).click();
   await expect(page.getByText("Got it. We'll stop mail to this address within 2 business days.")).toBeVisible();
+});
+
+test("map: pins load, a lead opens its neighbor ring, competitors list", async ({ page }) => {
+  await signInQa(page);
+  await page.goto("map");
+  await expect(page.getByRole("heading", { name: "Map" })).toBeVisible();
+  await expect(page.getByTestId("map")).toHaveAttribute("data-ready", "true", { timeout: 30_000 });
+  await expect(page.getByText(/\d[\d,]* homes/)).toBeVisible();
+  await page.goto("leads");
+  await page.locator("main [data-lead-link]:visible").first().click();
+  await page.locator("main").getByRole("link", { name: "Neighbor ring" }).click();
+  await expect(page.getByText(/Neighbor ring · \d+ m/)).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText("Homes around it")).toBeVisible();
+  await page.getByRole("link", { name: "Competitors" }).click();
+  await expect(page.getByRole("heading", { name: "Competitors" })).toBeVisible();
 });

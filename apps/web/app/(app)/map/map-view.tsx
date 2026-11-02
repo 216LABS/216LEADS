@@ -99,6 +99,13 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         map = new ml.Map({ container: box.current, style: styleUrl, bounds: extent, fitBoundsOptions: { padding: 24 }, attributionControl: { compact: true } });
         mapRef.current = map;
         map.addControl(new ml.NavigationControl({ showCompass: false }), "top-right");
+        // If the basemap style can't be fetched, fall back to a plain background so pins and tools still work.
+        let fellBack = false;
+        map.on("error", () => {
+          if (fellBack || !map || map.isStyleLoaded()) return;
+          fellBack = true;
+          map.setStyle({ version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#f7f5f0" } }] });
+        });
         map.on("load", () => {
           if (!map) return;
           addLayers(map);
@@ -167,6 +174,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
       getJson<FC<unknown>>(`/api/map/layer?kind=flood&bbox=${extent.join(",")}`).then((fc) => source("flood")?.setData(fc as never)).catch((e) => setError(e.message));
     }
     vis("heat", on.heat);
+    map.setPaintProperty("leads", "circle-opacity", on.heat ? 0.35 : 1);
     const hq = `kind=${heatKind}&days=${days}`;
     if (on.heat && loaded.current.get("heat") !== hq) {
       loaded.current.set("heat", hq);

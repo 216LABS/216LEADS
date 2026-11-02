@@ -112,11 +112,15 @@ export async function eventLayer(sql: Sql, orgId: string, o: { kind: LayerKind; 
   return fc;
 }
 
-/** The bounding box of the org's homes, for fitting the map and fetching flood zones. */
+/**
+ * The bounding box of the org's homes, for fitting the map and fetching flood zones. The 1st-99th
+ * percentile, because a few county parcel points sit miles from their ZIP and would zoom the map out.
+ */
 export async function territoryExtent(sql: Sql, orgId: string): Promise<Bbox | null> {
   const [r] = await sql<{ x1: number | null; y1: number; x2: number; y2: number }[]>`
-    select st_xmin(e) as x1, st_ymin(e) as y1, st_xmax(e) as x2, st_ymax(e) as y2
-    from (select st_extent(p.geom)::geometry as e from parcel p where p.parcel_key in (select org_territory_parcels(${orgId}))) t`;
+    select percentile_cont(0.01) within group (order by st_x(p.geom)) as x1, percentile_cont(0.01) within group (order by st_y(p.geom)) as y1,
+      percentile_cont(0.99) within group (order by st_x(p.geom)) as x2, percentile_cont(0.99) within group (order by st_y(p.geom)) as y2
+    from parcel p where p.geom is not null and p.parcel_key in (select org_territory_parcels(${orgId}))`;
   return r?.x1 == null ? null : [r.x1, r.y1, r.x2, r.y2];
 }
 
