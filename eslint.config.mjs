@@ -28,6 +28,14 @@ export default tseslint.config(
       ...nextPlugin.configs["core-web-vitals"].rules,
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      // Production serves the app under /leads: raw app paths in fetch() and form actions skip
+      // the base path. next/link and next/navigation add it on their own.
+      "no-restricted-syntax": [
+        "error",
+        { selector: "CallExpression[callee.name='fetch'] > Literal[value=/^\\u002F/]", message: "Wrap app paths in withBase() so the /leads base path is kept." },
+        { selector: "CallExpression[callee.name='fetch'] > TemplateLiteral > TemplateElement:first-child[value.raw=/^\\u002F/]", message: "Wrap app paths in withBase() so the /leads base path is kept." },
+        { selector: "JSXAttribute[name.name='action'] > Literal[value=/^\\u002F/]", message: "Wrap form actions in withBase() so the /leads base path is kept." },
+      ],
     },
   },
   {

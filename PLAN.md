@@ -64,9 +64,10 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: gitleaks runs as the open-source binary (the GitHub Action needs a paid license for org repos); full history scanned clean. The RLS test passes on both the CI Postgres (with Supabase's default grants mirrored) and real local Supabase. The `risky` labeler runs from `main`, so it applies from the next PR on. Recipe/profile tables from A1 join the RLS test when they land.
 
 ### D6 + D7: Usage events, feedback, release notes (DevOps addendum)
-- [ ] `event` table with product events (signup, onboarding_done, lead_viewed, stage_changed, postcard_queued, checkout_started, subscribed)
-- [ ] "Report a problem" link that emails support with page URL, org id and user id
-- [ ] Conventional Commit PR titles; `.github/release.yml` for generated release notes; `CHANGELOG.md`
+- [x] `event` table with product events (signup, onboarding_done, lead_viewed, stage_changed, postcard_queued, checkout_started, subscribed)
+- [x] "Report a problem" link that emails support with page URL, org id and user id
+- [x] Conventional Commit PR titles; `.github/release.yml` for generated release notes; `CHANGELOG.md`
+- Notes: `signup` is recorded now; `onboarding_done`, `lead_viewed`, `stage_changed`, `postcard_queued`, `checkout_started` and `subscribed` are recorded by the milestones that build those flows (A2/M4, M5, M7, M8) with `track()`. A lint rule now rejects raw app paths in `fetch()` and form actions (they skip the `/leads` base path); this caught the sign-out form.
 
 ### A1: Template presets + adjacent-permit triggers (Addendum A)
 - [ ] All 13 trade templates (7.5) as starting presets in YAML (the 7 that were in M11 move here)

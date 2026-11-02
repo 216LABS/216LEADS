@@ -8,6 +8,8 @@ import { optionalEnv, repoRoot } from "@216leads/db";
 export interface OpsMessage {
   subject: string;
   text: string;
+  /** Defaults to ALERT_EMAILS / ADMIN_EMAILS. */
+  to?: string[];
 }
 
 export function opsRecipients(): string[] {
@@ -16,7 +18,7 @@ export function opsRecipients(): string[] {
 }
 
 export async function sendOpsEmail(msg: OpsMessage): Promise<{ via: "resend" | "outbox"; ref: string }> {
-  const to = opsRecipients();
+  const to = msg.to?.length ? msg.to : opsRecipients();
   const key = optionalEnv("RESEND_API_KEY");
   const from = optionalEnv("RESEND_FROM_TRANSACTIONAL") ?? "216 Leads <hello@mail.216labs.dev>";
   const env = optionalEnv("APP_ENV") ?? "local";

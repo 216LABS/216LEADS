@@ -1,0 +1,17 @@
+# Categories for GitHub's auto-generated release notes on each tag (DevOps addendum D7).
+# PR titles follow Conventional Commits; the pr-title workflow labels each PR by its type.
+changelog:
+  exclude:
+    labels: ["skip-changelog"]
+    authors: ["dependabot[bot]"]
+  categories:
+    - title: New
+      labels: ["type: feat"]
+    - title: Fixes
+      labels: ["type: fix"]
+    - title: Security
+      labels: ["risky"]
+    - title: Docs and process
+      labels: ["type: docs", "type: ci", "type: chore"]
+    - title: Other
+      labels: ["*"]
