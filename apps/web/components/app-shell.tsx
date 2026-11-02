@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Home, Mail, Map, Settings } from "lucide-react";
 import type { ReactNode } from "react";
-import { withBase } from "@216leads/shared";
+import { BRAND, withBase } from "@216leads/shared";
 import { Logo } from "./logo";
 import { ReportProblem } from "./report-problem";
+import { SiteFooter } from "./site-footer";
 import { LinkButton } from "./ui";
 
 function LockPanel({ kind }: { kind: "locked" | "canceled" }) {
@@ -17,6 +18,7 @@ function LockPanel({ kind }: { kind: "locked" | "canceled" }) {
         Pick a plan to keep getting homes. Your leads, notes and history are all still here.
       </p>
       <LinkButton href="/settings/billing" className="mt-5">See plans</LinkButton>
+      <p className="mt-4 text-sm text-slate">Questions? Email <a href={`mailto:${BRAND.supportEmail}`} className="underline">{BRAND.supportEmail}</a>.</p>
     </div>
   );
 }
@@ -66,6 +68,7 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
           <div className="font-semibold text-navy">{orgName}</div>
           <div className="capitalize">{trade.replace("_", " ")}</div>
           <div className="mt-3 flex flex-col items-start gap-2">
+            <Link href="/help" className="focus-ring underline underline-offset-2 hover:text-navy">Help</Link>
             <ReportProblem />
             <form action={withBase("/auth/signout")} method="post">
               <button className="focus-ring underline underline-offset-2 hover:text-navy">Sign out</button>
@@ -81,12 +84,13 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
           </Link>
           <span className="flex max-w-[55%] items-center gap-3 text-xs font-semibold text-slate">
             <span className="truncate">{orgName}</span>
-            <ReportProblem label="Help" className="focus-ring tap shrink-0 rounded-full border border-line px-3 text-xs font-semibold text-navy" />
+            <Link href="/help" className="focus-ring tap inline-flex shrink-0 items-center rounded-full border border-line px-3 text-xs font-semibold text-navy">Help</Link>
           </span>
         </header>
         {banner}
         <main className="mx-auto w-full max-w-6xl px-4 py-5 md:px-8 md:py-8">
-          {locked && !path.startsWith("/settings/billing") ? <LockPanel kind={locked} /> : children}
+          {locked && !path.startsWith("/settings/billing") && !path.startsWith("/help") ? <LockPanel kind={locked} /> : children}
+          <SiteFooter compact />
         </main>
       </div>
 

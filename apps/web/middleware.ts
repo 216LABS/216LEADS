@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const APP_PREFIXES = ["/leads", "/map", "/mail", "/roi", "/settings", "/onboarding", "/admin", "/fix-list"];
+const APP_PREFIXES = ["/leads", "/map", "/mail", "/roi", "/settings", "/onboarding", "/admin", "/fix-list", "/help"];
 
 /** Refresh the Supabase session cookie and keep signed-out users out of the app. */
 export async function middleware(req: NextRequest) {

@@ -5,6 +5,8 @@ export const BRAND = {
   domain: "216labs.dev/leads",
   optoutUrl: "216labs.dev/leads/optout",
   footerAddress: "216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107",
+  /** Support contact (issue #7); SUPPORT_EMAIL overrides it for reply-to. */
+  supportEmail: "sam@216labs.dev",
   disclaimer:
     "Built from public records. May be incomplete or out of date. Not a consumer report; do not use for credit, insurance, employment or housing decisions.",
 } as const;

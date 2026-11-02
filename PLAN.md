@@ -165,11 +165,21 @@ Result:
 - **Tests:** `counties.test.ts` (parsers, owner cells never read), `exclusivity.int.test.ts` (Taken + rollback, other trades, plan cap, 72-hour delay, release).
 
 ### M11: Prove it
-- [ ] Attribution matcher + ROI dashboard + monthly PDF
-- [ ] Learned weights, violations fix list
-- [ ] Records-request importer (CSV/XLSX/PDF), homeowner opt-out page
-- [ ] Summit permits (best effort)
-- [ ] Marketing site: landing, pricing, sample page with masked addresses, coverage, legal
+- [x] Attribution matcher + ROI dashboard + monthly PDF
+- [x] Learned weights, violations fix list
+- [x] Records-request importer (CSV/XLSX/PDF), homeowner opt-out page (opt-out shipped in M8)
+- [x] Summit permits (best effort)
+- [x] Marketing site: landing, pricing, sample page with masked addresses, coverage, legal
+
+Result:
+- **Attribution** (`attribution` job, after automail): a permit in the org's trade, or an arms-length sale, within 365 days after the first touch is recorded as won_self (lead marked won, or the permit names the org's business), lost_competitor (a named business) or unknown; sales are `sold`. Each new one adds a lead timeline entry.
+- **ROI tab** (`/roi`, Pro): month picker, 8 metric tiles, "proof from public records" list, 12-month mailed vs won chart, PDF download (`/api/roi/pdf`, pdf-lib); `GET /api/roi?from&to`.
+- **Learned weights** (`learned_weights` job, before score): spec 7.6 formula after 10 outcomes, shown with plain sentences on Settings > Scoring recipe, with Reset.
+- **Fix list** (`/fix-list`, linked from Leads): open code violations in the area in the trade's category.
+- **Records importer** (`/admin/imports`): CSV/XLSX/PDF (pdfplumber), column mapping saved per city, owner-like columns can't be mapped or previewed, coverage set to `records_request`.
+- **Summit permits** (`summit_permits`): walks BP{yy}##### at 1 request / 2 s; stub parcels geocoded with their ZIP. First local walk (still running at merge): BP2600001-BP2600406 gave 270 permits on 260 homes, 91% placed on the map.
+- **Marketing site** (`app/(marketing)`): landing with a live 30-day sales counter, pricing, sample per trade + ZIP (masked house numbers, email-me form -> `prospect_request`), coverage per county, Terms / Privacy / Data / Refunds from `content/legal/*.mdx` (issue #3: draft note, admin warning in production, signup checkbox, `terms_acceptance`, re-accept banner), Help page from `content/help.mdx` (issue #7: nav + Settings links, support contact, reply-to and footer on every email).
+- **Tests:** `prove.int.test.ts` (attribution won/lost, ROI + PDF, learned weights + reset, fix list), `imports.int.test.ts` (real permits as a records-request CSV and PDF; owner column never stored), `learned.test.ts`, Summit parser; smoke covers the terms checkbox and the Help page.
 
 ### M12: Hardening and acceptance
 - [ ] RLS SQL tests, webhook signature tests, mail pre-send check tests
@@ -251,6 +261,13 @@ Result:
 76. **Lake permits without a parcel number match by address within the town.** The report has no ZIP; parcel "0" is a placeholder. Such rows take the ZIP of the single Lake home at that street address in the same town, then go through normal matching.
 77. **Towns in a Lake report get permit coverage** (`permits_source = lake_permits_xlsx`). County Building Inspection doesn't serve every Lake city (Mentor, Eastlake, Willoughby run their own), so those towns stay "no permit data" and use the population average (decision 18).
 78. **Medina stubs are geocoded by postal city when the township name fails.** The list gives a township ("SHARON"), which the Census geocoder can't place. Unplaced rows are tried against that township's usual postal cities, then all of Medina County's; a point counts only if every city that matches puts it in the same spot inside the county box. Placed stubs keep their point; unplaced ones (mostly brand-new streets the Census doesn't know yet) are retried the next time the list changes, and have no ZIP until then, so they sit outside every ZIP territory. The job does nothing until the list's date range changes (`--full` forces a pass).
+83. **Attribution counts from the first touch** (contacted, mailed or any status change sets `first_touch_at`) for 365 days. "Won by you" needs the lead marked won or the permit naming a business whose normalized name equals the org's name; we don't know a business's license otherwise. A user-confirmed attribution is never overwritten.
+84. **ROI is a Pro feature** like the map (spec 11 lists it under Pro; the trial has it). Cost = plan price for the days in range (annual / 12 for yearly plans) plus metered postcard cost; ROI shows "–" while there's no cost (trial).
+85. **Learned weights learn against template weights only** (last night's factors aren't fed back in), use homes still in the area, and count from `learned_since` after a Reset. Factors and the won/lost averages are stored on `scoring_profile` (`learned_weights`, `learned_meta`).
+86. **Fix list = active violations whose category is the trade's** (`TRADE_CATEGORY`, fence -> fence_deck), residential, in the area, minus opted-out homes. Trades with no category (new movers) get an explanation instead.
+87. **Records importer reads only mapped columns.** Headers naming an owner, applicant, taxpayer, occupant, buyer or seller can't be mapped and are masked in the preview. Rows without a date are skipped and counted; the record id is the permit-number column, else a hash of date/address/type/description, so re-importing a file changes nothing. Rows without a ZIP take the ZIP of the one home at that address in the town. PDF needs Python with pdfplumber, which a serverless host lacks: there the importer says to convert to CSV (or run it locally).
+88. **Summit stubs come from the permit page only** (address with ZIP, parcel number); the owner and applicant blocks are never cut out of the page. The walk restarts at 00001 each new year and stops after 50 misses, so a source that stopped publishing (GovWell move) just ends the run.
+89. **Legal and help text is Markdown in `.mdx` files**, rendered by our own small renderer (headings, paragraphs, lists, bold, links), not MDX/JSX, so editing text can't run code. Acceptance is recorded when the org is created (signup requires the checkbox); members and existing users get the one-time banner. The hero counter is single-family sales in the last 30 days (spec says "this month", which reads 0 on the 1st).
 82. **Medina sub-permits.** Electrical and HVAC permits reuse the building permit's number and leave the PPN blank. They're stored as `<permit>:<section>`, take the PPN of the same permit or address in the list, and otherwise join the stub already at that address in that town, or get an address-keyed stub (`medina:A<hash>`). The electrical contractor is kept (in the description or as the contractor) only when it's a business name; a person's name is never stored, including in the raw page store.
 79. **Stark stubs only for numbered land-and-building sales.** The sales layer has no land-use code; vacant land (`1+LAND`) and unaddressed lots aren't homes and would otherwise score as limited-data homes. Events are keyed `PARID:CONVEYANCE_NUMBER` (one conveyance covers several parcels). Arms-length = `ARMS_LENGTH = 'Yes'` and $10,000+ (decision 20).
 80. **One source failing doesn't stop the daily run.** `pipeline daily` runs every job, then fails at the end naming the ones that broke, so a Medina or Census outage still lets matching and scoring run.
@@ -281,7 +298,9 @@ Checked 2026-11-01 from this machine. All reachable without login.
 ## Stubs and gaps
 
 - **Cloud accounts (D1):** Vercel project, Supabase `216leads-prod` / `216leads-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
-- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8, done), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
+- **Records-request PDF in production:** needs Python + pdfplumber on the host; Vercel has neither, so PDF import runs locally or on the worker (CSV/XLSX work everywhere).
+- **Legal text is a draft** (issue #3): attorney-reviewed text replaces `content/legal/*.mdx` before launch; /admin warns in production until then.
+- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8, done), #3 legal pages and #7 help page (M11, done), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
 
 - **Tree category has no real Cleveland examples** (tree work does not need a building permit there); it is low-confidence per Addendum A5.
 - **Records without a parcel number or matching address** (about 0.8% of Cleveland permits, mostly commercial or multi-parcel projects) stay in `unmatched_record` and show at `/admin/unmatched`.

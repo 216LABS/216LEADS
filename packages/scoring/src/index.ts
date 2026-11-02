@@ -4,6 +4,7 @@ export { categorize, CATEGORY_KEYS, CATEGORY_NOUN, TRADE_CATEGORY } from "./cate
 export { scoreParcel, passesFilters, effectiveProfile } from "./engine";
 export { resolveSignal, surveyValue } from "./signals";
 export { percentileRanks } from "./percentile";
+export { learnWeights, nudgeSentence, MIN_OUTCOMES, type LearnedResult, type LearnedSignal, type Outcome } from "./learned";
 export { signalLabel, triggerSentence } from "./describe";
 export { recipeSchema, parseRecipe, isKnownSignal, PLAIN_SIGNALS, CATEGORY_SIGNALS, SURVEY_PARTS, type Recipe } from "./recipe";
 

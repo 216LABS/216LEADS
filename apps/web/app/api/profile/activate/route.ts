@@ -9,6 +9,7 @@ import {
 } from "@216leads/ingest";
 import { answersSchema } from "@216leads/scoring";
 import { TRIAL } from "@216leads/shared";
+import { recordAcceptance } from "@/lib/legal";
 import { ApiError, apiUser, body, handle, json } from "@/lib/api";
 import { track } from "@/lib/events";
 import { sendWelcome } from "@/lib/email";
@@ -38,6 +39,8 @@ export const POST = handle(async (req: Request) => {
       userId: user.id, email: user.email, answers: input.answers, recipe: draftRecipe(input.recipe), multipliers: input.multipliers,
       customers: input.customers,
     });
+    // Sign-up required the terms checkbox; record which versions were accepted (issue #3).
+    await recordAcceptance(user.id, orgId);
     const stats = await scoreOrg(sql, orgId);
     await track("onboarding_done", { orgId, userId: user.id }, {
       path: input.answers.preset ? "preset" : "wizard", leads: stats.qualified, zips: input.answers.zips.length, customers: input.customers?.length ?? 0,

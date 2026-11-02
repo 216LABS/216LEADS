@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@216leads/db", "@216leads/scoring", "@216leads/shared", "@216leads/ingest", "@216leads/email"],
   serverExternalPackages: ["postgres", "exceljs"],
   poweredByHeader: false,
+  // Legal and help text is read from content/*.mdx at request time (issues #3, #7).
+  outputFileTracingIncludes: { "/**": ["./content/**/*"] },
   typedRoutes: false,
   env: {
     NEXT_PUBLIC_APP_ENV: process.env.APP_ENV ?? "local",

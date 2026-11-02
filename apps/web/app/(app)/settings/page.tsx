@@ -15,6 +15,7 @@ const SECTIONS = [
   { href: "/settings/team", title: "Team", sub: "Invite people by email." },
   { href: "/settings/billing", title: "Billing", sub: "Your plan, postcard credits, card and invoices." },
   { href: "/settings/coverage", title: "Data coverage", sub: "Which public records we have for each town in your area, and how fresh." },
+  { href: "/help", title: "Help", sub: "How scores, postcards and billing work, and how to reach us." },
 ];
 
 export default function SettingsPage() {

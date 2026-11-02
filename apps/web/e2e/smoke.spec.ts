@@ -31,6 +31,7 @@ test("a new user signs up, answers the wizard, confirms the recipe and lands on 
   await page.goto("signup");
   await page.getByLabel("Work email").fill(`e2e-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@216leads.test`);
   await page.getByLabel("Password").fill("e2e-password-216");
+  await page.getByRole("checkbox", { name: /agree to the terms/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await expect(page).toHaveURL(/\/onboarding/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -70,6 +71,7 @@ test("the preset path: pick a trade, add a town, set the perfect customer, land 
   await page.goto("signup");
   await page.getByLabel("Work email").fill(`e2e-p-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@216leads.test`);
   await page.getByLabel("Password").fill("e2e-password-216");
+  await page.getByRole("checkbox", { name: /agree to the terms/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await expect(page).toHaveURL(/\/onboarding/);
 
@@ -94,13 +96,16 @@ test("the preset path: pick a trade, add a town, set the perfect customer, land 
   await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible({ timeout: 30_000 });
 });
 
-test("report a problem sends", async ({ page }) => {
+test("help page opens and a problem report sends", async ({ page }) => {
   await page.goto("login");
   await page.getByLabel("Work email").fill(email);
   await page.getByLabel("Password").fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
-  await page.getByRole("button", { name: /Report a problem|Help/ }).first().click();
+  await page.getByRole("link", { name: "Help" }).first().click();
+  await expect(page.getByRole("heading", { name: "Help", exact: true })).toBeVisible();
+  await expect(page.getByText("What the score means")).toBeVisible();
+  await page.getByRole("main").getByRole("button", { name: "Report a problem" }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByLabel("What went wrong").fill("E2E smoke test report, please ignore.");
   await dialog.getByRole("button", { name: "Send" }).click();

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getDirectSql, getSql } from "@216leads/db";
-import { categoryMatchCounts, ensurePresetVersion, listRecipeVersions, loadOrgProfile } from "@216leads/ingest";
-import { signalLabel, triggerSentence } from "@216leads/scoring";
+import { categoryMatchCounts, ensurePresetVersion, learnedFor, listRecipeVersions, loadOrgProfile } from "@216leads/ingest";
+import { MIN_OUTCOMES, nudgeSentence, signalLabel, triggerSentence } from "@216leads/scoring";
 import { Badge, Card, PageHeader } from "@/components/ui";
 import { requireOrg } from "@/lib/session";
 import { UseVersionButton } from "./use-version";
+import { ResetLearnedButton } from "./reset-learned";
 
 export const metadata = { title: "Scoring recipe" };
 export const dynamic = "force-dynamic";
@@ -20,11 +21,17 @@ export default async function RecipePage() {
   const { org } = await requireOrg();
   await ensurePresetVersion(getDirectSql(), org.id, org.trade);
   const sql = getSql();
-  const [{ template, profile }, versions, counts] = await Promise.all([
+  const [{ template, profile }, versions, counts, learned] = await Promise.all([
     loadOrgProfile(sql, org.id),
     listRecipeVersions(sql, org.id),
     categoryMatchCounts(sql),
+    learnedFor(sql, org.id),
   ]);
+  const [counted] = await sql<{ outcomes: number }[]>`
+    select count(*)::int as outcomes from lead where org_id = ${org.id} and status in ('won', 'lost', 'skipped')
+      and (${learned.learned_since}::timestamptz is null or status_changed_at >= ${learned.learned_since}::timestamptz)`;
+  const outcomes = counted?.outcomes ?? 0;
+  const nudges = Object.entries(learned.learned_weights).sort((a, b) => Math.abs(b[1] - 1) - Math.abs(a[1] - 1));
   const weights = Object.entries(template.signals).sort((a, b) => b[1].weight - a[1].weight);
   const total = weights.reduce((s, [, v]) => s + v.weight, 0) || 1;
 
@@ -75,6 +82,30 @@ export default async function RecipePage() {
           </p>
         </Card>
       </div>
+
+      <h2 className="mb-2 mt-8 text-lg font-bold">Learned from your results</h2>
+      <Card className="p-5">
+        {nudges.length ? (
+          <>
+            <ul className="space-y-2 text-sm">
+              {nudges.map(([key, f]) => (
+                <li key={key} className="flex justify-between gap-3">
+                  <span>{nudgeSentence(signalLabel(key), f)}</span>
+                  <span className={`num shrink-0 font-semibold ${f > 1 ? "text-won" : "text-lost"}`}>× {f}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-slate">Based on {outcomes} homes you marked won, lost or skipped. Updated every night.</p>
+          </>
+        ) : (
+          <p className="text-sm text-slate">
+            {outcomes < MIN_OUTCOMES
+              ? `Mark homes won, lost or skipped and we'll fine-tune what matters. ${outcomes} of ${MIN_OUTCOMES} so far.`
+              : "Your wins and losses look alike on every signal so far, so nothing has been nudged."}
+          </p>
+        )}
+        {nudges.length || learned.learned_since ? <div className="mt-4"><ResetLearnedButton /></div> : null}
+      </Card>
 
       <h2 className="mb-2 mt-8 text-lg font-bold">History</h2>
       <Card className="divide-y divide-line">
