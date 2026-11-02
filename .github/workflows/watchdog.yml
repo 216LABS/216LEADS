@@ -1,0 +1,27 @@
+name: Ingest watchdog
+
+# 07:00 ET (11:00 UTC in winter, 07:00 EDT = 11:00 UTC; close enough for a daily check):
+# after the 04:30-06:15 pipeline, email ops if a daily source has not succeeded in 36 hours.
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call /api/cron/ingest_watchdog on production
+        env:
+          APP_URL: ${{ secrets.PRODUCTION_APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "::notice::PRODUCTION_APP_URL / CRON_SECRET not set yet; skipping."
+            exit 0
+          fi
+          curl -fsS -X POST -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/ingest_watchdog"

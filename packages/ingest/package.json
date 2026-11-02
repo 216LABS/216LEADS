@@ -20,6 +20,7 @@
     "@216leads/db": "workspace:*",
     "@216leads/scoring": "workspace:*",
     "@216leads/shared": "workspace:*",
+    "@sentry/node": "^11.10.0",
     "exceljs": "^4.4.0",
     "node-html-parser": "^6.1.13"
   }

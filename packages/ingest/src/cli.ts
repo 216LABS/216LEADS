@@ -9,6 +9,7 @@ import { closeAll, getDirectSql, migrate } from "@216leads/db";
 import { CLEVELAND_FULL, DAILY, JOBS, runJob, type JobOpts } from "./jobs";
 import { pullFixtures, seed, seedStaging } from "./seed";
 import { rawStore } from "./rawstore";
+import { initSentry, reportError } from "./sentry";
 
 function parseArgs(argv: string[]) {
   const pos: string[] = [];
@@ -41,6 +42,7 @@ function jobOpts(flags: Record<string, string | boolean>): JobOpts {
 }
 
 async function main() {
+  initSentry();
   const { pos, flags } = parseArgs(process.argv.slice(2));
   const [cmd, arg] = pos;
   const sql = getDirectSql();
@@ -81,6 +83,7 @@ main()
   .then(() => closeAll())
   .catch(async (e) => {
     console.error(e instanceof Error ? e.message : e);
+    await reportError(e, { argv: process.argv.slice(2) });
     await closeAll();
     process.exit(1);
   });
