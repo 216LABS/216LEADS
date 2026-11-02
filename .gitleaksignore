@@ -1,0 +1,2 @@
+# False positive: a made-up Stripe webhook secret in a unit test fixture (since replaced).
+77ff0b1c1a290d696b0646ce866acd4ef699e60c:apps/web/lib/webhooks.test.ts:generic-api-key:12

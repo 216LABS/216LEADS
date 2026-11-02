@@ -9,7 +9,8 @@ const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", 
 export const metadata: Metadata = {
   title: { default: "216 Leads", template: "%s · 216 Leads" },
   description: "Know which homes need you next. Built from public records by 216LABS.",
-  icons: { icon: "/icon.svg" },
+  // Metadata URLs don't get the base path automatically.
+  icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/icon.svg` },
 };
 
 export const viewport: Viewport = {
