@@ -2,9 +2,11 @@
 // idempotent through email_log, so a missed or repeated run never double-sends.
 import { createElement } from "react";
 import type { Sql } from "@216leads/db";
-import { appUrl, Digest, digestSubject, sendEmail, TrialEnding, unsubscribeToken, type DigestProps } from "@216leads/email";
+import {
+  appUrl, Digest, digestSubject, sendEmail, TrialDay3, trialDay3Subject, TrialEnding, unsubscribeToken, type DigestProps,
+} from "@216leads/email";
 import { TRADE_CATEGORY } from "@216leads/scoring";
-import { titleCase, TZ } from "@216leads/shared";
+import { addDays, titleCase, tradeLabel, TZ } from "@216leads/shared";
 import { withJobRun } from "./runtime";
 
 const TRIGGER_CHIPS: { label: string; match: RegExp; chip: string }[] = [
@@ -125,9 +127,59 @@ export async function runDigest(sql: Sql, o: { org?: string; force?: boolean; no
   });
 }
 
-/** Lifecycle mail: trial ending on day 11 of 14 (spec 12). Payment-failed goes out from the Stripe webhook. */
-export async function runLifecycle(sql: Sql) {
+/**
+ * Day-3 trial check-in (issue #8): from 09:00 ET on the third day after the org was created, to
+ * each owner who hasn't opted out of lifecycle email. Orgs with no homes yet are listed in the
+ * job run for a manual look instead.
+ */
+async function sendDay3(sql: Sql, now: Date) {
+  const clock = etClock(now);
+  if (clock.hour < 9) return { sent: 0, noHomes: [] as string[] };
+  const created = addDays(clock.date, -3);
+  const orgs = await sql<{ id: string; trade: string }[]>`
+    select id, trade from org
+    where plan = 'trial' and trial_ends_at > now() and onboarded_at is not null
+      and (created_at at time zone ${TZ})::date = ${created}::date`;
+  let sent = 0;
+  const noHomes: string[] = [];
+  for (const org of orgs) {
+    const top = await sql<{ id: string; addr_line: string; city: string; score: number; reasons: { label: string }[] }[]>`
+      select l.id, p.addr_line, p.city, l.score, l.reasons from lead l join parcel p on p.parcel_key = l.parcel_key
+      where l.org_id = ${org.id} and not l.hidden and l.visible_from <= now() and l.status = 'new'
+      order by l.score desc, p.addr_line limit 3`;
+    if (!top.length) {
+      noHomes.push(org.id);
+      continue;
+    }
+    const owners = await sql<{ user_id: string; email: string }[]>`
+      select m.user_id, u.email::text from org_member m join auth.users u on u.id = m.user_id
+      where m.org_id = ${org.id} and m.role = 'owner'
+        and not exists (select 1 from email_optout x where x.email = u.email and x.stream = 'lifecycle')`;
+    const label = tradeLabel(org.trade);
+    const trade = label === label.toUpperCase() ? label : label.toLowerCase();
+    const town = titleCase(top[0]!.city);
+    for (const o of owners) {
+      const res = await sendEmail(sql, {
+        orgId: org.id, kind: "trial_day3", dedupeKey: `trial_day3:${o.user_id}`, to: [o.email],
+        subject: trialDay3Subject({ trade, town }), replyTo: "sam@216labs.dev",
+        element: createElement(TrialDay3, {
+          trade, town,
+          homes: top.map((h) => ({ address: titleCase(h.addr_line), score: h.score, reason: h.reasons[0]?.label ?? null, url: appUrl(`/leads/${h.id}`) })),
+          unsubscribeUrl: appUrl(`/api/public/unsubscribe?t=${unsubscribeToken(org.id, o.email, "lifecycle")}`),
+        }),
+      });
+      if (res) sent++;
+    }
+  }
+  return { sent, noHomes };
+}
+
+/** Lifecycle mail: day-3 check-in and trial ending on day 11 of 14 (spec 12). Payment-failed goes out from the Stripe webhook. */
+export async function runLifecycle(sql: Sql, o: { now?: Date } = {}) {
   return withJobRun(sql, { job: "lifecycle" }, async (ctx) => {
+    const day3 = await sendDay3(sql, o.now ?? new Date());
+    ctx.meta.trial_day3 = day3.sent;
+    if (day3.noHomes.length) ctx.meta.day3_no_homes = day3.noHomes;
     const ending = await sql<{ id: string; name: string; days: number }[]>`
       select id, name, ceil(extract(epoch from trial_ends_at - now()) / 86400)::int as days from org
       where plan = 'trial' and trial_ends_at > now() and trial_ends_at <= now() + interval '3 days'`;
@@ -140,7 +192,7 @@ export async function runLifecycle(sql: Sql) {
       });
       if (res) sent++;
     }
-    ctx.rowsUpserted = sent;
+    ctx.rowsUpserted = sent + day3.sent;
     ctx.meta.trial_ending = sent;
   });
 }

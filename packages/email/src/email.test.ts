@@ -3,7 +3,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { Digest, digestSubject, MailBatch, outbox, readUnsubscribeToken, renderEmail, unsubscribeToken, Welcome, type DigestProps } from "./index";
+import {
+  Digest, digestSubject, MailBatch, outbox, readUnsubscribeToken, renderEmail, TrialDay3, trialDay3Subject, unsubscribeToken, Welcome, type DigestProps,
+} from "./index";
 
 const digest: DigestProps = {
   orgName: "Test Roofing", trade: "roofing", topTown: "Lakewood", total: 214, newThisWeek: 37,
@@ -34,6 +36,16 @@ describe("digest (spec 12)", () => {
 });
 
 describe("transactional templates", () => {
+  it("day-3 check-in: lowercase subject, 3 homes, reply invite, no em dashes", async () => {
+    expect(trialDay3Subject({ trade: "roofing", town: "Lakewood" })).toBe("your first roofing homes in Lakewood");
+    const homes = [1, 2, 3].map((i) => ({ address: `${i} Elm Ave`, score: 90 - i, reason: "Sold 3 weeks ago", url: `https://a/leads/${i}` }));
+    const { html, text } = await renderEmail(createElement(TrialDay3, { trade: "roofing", town: "Lakewood", homes, unsubscribeUrl: "https://a/u" }));
+    for (const h of homes) expect(html).toContain(h.address);
+    expect(text).toContain("just reply");
+    expect(html).toContain("sam@216labs.dev");
+    expect(html + text).not.toContain("\u2014");
+  });
+
   it("render with their call to action", async () => {
     expect((await renderEmail(createElement(Welcome, { orgName: "X Co", leads: 5, leadsUrl: "https://a/leads" }))).html).toContain("See my leads");
     const batch = await renderEmail(createElement(MailBatch, { count: 3, removed: 1, costText: "$2.97", cancelBy: "3:15 PM", mailUrl: "https://a/mail" }));
@@ -44,7 +56,8 @@ describe("transactional templates", () => {
 describe("unsubscribe tokens", () => {
   it("round-trip and reject tampering", () => {
     const t = unsubscribeToken("00000000-0000-0000-0000-000000000001", "Pat@Example.com");
-    expect(readUnsubscribeToken(t)).toEqual({ orgId: "00000000-0000-0000-0000-000000000001", email: "pat@example.com" });
+    expect(readUnsubscribeToken(t)).toEqual({ orgId: "00000000-0000-0000-0000-000000000001", email: "pat@example.com", stream: "digest" });
+    expect(readUnsubscribeToken(unsubscribeToken("o", "a@b.c", "lifecycle"))?.stream).toBe("lifecycle");
     const [payload] = t.split(".");
     const forged = Buffer.from(JSON.stringify({ o: "other", e: "pat@example.com" })).toString("base64url");
     expect(readUnsubscribeToken(`${forged}.${t.split(".")[1]}`)).toBeNull();

@@ -11,6 +11,10 @@ async function unsubscribe(req: Request): Promise<boolean> {
   const v = readUnsubscribeToken(t.slice(0, 600));
   if (!v) return false;
   const sql = getDirectSql();
+  if (v.stream === "lifecycle") {
+    await sql`insert into email_optout (email, stream) values (${v.email}, 'lifecycle') on conflict do nothing`;
+    return true;
+  }
   const [org] = await sql<{ emails: string[] }[]>`select digest_emails::text[] as emails from org where id = ${v.orgId}`;
   if (!org) return false;
   // An empty list means "the owners"; turn it into the owners minus this address so it sticks.
@@ -28,7 +32,7 @@ async function unsubscribe(req: Request): Promise<boolean> {
 
 function page(ok: boolean) {
   const msg = ok
-    ? "You won't get the weekly 216 Leads digest at this address any more. The account owner can turn it back on in Settings."
+    ? "You're off this list. Email about your own account (sign-in, billing) still comes through."
     : "This unsubscribe link isn't valid. Reply to the digest and we'll take you off by hand.";
   return new Response(
     `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unsubscribe</title>

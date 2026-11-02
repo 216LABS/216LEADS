@@ -9,7 +9,9 @@ import { BRAND } from "@216leads/shared";
 export const C = { navy: "#0F2A44", orange: "#F26B1D", paper: "#F7F5F0", slate: "#4A5563", line: "#E3DFD6", won: "#2E7D4F" };
 export const font = 'Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 
-export function Layout({ preview, children, unsubscribeUrl }: { preview: string; children: ReactNode; unsubscribeUrl?: string }) {
+export function Layout({ preview, children, unsubscribeUrl, unsubscribeLabel = "Unsubscribe from this digest", contact }: {
+  preview: string; children: ReactNode; unsubscribeUrl?: string; unsubscribeLabel?: string; contact?: string;
+}) {
   return (
     <Html lang="en">
       <Head />
@@ -25,10 +27,11 @@ export function Layout({ preview, children, unsubscribeUrl }: { preview: string;
             <Text style={{ fontSize: 11, lineHeight: "16px", color: C.slate, margin: 0 }}>{BRAND.disclaimer}</Text>
             <Text style={{ fontSize: 11, lineHeight: "16px", color: C.slate, margin: "8px 0 0" }}>
               {BRAND.footerAddress}
+              {contact ? <>{" · "}<Link href={`mailto:${contact}`} style={{ color: C.slate }}>{contact}</Link></> : null}
               {unsubscribeUrl ? (
                 <>
                   {" · "}
-                  <Link href={unsubscribeUrl} style={{ color: C.slate }}>Unsubscribe from this digest</Link>
+                  <Link href={unsubscribeUrl} style={{ color: C.slate }}>{unsubscribeLabel}</Link>
                 </>
               ) : null}
             </Text>

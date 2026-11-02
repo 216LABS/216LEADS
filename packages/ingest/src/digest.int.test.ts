@@ -62,6 +62,25 @@ describe("digest + lifecycle jobs (spec 12)", () => {
     await sql`delete from auth.users where id = ${user}`;
   });
 
+  it("sends the day-3 check-in once, to owners who haven't opted out", async () => {
+    // 15:00 UTC is 10:00 or 11:00 ET, after the 09:00 start; the org was created three ET days earlier.
+    const now = new Date();
+    now.setUTCHours(15, 0, 0, 0);
+    await sql`update org set created_at = ${new Date(now.getTime() - 3 * 86_400_000)} where id = ${orgId}`;
+    const users = [crypto.randomUUID(), crypto.randomUUID()];
+    for (const u of users) {
+      await sql`insert into auth.users (id, email) values (${u}, ${`d3-${u}@int.test`})`;
+      await sql`insert into org_member (org_id, user_id, role) values (${orgId}, ${u}, 'owner')`;
+    }
+    await sql`insert into email_optout (email, stream) values (${`d3-${users[1]}@int.test`}, 'lifecycle')`;
+    await runLifecycle(sql, { now });
+    await runLifecycle(sql, { now });
+    expect(await sentTo("trial_day3")).toEqual([`d3-${users[0]}@int.test`]);
+    await sql`delete from org_member where user_id = any(${users}::uuid[])`;
+    await sql`delete from email_optout where email = ${`d3-${users[1]}@int.test`}`;
+    await sql`delete from auth.users where id = any(${users}::uuid[])`;
+  });
+
   it("knows the ET day, hour and ISO week", () => {
     expect(etClock(new Date("2026-11-02T12:00:00Z"))).toMatchObject({ day: 1, hour: 7, date: "2026-11-02", week: "2026-W45" });
     expect(etClock(new Date("2027-01-01T05:30:00Z"))).toMatchObject({ day: 5, date: "2027-01-01", week: "2026-W53" });

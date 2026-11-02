@@ -12,3 +12,13 @@ create table email_log (
 );
 create index email_log_org_idx on email_log (org_id, sent_at desc);
 alter table email_log enable row level security;
+
+-- Lifecycle email opt-outs (issue #8): an address that unsubscribed from check-ins and summaries.
+-- The digest has its own per-org recipient list instead.
+create table email_optout (
+  email citext not null,
+  stream text not null,               -- lifecycle
+  created_at timestamptz not null default now(),
+  primary key (email, stream)
+);
+alter table email_optout enable row level security;

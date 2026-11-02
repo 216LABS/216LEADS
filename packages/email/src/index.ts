@@ -9,6 +9,7 @@ import { emailFromEnv, type EmailMessage, type EmailProvider, type SendResult } 
 export { emailFromEnv, outbox, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
 export { Digest, digestSubject, type DigestLead, type DigestProps } from "./templates/digest";
 export { AutoMailSummary, Invite, MailBatch, PaymentFailed, TrialEnding, Welcome } from "./templates/transactional";
+export { TrialDay3, trialDay3Subject, type TrialDay3Props } from "./templates/day3";
 
 /** Absolute link into the app: APP_BASE_URL (origin) + base path + path. */
 export function appUrl(path: string): string {
@@ -25,22 +26,25 @@ function linkSecret(): string {
   return optionalEnv("EMAIL_LINK_SECRET") ?? optionalEnv("CRON_SECRET") ?? "216leads-local-email-links";
 }
 
-/** Signed one-tap digest unsubscribe token for one org + address (no login needed). */
-export function unsubscribeToken(orgId: string, email: string): string {
-  const payload = Buffer.from(JSON.stringify({ o: orgId, e: email.toLowerCase() })).toString("base64url");
+export type UnsubscribeStream = "digest" | "lifecycle";
+
+/** Signed one-tap unsubscribe token for one org + address + stream (no login needed). */
+export function unsubscribeToken(orgId: string, email: string, stream: UnsubscribeStream = "digest"): string {
+  const payload = Buffer.from(JSON.stringify({ o: orgId, e: email.toLowerCase(), s: stream })).toString("base64url");
   const sig = createHmac("sha256", linkSecret()).update(payload).digest("base64url");
   return `${payload}.${sig}`;
 }
 
-export function readUnsubscribeToken(token: string): { orgId: string; email: string } | null {
+export function readUnsubscribeToken(token: string): { orgId: string; email: string; stream: UnsubscribeStream } | null {
   const [payload, sig] = token.split(".");
   if (!payload || !sig) return null;
   const want = createHmac("sha256", linkSecret()).update(payload).digest();
   const got = Buffer.from(sig, "base64url");
   if (got.length !== want.length || !timingSafeEqual(got, want)) return null;
   try {
-    const v = JSON.parse(Buffer.from(payload, "base64url").toString()) as { o: string; e: string };
-    return typeof v.o === "string" && typeof v.e === "string" ? { orgId: v.o, email: v.e } : null;
+    const v = JSON.parse(Buffer.from(payload, "base64url").toString()) as { o: string; e: string; s?: string };
+    if (typeof v.o !== "string" || typeof v.e !== "string") return null;
+    return { orgId: v.o, email: v.e, stream: v.s === "lifecycle" ? "lifecycle" : "digest" };
   } catch {
     return null;
   }
@@ -56,6 +60,7 @@ export interface SendOpts {
   element: ReactElement;
   stream?: EmailMessage["stream"];
   headers?: Record<string, string>;
+  replyTo?: string;
   provider?: EmailProvider;
 }
 
@@ -74,7 +79,7 @@ export async function sendEmail(sql: Sql, o: SendOpts): Promise<SendResult | nul
   try {
     const { html, text } = await renderEmail(o.element);
     const res = await (o.provider ?? emailFromEnv()).send({
-      to, subject: o.subject, html, text, stream: o.stream ?? "transactional", headers: o.headers, tag: o.kind,
+      to, subject: o.subject, html, text, stream: o.stream ?? "transactional", headers: o.headers, replyTo: o.replyTo, tag: o.kind,
     });
     await sql`update email_log set via = ${res.via}, ref = ${res.ref}, sent_at = now() where id = ${claim.id}`;
     return res;

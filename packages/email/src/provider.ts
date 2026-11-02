@@ -13,6 +13,7 @@ export interface EmailMessage {
   /** "digest" uses the digest sender; everything else the transactional one. */
   stream: "digest" | "transactional";
   headers?: Record<string, string>;
+  replyTo?: string;
   /** Shown in the outbox file name. */
   tag: string;
 }
@@ -34,7 +35,7 @@ function resend(key: string): EmailProvider {
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from, to: msg.to, subject: msg.subject, html: msg.html, text: msg.text, headers: msg.headers }),
+        body: JSON.stringify({ from, to: msg.to, subject: msg.subject, html: msg.html, text: msg.text, headers: msg.headers, reply_to: msg.replyTo }),
       });
       if (!res.ok) throw new Error(`Resend ${res.status}: ${(await res.text()).slice(0, 300)}`);
       return { via: "resend", ref: ((await res.json()) as { id: string }).id };
@@ -48,7 +49,7 @@ export function outbox(dir = join(repoRoot(), ".data", "outbox")): EmailProvider
     async send(msg) {
       mkdirSync(dir, { recursive: true });
       const base = `${new Date().toISOString().replace(/[:.]/g, "-")}-${msg.tag.replace(/[^a-z0-9_-]/gi, "")}`;
-      const head = [`To: ${msg.to.join(", ")}`, `Subject: ${msg.subject}`, ...Object.entries(msg.headers ?? {}).map(([k, v]) => `${k}: ${v}`)].join("\n");
+      const head = [`To: ${msg.to.join(", ")}`, ...(msg.replyTo ? [`Reply-To: ${msg.replyTo}`] : []), `Subject: ${msg.subject}`, ...Object.entries(msg.headers ?? {}).map(([k, v]) => `${k}: ${v}`)].join("\n");
       writeFileSync(join(dir, `${base}.html`), msg.html);
       writeFileSync(join(dir, `${base}.txt`), `${head}\n\n${msg.text}\n`);
       return { via: "outbox", ref: join(dir, `${base}.html`) };
