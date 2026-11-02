@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getOrgContext, getUser } from "@/lib/session";
+import { trackOnce } from "@/lib/events";
 import { Logo } from "@/components/logo";
 
 export const metadata = { title: "Set up" };
@@ -9,6 +10,8 @@ export default async function OnboardingPage() {
   if (!user) redirect("/login?next=/onboarding");
   const ctx = await getOrgContext();
   if (ctx?.org.onboarded_at) redirect("/leads");
+  // Every new account lands here right after sign-up; record it once.
+  if (!ctx) await trackOnce("signup", { userId: user.id });
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <Logo />

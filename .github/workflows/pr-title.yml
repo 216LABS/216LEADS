@@ -1,0 +1,31 @@
+name: PR title
+
+# Conventional Commit PR titles (DevOps addendum D7), e.g. "feat: lead detail timeline".
+# Also labels the PR "type: <type>" so generated release notes group it.
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check title and label type
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          re='^(feat|fix|chore|docs|ci|refactor|test|perf|build|revert)(\([a-z0-9-]+\))?!?: .+'
+          if ! [[ "$TITLE" =~ $re ]]; then
+            echo "::error::PR title must follow Conventional Commits, e.g. 'feat: lead detail timeline' (got: $TITLE)"
+            exit 1
+          fi
+          type="${BASH_REMATCH[1]}"
+          gh api -X POST "repos/$REPO/labels" -f name="type: $type" -f color="C5DEF5" >/dev/null 2>&1 || true
+          gh api -X POST "repos/$REPO/issues/$NUMBER/labels" -f "labels[]=type: $type" >/dev/null

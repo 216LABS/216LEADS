@@ -3,4 +3,5 @@ export { scoreOrg, previewTerritory, loadHomes, scoreHomes, runScoreAll } from "
 export { matchBatch, normalizeParcelId } from "./match";
 export { ingestHealth, STALE_AFTER_HOURS } from "./health";
 export { reportError } from "./sentry";
+export { sendOpsEmail } from "./notify";
 export { categorize } from "@216leads/scoring";

@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Home, Mail, Map, Settings } from "lucide-react";
 import type { ReactNode } from "react";
+import { withBase } from "@216leads/shared";
 import { Logo } from "./logo";
+import { ReportProblem } from "./report-problem";
 
 const TABS = [
   { href: "/leads", label: "Leads", icon: Home },
@@ -48,9 +50,12 @@ export function AppShell({ children, orgName, trade, banner, isAdmin }: {
         <div className="mt-auto px-3 text-xs text-slate">
           <div className="font-semibold text-navy">{orgName}</div>
           <div className="capitalize">{trade.replace("_", " ")}</div>
-          <form action="/auth/signout" method="post" className="mt-3">
-            <button className="focus-ring underline underline-offset-2 hover:text-navy">Sign out</button>
-          </form>
+          <div className="mt-3 flex flex-col items-start gap-2">
+            <ReportProblem />
+            <form action={withBase("/auth/signout")} method="post">
+              <button className="focus-ring underline underline-offset-2 hover:text-navy">Sign out</button>
+            </form>
+          </div>
         </div>
       </aside>
 
@@ -59,7 +64,10 @@ export function AppShell({ children, orgName, trade, banner, isAdmin }: {
           <Link href="/leads" className="focus-ring">
             <Logo />
           </Link>
-          <span className="max-w-[45%] truncate text-xs font-semibold text-slate">{orgName}</span>
+          <span className="flex max-w-[55%] items-center gap-3 text-xs font-semibold text-slate">
+            <span className="truncate">{orgName}</span>
+            <ReportProblem label="Help" className="focus-ring tap shrink-0 rounded-full border border-line px-3 text-xs font-semibold text-navy" />
+          </span>
         </header>
         {banner}
         <main className="mx-auto w-full max-w-6xl px-4 py-5 md:px-8 md:py-8">{children}</main>
