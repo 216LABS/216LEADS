@@ -270,20 +270,20 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         <div className="flex flex-wrap gap-2 text-sm">
           <label className="flex items-center gap-2">
             <span className="text-slate">Last</span>
-            <Select aria-label="Time window" value={days} onChange={(e) => setDays(Number(e.target.value))} className="w-auto">
+            <Select aria-label="Time window" value={days} onChange={(e) => setDays(Number(e.target.value))} className="max-w-48">
               <option value={30}>30 days</option>
               <option value={90}>90 days</option>
               <option value={365}>12 months</option>
             </Select>
           </label>
           {on.permit ? (
-            <Select aria-label="Permit category" value={category} onChange={(e) => setCategory(e.target.value)} className="w-auto">
+            <Select aria-label="Permit category" value={category} onChange={(e) => setCategory(e.target.value)} className="max-w-48">
               <option value="">All permits</option>
               {categories.map((c) => <option key={c.key} value={c.key}>{c.label}</option>)}
             </Select>
           ) : null}
           {on.heat ? (
-            <Select aria-label="Heat shows" value={heatKind} onChange={(e) => setHeatKind(e.target.value as typeof heatKind)} className="w-auto">
+            <Select aria-label="Heat shows" value={heatKind} onChange={(e) => setHeatKind(e.target.value as typeof heatKind)} className="max-w-48">
               <option value="permit">Heat: permits</option>
               <option value="sale">Heat: sales</option>
               <option value="violation">Heat: violations</option>
