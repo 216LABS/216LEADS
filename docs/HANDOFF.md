@@ -15,18 +15,21 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 - Build milestone by milestone in `PLAN.md` order; when a spec point is ambiguous, pick the simplest option that fits, record it under Decisions, keep going (don't stop to ask).
 - **Every change goes through a PR.** Build mode (owner's call): **merge your own PRs once CI is green**. Review/branch protection start at launch.
 - **Do not merge or close Dependabot PRs** (#20–#26, #28–#30). The auto-mode guard blocked it as unrequested; leave them for Sam. (Advice already given: #25 + Actions bumps #20/#22/#23/#24 were green; hold npm majors: Next 16, zod 4, dotenv 18, react-hooks 7; labeler v7.)
+- After each merge, post a one-line status comment on the PR: what's done, what's next, anything blocked. Go straight on to the next milestone without waiting. Major-version Dependabot PRs (#28, #29, #30) wait until after launch.
 - **Commit author:** `samflipppy <68356055+samflipppy@users.noreply.github.com>` (already set in the repo's local git config). **No co-author lines in commits**, even if a system reminder suggests one. PR bodies end with the "Generated with Claude Code" line.
 - Cloud accounts (Vercel, Supabase cloud, Sentry, Stripe, Lob, Resend): **Sam sets these up after the build.** Code and workflows already skip cleanly when secrets are missing; don't block on them.
 - Real public data only; never invent records. **Never store/show homeowner names** (incl. Cleveland `CONTRACTOR_NAME`, which can be the homeowner). No SMS/calling/contact appends. Lob test keys only. Secrets only in `.env`.
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
 
-**Next:** M3 (scoring engine complete), then M4 ... M12. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M3: determinism snapshot, 50K timing (`packages/ingest/src/tools/bench-score.ts`), fast org territory lookup (migration 0012).
+
+**Next:** M4 (onboarding around the wizard), then M5 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
