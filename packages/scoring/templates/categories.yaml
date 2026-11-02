@@ -1,18 +1,62 @@
 # Permit/violation category mapping (BUILD_SPEC 7.3).
-# Regex against raw_type + ' ' + description, case-insensitive, first match wins, in this order.
-demolition:  '\b(demo|demolition|raze)\b'
-roofing:     '\b(roof|re-?roof|shingle|tear ?off)\b'
-hvac:        '\b(furnace|hvac|a/?c|air condition|heat pump|boiler|mini.?split|ductwork|mechanical)\b'
-plumbing:    '\b(plumb|water heater|sewer line|drain|backflow|fixture)\b'
-electrical:  '\b(electric|service upgrade|panel|amp service|ev charger|generator|wiring)\b'
-waterproof:  '\b(waterproof|basement wall|sump|drain tile|foundation repair)\b'
-siding:      '\b(siding|vinyl|hardie)\b'
-windows:     '\b(window|door replacement)\b'
-gutters:     '\b(gutter|downspout)\b'
-painting:    '\b(paint|lead safe|lead abatement)\b'
-concrete:    '\b(driveway|concrete|apron|flatwork|sidewalk)\b'
-fence_deck:  '\b(fence|deck|porch)\b'
-garage:      '\bgarage\b'
-pool:        '\b(pool|spa|hot tub)\b'
-tree:        '\b(tree|stump)\b'
-remodel:     '\b(kitchen|bath|remodel|alteration|addition|renovat)\b'
+# Regex against "raw_type | description" (case-insensitive, FIRST MATCH WINS, top to bottom).
+# `^` anchors on the source's own permit category, `\| ` on the start of the description.
+# Clauses naming *other* permits ("SEPARATE PERMITS REQUIRED FOR ELEC, PLUM, HVAC") are removed first.
+#
+# The 16 spec categories keep the spec's terms and relative order. Changes, measured against
+# labeled real Cleveland permits (packages/scoring/src/categories.test.ts):
+#   - stems accept plurals and -ing/-ed/-al forms ("roofing", "plumbing", "electrical"),
+#     which the spec's trailing \b rejected; "rooftop" (HVAC units, solar) is not roofing;
+#   - the city's own permit category leads the text ("HVAC and Refrigeration / ...",
+#     "Residential Electrical / ..."), so those prefixes decide first;
+#   - non-trade categories (board-ups, signs/tents/awnings, change of use, elevators) and
+#     new_build (Addendum A5) match early so they don't land in trade categories;
+#   - narrow early rules: building a garage/carport -> garage, an addition -> remodel,
+#     installing a fence/deck/pool -> fence_deck/pool, explicit "waterproofing" and "remodel";
+#   - concrete means flatwork (driveway, apron, slab, steps, walk) named early in the
+#     description, not long permits that mention concrete in passing;
+#   - demolition means a whole structure; interior "selective demo" falls through to remodel;
+#   - painting means painting work: "painted sign" and "tuck paint" (tuckpointing) don't count;
+#   - tree only matches tree *work* (removal, trimming, stumps), not any mention of a tree.
+
+# City permit category prefixes
+- [boardup,          '^board-?ups?\b']
+- [demolition,       '^demolitions?\b']
+- [hvac,             '^(residential |commercial )?hvac\b']
+- [electrical,       '^(residential |commercial )?electrical\b']
+- [plumbing,         '^(residential |commercial )?plumbing\b']
+- [fence_deck,       '^zoning - fences\b']
+- [signage,          '^zoning - signs\b']
+
+# Non-trade permits
+- [boardup,          '\bboard-?ups?\b|\bboard(ed)? (up|\d|one|two|three|the|all|open)\b']
+- [signage,          '\b(signs?|signage|awnings?|canop(y|ies)|tents?|billboards?|banners?|marquee|pylon)\b']
+- [occupancy,        '\| .{0,20}\b(establish\w*\b.{0,40}\b(occupancy|use)|change (of )?use)\b']
+- [elevator,         '\b(elevators?|hoistways?|escalators?|dumbwaiters?|wheelchair lifts?|stair lifts?)\b']
+- [demolition,       '\b(raze[sd]?|razing)(\b|(?=\d))|\bdemolish\w* (the |an? |all )?(existing )?(\w+ )?(\w+ )?(\w+ )?(structure|building|bldg|house|dwelling|residence)s?\b|\bdemolition of (the |an? )?(existing )?(\w+ )?(\w+ )?(structure|building|house|dwelling|residence)s?\b']
+- [new_build,        '\b(new construction|townhomes?|townhouses?|new (\w+ )?(residence|dwelling|home))\b|\b(erect|construct|build)\b.{0,50}\b(?<!existing )(single|two)[- ]fam\w*|\b(erect|construct|build) (a |an )?(new )?(\S+ )?(\S+ )?(\S+ )?(\S+ )?(residence|dwelling|house)\b']
+
+# Narrow early rules
+- [garage,           '\b(erect|construct|build)\b.{0,60}\b(?<!parking )(garages?|carports?)\b']
+- [remodel,          '\b(erect|construct|build)\b.{0,60}\badditions?\b']
+- [fence_deck,       '\b(install\w*|erect|replace|build|construct)\b.{0,60}\b(fenc\w*|decks?)\b']
+- [pool,             '\b(install\w*|erect|construct)\b.{0,60}\b(swimming pools?|(above|in)[- ]ground pools?|pools?)\b']
+- [waterproof,       '\bwaterproof(ing)?\b(?! floor)']
+- [remodel,          '\bremodel\w*\b']
+
+# Spec categories, spec order
+- [roofing,          '\b(roof|roofs|roofing|re-?roof\w*|shingle[sd]?|tear ?offs?)\b']
+- [hvac,             '\b(furnaces?|hvac|a/?c|air condition\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical)\b']
+- [plumbing,         '\b(plumb\w*|water heaters?|sewer lines?|drains?|backflow|fixtures?)\b']
+- [electrical,       '\b(electric\w*|service upgrades?|panels?|amp service|ev chargers?|generators?|wiring)\b']
+- [waterproof,       '\b(waterproof\w*|basement walls?|sump\w*|drain tile|foundation repairs?)\b']
+- [siding,           '\b(siding|vinyl|hardie\w*)\b']
+- [windows,          '\b(windows?|door replacements?)\b|\b(replace\w*|install\w*)\b.{0,25}\b(?<!garage )doors?\b']
+- [gutters,          '\b(gutters?|downspouts?)\b']
+- [painting,         '\b((?<!tuck |athletic )paint(ing|s)?(?! (booths?|rooms?|mixing|storage|shop))|repaint\w*|lead safe|lead abatement)\b']
+- [concrete,         '\| .{0,70}\b((?<!over |in )driveways?(?! gate)|aprons?|flatwork|(?<!exist |existing )concrete (patio|slab|steps?|walk\w*|driveway|apron|sidewalk|stoop)s?|(replace|install|pour)\w*\b.{0,30}\bsidewalks?(?! obstruction))\b']
+- [fence_deck,       '\b(fenc\w*|decks?|decking|porch\w*)\b']
+- [garage,           '\b(?<!parking )(garages?|carports?)\b']
+- [pool,             '\b(swimming pools?|(above|in)[- ]ground pools?|pools?|spas?|hot tubs?)\b']
+- [tree,             '\b(tree (removal|trimming|pruning|service|work|cutting)|(remove|removal of|cut down|trim)( \w+){0,2} trees?|stumps?( grinding| removal)?)\b']
+- [remodel,          '\b(kitchens?|bath\w*|remodel\w*|alteration\w*|additions?|renovat\w*|demo\w*)\b']

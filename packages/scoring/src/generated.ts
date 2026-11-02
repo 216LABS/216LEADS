@@ -3,68 +3,140 @@ import type { Template } from "./types";
 
 export const CATEGORY_PATTERNS: [string, string][] = [
   [
-    "demolition",
-    "\\b(demo|demolition|raze)\\b"
+    "boardup",
+    "^board-?ups?\\b"
   ],
   [
-    "roofing",
-    "\\b(roof|re-?roof|shingle|tear ?off)\\b"
+    "demolition",
+    "^demolitions?\\b"
   ],
   [
     "hvac",
-    "\\b(furnace|hvac|a/?c|air condition|heat pump|boiler|mini.?split|ductwork|mechanical)\\b"
-  ],
-  [
-    "plumbing",
-    "\\b(plumb|water heater|sewer line|drain|backflow|fixture)\\b"
+    "^(residential |commercial )?hvac\\b"
   ],
   [
     "electrical",
-    "\\b(electric|service upgrade|panel|amp service|ev charger|generator|wiring)\\b"
+    "^(residential |commercial )?electrical\\b"
   ],
   [
-    "waterproof",
-    "\\b(waterproof|basement wall|sump|drain tile|foundation repair)\\b"
-  ],
-  [
-    "siding",
-    "\\b(siding|vinyl|hardie)\\b"
-  ],
-  [
-    "windows",
-    "\\b(window|door replacement)\\b"
-  ],
-  [
-    "gutters",
-    "\\b(gutter|downspout)\\b"
-  ],
-  [
-    "painting",
-    "\\b(paint|lead safe|lead abatement)\\b"
-  ],
-  [
-    "concrete",
-    "\\b(driveway|concrete|apron|flatwork|sidewalk)\\b"
+    "plumbing",
+    "^(residential |commercial )?plumbing\\b"
   ],
   [
     "fence_deck",
-    "\\b(fence|deck|porch)\\b"
+    "^zoning - fences\\b"
+  ],
+  [
+    "signage",
+    "^zoning - signs\\b"
+  ],
+  [
+    "boardup",
+    "\\bboard-?ups?\\b|\\bboard(ed)? (up|\\d|one|two|three|the|all|open)\\b"
+  ],
+  [
+    "signage",
+    "\\b(signs?|signage|awnings?|canop(y|ies)|tents?|billboards?|banners?|marquee|pylon)\\b"
+  ],
+  [
+    "occupancy",
+    "\\| .{0,20}\\b(establish\\w*\\b.{0,40}\\b(occupancy|use)|change (of )?use)\\b"
+  ],
+  [
+    "elevator",
+    "\\b(elevators?|hoistways?|escalators?|dumbwaiters?|wheelchair lifts?|stair lifts?)\\b"
+  ],
+  [
+    "demolition",
+    "\\b(raze[sd]?|razing)(\\b|(?=\\d))|\\bdemolish\\w* (the |an? |all )?(existing )?(\\w+ )?(\\w+ )?(\\w+ )?(structure|building|bldg|house|dwelling|residence)s?\\b|\\bdemolition of (the |an? )?(existing )?(\\w+ )?(\\w+ )?(structure|building|house|dwelling|residence)s?\\b"
+  ],
+  [
+    "new_build",
+    "\\b(new construction|townhomes?|townhouses?|new (\\w+ )?(residence|dwelling|home))\\b|\\b(erect|construct|build)\\b.{0,50}\\b(?<!existing )(single|two)[- ]fam\\w*|\\b(erect|construct|build) (a |an )?(new )?(\\S+ )?(\\S+ )?(\\S+ )?(\\S+ )?(residence|dwelling|house)\\b"
   ],
   [
     "garage",
-    "\\bgarage\\b"
-  ],
-  [
-    "pool",
-    "\\b(pool|spa|hot tub)\\b"
-  ],
-  [
-    "tree",
-    "\\b(tree|stump)\\b"
+    "\\b(erect|construct|build)\\b.{0,60}\\b(?<!parking )(garages?|carports?)\\b"
   ],
   [
     "remodel",
-    "\\b(kitchen|bath|remodel|alteration|addition|renovat)\\b"
+    "\\b(erect|construct|build)\\b.{0,60}\\badditions?\\b"
+  ],
+  [
+    "fence_deck",
+    "\\b(install\\w*|erect|replace|build|construct)\\b.{0,60}\\b(fenc\\w*|decks?)\\b"
+  ],
+  [
+    "pool",
+    "\\b(install\\w*|erect|construct)\\b.{0,60}\\b(swimming pools?|(above|in)[- ]ground pools?|pools?)\\b"
+  ],
+  [
+    "waterproof",
+    "\\bwaterproof(ing)?\\b(?! floor)"
+  ],
+  [
+    "remodel",
+    "\\bremodel\\w*\\b"
+  ],
+  [
+    "roofing",
+    "\\b(roof|roofs|roofing|re-?roof\\w*|shingle[sd]?|tear ?offs?)\\b"
+  ],
+  [
+    "hvac",
+    "\\b(furnaces?|hvac|a/?c|air condition\\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical)\\b"
+  ],
+  [
+    "plumbing",
+    "\\b(plumb\\w*|water heaters?|sewer lines?|drains?|backflow|fixtures?)\\b"
+  ],
+  [
+    "electrical",
+    "\\b(electric\\w*|service upgrades?|panels?|amp service|ev chargers?|generators?|wiring)\\b"
+  ],
+  [
+    "waterproof",
+    "\\b(waterproof\\w*|basement walls?|sump\\w*|drain tile|foundation repairs?)\\b"
+  ],
+  [
+    "siding",
+    "\\b(siding|vinyl|hardie\\w*)\\b"
+  ],
+  [
+    "windows",
+    "\\b(windows?|door replacements?)\\b|\\b(replace\\w*|install\\w*)\\b.{0,25}\\b(?<!garage )doors?\\b"
+  ],
+  [
+    "gutters",
+    "\\b(gutters?|downspouts?)\\b"
+  ],
+  [
+    "painting",
+    "\\b((?<!tuck |athletic )paint(ing|s)?(?! (booths?|rooms?|mixing|storage|shop))|repaint\\w*|lead safe|lead abatement)\\b"
+  ],
+  [
+    "concrete",
+    "\\| .{0,70}\\b((?<!over |in )driveways?(?! gate)|aprons?|flatwork|(?<!exist |existing )concrete (patio|slab|steps?|walk\\w*|driveway|apron|sidewalk|stoop)s?|(replace|install|pour)\\w*\\b.{0,30}\\bsidewalks?(?! obstruction))\\b"
+  ],
+  [
+    "fence_deck",
+    "\\b(fenc\\w*|decks?|decking|porch\\w*)\\b"
+  ],
+  [
+    "garage",
+    "\\b(?<!parking )(garages?|carports?)\\b"
+  ],
+  [
+    "pool",
+    "\\b(swimming pools?|(above|in)[- ]ground pools?|pools?|spas?|hot tubs?)\\b"
+  ],
+  [
+    "tree",
+    "\\b(tree (removal|trimming|pruning|service|work|cutting)|(remove|removal of|cut down|trim)( \\w+){0,2} trees?|stumps?( grinding| removal)?)\\b"
+  ],
+  [
+    "remodel",
+    "\\b(kitchens?|bath\\w*|remodel\\w*|alteration\\w*|additions?|renovat\\w*|demo\\w*)\\b"
   ]
 ];
 

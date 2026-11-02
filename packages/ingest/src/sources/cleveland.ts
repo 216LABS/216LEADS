@@ -40,7 +40,7 @@ function splitAddress(full: unknown): { line: string | null; zip: string | null 
 }
 
 const PERSON_DROP = [
-  "Owner_Name", "Owner_Org_Name", "Owner_Address", "Local_Agent_In_Charge_*", "Property_Management_*",
+  "CONTRACTOR_NAME", "Owner_Name", "Owner_Org_Name", "Owner_Address", "Local_Agent_In_Charge_*", "Property_Management_*",
   "OWNER_NAME", "BUYER_NAME", "BUYER_BUSINESS_NAME", "TITLE_AGENCY_NAME", "TITLE_AGENCY_BUSINESS_NAME",
   "MORTGAGE_BROKER_NAME", "MORTGAGE_BROKER_BUSINESS_NAME", "MORTGAGE_COMPANY", "MORTGAGE_COMPANY_BUSINESS_NAME",
   "owner", "mailadd", "careof", "mail_*", "deeded_own", "grantor", "grantee", "Inspector",
@@ -50,28 +50,30 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_permits", service: "Building_Permits", name: "Cleveland building permits", kind: "permit",
     keyField: "PARCEL_NUMBER", idField: "PERMIT_ID", dateField: "ISSUE_DATE",
-    outFields: ["PERMIT_ID", "PRIMARY_ADDRESS", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PERMIT_CATEGORY", "JOB_DESCRIPTION",
-      "WORK_DESCRIPTION", "CONTRACTOR_NAME", "CONTRATOR_BUSINESS_NAME", "CONTRATOR_LICENSE_ID", "JOB_VALUE", "ISSUE_DATE",
+    outFields: ["DW_Parcel", "PERMIT_ID", "PRIMARY_ADDRESS", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PERMIT_CATEGORY", "JOB_DESCRIPTION",
+      "WORK_DESCRIPTION", "CONTRATOR_BUSINESS_NAME", "CONTRATOR_LICENSE_ID", "JOB_VALUE", "ISSUE_DATE",
       "CURRENT_TASK_STATUS", "PARCEL_NUMBER", "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => {
       const raw_type = [str(a.PERMIT_CATEGORY), str(a.PERMIT_TYPE), str(a.PERMIT_SUBTYPE)].filter(Boolean).join(" / ");
       const description = str(a.WORK_DESCRIPTION) ?? str(a.JOB_DESCRIPTION);
       const business = str(a.CONTRATOR_BUSINESS_NAME);
-      const person = str(a.CONTRACTOR_NAME);
+      const license = str(a.CONTRATOR_LICENSE_ID);
       return {
         raw_type, description, amount: int(a.JOB_VALUE), status: str(a.CURRENT_TASK_STATUS),
         category: categorize(raw_type, description),
+        // CONTRACTOR_NAME (the license holder, sometimes the homeowner) is never requested;
+        // without a business name the contractor is kept only by license number.
         contractor: business
-          ? { name: business, is_individual: looksLikeIndividual(business), license_id: str(a.CONTRATOR_LICENSE_ID) }
-          : person ? { name: person, is_individual: true, license_id: str(a.CONTRATOR_LICENSE_ID) } : null,
+          ? { name: business, is_individual: looksLikeIndividual(business), license_id: license }
+          : license ? { name: "", is_individual: true, license_id: license } : null,
       };
     },
   },
   {
     code: "cle_violations", service: "Complaint_Violation_Notices", name: "Cleveland code violation notices", kind: "violation",
     keyField: "PARCEL_NUMBER", idField: "V_PERMIT_ID", dateField: "ISSUE_DATE", fallbackDateField: "FILE_DATE",
-    outFields: ["V_PERMIT_ID", "FILE_DATE", "ISSUE_DATE", "RECORD_STATUS", "ACTIVE_VIOLATION", "ADDRESS", "PARCEL_NUMBER",
+    outFields: ["DW_Parcel", "V_PERMIT_ID", "FILE_DATE", "ISSUE_DATE", "RECORD_STATUS", "ACTIVE_VIOLATION", "ADDRESS", "PARCEL_NUMBER",
       "TYPE_OF_VIOLATION", "VIOLATION_CITATIONS", "ADDITIONAL_CITATION_DETAILS", "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => {
@@ -83,7 +85,7 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_rentals", service: "Rental_Registrations", name: "Cleveland rental registrations", kind: "rental_registration",
     keyField: "Parcel", idField: "Record_ID", dateField: "File_Date",
-    outFields: ["Record_ID", "File_Date", "Address_Full", "Parcel", "Units", "Record_Status", "Active_Registration_Current_Year",
+    outFields: ["DW_Parcel", "Record_ID", "File_Date", "Address_Full", "Parcel", "Units", "Record_Status", "Active_Registration_Current_Year",
       "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: "Rental registration", status: str(a.Record_Status), is_active: truthy(a.Active_Registration_Current_Year), description: str(a.Units) ? `${str(a.Units)} units` : null }),
@@ -91,14 +93,14 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_condemnations", service: "Current_Condemnations", name: "Cleveland condemnations", kind: "condemnation",
     keyField: "Parcel_Number", idField: "OBJECTID", dateField: "Condemnation_Date",
-    outFields: ["OBJECTID", "Parcel_Number", "Active_Condemnation", "Address", "Condemnation_Date", "LON", "LAT"],
+    outFields: ["DW_Parcel", "OBJECTID", "Parcel_Number", "Active_Condemnation", "Address", "Condemnation_Date", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: "Condemnation", is_active: truthy(a.Active_Condemnation) }),
   },
   {
     code: "cle_demo", service: "Demolition_Permits", name: "Cleveland demolition permits", kind: "demolition",
     keyField: "PRIMARY_PARCEL", idField: "PERMIT_ID", dateField: null, fallbackDateField: "FILE_DATE",
-    outFields: ["PERMIT_ID", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PRIMARY_ADDRESS", "PRIMARY_PARCEL", "FILE_DATE", "ISSUED_DATE",
+    outFields: ["DW_Parcel", "PERMIT_ID", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PRIMARY_ADDRESS", "PRIMARY_PARCEL", "FILE_DATE", "ISSUED_DATE",
       "CLOSED_DATE", "Contrator_Business_Name", "Job_Value", "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => {
@@ -112,7 +114,7 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_boardup", service: "Boardup_Permits", name: "Cleveland board-up permits", kind: "boardup",
     keyField: "PARCEL_NUMBER", idField: "PERMIT_ID", dateField: null, fallbackDateField: "FILE_DATE",
-    outFields: ["PERMIT_ID", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PERMIT_CATEGORY", "PRIMARY_ADDRESS", "PARCEL_NUMBER", "FILE_DATE",
+    outFields: ["DW_Parcel", "PERMIT_ID", "PERMIT_TYPE", "PERMIT_SUBTYPE", "PERMIT_CATEGORY", "PRIMARY_ADDRESS", "PARCEL_NUMBER", "FILE_DATE",
       "ISSUE_DATE", "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: [str(a.PERMIT_CATEGORY), str(a.PERMIT_TYPE)].filter(Boolean).join(" / ") }),
@@ -120,7 +122,7 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_coo", service: "Certificates_of_Occupancy", name: "Cleveland certificates of occupancy", kind: "certificate_of_occupancy",
     keyField: "Parcel", idField: "PermitNumber", dateField: null,
-    outFields: ["PermitNumber", "SubType", "ApplicationCategory", "ApplicationStatus", "FileDate", "address", "Parcel",
+    outFields: ["DW_Parcel", "PermitNumber", "SubType", "ApplicationCategory", "ApplicationStatus", "FileDate", "address", "Parcel",
       "CERTIFICATE_ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: [str(a.ApplicationCategory), str(a.SubType)].filter(Boolean).join(" / "), status: str(a.ApplicationStatus), source_url: str(a.CERTIFICATE_ACCELA_CITIZEN_ACCESS_URL) }),
@@ -128,7 +130,7 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_leadsafe", service: "Lead_Safe_Certificates", name: "Cleveland lead safe certificates", kind: "lead_safe",
     keyField: "PARCEL_NUMBER", idField: "RECORD_ID", dateField: null,
-    outFields: ["RECORD_ID", "RECORD_FILE_DATE", "STATUS", "IS_ACTIVE", "EXPIRATION_DATE", "PrimaryAddress", "PrimaryAddressZip",
+    outFields: ["DW_Parcel", "RECORD_ID", "RECORD_FILE_DATE", "STATUS", "IS_ACTIVE", "EXPIRATION_DATE", "PrimaryAddress", "PrimaryAddressZip",
       "PARCEL_NUMBER", "INSPECTION_TYPE", "ACCELA_CITIZEN_ACCESS_URL"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: "Lead safe certificate", status: str(a.STATUS), is_active: truthy(a.IS_ACTIVE), category: "painting", description: str(a.INSPECTION_TYPE) }),
@@ -136,7 +138,7 @@ export const CLE_LAYERS: CleLayer[] = [
   {
     code: "cle_disclosure", service: "Certificates_of_Disclosure", name: "Cleveland certificates of disclosure", kind: "disclosure",
     keyField: "PRIMARY_PARCEL", idField: "PERMIT_ID", dateField: null,
-    outFields: ["PERMIT_ID", "FILE_DATE", "PRIMARY_PARCEL", "PRIMARY_ADDRESS", "ISSUE_DATE", "CONDEMNED_STATUS", "CURRENT_VIOLATIONS",
+    outFields: ["DW_Parcel", "PERMIT_ID", "FILE_DATE", "PRIMARY_PARCEL", "PRIMARY_ADDRESS", "ISSUE_DATE", "CONDEMNED_STATUS", "CURRENT_VIOLATIONS",
       "ACCELA_CITIZEN_ACCESS_URL", "LON", "LAT"],
     drop: PERSON_DROP,
     map: (a) => ({ raw_type: "Certificate of disclosure", description: str(a.CURRENT_VIOLATIONS) ? `Current violations: ${str(a.CURRENT_VIOLATIONS)}` : null }),
@@ -170,6 +172,7 @@ export function eventFromCle(l: CleLayer, a: Attrs, dateField: string): EventInp
     match: {
       county: "cuyahoga",
       parcelId: str(a[l.keyField]),
+      altParcelIds: [str(a.DW_Parcel)],
       addrLine: line,
       zip: zip5(zipField ?? zip),
       lon: num(a.LON),
@@ -221,11 +224,15 @@ export async function runCleLayer(sql: Sql, l: CleLayer, o: CleOpts = {}) {
 
     let newest = maxSeen ?? "";
     let n = 0;
+    let fetched = 0;
     for (const where of wheres) {
       for await (const page of arcgisPages(layer(l.service), { where, outFields: l.outFields, pageSize: 1000, orderBy: "OBJECTID" })) {
         const attrs = page.features.map((f) => dropFields(f.attributes, l.drop));
         const ref = rawStore().put(l.code, `${page.offset}-${where.length}`, attrs);
+        fetched += attrs.length;
         const events = attrs.map((a) => eventFromCle(l, a, dateField!)).filter((e): e is EventInput => e !== null);
+        // Records without an id or any date are skipped and counted, never given an invented date.
+        ctx.meta.skipped_no_date = Number(ctx.meta.skipped_no_date ?? 0) + (attrs.length - events.length);
         const take = o.limit ? events.slice(0, Math.max(0, o.limit - n)) : events;
         for (const e of take) {
           e.raw_ref = ref;
@@ -243,7 +250,8 @@ export async function runCleLayer(sql: Sql, l: CleLayer, o: CleOpts = {}) {
     }
     if (newest && !o.parcelIds && !o.limit) ctx.cursor.max_seen = newest;
     const exp = Number(ctx.meta.expected ?? 0);
-    if (exp && !o.limit && ctx.rowsIn < exp * 0.98) ctx.status = "partial";
+    ctx.meta.fetched = fetched;
+    if (exp && !o.limit && fetched < exp * 0.98) ctx.status = "partial";
     await markClevelandCoverage(sql, l.code);
   });
 }
