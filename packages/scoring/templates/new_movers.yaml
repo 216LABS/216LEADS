@@ -1,0 +1,21 @@
+key: new_movers
+version: 1
+label: New movers
+threshold: 55
+# Not a spec 7.5 trade: the closest preset for businesses that want new residents (dentists,
+# insurance agents, cleaners, realtors...). The AI wizard's no-key fallback uses it.
+signals:
+  new_owner: { weight: 40 }
+  owner_occupied: { weight: 20 }
+  price_band: { weight: 15 }
+  living_area: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 15, label: "Just moved in" }
+  - { kind: permit, category: new_build, within_days: 90, boost: 10, label: "New home built" }
+sliders:
+  - { key: new_owner, label: "Just moved in" }
+  - { key: price_band, label: "Home value in your range" }
+  - { key: living_area, label: "Bigger homes" }
+default_filters: {}
+default_exclusions: { rentals: false, condos: false, condemned: true }
+pitch: "{top_reason}. A welcome offer for new neighbors is an easy yes."

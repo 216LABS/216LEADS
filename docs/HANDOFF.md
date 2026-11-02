@@ -21,22 +21,12 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7 (PRs #13–#19, #27).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (see the latest PR).
 
-**In progress: A1 (template presets + adjacent-permit triggers)** on branch **`feat/a1-presets`** (pushed, **no PR yet**). Done on the branch, all green locally (typecheck, lint, 70 unit tests):
-- 7 new presets (`painting, gutters, siding, remodel, pest, septic, waterproofing`) + `fence` (14th, added in D1); A5 adjacent-permit triggers on electrical, lawn_care, gutters, painting, pest, waterproofing, fence. Septic weights scaled to A3's 0–40 cap.
-- `pest` category (before `remodel` in `packages/scoring/templates/categories.yaml`).
-- `packages/scoring/src/recipe.ts`: zod recipe schema (A3 rules); `describe.ts` (plain-English labels); tests `recipe.test.ts`, `engine.test.ts`.
-- Migration `0011_recipe_version.sql` (`org_profile`, `recipe_version`, RLS); `packages/ingest/src/recipes.ts` (save/activate/revert/list, preset bootstrap, `categoryMatchCounts` for the <20 low-confidence flag); `loadOrgProfile` reads the active recipe version.
-- API `POST /api/profile/activate` (draft or `version_id`), `GET /api/profile/categories`; pages `/settings` and `/settings/recipe` (history + "Use this version"; low-confidence badge). Browser-checked.
+- A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
+- A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
 
-**A1 remaining before its PR:**
-1. Lake County regex check (A5 asks for Cleveland **and Lake**): download one real monthly XLSX from `https://www.lakecountyohio.gov/building-inspection/monthly-permits/` (exceljs is installed in `@216leads/ingest`), categorize `Permit Type` + `Job Description`, review samples by hand, add a labeled fixture + test like `categories.cle.json` (expect few categories with ≥20 rows; that's fine). Building the full `lake_permits_xlsx` job is M10, but doing it now is OK.
-2. Add `org_profile` and `recipe_version` to `packages/db/src/rls.int.test.ts` (`TENANT_TABLES` + seed rows).
-3. Integration test: save a recipe → activate → leads re-score → revert restores the preset.
-4. Tick A1 in `PLAN.md` (+ decisions: pest category, septic scaling, fence preset already noted as #36), open PR, wait CI, merge.
-
-**Next after A1:** A2 (AI profile wizard: load the `claude-api` skill before writing LLM code; default `LLM_PROVIDER=anthropic`; no key → keyword mapping to closest preset), then M3 … M12. GitHub issues #1–#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+**Next:** M3 (scoring engine complete), then M4 ... M12. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 

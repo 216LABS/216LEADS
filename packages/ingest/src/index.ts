@@ -10,3 +10,4 @@ export {
   RecipeInvalidError, LOW_CONFIDENCE_MIN, type RecipeVersionRow, type RecipeSource,
 } from "./recipes";
 export { loadOrgProfile } from "./score";
+export { buildRecipe, tweakRecipe, extractJson, createOrgFromWizard, saveOrgAnswers, llmFromEnv, type LlmProvider, type Recipe } from "./profile";
