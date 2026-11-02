@@ -1,7 +1,7 @@
 // Writes parcel_event rows from any source: contractor resolution, matching,
 // idempotent upsert (only changed rows count), unmatched bookkeeping.
 import type { Sql } from "@216leads/db";
-import { contractorNameNorm } from "@216leads/shared";
+import { INDEPENDENT_CONTRACTOR, contractorNameNorm, looksLikeIndividual } from "@216leads/shared";
 import { matchBatch, type MatchInput } from "./match";
 
 export type EventKind =
@@ -48,21 +48,20 @@ export interface WriteResult {
 export async function resolveContractors(sql: Sql, inputs: (ContractorInput | null | undefined)[]): Promise<(number | null)[]> {
   const uniq = new Map<string, ContractorInput>();
   for (const c of inputs) {
-    if (!c?.name?.trim()) continue;
-    const norm = contractorNameNorm(c.name);
+    const norm = contractorKey(c);
     if (!norm) continue;
-    const prev = uniq.get(norm);
-    // A business-name sighting wins over an individual-name sighting.
-    if (!prev || (prev.is_individual && !c.is_individual)) uniq.set(norm, c);
+    if (!uniq.has(norm)) uniq.set(norm, c!);
   }
   const ids = new Map<string, number>();
   if (uniq.size) {
     const rows = [...uniq.entries()].map(([name_norm, c]) => ({
       name_norm,
-      display_name: c.name.trim().replace(/\s+/g, " "),
+      // A person's name is never stored: a homeowner pulling their own permit appears in the
+      // city's contractor-name field. Individuals are kept only by license number.
+      display_name: c.is_individual ? INDEPENDENT_CONTRACTOR : c.name.trim().replace(/\s+/g, " "),
       license_id: c.license_id ?? null,
       phone: c.phone ?? null,
-      is_individual: c.is_individual,
+      is_individual: name_norm.startsWith("INDIVIDUAL "),
     }));
     const res = await sql<{ id: number; name_norm: string }[]>`
       insert into contractor (name_norm, display_name, license_id, phone, is_individual)
@@ -75,7 +74,19 @@ export async function resolveContractors(sql: Sql, inputs: (ContractorInput | nu
       returning id, name_norm`;
     for (const r of res) ids.set(r.name_norm, r.id);
   }
-  return inputs.map((c) => (c?.name?.trim() ? ids.get(contractorNameNorm(c.name)) ?? null : null));
+  return inputs.map((c) => {
+    const k = contractorKey(c);
+    return k ? ids.get(k) ?? null : null;
+  });
+}
+
+/** Business: normalized name. Individual: their city license number, or nothing. */
+function contractorKey(c: ContractorInput | null | undefined): string | null {
+  if (!c) return null;
+  if (c.is_individual || (c.name && looksLikeIndividual(c.name))) {
+    return c.license_id?.trim() ? `INDIVIDUAL ${c.license_id.trim().toUpperCase()}` : null;
+  }
+  return c.name?.trim() ? contractorNameNorm(c.name) || null : null;
 }
 
 export async function writeEvents(sql: Sql, events: EventInput[]): Promise<WriteResult> {

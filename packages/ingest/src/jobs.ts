@@ -5,6 +5,9 @@ import { CLE_LAYERS, runCleContractors, runCleLayer, runCleSurvey } from "./sour
 import { runSignals } from "./signals";
 import { runScoreAll } from "./score";
 import { runMatchRetry } from "./retry";
+import { runFemaFlood } from "./sources/fema";
+import { runRecategorize } from "./recategorize";
+import { runPrivacyAudit } from "./privacy";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -17,10 +20,13 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   cuy_parcels: { fn: (sql, o) => runCuyParcels(sql, o), describe: "Cuyahoga parcels + sale events (delta; --full for all)" },
   cuy_parcel_geom: { fn: (sql, o) => runCuyParcelGeom(sql, o), describe: "Cuyahoga parcel centroids" },
   cuy_canopy: { fn: (sql, o) => runCuyCanopy(sql, o), describe: "CCPC tree canopy + land cover per parcel" },
+  fema_flood: { fn: (sql) => runFemaFlood(sql, ["cuyahoga"]), describe: "FEMA flood hazard zones -> parcel.flood_zone" },
   cle_survey: { fn: (sql) => runCleSurvey(sql), describe: "Cleveland 2022 property survey (one-time)" },
   cle_contractors: { fn: (sql) => runCleContractors(sql), describe: "Cleveland contractor registry" },
   match: { fn: (sql) => runMatchRetry(sql), describe: "Retry unmatched records (14 days)" },
+  recategorize: { fn: (sql) => runRecategorize(sql), describe: "Re-run category regex over permits/violations" },
   signals: { fn: (sql) => runSignals(sql), describe: "Recompute event-derived signals" },
+  privacy_audit: { fn: (sql, o) => runPrivacyAudit(sql, o.limit ?? 400), describe: "Check no owner names are stored (fetches a sample live, keeps it in memory)" },
   score: { fn: (sql, o) => runScoreAll(sql, o.org), describe: "Score all orgs (or --org <id>)" },
 };
 
@@ -34,7 +40,7 @@ export const DAILY = ["cuy_parcels", "cle_permits", "cle_violations", "cle_renta
 /** First full load for Cuyahoga + Cleveland. */
 export const CLEVELAND_FULL = [
   "cuy_parcels", "cle_contractors", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup",
-  "cle_survey", "cuy_canopy", "cuy_parcel_geom", "signals", "score",
+  "cle_coo", "cle_leadsafe", "cle_disclosure", "cle_survey", "cuy_canopy", "cuy_parcel_geom", "fema_flood", "match", "signals", "score",
 ];
 
 export async function runJob(sql: Sql, name: string, o: JobOpts = {}) {

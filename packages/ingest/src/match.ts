@@ -5,6 +5,8 @@ import { normalizeAddress } from "@216leads/shared";
 export interface MatchInput {
   county: string;
   parcelId?: string | null;
+  /** Other parcel ids the source supplies (e.g. Cleveland's DW_Parcel), tried after parcelId. */
+  altParcelIds?: (string | null | undefined)[];
   addrLine?: string | null;
   zip?: string | number | null;
   lon?: number | null;
@@ -34,18 +36,22 @@ const stripOrdinals = (s: string) => s.replace(ORDINAL, "$1");
 export async function matchBatch(sql: Sql, inputs: MatchInput[]): Promise<(MatchResult | null)[]> {
   const out: (MatchResult | null)[] = inputs.map(() => null);
 
-  // 1. Parcel id.
-  const keyByIdx = new Map<number, string>();
+  // 1. Parcel id: the record's own parcel number (1.00), then any alternate id the source supplies (0.95).
+  const keysByIdx = new Map<number, string[]>();
   inputs.forEach((m, i) => {
-    const id = normalizeParcelId(m.county, m.parcelId);
-    if (id) keyByIdx.set(i, `${m.county}:${id}`);
+    const ids = [m.parcelId, ...(m.altParcelIds ?? [])].map((p) => normalizeParcelId(m.county, p));
+    const keys = ids.map((id) => (id ? `${m.county}:${id}` : ""));
+    if (keys.some(Boolean)) keysByIdx.set(i, keys);
   });
-  if (keyByIdx.size) {
-    const keys = [...new Set(keyByIdx.values())];
+  if (keysByIdx.size) {
+    const all = [...new Set([...keysByIdx.values()].flat().filter(Boolean))];
     const found = new Set(
-      (await sql<{ parcel_key: string }[]>`select parcel_key from parcel where parcel_key = any(${keys})`).map((r) => r.parcel_key),
+      (await sql<{ parcel_key: string }[]>`select parcel_key from parcel where parcel_key = any(${all})`).map((r) => r.parcel_key),
     );
-    for (const [i, k] of keyByIdx) if (found.has(k)) out[i] = { parcel_key: k, method: "parcel_id", confidence: 1 };
+    for (const [i, keys] of keysByIdx) {
+      const j = keys.findIndex((k) => k && found.has(k));
+      if (j >= 0) out[i] = { parcel_key: keys[j]!, method: "parcel_id", confidence: j === 0 ? 1 : 0.95 };
+    }
   }
 
   // 2. Exact normalized address.
@@ -87,20 +93,23 @@ export async function matchBatch(sql: Sql, inputs: MatchInput[]): Promise<(Match
     if (rows.length === 1) out[i] = { parcel_key: rows[0]!.parcel_key, method: "address_fuzzy", confidence: 0.8 };
   }
 
-  // 4. Geo: within 30 m of a parcel centroid with the same house number.
+  // 4. Geo: within 30 m of a parcel centroid with the same house number (0.70). If none, the
+  //    nearest parcel within 30 m that has no site address at all (new construction or a lot
+  //    the county lists without an address) at 0.60.
   for (let i = 0; i < inputs.length; i++) {
     const m = inputs[i]!;
-    if (out[i] || m.lon == null || m.lat == null || !m.addrLine) continue;
-    const house = normalizeAddress(m.addrLine, m.zip).houseNo;
-    if (!house) continue;
-    const rows = await sql<{ parcel_key: string }[]>`
+    if (out[i] || m.lon == null || m.lat == null || m.lon === 0) continue;
+    const house = m.addrLine ? normalizeAddress(m.addrLine, m.zip).houseNo : "";
+    const rows = await sql<{ parcel_key: string; same_house: boolean }[]>`
       with pt as (select st_setsrid(st_makepoint(${m.lon}, ${m.lat}), 4326) as g)
-      select p.parcel_key from parcel p, pt
+      select p.parcel_key, (${house} <> '' and split_part(p.addr_line, ' ', 1) = ${house}) as same_house
+      from parcel p, pt
       where p.county_code = ${m.county} and p.geom && st_expand(pt.g, 0.0006)
         and st_dwithin(p.geom::geography, pt.g::geography, 30)
-        and split_part(p.addr_line, ' ', 1) = ${house}
-      order by p.geom <-> pt.g limit 1`;
-    if (rows[0]) out[i] = { parcel_key: rows[0].parcel_key, method: "geo", confidence: 0.7 };
+        and ((${house} <> '' and split_part(p.addr_line, ' ', 1) = ${house}) or p.addr_line = '')
+      order by 2 desc, p.geom <-> pt.g limit 1`;
+    const r = rows[0];
+    if (r) out[i] = { parcel_key: r.parcel_key, method: "geo", confidence: r.same_house ? 0.7 : 0.6 };
   }
 
   return out;

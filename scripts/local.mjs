@@ -80,6 +80,8 @@ function ensureEnvFile() {
     SUPABASE_SERVICE_ROLE_KEY: sb.SERVICE_ROLE_KEY,
     DATABASE_URL: sb.DB_URL,
     DATABASE_URL_DIRECT: sb.DB_URL,
+    // Local only: the seeded demo login can open /admin. Set your own list in production.
+    ADMIN_EMAILS: "demo@216leads.test",
   };
   let text = readFileSync(envPath, "utf8");
   const current = parseEnv(text);
