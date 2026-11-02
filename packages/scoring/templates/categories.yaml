@@ -1,0 +1,18 @@
+# Permit/violation category mapping (BUILD_SPEC 7.3).
+# Regex against raw_type + ' ' + description, case-insensitive, first match wins, in this order.
+demolition:  '\b(demo|demolition|raze)\b'
+roofing:     '\b(roof|re-?roof|shingle|tear ?off)\b'
+hvac:        '\b(furnace|hvac|a/?c|air condition|heat pump|boiler|mini.?split|ductwork|mechanical)\b'
+plumbing:    '\b(plumb|water heater|sewer line|drain|backflow|fixture)\b'
+electrical:  '\b(electric|service upgrade|panel|amp service|ev charger|generator|wiring)\b'
+waterproof:  '\b(waterproof|basement wall|sump|drain tile|foundation repair)\b'
+siding:      '\b(siding|vinyl|hardie)\b'
+windows:     '\b(window|door replacement)\b'
+gutters:     '\b(gutter|downspout)\b'
+painting:    '\b(paint|lead safe|lead abatement)\b'
+concrete:    '\b(driveway|concrete|apron|flatwork|sidewalk)\b'
+fence_deck:  '\b(fence|deck|porch)\b'
+garage:      '\bgarage\b'
+pool:        '\b(pool|spa|hot tub)\b'
+tree:        '\b(tree|stump)\b'
+remodel:     '\b(kitchen|bath|remodel|alteration|addition|renovat)\b'

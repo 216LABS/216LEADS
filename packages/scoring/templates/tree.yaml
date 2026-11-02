@@ -1,0 +1,20 @@
+key: tree
+version: 1
+label: Tree service
+threshold: 55
+signals:
+  canopy: { weight: 40 }
+  lot_size: { weight: 20 }
+  new_owner: { weight: 15 }
+  neighbor_job:tree: { weight: 10 }
+  home_age: { weight: 15 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: neighbor_job, category: tree, within_days: 60, boost: 8, label: "Neighbors doing tree work" }
+sliders:
+  - { key: canopy, label: "Tree cover" }
+  - { key: lot_size, label: "Lot size" }
+  - { key: new_owner, label: "Just moved in" }
+default_filters: { canopy_min: 25, owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "{top_reason}. A free look at overhanging limbs before the next storm is an easy yes."

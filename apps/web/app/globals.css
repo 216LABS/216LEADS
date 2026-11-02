@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* 216 Leads design system (spec 9). */
+@theme {
+  --color-navy: #0f2a44;
+  --color-navy-700: #173a5c;
+  --color-navy-50: #e8eef4;
+  --color-signal: #f26b1d;
+  --color-signal-600: #d95a10;
+  --color-signal-50: #fdeee4;
+  --color-paper: #f7f5f0;
+  --color-slate: #4a5563;
+  --color-line: #e3e0d8;
+  --color-won: #2e7d4f;
+  --color-won-50: #e6f2eb;
+  --color-lost: #b42318;
+  --color-lost-50: #fbe9e7;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --radius-card: 12px;
+}
+
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-navy);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 44 px minimum tap targets on interactive controls. */
+.tap {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

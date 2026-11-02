@@ -1,0 +1,24 @@
+key: roofing
+version: 1
+label: Roofing
+threshold: 55
+signals:
+  last_permit_age:roofing: { weight: 30, lifespan_years: 22 }
+  no_recent_permit:roofing: { weight: 15 }
+  home_age: { weight: 15 }
+  new_owner: { weight: 15 }
+  canopy: { weight: 8 }
+  survey_condition:roof: { weight: 10 }
+  active_violation:roofing: { weight: 7 }
+  neighbor_job:roofing: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: neighbor_job, category: roofing, within_days: 60, boost: 8, label: "Neighbors re-roofing" }
+  - { kind: violation, category: roofing, within_days: 90, boost: 12, label: "City roof citation" }
+sliders:
+  - { key: last_permit_age:roofing, label: "Roof age" }
+  - { key: new_owner, label: "Just moved in" }
+  - { key: canopy, label: "Trees" }
+default_filters: { year_built_max: null, owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "Built {year_built}. {top_reason}. A free roof check before winter is an easy yes."

@@ -1,0 +1,16 @@
+{
+  "pulled_on": "2026-11-01",
+  "zips": [
+    "44107",
+    "44111"
+  ],
+  "parcels": 2000,
+  "events": {
+    "cle_permits": 500,
+    "cle_violations": 100,
+    "cle_rentals": 150,
+    "cle_condemnations": 9
+  },
+  "sales": 2000,
+  "note": "Real public records from Cuyahoga County and City of Cleveland ArcGIS services. Owner names and mailing addresses are never included."
+}

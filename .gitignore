@@ -1,0 +1,24 @@
+node_modules/
+.next/
+.turbo/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# secrets
+.env
+.env.local
+.env.*.local
+
+# local data: raw payloads, email outbox, dry-run mail
+.data/
+
+# supabase local
+supabase/.branches
+supabase/.temp
+
+# test output
+apps/web/test-results/
+apps/web/playwright-report/
+__pycache__/

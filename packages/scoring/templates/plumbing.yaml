@@ -1,0 +1,22 @@
+key: plumbing
+version: 1
+label: Plumbing
+threshold: 55
+signals:
+  era_pre1950: { weight: 20 }
+  last_permit_age:plumbing: { weight: 20, lifespan_years: 25 }
+  new_owner: { weight: 20 }
+  home_age: { weight: 15 }
+  well_water: { weight: 5 }
+  flood: { weight: 10 }
+  active_violation:plumbing: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: violation, category: plumbing, within_days: 90, boost: 12, label: "City plumbing citation" }
+sliders:
+  - { key: era_pre1950, label: "Older pipes (pre-1950)" }
+  - { key: new_owner, label: "Just moved in" }
+  - { key: flood, label: "Flood zone" }
+default_filters: { year_built_max: null, owner_occupied: false }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "Built {year_built}. {top_reason}. A camera look at the main line is cheap peace of mind."

@@ -1,0 +1,21 @@
+key: hvac
+version: 1
+label: HVAC
+threshold: 55
+signals:
+  last_permit_age:hvac: { weight: 30, lifespan_years: 18 }
+  new_owner: { weight: 20 }
+  home_age: { weight: 15 }
+  no_gas: { weight: 10 }
+  living_area: { weight: 10 }
+  owner_occupied: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: neighbor_job, category: hvac, within_days: 60, boost: 8, label: "Neighbors replacing HVAC" }
+sliders:
+  - { key: last_permit_age:hvac, label: "Furnace/AC age" }
+  - { key: new_owner, label: "Just moved in" }
+  - { key: no_gas, label: "No gas line (heat pump)" }
+default_filters: { year_built_max: null, owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "Built {year_built}. {top_reason}. A tune-up and safety check now beats a no-heat call in January."

@@ -1,0 +1,42 @@
+{
+  "name": "216-leads",
+  "private": true,
+  "description": "216 Leads by 216LABS: which Northeast Ohio homes need your trade next, and why.",
+  "packageManager": "pnpm@10.11.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "local": "node scripts/local.mjs",
+    "dev": "pnpm --filter @216leads/web dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "pnpm --filter @216leads/web test:e2e",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:migrate": "pnpm --filter @216leads/db migrate",
+    "db:seed": "pnpm --filter @216leads/ingest seed",
+    "ingest": "pnpm --filter @216leads/ingest cli",
+    "ingest:cleveland": "pnpm --filter @216leads/ingest cli pipeline cleveland",
+    "fixtures:pull": "pnpm --filter @216leads/ingest fixtures:pull"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "supabase": "2.122.0",
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "supabase",
+      "esbuild",
+      "sharp",
+      "@tailwindcss/oxide",
+      "unrs-resolver"
+    ]
+  }
+}
