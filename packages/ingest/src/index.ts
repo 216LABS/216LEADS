@@ -11,3 +11,4 @@ export {
 } from "./recipes";
 export { loadOrgProfile } from "./score";
 export { buildRecipe, tweakRecipe, extractJson, createOrgFromWizard, saveOrgAnswers, llmFromEnv, type LlmProvider, type Recipe } from "./profile";
+export { importCustomers, searchAreas, areaCounts, CUSTOMER_LINES_MAX, type AreaMatch, type AreaCount } from "./onboarding";

@@ -8,6 +8,7 @@ import {
   type Template, type WizardAnswers,
 } from "@216leads/scoring";
 import { saveRecipeVersion } from "./recipes";
+import { importCustomers } from "./onboarding";
 
 export type Recipe = Template & { preset_base?: string | null; rationale?: string[] };
 
@@ -99,6 +100,8 @@ export interface BuiltRecipe {
 
 /** POST /api/profile/build core: answers -> recipe draft. Never throws for LLM problems. */
 export async function buildRecipe(answers: WizardAnswers, llm: LlmProvider | null = llmFromEnv()): Promise<BuiltRecipe> {
+  // Spec 9.1 preset path: the trade tile as-is; the perfect-customer controls adjust it next.
+  if (answers.preset) return { recipe: presetRecipe(answers), via: "preset" };
   const fromLlm = llm ? await askForRecipe(llm, answersMessage(answers)) : null;
   if (fromLlm) {
     const base = fromLlm.preset_base && hasTemplate(fromLlm.preset_base) ? fromLlm.preset_base : closestPreset(`${answers.sells} ${answers.best_customer}`);
@@ -132,7 +135,7 @@ export async function tweakRecipe(
  */
 export async function createOrgFromWizard(
   sql: Sql,
-  v: { userId: string; email: string; answers: WizardAnswers; recipe: unknown; multipliers?: Record<string, number> },
+  v: { userId: string; email: string; answers: WizardAnswers; recipe: unknown; multipliers?: Record<string, number>; customers?: string[] },
 ): Promise<string> {
   const parsed = parseRecipe(v.recipe);
   if (!parsed.ok) throw new Error(`Invalid recipe: ${parsed.errors.slice(0, 3).join("; ")}`);
@@ -148,7 +151,11 @@ export async function createOrgFromWizard(
     await tx`insert into org_profile (org_id, answers) values (${org!.id}, ${tx.json(v.answers as never)})`;
     return org!.id;
   });
-  await saveRecipeVersion(sql, { orgId, recipe: r, multipliers: v.multipliers, source: "wizard", userId: v.userId, activate: true, note: "Built from your answers" });
+  await saveRecipeVersion(sql, {
+    orgId, recipe: r, multipliers: v.multipliers, source: v.answers.preset ? "preset" : "wizard", userId: v.userId, activate: true,
+    note: v.answers.preset ? "Started from a preset" : "Built from your answers",
+  });
+  if (v.customers?.length) await importCustomers(sql, orgId, v.customers);
   return orgId;
 }
 

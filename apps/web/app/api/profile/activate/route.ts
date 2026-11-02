@@ -4,7 +4,9 @@
 // their answers first.
 import { z } from "zod";
 import { getDirectSql } from "@216leads/db";
-import { activateRecipeVersion, createOrgFromWizard, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg } from "@216leads/ingest";
+import {
+  activateRecipeVersion, createOrgFromWizard, CUSTOMER_LINES_MAX, importCustomers, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg,
+} from "@216leads/ingest";
 import { answersSchema } from "@216leads/scoring";
 import { ApiError, apiUser, body, handle, json } from "@/lib/api";
 import { track } from "@/lib/events";
@@ -17,6 +19,8 @@ const Draft = z.object({
   parent_id: z.string().uuid().nullable().optional(),
   note: z.string().max(500).nullable().optional(),
   answers: answersSchema.optional(),
+  /** "Upload my current customers" (spec 9.1 step 3): address lines only, hidden from leads. */
+  customers: z.array(z.string().max(200)).max(CUSTOMER_LINES_MAX).optional(),
 });
 const Body = z.union([z.object({ version_id: z.string().uuid() }), Draft]);
 
@@ -29,9 +33,12 @@ export const POST = handle(async (req: Request) => {
     if ("version_id" in input || !input.answers) throw new ApiError(403, "Finish onboarding first");
     const orgId = await createOrgFromWizard(sql, {
       userId: user.id, email: user.email, answers: input.answers, recipe: draftRecipe(input.recipe), multipliers: input.multipliers,
+      customers: input.customers,
     });
     const stats = await scoreOrg(sql, orgId);
-    await track("onboarding_done", { orgId, userId: user.id }, { path: "wizard", leads: stats.qualified, zips: input.answers.zips.length });
+    await track("onboarding_done", { orgId, userId: user.id }, {
+      path: input.answers.preset ? "preset" : "wizard", leads: stats.qualified, zips: input.answers.zips.length, customers: input.customers?.length ?? 0,
+    });
     return json({ org_id: orgId, leads: stats.qualified });
   }
 
@@ -53,6 +60,7 @@ export const POST = handle(async (req: Request) => {
     await saveOrgAnswers(sql, org.id, input.answers);
     await sql`update org set onboarded_at = coalesce(onboarded_at, now()) where id = ${org.id}`;
   }
+  if (!("version_id" in input) && input.customers?.length) await importCustomers(sql, org.id, input.customers);
   const stats = await scoreOrg(sql, org.id);
   return json({ version: { id: version.id, source: version.source, active: true }, leads: stats.qualified });
 });

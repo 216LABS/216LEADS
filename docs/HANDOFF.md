@@ -22,14 +22,16 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
 
 - M3: determinism snapshot, 50K timing (`packages/ingest/src/tools/bench-score.ts`), fast org territory lookup (migration 0012).
 
-**Next:** M4 (onboarding around the wizard), then M5 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M4: trade-tile preset path, ZIP/town area search with live counts, perfect-customer controls + customer CSV on the confirm screen, `/onboarding/brand`, `/onboarding/plan`.
+
+**Next:** M5 (CRM views), then M6 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
