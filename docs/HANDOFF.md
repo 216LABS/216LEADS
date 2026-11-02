@@ -23,7 +23,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (#44), M9 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
@@ -40,7 +40,9 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - M8: postcards (Lob test/PostGrid/dry-run), builder, send screen with 10.3 checks, undo, auto-mail, Lob webhooks, opt-out page (#2).
 
-**Next:** M9 (map and market tools), then M10 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M9: MapLibre map (pins, permit/sale/violation/flood/heat layers, lasso to mail), neighbor ring, competitor tracker (`packages/ingest/src/market.ts`, decisions 65-72).
+
+**Next:** M10 (more counties and exclusivity), then M11 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
@@ -55,7 +57,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - Bash heredocs that contain backticks or `${` break in this shell: write files with the Write tool, or write a Python script to the scratchpad and run it. Python on Windows writes CRLF unless you pass `newline='\n'` (`.gitattributes` normalizes the index anyway).
 - `tsx` applies a package's tsconfig only to files in its `include`; the email templates carry a `@jsxRuntime automatic` pragma so the CLI can render them.
-- A dev server left over from an earlier run keeps port 3000; stop it before starting another (`Get-NetTCPConnection -LocalPort 3000`).
+- A dev server left over from an earlier run keeps port 3000; stop it before starting another (`Get-NetTCPConnection -LocalPort 3000`). In M9 an old dev server served stale compiled pages (files edited under OneDrive weren't picked up) and stopping it was blocked by the auto-mode guard. Workaround: `git worktree add --detach <scratch>/wt HEAD`, copy `.env`, `pnpm install --frozen-lockfile --prefer-offline`, `NEXT_PUBLIC_BASE_PATH=/leads npx next build`, then `next start -p 3001` with the same env, and point `E2E_BASE_URL=http://localhost:3001/leads/` at it.
 
 - **Git Bash rewrites args starting with `/`** into Windows paths (`/leads`, `/pulls/13`). Prefix commands with `MSYS_NO_PATHCONV=1`.
 - **The Bash tool collapses `\\` in heredocs/python strings.** For regex-heavy edits (YAML categories, regex in TS), use the Edit/Write tools, not sed/python.

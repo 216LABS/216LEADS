@@ -143,8 +143,16 @@ Result:
 - **After sending:** Lob webhooks (returned mail goes to suppression); metered pieces reported to the Stripe meter after their cancel window; the daily `automail` job.
 
 ### M9: Map and market tools
-- [ ] MapLibre map with lead pins and layers, lasso to mail
-- [ ] Neighbor ring, competitor tracker, heat map
+- [x] MapLibre map with lead pins and layers, lasso to mail
+- [x] Neighbor ring, competitor tracker, heat map
+
+Result:
+- **Map tab:** score-colored pins (won jobs green), layer chips for Permits (by category), Sales, Violations, Flood zones and Heat, with a 30/90/365-day window. Tap a pin for the home (Open, Neighbor ring, Mail).
+- **Lasso:** "Draw to mail" outlines a block. "Mail these N homes" shows credits plus the metered estimate, then opens the existing send screen, so every 10.3 check still applies.
+- **Neighbor ring:** the 40 nearest homes within 150 m, with counts (homes, already leads, mailed in the last 30 days, opted out) and "Mail the ring". It opens from a pin, or from the new "Neighbor ring" button on lead detail (`/map?ring=<parcel>`).
+- **Competitors** (`/map/competitors`): businesses pulling permits in the area, defaulting to the org's trade, with counts, categories and the 5 most recent addresses. Permits by individuals are counted but never named.
+- **API:** `GET /api/map/points`, `/api/map/layer`, `/api/map/heat`, `/api/parcels/:key/neighbors`, `POST /api/parcels/:key/neighbors/mail` and `GET /api/competitors`. Logic is in `packages/ingest/src/market.ts`.
+- **Tests:** `market.int.test.ts` checks the ring, competitor and heat counts against independent SQL over the fixtures (spec 15 M2 acceptance). The smoke test covers map pins, the ring and the competitors page on phone and desktop. Checked on the full local load in a `/leads` production build: map ready in about 2 s, ring query 14 ms.
 
 ### M10: More counties and exclusivity
 - [ ] Lake parcels + sales, Lake monthly permits XLSX, Medina permits, Stark sales
@@ -223,6 +231,14 @@ Result:
 62. **PostGrid is wired but not exercised** against its API in this build; its webhooks aren't accepted yet. Lob is the provider when `LOB_API_KEY` is set (`MAIL_PROVIDER=postgrid` switches); with neither, the dry-run provider records pieces and sends nothing.
 63. **Metered postcards need a card on file.** On the trial (no card) only credits can be spent; homes beyond them show as "no credits left and no card on file". The auto-mail monthly cap counts metered price only.
 64. **Auto-mail follow-ups skip the 30-day rule on purpose** (they're the same campaign). Auto-mail never mails a lead before it is visible (exclusivity delay) or for a locked/canceled account.
+65. **Map layers load once for the whole area.** Pins (top 5,000 by score), record layers (2,000 newest) and heat cells are fetched for the org's territory, not per viewport, so panning sends no requests and stays under the 60 req/min API limit. The bbox parameters still work for API callers.
+66. **Map, ring, competitors and heat are Pro features** (spec 11): `PLANS[*].marketTools`; the trial has them. Starter sees an upgrade card, and the APIs return 403.
+67. **Market data stays inside the org's area,** heat and record layers included (decision 4). Only FEMA flood polygons, which carry no parcel data, are fetched by bbox.
+68. **Neighbor ring = the 40 nearest residential homes within 150 m in the org's area.** The center must be in the area too. Any lead can open a ring; won jobs are highlighted. "Mail the ring" goes through the normal send screen with parcel keys; `POST /api/parcels/:key/neighbors/mail` runs the same flow for API use (a shared `sendHomes` in `apps/web/lib/send.ts`).
+69. **The lasso picks open leads only** (not won jobs), at most 500 (the send cap). The selection reaches the send screen through sessionStorage because 500 ids don't fit in a URL.
+70. **The competitor tracker defaults to the org's trade category** ("All permits" is one tap away) and lists businesses only; permits by individual license holders are counted in one line, never named (decision 32).
+71. **MapLibre 6's worker is emitted by webpack** (`new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url)` + `setWorkerUrl`), so it is served under the base path and follows Dependabot bumps. If the basemap style can't load, the map falls back to a plain background and pins still work.
+72. **The map fits the 1st-99th percentile of the area's homes.** A few county parcel points sit miles from their ZIP and made the raw extent about 4 times too wide.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
