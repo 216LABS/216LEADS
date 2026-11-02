@@ -4,7 +4,8 @@
 // Supabase's REST API does.
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { closeAll, getDirectSql, type Sql } from "./index";
+import type { TransactionSql } from "postgres";
+import { closeAll, getDirectSql } from "./index";
 
 const sql = getDirectSql();
 const userA = randomUUID();
@@ -13,7 +14,7 @@ let orgA = "";
 let orgB = "";
 let leadB = "";
 
-type Tx = Parameters<Parameters<Sql["begin"]>[0]>[0];
+type Tx = TransactionSql<Record<string, never>>;
 
 /** Run fn as a signed-in user; the transaction is rolled back so tests leave no trace. */
 async function asUser<T>(userId: string | null, fn: (tx: Tx) => Promise<T>): Promise<T> {
@@ -37,10 +38,10 @@ beforeAll(async () => {
   const [parcel] = await sql<{ parcel_key: string }[]>`select parcel_key from parcel limit 1`;
   if (!parcel) throw new Error("no parcels: run `pnpm db:seed` first");
   await sql`insert into auth.users (id, email) values (${userA}, ${`a-${userA}@rls.test`}), (${userB}, ${`b-${userB}@rls.test`})`;
-  [orgA, orgB] = await Promise.all(
-    ["RLS Org A", "RLS Org B"].map(async (name) => (await sql<{ id: string }[]>`
-      insert into org (name, trade) values (${name}, 'roofing') returning id`)[0]!.id),
-  );
+  const newOrg = async (name: string) =>
+    (await sql<{ id: string }[]>`insert into org (name, trade) values (${name}, 'roofing') returning id`)[0]!.id;
+  orgA = await newOrg("RLS Org A");
+  orgB = await newOrg("RLS Org B");
   await sql`insert into org_member (org_id, user_id) values (${orgA}, ${userA}), (${orgB}, ${userB})`;
   for (const o of [orgA, orgB]) {
     await sql`insert into territory (org_id, kind, zip) values (${o}, 'zip', '44111')`;
@@ -69,7 +70,7 @@ describe("RLS: org isolation", () => {
     it(`user A sees only org A rows in ${table}`, async () => {
       const rows = await asUser(userA, (tx) => tx.unsafe(`select org_id::text from ${table} where org_id in ($1, $2)`, [orgA, orgB]));
       expect(rows.length).toBeGreaterThan(0);
-      expect(rows.every((r) => (r as { org_id: string }).org_id === orgA)).toBe(true);
+      expect(rows.every((r) => (r as unknown as { org_id: string }).org_id === orgA)).toBe(true);
     });
   }
 
