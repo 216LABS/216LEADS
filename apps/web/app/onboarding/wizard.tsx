@@ -1,15 +1,19 @@
 "use client";
 // Onboarding wizard (Addendum A2): plain questions instead of "pick your trade". The answers go
-// to /api/profile/build, which returns a recipe draft for the confirm screen.
+// to /api/profile/build, which returns a recipe draft for the confirm screen. Users who skip the
+// questions pick a trade tile instead (spec 9.1 step 1) and go straight to the area step.
 import clsx from "clsx";
 import { useState } from "react";
 import { withBase } from "@216leads/shared";
-import { ADJACENT_CHOICES, CATEGORY_NOUN, FOCUS, JOB_VALUES, suggestAdjacent, type WizardAnswers } from "@216leads/scoring";
+import { ADJACENT_CHOICES, CATEGORY_NOUN, closestPreset, FOCUS, JOB_VALUES, suggestAdjacent, TEMPLATES, type WizardAnswers } from "@216leads/scoring";
 import { Button, Input, Label, SegmentedControl, Textarea, Toggle } from "@/components/ui";
 import { TerritoryPicker } from "@/components/territory-picker";
 import { Confirm, type Draft } from "./confirm";
 
-const STEPS = ["Your business", "Your customers", "Where you work", "Who comes first"];
+const AI_STEPS = ["Your business", "Your customers", "Where you work", "Who comes first"];
+const PRESET_STEPS = ["Your trade", "Where you work"];
+/** Trade tiles: every preset except the catch-all for non-trades. */
+const TILES = Object.values(TEMPLATES).filter((t) => t.key !== "new_movers").sort((x, y) => x.label.localeCompare(y.label));
 
 const blank: WizardAnswers = {
   business_name: "", sells: "", job_value: "2k_10k", best_customer: "", bad_fit: "", zips: [], focus: "both",
@@ -21,24 +25,32 @@ const dollars = (v: string) => (v.trim() === "" ? null : Math.max(0, Math.round(
 
 export function Wizard() {
   const [step, setStep] = useState(0);
+  const [mode, setMode] = useState<"ai" | "preset">("ai");
+  const STEPS = mode === "ai" ? AI_STEPS : PRESET_STEPS;
+  const zipStep = mode === "ai" ? 2 : 1;
   const [a, setA] = useState<WizardAnswers>(blank);
   const [adjacentTouched, setAdjacentTouched] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
+  const trade = a.preset ?? closestPreset(`${a.sells} ${a.best_customer}`);
   const set = (patch: Partial<WizardAnswers>) => setA((x) => ({ ...x, ...patch }));
   const never = (patch: Partial<WizardAnswers["never"]>) => setA((x) => ({ ...x, never: { ...x.never, ...patch } }));
 
-  const canNext = [
-    a.business_name.trim().length >= 2 && a.sells.trim().length >= 3,
-    true,
-    a.zips.length > 0,
-    true,
-  ][step];
+  const canNext = mode === "ai"
+    ? [a.business_name.trim().length >= 2 && a.sells.trim().length >= 3, true, a.zips.length > 0, true][step]
+    : [a.business_name.trim().length >= 2 && !!a.preset, a.zips.length > 0][step];
+
+  function switchMode(m: "ai" | "preset") {
+    setMode(m);
+    setStep(0);
+    setError(null);
+    if (m === "ai") set({ preset: undefined });
+  }
 
   function next() {
     // Pre-tick the adjacent permits from the A5 table once the user reaches that question.
-    if (step === 2 && !adjacentTouched) set({ adjacent: suggestAdjacent(`${a.sells} ${a.best_customer}`) });
+    if (mode === "ai" && step === 2 && !adjacentTouched) set({ adjacent: suggestAdjacent(`${a.sells} ${a.best_customer}`) });
     setStep((s) => s + 1);
   }
 
@@ -47,7 +59,7 @@ export function Wizard() {
     setError(null);
     try {
       const res = await fetch(withBase("/api/profile/build"), {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(a),
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(a.preset ? { ...a, adjacent: [] } : a),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Could not build your list");
@@ -80,7 +92,31 @@ export function Wizard() {
       <h2 className="mb-4 text-lg font-bold">{STEPS[step]}</h2>
 
       <div className="card space-y-5 p-5">
-        {step === 0 ? (
+        {mode === "preset" && step === 0 ? (
+          <>
+            <div>
+              <Label htmlFor="business_name">Business name</Label>
+              <Input id="business_name" value={a.business_name} onChange={(e) => set({ business_name: e.target.value })} autoComplete="organization" required />
+            </div>
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold text-navy">Your trade</legend>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {TILES.map((t) => {
+                  const on = a.preset === t.key;
+                  return (
+                    <button key={t.key} type="button" aria-pressed={on} onClick={() => set({ preset: t.key, sells: t.label })}
+                      className={clsx("focus-ring min-h-[56px] rounded-[12px] border px-3 text-left text-sm font-semibold",
+                        on ? "border-navy bg-navy text-white" : "border-line bg-white text-navy hover:border-navy")}>
+                      {t.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+          </>
+        ) : null}
+
+        {mode === "ai" && step === 0 ? (
           <>
             <div>
               <Label htmlFor="business_name">Business name</Label>
@@ -100,7 +136,7 @@ export function Wizard() {
           </>
         ) : null}
 
-        {step === 1 ? (
+        {mode === "ai" && step === 1 ? (
           <>
             <div>
               <Label htmlFor="best_customer">Describe your best customer from the last year.</Label>
@@ -114,9 +150,11 @@ export function Wizard() {
           </>
         ) : null}
 
-        {step === 2 ? <TerritoryPicker zips={a.zips} onChange={(zips) => set({ zips })} /> : null}
+        {step === zipStep ? (
+          <TerritoryPicker zips={a.zips} onChange={(zips) => set({ zips })} trade={trade} tradeLabel={TEMPLATES[trade]?.label.toLowerCase()} />
+        ) : null}
 
-        {step === 3 ? (
+        {mode === "ai" && step === 3 ? (
           <>
             <div>
               <span className="mb-1.5 block text-sm font-semibold text-navy">Who do you want first?</span>
@@ -162,6 +200,15 @@ export function Wizard() {
         ) : null}
       </div>
 
+      {step === 0 ? (
+        <p className="mt-3 text-center text-sm text-slate">
+          {mode === "ai" ? (
+            <button type="button" className="focus-ring font-semibold text-navy underline" onClick={() => switchMode("preset")}>Skip the questions and pick your trade</button>
+          ) : (
+            <button type="button" className="focus-ring font-semibold text-navy underline" onClick={() => switchMode("ai")}>Answer a few questions instead</button>
+          )}
+        </p>
+      ) : null}
       {error ? <p role="alert" className="mt-3 text-sm text-lost">{error}</p> : null}
       <div className="mt-5 flex gap-3">
         {step > 0 ? <Button type="button" variant="secondary" onClick={() => setStep((s) => s - 1)}>Back</Button> : null}

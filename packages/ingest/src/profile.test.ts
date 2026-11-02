@@ -104,3 +104,19 @@ describe("profile wizard, LLM path (fake provider)", () => {
     expect(extractJson('```json\n{"a": 1}\n```')).toEqual({ a: 1 });
   });
 });
+
+describe("preset path (spec 9.1 step 1)", () => {
+  it("uses the picked trade as-is and never calls the LLM", async () => {
+    const llm = fake(["should not be called"]);
+    const a = answersSchema.parse({ business_name: "Tile Pick", sells: "Gutters", job_value: "2k_10k", zips: ["44107"], preset: "gutters" });
+    const { recipe, via } = await buildRecipe(a, llm);
+    expect(via).toBe("preset");
+    expect(llm.calls).toBe(0);
+    expect(recipe.preset_base).toBe("gutters");
+    expect(recipe.triggers).toEqual(getTemplate("gutters").triggers);
+  });
+
+  it("refuses an unknown preset", () => {
+    expect(answersSchema.safeParse({ business_name: "X Co", sells: "Stuff", job_value: "2k_10k", zips: ["44107"], preset: "nope" }).success).toBe(false);
+  });
+});

@@ -44,9 +44,46 @@ test("a new user signs up, answers the wizard, confirms the recipe and lands on 
   await expect(page.getByRole("heading", { name: "Here’s your list" })).toBeVisible({ timeout: 30_000 });
   await expect(page.getByRole("heading", { name: "5 homes from your list" })).toBeVisible();
   await page.getByRole("button", { name: "Looks good, show my leads" }).click();
+
+  // Spec 9.1 steps 4-5: brand, then plan; the trial needs no card.
+  await expect(page).toHaveURL(/\/onboarding\/brand/, { timeout: 30_000 });
+  await page.getByLabel("Phone").fill("(216) 555-0100");
+  await page.getByLabel("Default offer").fill("$100 off a new fence");
+  await expect(page.getByLabel("Postcard preview")).toContainText("$100 off a new fence");
+  await page.getByRole("button", { name: "Save and continue" }).click();
+  await expect(page).toHaveURL(/\/onboarding\/plan/);
+  await page.getByRole("link", { name: "Start my free trial" }).click();
   await expect(page).toHaveURL(/\/leads(\?|$)/, { timeout: 30_000 });
   await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
   await expect(page.locator("main li a").first()).toBeVisible();
+});
+
+test("the preset path: pick a trade, add a town, set the perfect customer, land on leads", async ({ page }) => {
+  await page.goto("signup");
+  await page.getByLabel("Work email").fill(`e2e-p-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@216leads.test`);
+  await page.getByLabel("Password").fill("e2e-password-216");
+  await page.getByRole("button", { name: "Create account" }).click();
+  await expect(page).toHaveURL(/\/onboarding/);
+
+  await page.getByRole("button", { name: "Skip the questions and pick your trade" }).click();
+  await page.getByLabel("Business name").fill("E2E Roofing");
+  await page.getByRole("button", { name: "Roofing", exact: true }).click();
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  // Town search adds the town's ZIP codes; chips show live counts.
+  await page.getByLabel("Where do you work?").fill("Lakew");
+  await page.getByRole("option").filter({ hasText: "Lakewood" }).click();
+  await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText("44107");
+  await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText("homes match", { timeout: 20_000 });
+  await page.getByRole("button", { name: "Build my list" }).click();
+
+  await expect(page.getByRole("heading", { name: "Your perfect customer" })).toBeVisible({ timeout: 30_000 });
+  await page.getByRole("radio", { name: "Pre-1950" }).click();
+  await expect(page.getByText("counting…")).toBeHidden({ timeout: 20_000 });
+  await page.getByRole("button", { name: "Looks good, show my leads" }).click();
+  await expect(page).toHaveURL(/\/onboarding\/brand/, { timeout: 30_000 });
+  await page.getByRole("button", { name: "Skip for now" }).click();
+  await page.getByRole("link", { name: "Start my free trial" }).click();
+  await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible({ timeout: 30_000 });
 });
 
 test("report a problem sends", async ({ page }) => {

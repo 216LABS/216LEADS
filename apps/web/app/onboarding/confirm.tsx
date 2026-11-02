@@ -1,14 +1,18 @@
 "use client";
 // Confirm screen (Addendum A4): plain-English summary, a live count and 5 sample homes from the
-// scoring engine, a slider per signal (user multiplier m), and "tweak it" with a diff.
+// scoring engine, a slider per signal (user multiplier m), and "tweak it" with a diff. Also the
+// spec 9.1 step 3 "perfect customer" controls, which edit the draft's filters and exclusions.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { withBase } from "@216leads/shared";
-import { signalLabel, type WizardAnswers } from "@216leads/scoring";
-import { Badge, Button, Card, Input } from "@/components/ui";
+import { customerLinesFromCsv, withBase } from "@216leads/shared";
+import {
+  applyCustomerControls, customerControls, HEAT, HOME_AGES, LOT_SIZES, PRICE_STOPS, signalLabel, type CustomerControls, type Template,
+  type WizardAnswers,
+} from "@216leads/scoring";
+import { Badge, Button, Card, Input, SegmentedControl, Toggle } from "@/components/ui";
 import { ScoreChip } from "@/components/lead-bits";
 
-type Recipe = { label: string; signals: Record<string, { weight: number }>; preset_base?: string | null } & Record<string, unknown>;
+type Recipe = Template & { preset_base?: string | null };
 
 export interface Draft {
   recipe: Recipe;
@@ -20,6 +24,8 @@ export interface Draft {
 }
 
 const STOPS = [0, 0.5, 1, 1.5, 2];
+const THIS_YEAR = new Date().getFullYear();
+const k = (n: number) => (n >= 1_000_000 ? "$1M" : `$${Math.round(n / 1000)}K`);
 const STOP_LABEL = ["Off", "Less", "Normal", "More", "Most"];
 
 async function post<T>(path: string, payload: unknown): Promise<T> {
@@ -38,23 +44,31 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
   const [proposal, setProposal] = useState<(Draft & { diff: string[]; understood: boolean }) | null>(null);
   const [busy, setBusy] = useState<"tweak" | "save" | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const counted = useRef("{}");
+  const [allSliders, setAllSliders] = useState(false);
+  const [customers, setCustomers] = useState<{ file: string; lines: string[] } | null>(null);
+  const [street, setStreet] = useState("");
+  const c = customerControls(draft.recipe, THIS_YEAR);
+  const setC = (patch: Partial<CustomerControls>) =>
+    setDraft((d) => ({ ...d, recipe: applyCustomerControls(d.recipe, { ...customerControls(d.recipe, THIS_YEAR), ...patch }, THIS_YEAR) }));
+  const keyOf = (mm: Record<string, number>, r: Recipe) => JSON.stringify([mm, r.default_filters, r.default_exclusions, r.signals]);
+  const counted = useRef(keyOf({}, initial.recipe));
 
-  // Re-count after a slider move (debounced). Compares values so a repeated effect run is a no-op.
+  // Re-count after a slider or control change (debounced 300 ms). Compares values so a repeated
+  // effect run is a no-op.
+  const countKey = keyOf(m, draft.recipe);
   useEffect(() => {
-    const key = JSON.stringify(m);
-    if (key === counted.current) return;
-    counted.current = key;
+    if (countKey === counted.current) return;
+    counted.current = countKey;
     setCounting(true);
     const t = setTimeout(() => {
       post<Omit<Draft, "recipe">>("/api/profile/preview", { recipe: draft.recipe, zips: answers.zips, multipliers: m })
         .then((p) => setDraft((d) => ({ ...d, ...p })))
         .catch((e) => setError(e.message))
         .finally(() => setCounting(false));
-    }, 350);
+    }, 300);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [m]);
+  }, [countKey]);
 
   async function tweak(e: React.FormEvent) {
     e.preventDefault();
@@ -74,8 +88,8 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
     setBusy("save");
     setError(null);
     try {
-      await post("/api/profile/activate", { recipe: draft.recipe, multipliers: m, answers, source: "wizard" });
-      router.replace("/leads");
+      await post("/api/profile/activate", { recipe: draft.recipe, multipliers: m, answers, source: "wizard", customers: customers?.lines });
+      router.replace("/onboarding/brand");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save");
@@ -84,6 +98,18 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
   }
 
   const signals = Object.entries(draft.recipe.signals).filter(([, v]) => v.weight > 0).sort((a, b) => b[1].weight - a[1].weight);
+  const last = PRICE_STOPS.length - 1;
+  const lo = c.price_min === null ? 0 : Math.max(0, PRICE_STOPS.findIndex((p) => p >= c.price_min!));
+  const hiIdx = c.price_max === null ? last : PRICE_STOPS.findIndex((p) => p >= c.price_max!);
+  const hi = hiIdx < 0 ? last : hiIdx;
+  const addStreet = () => {
+    if (street.trim()) setC({ streets: [...c.streets, street] });
+    setStreet("");
+  };
+
+  async function readCsv(file: File) {
+    setCustomers({ file: file.name, lines: customerLinesFromCsv(await file.text()) });
+  }
 
   return (
     <div className="space-y-4">
@@ -120,10 +146,91 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
         ) : <p className="text-sm text-slate">No homes match yet. Try moving a slider up, or tweak it below.</p>}
       </Card>
 
+      <Card className="space-y-5 p-5">
+        <h3 className="font-bold">Your perfect customer</h3>
+        <div>
+          <span className="mb-1.5 block text-sm font-semibold text-navy">Home age</span>
+          <SegmentedControl label="Home age" value={c.age} options={[...HOME_AGES]} onChange={(age) => setC({ age })} />
+        </div>
+        <div>
+          <div className="mb-1 flex justify-between text-sm">
+            <span className="font-semibold text-navy">Home value</span>
+            <span className="num text-slate">{lo === 0 ? "Any" : k(PRICE_STOPS[lo]!)} to {hi === last ? "$1M+" : k(PRICE_STOPS[hi]!)}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <input type="range" aria-label="Lowest home value" min={0} max={last} value={lo} className="accent-[#0F2A44]"
+              onChange={(e) => {
+                const i = Math.min(Number(e.target.value), hi - 1);
+                setC({ price_min: i <= 0 ? null : PRICE_STOPS[i]! });
+              }} />
+            <input type="range" aria-label="Highest home value" min={0} max={last} value={hi} className="accent-[#0F2A44]"
+              onChange={(e) => {
+                const i = Math.max(Number(e.target.value), lo + 1);
+                setC({ price_max: i >= last ? null : PRICE_STOPS[i]! });
+              }} />
+          </div>
+        </div>
+        <div>
+          <span className="mb-1.5 block text-sm font-semibold text-navy">Lot size</span>
+          <SegmentedControl label="Lot size" value={c.lot} options={[...LOT_SIZES]} onChange={(lot) => setC({ lot })} />
+        </div>
+        <div>
+          <span className="mb-1.5 block text-sm font-semibold text-navy">Heat</span>
+          <SegmentedControl label="Heat" value={c.heat} options={[...HEAT]} onChange={(heat) => setC({ heat })} />
+        </div>
+        <Toggle label="Owner-occupied only" checked={c.owner_occupied} onChange={(owner_occupied) => setC({ owner_occupied })} />
+        <fieldset className="space-y-3">
+          <legend className="mb-1.5 text-sm font-semibold text-navy">Leave out</legend>
+          <Toggle label="Rentals" checked={c.rentals} onChange={(rentals) => setC({ rentals })} />
+          <Toggle label="Condos" checked={c.condos} onChange={(condos) => setC({ condos })} />
+          <div>
+            <label htmlFor="street" className="mb-1 block text-sm text-slate">Streets you don&rsquo;t work on</label>
+            <div className="flex gap-2">
+              <Input id="street" value={street} placeholder="W 117th St" maxLength={80} onChange={(e) => setStreet(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addStreet();
+                  }
+                }} />
+              <Button type="button" variant="secondary" onClick={addStreet}>Add</Button>
+            </div>
+            {c.streets.length ? (
+              <ul className="mt-2 flex flex-wrap gap-2" aria-label="Streets left out">
+                {c.streets.map((st) => (
+                  <li key={st} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
+                    {st}
+                    <button type="button" aria-label={`Put back ${st}`} onClick={() => setC({ streets: c.streets.filter((x) => x !== st) })}
+                      className="focus-ring grid h-7 w-7 place-items-center rounded-full text-slate hover:bg-white">×</button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+          <div>
+            <label htmlFor="customers" className="mb-1 block text-sm text-slate">
+              Your current customers (a CSV with addresses). We hide these homes. Only street and ZIP leave your device.
+            </label>
+            <input id="customers" type="file" accept=".csv,text/csv,.txt" className="block w-full text-sm"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) void readCsv(f);
+              }} />
+            {customers ? (
+              <p className="mt-1 text-sm text-slate" role="status">
+                {customers.lines.length
+                  ? `${customers.lines.length.toLocaleString("en-US")} addresses read from ${customers.file}. They'll be hidden once you confirm.`
+                  : `No street addresses with ZIP codes found in ${customers.file}.`}
+              </p>
+            ) : null}
+          </div>
+        </fieldset>
+      </Card>
+
       <Card className="p-5">
-        <h3 className="mb-3 font-bold">How much each thing counts</h3>
+        <h3 className="mb-3 font-bold">What matters most</h3>
         <ul className="space-y-4">
-          {signals.map(([key]) => {
+          {(allSliders ? signals : signals.slice(0, 3)).map(([key]) => {
             const i = STOPS.indexOf(m[key] ?? 1);
             return (
               <li key={key}>
@@ -137,6 +244,11 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
             );
           })}
         </ul>
+        {signals.length > 3 ? (
+          <button type="button" className="focus-ring mt-3 text-sm font-semibold text-navy underline" onClick={() => setAllSliders((v) => !v)}>
+            {allSliders ? "Show fewer" : `Show all ${signals.length}`}
+          </button>
+        ) : null}
       </Card>
 
       <Card className="p-5">

@@ -49,6 +49,7 @@ beforeAll(async () => {
     await sql`insert into org_suppression (org_id, addr_norm) values (${o}, ${`1 TEST ST|${o.slice(0, 5)}`})`;
     await sql`insert into org_profile (org_id, answers) values (${o}, '{"business":"roofing"}')`;
     await sql`insert into recipe_version (org_id, recipe, source, active) values (${o}, '{"key":"roofing"}', 'preset', true)`;
+    await sql`insert into org_logo (org_id, content_type, data) values (${o}, 'image/png', ${Buffer.from([0x89, 0x50, 0x4e, 0x47])})`;
     const [l] = await sql<{ id: string }[]>`
       insert into lead (org_id, parcel_key, score, reasons) values (${o}, ${parcel.parcel_key}, 70, '[]') returning id`;
     await sql`insert into lead_note (org_id, lead_id, body) values (${o}, ${l!.id}, 'note')`;
@@ -65,7 +66,7 @@ afterAll(async () => {
   await closeAll();
 });
 
-const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "org_profile", "recipe_version", "lead", "lead_note", "lead_activity", "mail_piece"];
+const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "org_profile", "recipe_version", "org_logo", "lead", "lead_note", "lead_activity", "mail_piece"];
 
 describe("RLS: org isolation", () => {
   for (const table of TENANT_TABLES) {

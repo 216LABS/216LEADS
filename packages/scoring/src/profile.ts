@@ -40,6 +40,8 @@ export const answersSchema = z.object({
     price_max: z.number().int().min(0).max(5_000_000).nullable().default(null),
   }).default({}),
   adjacent: z.array(category).max(8).default([]),
+  /** Spec 9.1 preset path: the trade tile picked instead of answering the questions. */
+  preset: z.string().refine((k) => k in TEMPLATES, { message: "unknown preset" }).optional(),
 });
 
 export type WizardAnswers = z.infer<typeof answersSchema>;
@@ -114,7 +116,7 @@ const permitLabel = (cat: string) => `New ${CATEGORY_NOUN[cat] ?? cat.replace(/_
 
 /** The closest preset, as a recipe draft for these answers (the no-LLM path). */
 export function presetRecipe(answers: WizardAnswers): Template & { preset_base: string; rationale: string[] } {
-  const key = closestPreset(`${answers.sells} ${answers.best_customer}`);
+  const key = answers.preset ?? closestPreset(`${answers.sells} ${answers.best_customer}`);
   const t = structuredClone(TEMPLATES[key]!);
   return { ...t, preset_base: key, rationale: [] };
 }
@@ -277,4 +279,61 @@ export function answersMessage(a: WizardAnswers): string {
       .filter(Boolean).join(", ") || "(nothing)"}`,
     `Other projects that send them work (permit categories): ${a.adjacent.join(", ") || "(none)"}`,
   ].join("\n");
+}
+
+// Spec 9.1 step 3 "Your perfect customer": plain controls that read and write a recipe's
+// default filters and exclusions. Values the controls don't offer are kept as they are.
+export const HOME_AGES = [
+  { value: "any", label: "Any" }, { value: "30", label: "30+ yrs" }, { value: "50", label: "50+ yrs" }, { value: "pre1950", label: "Pre-1950" },
+] as const;
+export const LOT_SIZES = [
+  { value: "any", label: "Any" }, { value: "0.25", label: "1/4 ac+" }, { value: "0.5", label: "1/2 ac+" }, { value: "1", label: "1 ac+" },
+] as const;
+export const HEAT = [{ value: "any", label: "Any" }, { value: "gas", label: "Gas" }, { value: "no_gas", label: "No gas line" }] as const;
+/** Two-handle value slider range; the top stop means "no upper limit". */
+export const PRICE_STOPS = [50_000, 75_000, 100_000, 150_000, 200_000, 250_000, 300_000, 400_000, 500_000, 750_000, 1_000_000];
+
+export interface CustomerControls {
+  age: (typeof HOME_AGES)[number]["value"];
+  price_min: number | null;
+  price_max: number | null;
+  lot: (typeof LOT_SIZES)[number]["value"];
+  heat: (typeof HEAT)[number]["value"];
+  owner_occupied: boolean;
+  rentals: boolean;
+  condos: boolean;
+  streets: string[];
+}
+
+export function customerControls(t: Template, thisYear: number): CustomerControls {
+  const f = t.default_filters;
+  const x = t.default_exclusions;
+  const ymax = f.year_built_max ?? null;
+  const age = ymax === null ? "any" : ymax <= 1949 ? "pre1950" : ymax <= thisYear - 50 ? "50" : "30";
+  const lotMin = f.lot_acres_min ?? 0;
+  const lot = lotMin >= 1 ? "1" : lotMin >= 0.5 ? "0.5" : lotMin >= 0.25 ? "0.25" : "any";
+  return {
+    age, lot, heat: f.gas ?? "any", price_min: f.price_min ?? null, price_max: f.price_max ?? null,
+    owner_occupied: !!f.owner_occupied, rentals: !!x.rentals, condos: !!x.condos, streets: x.streets ?? [],
+  };
+}
+
+export function applyCustomerControls<T extends Template>(t: T, c: CustomerControls, thisYear: number): T {
+  const r = structuredClone(t);
+  const f = { ...r.default_filters };
+  const before = customerControls(t, thisYear);
+  // Only rewrite a filter the user changed, so a preset's own values (e.g. lot >= 0.15 ac) survive.
+  if (c.age !== before.age) f.year_built_max = c.age === "any" ? null : c.age === "pre1950" ? 1949 : thisYear - Number(c.age);
+  if (c.lot !== before.lot) f.lot_acres_min = c.lot === "any" ? null : Number(c.lot);
+  f.gas = c.heat;
+  f.price_min = c.price_min;
+  f.price_max = c.price_max;
+  f.owner_occupied = c.owner_occupied;
+  r.default_filters = f;
+  const streets = [...new Set(c.streets.map((s) => s.trim().toUpperCase()).filter(Boolean))].slice(0, 200);
+  r.default_exclusions = { ...r.default_exclusions, rentals: c.rentals, condos: c.condos, streets };
+  if ((c.price_min !== null || c.price_max !== null) && !r.signals.price_band && Object.keys(r.signals).length < 12) {
+    r.signals = { ...r.signals, price_band: { weight: 10 } };
+  }
+  return r;
 }

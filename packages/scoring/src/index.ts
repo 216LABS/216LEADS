@@ -22,4 +22,5 @@ export function hasTemplate(key: string): boolean {
 export {
   answersSchema, applyAnswers, answersMessage, closestPreset, describeRecipe, keywordTweak, presetRecipe, profilePrompt, recipeDiff,
   suggestAdjacent, ADJACENT_CHOICES, FOCUS, JOB_VALUES, type WizardAnswers,
+  applyCustomerControls, customerControls, HEAT, HOME_AGES, LOT_SIZES, PRICE_STOPS, type CustomerControls,
 } from "./profile";
