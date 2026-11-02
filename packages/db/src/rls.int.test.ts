@@ -43,6 +43,8 @@ beforeAll(async () => {
   orgA = await newOrg("RLS Org A");
   orgB = await newOrg("RLS Org B");
   await sql`insert into org_member (org_id, user_id) values (${orgA}, ${userA}), (${orgB}, ${userB})`;
+  await sql`insert into terms_acceptance (user_id, org_id, terms_version, privacy_version)
+    values (${userA}, ${orgA}, 't1', 'p1'), (${userB}, ${orgB}, 't1', 'p1')`;
   for (const o of [orgA, orgB]) {
     await sql`insert into territory (org_id, kind, zip) values (${o}, 'zip', '44111')`;
     await sql`insert into scoring_profile (org_id, template_key, template_version) values (${o}, 'roofing', 1)`;
@@ -56,6 +58,11 @@ beforeAll(async () => {
     await sql`insert into lead_activity (org_id, lead_id, kind) values (${o}, ${l!.id}, 'status_change')`;
     await sql`insert into mail_piece (org_id, lead_id, parcel_key, provider, to_address)
       values (${o}, ${l!.id}, ${parcel.parcel_key}, 'dryrun', '{"line1":"1 Test St"}')`;
+    const [ev] = await sql<{ id: number }[]>`select id from parcel_event limit 1`;
+    if (ev) {
+      await sql`insert into attribution (org_id, lead_id, parcel_event_id, outcome, touched_at, event_date, days_to_event)
+        values (${o}, ${l!.id}, ${ev.id}, 'unknown', now(), current_date, 0)`;
+    }
     if (o === orgB) leadB = l!.id;
   }
 });
@@ -66,7 +73,7 @@ afterAll(async () => {
   await closeAll();
 });
 
-const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "org_profile", "recipe_version", "org_logo", "lead", "lead_note", "lead_activity", "mail_piece"];
+const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "org_profile", "recipe_version", "org_logo", "lead", "lead_note", "lead_activity", "mail_piece", "attribution"];
 
 describe("RLS: org isolation", () => {
   for (const table of TENANT_TABLES) {
@@ -108,9 +115,31 @@ describe("RLS: org isolation", () => {
 });
 
 describe("RLS: public records are server-only", () => {
-  for (const table of ["parcel", "parcel_event", "parcel_signal", "contractor", "suppression", "job_run"]) {
+  for (const table of ["parcel", "parcel_event", "parcel_signal", "contractor", "suppression", "job_run", "exclusivity_lock", "prospect_request", "import_mapping"]) {
     it(`signed-in users cannot read ${table} directly`, async () => {
       await expect(asUser(userA, (tx) => tx.unsafe(`select 1 from ${table} limit 1`))).rejects.toThrow(/permission denied/i);
     });
   }
+});
+
+describe("RLS: parcels only inside the org's area (spec 15)", () => {
+  it("org_parcel_keys returns the member's territory parcels and nothing outside it", async () => {
+    const keys = await asUser(userA, (tx) => tx<{ k: string }[]>`select org_parcel_keys(${orgA}) as k`);
+    expect(keys.length).toBeGreaterThan(0);
+    const [counted] = await sql<{ outside: number }[]>`
+      select count(*)::int as outside from parcel where parcel_key = any(${keys.map((r) => r.k)}) and zip <> '44111'`;
+    expect(counted?.outside).toBe(0);
+    const [far] = await sql<{ parcel_key: string }[]>`select parcel_key from parcel where zip <> '44111' limit 1`;
+    if (far) expect(keys.some((r) => r.k === far.parcel_key)).toBe(false);
+  });
+
+  it("a user gets no parcels for another org's area", async () => {
+    const keys = await asUser(userA, (tx) => tx`select org_parcel_keys(${orgB}) as k`);
+    expect(keys.length).toBe(0);
+  });
+
+  it("each user sees only their own terms acceptance", async () => {
+    const rows = await asUser(userA, (tx) => tx<{ user_id: string }[]>`select user_id from terms_acceptance where user_id in (${userA}, ${userB})`);
+    expect(rows.map((r) => r.user_id)).toEqual([userA]);
+  });
 });

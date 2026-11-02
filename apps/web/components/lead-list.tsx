@@ -130,7 +130,7 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
               <span className="text-sm font-semibold">{selected.size} selected</span>
               <Button variant="secondary" onClick={() => void change([...selected], "contacted")}>Mark contacted</Button>
               <Button variant="secondary" onClick={() => void change([...selected], "skipped")}>Skip</Button>
-              <Link className="focus-ring tap inline-flex items-center rounded-[10px] bg-signal px-4 text-sm font-semibold text-white"
+              <Link className="focus-ring tap inline-flex items-center rounded-[10px] bg-signal-600 px-4 text-sm font-semibold text-white"
                 href={`/mail/send?leads=${[...selected].join(",")}`}>Mail selected</Link>
               <a className="focus-ring tap inline-flex items-center rounded-[10px] border border-line bg-white px-4 text-sm font-semibold text-navy hover:border-navy"
                 href={exportHref([...selected])}>Export selected</a>

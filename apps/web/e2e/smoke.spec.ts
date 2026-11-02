@@ -150,6 +150,17 @@ test("CRM: filter, open a lead, add a note, mark it won, export CSV", async ({ p
   expect(csv.split("\n")[0]).toBe("address,city,zip,score,trigger,reasons,status");
   expect(csv).toContain("Not a consumer report");
   expect(csv).toMatch(/,won\r?\n/);
+
+  // Spec 15: onboarding -> lead list -> mark won -> ROI shows it.
+  await page.goto("roi");
+  await expect(page.getByRole("heading", { name: "ROI" })).toBeVisible();
+  const won = page.locator(".card", { has: page.getByText("Jobs won", { exact: true }) });
+  await expect(won.locator(".num")).not.toHaveText("0");
+  const revenue = page.locator(".card", { has: page.getByText("Revenue won", { exact: true }) });
+  await expect(revenue.locator(".num")).toHaveText(/^\$[1-9][\d,]*$/);
+  const pdf = await page.request.get("api/roi/pdf");
+  expect(pdf.status()).toBe(200);
+  expect(pdf.headers()["content-type"]).toContain("application/pdf");
 });
 
 test("billing page shows the plans and the trial, with billing off when Stripe isn't configured", async ({ page }) => {

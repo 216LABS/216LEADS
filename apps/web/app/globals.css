@@ -6,7 +6,9 @@
   --color-navy-700: #173a5c;
   --color-navy-50: #e8eef4;
   --color-signal: #f26b1d;
-  --color-signal-600: #d95a10;
+  /* Text and white-on-orange use the darker orange: 5.2:1 on white (WCAG AA). #F26B1D stays for the logo and decoration. */
+  --color-signal-600: #c2410c;
+  --color-signal-700: #9a3412;
   --color-signal-50: #fdeee4;
   --color-paper: #f7f5f0;
   --color-slate: #4a5563;

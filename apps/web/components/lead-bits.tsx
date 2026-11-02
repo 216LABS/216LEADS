@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { agoPhrase } from "@216leads/shared";
 
 export function ScoreChip({ score, size = "md" }: { score: number; size?: "md" | "lg" }) {
-  const tone = score >= 80 ? "bg-signal text-white" : score >= 65 ? "bg-navy text-white" : "bg-navy-50 text-navy";
+  const tone = score >= 80 ? "bg-signal-600 text-white" : score >= 65 ? "bg-navy text-white" : "bg-navy-50 text-navy";
   return (
     <span
       aria-label={`Score ${score} out of 100`}

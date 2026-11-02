@@ -17,7 +17,7 @@ export function AccountBanner({ org }: { org: OrgRow }) {
     return (
       <div className="bg-navy px-4 py-2 text-center text-sm text-white">
         {days > 0 ? `${days} day${days === 1 ? "" : "s"} left in your free trial.` : "Your free trial has ended."}{" "}
-        <Link href="/settings/billing" className="font-semibold text-signal underline underline-offset-2">Pick a plan</Link>
+        <Link href="/settings/billing" className="font-semibold text-signal-600 underline underline-offset-2">Pick a plan</Link>
       </div>
     );
   }

@@ -182,9 +182,34 @@ Result:
 - **Tests:** `prove.int.test.ts` (attribution won/lost, ROI + PDF, learned weights + reset, fix list), `imports.int.test.ts` (real permits as a records-request CSV and PDF; owner column never stored), `learned.test.ts`, Summit parser; smoke covers the terms checkbox and the Help page.
 
 ### M12: Hardening and acceptance
-- [ ] RLS SQL tests, webhook signature tests, mail pre-send check tests
-- [ ] Playwright: onboarding, lead list, mark won, ROI shows it
-- [ ] API rate limits; base-path deploy under 216labs.dev/leads; README one-command run; final acceptance pass
+- [x] RLS SQL tests, webhook signature tests, mail pre-send check tests
+- [x] Playwright: onboarding, lead list, mark won, ROI shows it
+- [x] API rate limits; base-path deploy under 216labs.dev/leads; README one-command run; final acceptance pass
+
+Result:
+- **Tests:** RLS adds parcels-only-inside-the-area (`org_parcel_keys`), attribution and terms-acceptance isolation, and the new server-only tables; `apps/web/lib/webhooks.test.ts` signs real Stripe test headers (missing, wrong secret, stale, tampered body, valid); `ratelimit.test.ts`; the smoke's CRM test now ends on the ROI tab (jobs won, revenue, PDF). Pre-send checks were already in `mail.int.test.ts`.
+- **Rate limits:** every signed-in API route was already 60/min per user; admin routes now are too, and the public logo (300/min/IP) and unsubscribe (30/h/IP) routes got limits. Signed webhooks, the cron secret and health stay unthrottled.
+- **Deploy:** `docs/DEPLOY.md` (rewrite from 216labs.dev, env, webhooks, schedules) and `scripts/dev/check-deploy.mjs`, passing against a local `/leads` production build. The favicon now carries the base path (it 404'd under `/leads`).
+- **Performance:** the browser Sentry SDK loads lazily and only with a DSN; Leads went from 83 to 96 on Lighthouse mobile performance (best practices 100). Text on orange uses a darker orange for WCAG AA contrast.
+- **README:** one-command local run, full data loads, features, tests, deploy pointer.
+
+Final acceptance (spec 15), checked 2026-11-02:
+
+| Item | Status |
+|---|---|
+| Full ingest; second run changes 0 rows | Pass (M2, `pipeline.int.test.ts`) |
+| 99% of Cleveland permits match | Pass, 99.21% |
+| No owner names stored | Pass, privacy audit 0 hits (641 names, 1,151 raw files) on the full load |
+| Onboarding under 3 minutes on a phone, live counts | Pass in the phone smoke (wizard and preset paths) |
+| Lead detail 3+ reasons with evidence links | Pass, 98.4% of Demo Roofing's 14,617 leads have 3+, 100% have links |
+| Digest in Gmail/Apple Mail; Stripe checkout/portal test mode | Rendered and tested locally; real inbox and Stripe test-mode checks need Sam's Resend/Stripe accounts |
+| Lighthouse mobile 85+ on Leads | Pass, 96 |
+| Lob test postcard, proof, webhook, 15-minute cancel | Pass with the dry-run provider and signed webhook tests; a live Lob test-key run needs Sam's key |
+| Auto-mail caps, 30-day rule, suppression | Pass (`mail.int.test.ts`) |
+| Neighbor ring and competitor counts | Pass (`market.int.test.ts`) |
+| Lake, Stark, Medina jobs; exclusivity 409 + 72-hour delay | Pass (M10) |
+| Attribution won_self / lost_competitor | Pass (`prove.int.test.ts`) |
+| ROI PDF; importer CSV + PDF; opt-out everywhere | Pass (`prove.int.test.ts`, `imports.int.test.ts`, `mail.int.test.ts`) |
 
 ## Decisions
 
@@ -268,6 +293,9 @@ Result:
 87. **Records importer reads only mapped columns.** Headers naming an owner, applicant, taxpayer, occupant, buyer or seller can't be mapped and are masked in the preview. Rows without a date are skipped and counted; the record id is the permit-number column, else a hash of date/address/type/description, so re-importing a file changes nothing. Rows without a ZIP take the ZIP of the one home at that address in the town. PDF needs Python with pdfplumber, which a serverless host lacks: there the importer says to convert to CSV (or run it locally).
 88. **Summit stubs come from the permit page only** (address with ZIP, parcel number); the owner and applicant blocks are never cut out of the page. The walk restarts at 00001 each new year and stops after 50 misses, so a source that stopped publishing (GovWell move) just ends the run.
 89. **Legal and help text is Markdown in `.mdx` files**, rendered by our own small renderer (headings, paragraphs, lists, bold, links), not MDX/JSX, so editing text can't run code. Acceptance is recorded when the org is created (signup requires the checkbox); members and existing users get the one-time banner. The hero counter is single-family sales in the last 30 days (spec says "this month", which reads 0 on the 1st).
+90. **Rate limits stay in-process** (decision 15) and cover every route a person calls; machine callers authenticate instead (Stripe/Lob signatures, `CRON_SECRET`).
+91. **Browser Sentry is lazy.** With no DSN the SDK isn't loaded at all; with one, it loads on idle after the page is interactive. Errors in the first second of a page load can be missed; the server SDK still reports server errors.
+92. **Accessible orange.** `signal-600` is #C2410C (5.2:1 on white) for text, primary buttons and 80+ score chips; the brand #F26B1D stays on the logo, progress bars and decoration.
 82. **Medina sub-permits.** Electrical and HVAC permits reuse the building permit's number and leave the PPN blank. They're stored as `<permit>:<section>`, take the PPN of the same permit or address in the list, and otherwise join the stub already at that address in that town, or get an address-keyed stub (`medina:A<hash>`). The electrical contractor is kept (in the description or as the contractor) only when it's a business name; a person's name is never stored, including in the raw page store.
 79. **Stark stubs only for numbered land-and-building sales.** The sales layer has no land-use code; vacant land (`1+LAND`) and unaddressed lots aren't homes and would otherwise score as limited-data homes. Events are keyed `PARID:CONVEYANCE_NUMBER` (one conveyance covers several parcels). Arms-length = `ARMS_LENGTH = 'Yes'` and $10,000+ (decision 20).
 80. **One source failing doesn't stop the daily run.** `pipeline daily` runs every job, then fails at the end naming the ones that broke, so a Medina or Census outage still lets matching and scoring run.

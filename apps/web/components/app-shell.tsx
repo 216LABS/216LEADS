@@ -99,7 +99,7 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
           <Link
             key={t.href}
             href={t.href}
-            className={clsx("focus-ring flex min-h-[56px] flex-col items-center justify-center gap-0.5 text-[11px] font-semibold", active(t.href) ? "text-signal" : "text-slate")}
+            className={clsx("focus-ring flex min-h-[56px] flex-col items-center justify-center gap-0.5 text-[11px] font-semibold", active(t.href) ? "text-signal-600" : "text-slate")}
           >
             <t.icon className="h-5 w-5" aria-hidden />
             {t.label}
