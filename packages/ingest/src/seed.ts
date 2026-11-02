@@ -219,6 +219,11 @@ async function ensureOrg(
     // Re-seeding keeps demo and QA orgs usable: a fresh 14-day trial unless they subscribed.
     await sql`update org set trial_ends_at = now() + interval '14 days', billing_state = 'trialing' where id = ${orgId} and plan = 'trial'`;
   }
+  // Test postcards: 25 trial credits and a return address (216LABS' own) so the mail flow runs in dry-run.
+  await sql`
+    update org set postcard_credits = greatest(postcard_credits, 25),
+      return_address = coalesce(return_address, ${sql.json({ name: o.name, line1: "1474 Rosewood Ave", line2: "", city: "Lakewood", state: "OH", zip: "44107" })})
+    where id = ${orgId}`;
   await ensurePresetVersion(sql, orgId, o.trade);
   if (o.userId) {
     await sql`insert into org_member (org_id, user_id, role) values (${orgId}, ${o.userId}, 'owner') on conflict do nothing`;

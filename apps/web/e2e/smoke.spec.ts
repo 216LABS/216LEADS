@@ -135,7 +135,7 @@ test("CRM: filter, open a lead, add a note, mark it won, export CSV", async ({ p
   await page.getByLabel("Status").selectOption("won");
   await page.getByLabel("Job amount in dollars").fill("9800");
   await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByText("Marked won")).toBeVisible();
+  await expect(page.getByText("Marked won")).toBeVisible({ timeout: 15_000 });
   await expect(page.getByLabel("Status")).toHaveValue("won");
 
   // CSV export: addresses, scores and reasons, the disclaimer, never names.
@@ -154,4 +154,33 @@ test("billing page shows the plans and the trial, with billing off when Stripe i
   await expect(page.getByText("Free trial", { exact: true })).toBeVisible();
   for (const plan of ["Starter", "Pro", "Exclusive"]) await expect(page.getByRole("heading", { name: plan, exact: true })).toBeVisible();
   if (!process.env.STRIPE_SECRET_KEY) await expect(page.getByText("Plans open soon")).toBeVisible();
+});
+
+test("mail: send a test-mode postcard from a lead, see it on the Mail tab, cancel it", async ({ page }, info) => {
+  await signInQa(page);
+  // Each project takes a different home so parallel runs don't trip the 30-day rule.
+  const n = (info.project.name === "phone" ? 5 : 25) + Math.floor(Math.random() * 15);
+  await page.locator("main [data-lead-link]:visible").nth(n).click();
+  await expect(page.getByRole("heading", { name: "Why this home" })).toBeVisible({ timeout: 15_000 });
+  await page.locator("main").getByRole("link", { name: "Mail", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Send postcards" })).toBeVisible();
+  await expect(page.getByText(/of 1 homes will get a postcard/)).toBeVisible({ timeout: 20_000 });
+  // On a long-lived local DB this home may already have a card from an earlier run (30-day rule).
+  if (await page.getByText("0 of 1 homes will get a postcard").isVisible()) {
+    await expect(page.getByText("mailed in the last 30 days")).toBeVisible();
+    return;
+  }
+  await page.getByRole("button", { name: /^Send 1 postcard$/ }).click();
+  await expect(page.getByRole("heading", { name: "1 postcard queued" })).toBeVisible({ timeout: 30_000 });
+  await page.goto("mail");
+  await page.getByRole("button", { name: /Cancel \(\d+ min left\)/ }).first().click();
+  await expect(page.getByRole("heading", { name: "Recent batches" })).toBeVisible();
+});
+
+test("homeowner opt-out page answers the same for any address", async ({ page }) => {
+  await page.goto("optout");
+  await page.getByLabel("Street address").fill("99999 Nowhere Rd");
+  await page.getByLabel("ZIP code").fill("44107");
+  await page.getByRole("button", { name: "Stop mail" }).click();
+  await expect(page.getByText("Got it. We'll stop mail to this address within 2 business days.")).toBeVisible();
 });

@@ -10,6 +10,8 @@ import { runRecategorize } from "./recategorize";
 import { runPrivacyAudit } from "./privacy";
 import { runIngestWatchdog } from "./watchdog";
 import { runDigest, runLifecycle } from "./digest";
+import { runAutomail } from "./mail/events";
+import { mailFromEnv } from "./mail/provider";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -33,6 +35,7 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   score: { fn: (sql, o) => runScoreAll(sql, o.org), describe: "Score all orgs (or --org <id>)" },
   digest: { fn: (sql, o) => runDigest(sql, { org: o.org, force: o.full }), describe: "Weekly digest for orgs whose day is today, 06:00 ET+ (--full sends now)" },
   lifecycle: { fn: (sql) => runLifecycle(sql), describe: "Lifecycle email: trial ending (day 11)" },
+  automail: { fn: (sql) => runAutomail(sql, mailFromEnv()), describe: "Auto-mail rules, follow-ups, metered postcard reporting" },
 };
 
 for (const l of CLE_LAYERS) {
@@ -40,7 +43,7 @@ for (const l of CLE_LAYERS) {
 }
 
 /** Spec 5.13 daily order (ET). */
-export const DAILY = ["cuy_parcels", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup", "match", "signals", "score"];
+export const DAILY = ["cuy_parcels", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup", "match", "signals", "score", "automail"];
 
 /** First full load for Cuyahoga + Cleveland. */
 export const CLEVELAND_FULL = [

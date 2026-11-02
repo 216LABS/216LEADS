@@ -131,10 +131,16 @@ Result:
 - **Tests:** an integration test walks a full lifecycle through synthetic webhook events.
 
 ### M8: Print and mail
-- [ ] `MailProvider` interface; Lob (test keys only, live sends refused); PostGrid behind the same interface
-- [ ] 3 system postcard templates per trade, builder with live preview and proof PDF
-- [ ] Send flow with pre-send checks (10.3), cost preview, 15-minute cancel
-- [ ] Auto-mail rules with caps; webhooks; returned mail goes to suppression; credits then metered billing
+- [x] `MailProvider` interface; Lob (test keys only, live sends refused); PostGrid behind the same interface
+- [x] 3 system postcard templates per trade, builder with live preview and proof PDF
+- [x] Send flow with pre-send checks (10.3), cost preview, 15-minute cancel
+- [x] Auto-mail rules with caps; webhooks; returned mail goes to suppression; credits then metered billing
+
+Result:
+- **Mail tab:** recent batches with Cancel (15 min), a builder (3 designs per trade, live front/back, proof PDF via Lob test mode, save as own template), and the auto-mail card (min score, weekly count, monthly $ cap, day-21 follow-up).
+- **Mail buttons:** on lead cards, lead detail and the desktop bulk bar; they lead to the send screen (homes sending, removals per 10.3 check, credits + $0.99 metered, delivery window).
+- **Opt-out (issue #2):** homeowner opt-out at `/optout`. It suppresses the address for every org at once, cancels queued pieces and hides the home from lists; Turnstile when configured; 10/IP/hour. `/admin/suppression` shows the count and the last 50.
+- **After sending:** Lob webhooks (returned mail goes to suppression); metered pieces reported to the Stripe meter after their cancel window; the daily `automail` job.
 
 ### M9: Map and market tools
 - [ ] MapLibre map with lead pins and layers, lasso to mail
@@ -212,6 +218,11 @@ Result:
 57. **Checkout during the trial keeps the trial.** Checkout sets `trial_end` to the org's `trial_ends_at` when it's 49+ hours away (Stripe's minimum), so subscribing on day 2 doesn't cut the free days short. The 25 trial postcards are granted at `checkout.session.completed` and kept when the first month's credits arrive.
 58. **Credits reset monthly, annual plans included.** The lifecycle job grants plan credits to active paid orgs once every 30 days (`usage_ledger` `credit_grant`); credits don't roll over. Exclusive-plan zip locks are M10.
 59. **The founding coupon is Pro monthly only.** Issue #5 leaves annual open; the PR asks Sam.
+60. **Pieces go to the provider at send time with `send_date` = now + 15 min.** No separate dispatcher: undo cancels at the provider (Lob DELETE) and refunds the credit. A batch is capped at 500 homes per request.
+61. **Postcards are rendered in our code** (front/back HTML per home: headline personalized with street and year built, QR to the org's site with UTM tags) and sent as finished HTML, not provider merge templates. System templates are rows with `org_id` null and a design key; an org's saved templates keep their own fields. The logo reaches the printer through a signed public URL.
+62. **PostGrid is wired but not exercised** against its API in this build; its webhooks aren't accepted yet. Lob is the provider when `LOB_API_KEY` is set (`MAIL_PROVIDER=postgrid` switches); with neither, the dry-run provider records pieces and sends nothing.
+63. **Metered postcards need a card on file.** On the trial (no card) only credits can be spent; homes beyond them show as "no credits left and no card on file". The auto-mail monthly cap counts metered price only.
+64. **Auto-mail follow-ups skip the 30-day rule on purpose** (they're the same campaign). Auto-mail never mails a lead before it is visible (exclusivity delay) or for a locked/canceled account.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
@@ -238,7 +249,7 @@ Checked 2026-11-01 from this machine. All reachable without login.
 ## Stubs and gaps
 
 - **Cloud accounts (D1):** Vercel project, Supabase `216leads-prod` / `216leads-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
-- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
+- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8, done), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
 
 - **Tree category has no real Cleveland examples** (tree work does not need a building permit there); it is low-confidence per Addendum A5.
 - **Records without a parcel number or matching address** (about 0.8% of Cleveland permits, mostly commercial or multi-parcel projects) stay in `unmatched_record` and show at `/admin/unmatched`.
