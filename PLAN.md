@@ -47,9 +47,10 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: Sentry stays off until `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` are set (account later). `ingest_run` is a view over `job_run`. The watchdog runs from `.github/workflows/watchdog.yml` via `/api/cron/ingest_watchdog` once `PRODUCTION_APP_URL` and `CRON_SECRET` secrets exist; without Resend it writes alerts to `.data/outbox`.
 
 ### D4: Database safety (DevOps addendum)
-- [ ] Workflow on merge to `main`: apply migrations to staging, then production after staging succeeds
-- [ ] Weekly encrypted `pg_dump` as a workflow artifact (off-site copy)
-- [ ] `docs/ROLLBACK.md` (Vercel instant rollback, backup restore, two-step destructive migrations)
+- [x] Workflow on merge to `main`: apply migrations to staging, then production after staging succeeds
+- [x] Weekly encrypted `pg_dump` as a workflow artifact (off-site copy)
+- [x] `docs/ROLLBACK.md` (Vercel instant rollback, backup restore, two-step destructive migrations)
+- Notes: the migrate and backup workflows skip with a notice until `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL` and `BACKUP_ENCRYPTION_KEY` exist. Migrations stay on our runner (`packages/db/migrations`, tracked in `_migrations`) rather than the Supabase CLI's folder (decision 3). CI also fails PRs that edit a merged migration and warns on `drop column/table`.
 
 ### D8: Repo setup for the backlog loop (DevOps addendum)
 - [ ] Issue templates (bug, feature), labels (`ready`, `in-progress`, `needs-qa`, `blocked`, `bug`, `feature`, `p0`-`p3`, `risky`)

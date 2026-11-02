@@ -1,0 +1,54 @@
+name: Migrate databases
+
+# On merge to main: apply new migrations to staging first, then production only after staging
+# succeeds (DevOps addendum D4). Schema changes only ever happen through these files.
+on:
+  push:
+    branches: [main]
+    paths: ["packages/db/migrations/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: migrate
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Apply migrations to staging
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.STAGING_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL_DIRECT" ]; then echo "::notice::STAGING_DATABASE_URL not set yet; skipping."; exit 0; fi
+          pnpm db:migrate
+
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Apply migrations to production
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.PRODUCTION_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL_DIRECT" ]; then echo "::notice::PRODUCTION_DATABASE_URL not set yet; skipping."; exit 0; fi
+          pnpm db:migrate
