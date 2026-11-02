@@ -2,7 +2,7 @@
 import type { Sql } from "@216leads/db";
 
 /** Daily sources whose silence means the data stopped updating. */
-export const DAILY_SOURCES = ["cuy_parcels", "cle_permits", "cle_violations"];
+export const DAILY_SOURCES = ["cuy_parcels", "cle_permits", "cle_violations", "lake_parcels", "stark_sales"];
 export const STALE_AFTER_HOURS = 36;
 
 export interface IngestHealth {

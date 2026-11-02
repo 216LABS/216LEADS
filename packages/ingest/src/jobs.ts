@@ -6,6 +6,9 @@ import { runSignals } from "./signals";
 import { runScoreAll } from "./score";
 import { runMatchRetry } from "./retry";
 import { runFemaFlood } from "./sources/fema";
+import { runLakeParcels, runLakePermits } from "./sources/lake";
+import { runMedinaPermits } from "./sources/medina";
+import { runStarkSales } from "./sources/stark";
 import { runRecategorize } from "./recategorize";
 import { runPrivacyAudit } from "./privacy";
 import { runIngestWatchdog } from "./watchdog";
@@ -24,7 +27,11 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   cuy_parcels: { fn: (sql, o) => runCuyParcels(sql, o), describe: "Cuyahoga parcels + sale events (delta; --full for all)" },
   cuy_parcel_geom: { fn: (sql, o) => runCuyParcelGeom(sql, o), describe: "Cuyahoga parcel centroids" },
   cuy_canopy: { fn: (sql, o) => runCuyCanopy(sql, o), describe: "CCPC tree canopy + land cover per parcel" },
-  fema_flood: { fn: (sql) => runFemaFlood(sql, ["cuyahoga"]), describe: "FEMA flood hazard zones -> parcel.flood_zone" },
+  lake_parcels: { fn: (sql, o) => runLakeParcels(sql, o), describe: "Lake parcels + sale events (recent sales daily, full weekly)" },
+  lake_permits_xlsx: { fn: (sql, o) => runLakePermits(sql, o), describe: "Lake County monthly permit reports (new files only; --full re-reads all)" },
+  medina_permits: { fn: (sql, o) => runMedinaPermits(sql, o), describe: "Medina County residential permit list + stub parcels" },
+  stark_sales: { fn: (sql, o) => runStarkSales(sql, o), describe: "Stark County sales + stub parcels (delta; --full for all)" },
+  fema_flood: { fn: (sql) => runFemaFlood(sql, ["cuyahoga", "lake", "medina", "stark"]), describe: "FEMA flood hazard zones -> parcel.flood_zone" },
   cle_survey: { fn: (sql) => runCleSurvey(sql), describe: "Cleveland 2022 property survey (one-time)" },
   cle_contractors: { fn: (sql) => runCleContractors(sql), describe: "Cleveland contractor registry" },
   match: { fn: (sql) => runMatchRetry(sql), describe: "Retry unmatched records (14 days)" },
@@ -43,7 +50,11 @@ for (const l of CLE_LAYERS) {
 }
 
 /** Spec 5.13 daily order (ET). */
-export const DAILY = ["cuy_parcels", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup", "match", "signals", "score", "automail"];
+export const DAILY = ["cuy_parcels", "lake_parcels", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup", "stark_sales",
+  "lake_permits_xlsx", "medina_permits", "match", "signals", "score", "automail"];
+
+/** First full load for Lake, Stark and Medina (after CLEVELAND_FULL). */
+export const COUNTIES_FULL = ["lake_parcels", "lake_permits_xlsx", "stark_sales", "medina_permits", "fema_flood", "match", "signals", "score"];
 
 /** First full load for Cuyahoga + Cleveland. */
 export const CLEVELAND_FULL = [

@@ -5,6 +5,7 @@ import type { Sql } from "@216leads/db";
 import { optionalEnv } from "@216leads/db";
 import { appUrl, PaymentFailed, sendEmail } from "@216leads/email";
 import { deriveBillingState, PLANS, TRIAL, type BillingState } from "@216leads/shared";
+import { releaseExclusiveLocks } from "./settings";
 
 /** The subset of a Stripe event we read. */
 export interface StripeEventLike {
@@ -156,6 +157,8 @@ export async function applyStripeEvent(sql: Sql, ev: StripeEventLike): Promise<s
           cancel_reason = coalesce(${cancel?.feedback ?? cancel?.reason ?? null}, cancel_reason),
           payment_failed_at = case when ${status} in ('active', 'trialing') then null else payment_failed_at end
         where id = ${orgId}`;
+      // Exclusive ZIPs are an Exclusive-plan feature: leaving the plan frees them for others.
+      if (plan && plan !== "exclusive") await releaseExclusiveLocks(sql, orgId);
       await refreshBillingStates(sql, orgId);
       await grantMonthlyCredits(sql, orgId);
       return `subscription:${status}`;

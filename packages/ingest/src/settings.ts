@@ -3,21 +3,64 @@ import type { Sql } from "@216leads/db";
 
 export const MAX_ZIPS = 25;
 
-/** Replace the org's ZIP territories (other territory kinds are kept). Returns the saved ZIPs. */
-export async function setZipTerritories(sql: Sql, orgId: string, zips: string[]): Promise<string[]> {
+/** Another org already holds the exclusive lock for this trade in these ZIPs (spec 13: 409 "Taken"). */
+export class TakenError extends Error {
+  constructor(public zips: string[], trade: string) {
+    super(`Taken: ${zips.join(", ")} already ${zips.length === 1 ? "has" : "have"} an exclusive ${trade} business.`);
+  }
+}
+
+export interface ExclusiveOpts {
+  trade: string;
+  /** ZIPs to hold exclusively; only those also in the saved area count, at most `max`. */
+  zips: string[];
+  max: number;
+}
+
+/**
+ * Replace the org's ZIP territories (other territory kinds are kept). Returns the saved ZIPs.
+ * With `exclusive` (Exclusive plan) the org's locks are set to exactly those ZIPs in the same
+ * transaction; without it every lock the org holds is released. A ZIP locked by another org for
+ * the same trade throws TakenError and nothing is saved.
+ */
+export async function setZipTerritories(sql: Sql, orgId: string, zips: string[], exclusive?: ExclusiveOpts): Promise<string[]> {
   const want = [...new Set(zips.filter((z) => /^\d{5}$/.test(z)))].slice(0, MAX_ZIPS);
+  const lock = exclusive ? [...new Set(exclusive.zips)].filter((z) => want.includes(z)).slice(0, exclusive.max) : [];
   await sql.begin(async (tx) => {
     await tx`delete from territory where org_id = ${orgId} and kind = 'zip' and not (zip = any(${want}))`;
     await tx`
       insert into territory (org_id, kind, zip)
       select ${orgId}, 'zip', z from unnest(${want}::text[]) z
       where not exists (select 1 from territory t where t.org_id = ${orgId} and t.kind = 'zip' and t.zip = z)`;
+    await tx`delete from exclusivity_lock where org_id = ${orgId} and not (trade = ${exclusive?.trade ?? ""} and zip = any(${lock}))`;
+    if (lock.length) {
+      await tx`insert into exclusivity_lock (trade, zip, org_id) select ${exclusive!.trade}, z, ${orgId} from unnest(${lock}::text[]) z
+        on conflict (trade, zip) do nothing`;
+      const others = await tx<{ zip: string }[]>`
+        select zip from exclusivity_lock where trade = ${exclusive!.trade} and zip = any(${lock}) and org_id <> ${orgId} order by zip`;
+      if (others.length) throw new TakenError(others.map((r) => r.zip), exclusive!.trade);
+    }
+    await tx`update territory set is_exclusive = (kind = 'zip' and zip = any(${lock})) where org_id = ${orgId}
+      and is_exclusive is distinct from (kind = 'zip' and zip = any(${lock}))`;
   });
   return want;
 }
 
+/** Drop every exclusive lock the org holds (plan changed away from Exclusive, or canceled). */
+export async function releaseExclusiveLocks(sql: Sql, orgId: string): Promise<number> {
+  const res = await sql`delete from exclusivity_lock where org_id = ${orgId}`;
+  await sql`update territory set is_exclusive = false where org_id = ${orgId} and is_exclusive`;
+  return res.count;
+}
+
 export async function orgZips(sql: Sql, orgId: string): Promise<string[]> {
   const rows = await sql<{ zip: string }[]>`select zip from territory where org_id = ${orgId} and kind = 'zip' order by zip`;
+  return rows.map((r) => r.zip);
+}
+
+/** ZIPs the org holds exclusively. */
+export async function orgExclusiveZips(sql: Sql, orgId: string): Promise<string[]> {
+  const rows = await sql<{ zip: string }[]>`select zip from exclusivity_lock where org_id = ${orgId} order by zip`;
   return rows.map((r) => r.zip);
 }
 
