@@ -17,7 +17,7 @@ pnpm local
 
 - Sign up with any email and password (email confirmation is off locally), pick a trade, and you land on scored leads.
 - Or sign in to the seeded demo: `demo@216leads.test` / `demo-roofing-216` (Demo Roofing, ZIPs 44107 and 44111). This login exists only in your local database.
-- Magic-link and other auth emails go to the local mail catcher at http://127.0.0.1:54324; customer emails are written to `.data/outbox`.
+- Magic-link and other auth emails go to the local mail catcher at http://127.0.0.1:54324; customer emails land in the `email_outbox` table (see `/admin/outbox`).
 - No paid keys are needed: without Stripe the app stays on the trial, without Lob postcards go to a dry-run provider, without an LLM key the wizard uses the closest trade preset.
 
 ### Load the full real data

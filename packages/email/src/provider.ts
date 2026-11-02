@@ -1,8 +1,9 @@
 // Customer email provider (spec 12, decision 10). Resend in production; everywhere else, or with
-// no key, the rendered message is written to .data/outbox so nothing reaches a real inbox (D1).
+// no key, the rendered message goes to the `email_outbox` table (issue #40; /admin/outbox shows it)
+// so nothing reaches a real inbox (D1). `EMAIL_OUTBOX=file` writes .data/outbox files instead (local only).
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { optionalEnv, repoRoot } from "@216leads/db";
+import { getDirectSql, optionalEnv, repoRoot, type Sql } from "@216leads/db";
 import { appEnv, liveSendsAllowed } from "@216leads/shared";
 
 export interface EmailMessage {
@@ -57,8 +58,23 @@ export function outbox(dir = join(repoRoot(), ".data", "outbox")): EmailProvider
   };
 }
 
-/** Resend only in production with a key; the outbox otherwise. */
+/** The database sink: works on read-only serverless filesystems (staging previews). */
+export function dbOutbox(sql: () => Sql = getDirectSql): EmailProvider {
+  return {
+    name: "email_outbox",
+    async send(msg) {
+      const [row] = await sql()<{ id: string }[]>`
+        insert into email_outbox (to_emails, reply_to, subject, html, text, headers, tag)
+        values (${msg.to}, ${msg.replyTo ?? null}, ${msg.subject}, ${msg.html}, ${msg.text}, ${sql().json((msg.headers ?? {}) as never)}, ${msg.tag})
+        returning id::text`;
+      return { via: "outbox", ref: `email_outbox:${row!.id}` };
+    },
+  };
+}
+
+/** Resend only in production with a key; otherwise the database outbox (or files with EMAIL_OUTBOX=file). */
 export function emailFromEnv(): EmailProvider {
   const key = optionalEnv("RESEND_API_KEY");
-  return key && liveSendsAllowed(appEnv()) ? resend(key) : outbox();
+  if (key && liveSendsAllowed(appEnv())) return resend(key);
+  return optionalEnv("EMAIL_OUTBOX") === "file" ? outbox() : dbOutbox();
 }
