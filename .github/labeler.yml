@@ -1,0 +1,26 @@
+# PRs touching these get the `risky` label and need a written test plan (DevOps addendum D5).
+risky:
+  - changed-files:
+      - any-glob-to-any-file:
+          # auth
+          - apps/web/middleware.ts
+          - apps/web/app/auth/**
+          - apps/web/app/login/**
+          - apps/web/app/signup/**
+          - apps/web/lib/session.ts
+          - apps/web/lib/supabase*.ts
+          - apps/web/components/auth-form.tsx
+          # Stripe
+          - "**/*stripe*"
+          - "**/*billing*/**"
+          - apps/web/app/api/webhooks/**
+          # Lob / mail sends
+          - "**/*lob*"
+          - "**/*postgrid*"
+          - "**/mail/**"
+          - packages/shared/src/app-env.ts
+          # RLS policies and data deletion (all schema changes)
+          - packages/db/migrations/**
+          - packages/ingest/src/privacy.ts
+          - "**/*optout*/**"
+          - "**/*suppression*"
