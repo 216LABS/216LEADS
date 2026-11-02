@@ -87,10 +87,12 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Result: the Playwright smoke test now signs up, answers the wizard, confirms and lands on scored leads (phone and desktop). The A8 golden tests pass on the no-key path (unit) and each recipe finds leads in the Cleveland fixtures (integration); fake providers cover retry, invalid output, and provider errors (all fall back to the preset silently). The LLM call uses `claude-opus-5-5` with a cached system prompt and server-side refusal fallback. The user's explicit answers (exclusions, price limits, ticked adjacent permits) are applied after the LLM, so the model cannot override them. Extra endpoint: `POST /api/profile/preview` re-counts after a slider move without an LLM call.
 
 ### M3: Scoring engine complete
-- [ ] Full signal library (7.2) materialized in `parcel_signal`
-- [ ] Category regex (7.3) with fixture tests (at least 90% per category)
-- [ ] Triggers, hard filters, exclusions, reasons with evidence, pitch
-- [ ] Incremental lead upsert; 50K parcels scored in under 5 s; determinism snapshot test
+- [x] Full signal library (7.2) materialized in `parcel_signal`
+- [x] Category regex (7.3) with fixture tests (at least 90% per category)
+- [x] Triggers, hard filters, exclusions, reasons with evidence, pitch
+- [x] Incremental lead upsert; 50K parcels scored in under 5 s; determinism snapshot test
+
+Result: most of M3 landed during M1/M2/A1 (signal library per decision 19, Cleveland and Lake regex fixtures, all trigger kinds, filters, exclusions, evidence reasons, pitch, diff upsert). This milestone added the spec 15 determinism snapshot (20 homes x 5 presets, `packages/scoring/src/snapshot.test.ts`), a 50K in-memory timing guard, and fixed the one thing over budget: an org's territory lookup. Measured with `packages/ingest/src/tools/bench-score.ts` on the full local load, roofing org over 44107/44111/44130/44134 (61,018 homes, 21,986 leads): first run 7.1 s -> 2.6 s, incremental re-score 5.1 s -> 1.7 s.
 
 ### M4: Onboarding around the wizard
 - [ ] Preset path (trade tiles) for users who skip the AI questions; area step with live counts; perfect-customer controls (9.1 step 3) with live 5-home preview; brand; plan
@@ -178,6 +180,7 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 40. **A 15th preset, `new_movers`,** is the closest preset for businesses that aren't a home trade (dentists, insurance agents, cleaners). It weighs recent sales most heavily. The wizard's no-key path and the A8 dentist/insurance golden tests use it.
 41. **`LLM_PROVIDER=openai` is not wired yet.** The provider interface takes it, but only the Anthropic SDK is implemented; with `openai` (or no key) the wizard uses the closest preset plus keyword rules for "tweak it". Adding OpenAI is one `LlmProvider` in `packages/ingest/src/profile.ts`.
 42. **The wizard creates the org.** New sign-ups have no org until they confirm the recipe; `POST /api/profile/activate` with `answers` creates the org (trade = the recipe's `preset_base`), territory, `org_profile` and the active `wizard` recipe version, scores it, and records `onboarding_done`. The TerritoryPicker is ZIP entry for now; M4 adds town search and per-ZIP live counts before the confirm screen.
+43. **Org scope is resolved once per score run.** `org_territory_parcels()` tested every one of the 572K parcels against the org's territories (1.2 s, run three times per score). Migration 0012 rewrites it as one indexed join per territory kind, and `loadHomes` now reads the org's territories once and filters parcels by zip / municipality directly (polygons via `st_contains`). An integration test checks both pick the same homes.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.

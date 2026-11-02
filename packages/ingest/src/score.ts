@@ -32,15 +32,25 @@ interface ParcelRowDb extends ParcelFacts {
   cov_viol: boolean;
 }
 
-function scopeWhere(sql: Sql, scope: Scope) {
-  return "orgId" in scope
-    ? sql`p.parcel_key in (select org_territory_parcels(${scope.orgId}))`
-    : sql`p.zip = any(${scope.zips})`;
+/**
+ * The scope as a parcel filter. An org's territories are read once and turned into plain
+ * zip / municipality conditions so each query below uses the parcel indexes (spec 7.7).
+ */
+async function scopeWhere(sql: Sql, scope: Scope) {
+  if (!("orgId" in scope)) return () => sql`p.zip = any(${scope.zips})`;
+  const ts = await sql<{ kind: string; zip: string | null; municipality_id: number | null }[]>`
+    select kind, zip, municipality_id from territory where org_id = ${scope.orgId}`;
+  const zips = ts.filter((t) => t.kind === "zip" && t.zip).map((t) => t.zip!);
+  const munis = ts.filter((t) => t.kind === "municipality" && t.municipality_id !== null).map((t) => t.municipality_id!);
+  const polygons = ts.some((t) => t.kind === "polygon");
+  return () => sql`(p.zip = any(${zips}) or p.municipality_id = any(${munis}::int[])${
+    polygons ? sql` or exists (select 1 from territory t where t.org_id = ${scope.orgId} and t.kind = 'polygon' and st_contains(t.geom, p.geom))` : sql``
+  })`;
 }
 
 /** Load everything scoring needs for the residential homes in a scope. */
 export async function loadHomes(sql: Sql, scope: Scope, today = todayEt()): Promise<LoadedHome[]> {
-  const where = () => scopeWhere(sql, scope);
+  const where = await scopeWhere(sql, scope);
   const parcels = await sql<ParcelRowDb[]>`
     select p.parcel_key, p.county_code, p.parcel_id, p.addr_line, p.city, p.zip, p.addr_norm, p.land_use_code, p.year_built,
       p.living_sqft, p.lot_acres, p.style, p.garage_type, p.gas_service, p.water_source, p.sewer_type, p.market_value,

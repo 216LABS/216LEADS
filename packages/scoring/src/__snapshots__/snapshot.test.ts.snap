@@ -1,0 +1,3259 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
+[
+  {
+    "home": "cuyahoga:snap0000",
+    "pitch": "Built 1890 (136 yrs old). A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 1890,
+        },
+        "key": "home_age",
+        "label": "Built 1890 (136 yrs old)",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 60000,
+        },
+        "key": "price_band",
+        "label": "Valued at $60,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "date": "2026-01-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/0",
+          "value": 80000,
+        },
+        "key": "new_owner",
+        "label": "Sold 10 months ago for $80,000",
+        "points": 8,
+      },
+    ],
+    "score": 46,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0001",
+  },
+  {
+    "home": "cuyahoga:snap0002",
+    "pitch": "0.20 acre lot (top 26% in your area). A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 26% in your area)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1902,
+        },
+        "key": "home_age",
+        "label": "Built 1902 (124 yrs old)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 94000,
+        },
+        "key": "price_band",
+        "label": "Valued at $94,000, in your range",
+        "points": 11,
+      },
+    ],
+    "score": 47,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0003",
+    "pitch": "Built 1908 (118 yrs old). A free fence quote while they settle in is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1908,
+        },
+        "key": "home_age",
+        "label": "Built 1908 (118 yrs old)",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 111000,
+        },
+        "key": "price_band",
+        "label": "Valued at $111,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 95% in your area)",
+        "points": 1,
+      },
+    ],
+    "score": 51,
+    "trigger": {
+      "boost": 12,
+      "date": "2026-10-01",
+      "event_id": 5003,
+      "kind": "permit",
+      "label": "New home built",
+    },
+  },
+  {
+    "home": "cuyahoga:snap0004",
+    "pitch": "Sold 6 months ago for $116,000. A free fence quote while they settle in is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-05-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/4",
+          "value": 116000,
+        },
+        "key": "new_owner",
+        "label": "Sold 6 months ago for $116,000",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1914,
+        },
+        "key": "home_age",
+        "label": "Built 1914 (112 yrs old)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 128000,
+        },
+        "key": "price_band",
+        "label": "Valued at $128,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 58% in your area)",
+        "points": 9,
+      },
+    ],
+    "score": 59,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0005",
+    "pitch": "0.08 acre lot (top 21% in your area). A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 0.08,
+        },
+        "key": "lot_size",
+        "label": "0.08 acre lot (top 21% in your area)",
+        "points": 17,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1920,
+        },
+        "key": "home_age",
+        "label": "Built 1920 (106 yrs old)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 145000,
+        },
+        "key": "price_band",
+        "label": "Valued at $145,000, in your range",
+        "points": 11,
+      },
+    ],
+    "score": 48,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0006",
+  },
+  {
+    "home": "cuyahoga:snap0007",
+    "pitch": "Owner lives here. A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 179000,
+        },
+        "key": "price_band",
+        "label": "Valued at $179,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 53% in your area)",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1932,
+        },
+        "key": "home_age",
+        "label": "Built 1932 (94 yrs old)",
+        "points": 10,
+      },
+    ],
+    "score": 41,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0008",
+    "pitch": "Sold 7 weeks ago for $152,000. A free fence quote while they settle in is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-09-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/8",
+          "value": 152000,
+        },
+        "key": "new_owner",
+        "label": "Sold 7 weeks ago for $152,000",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 16% in your area)",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 196000,
+        },
+        "key": "price_band",
+        "label": "Valued at $196,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1938,
+        },
+        "key": "home_age",
+        "label": "Built 1938 (88 yrs old)",
+        "points": 9,
+      },
+    ],
+    "score": 78,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0009",
+    "pitch": "Owner lives here. A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 213000,
+        },
+        "key": "price_band",
+        "label": "Valued at $213,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1944,
+        },
+        "key": "home_age",
+        "label": "Built 1944 (82 yrs old)",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 84% in your area)",
+        "points": 4,
+      },
+    ],
+    "score": 39,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0010",
+    "pitch": "0.08 acre lot (top 47% in your area). A free fence quote while they settle in is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 0.08,
+        },
+        "key": "lot_size",
+        "label": "0.08 acre lot (top 47% in your area)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 230000,
+        },
+        "key": "price_band",
+        "label": "Valued at $230,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 1950,
+        },
+        "key": "home_age",
+        "label": "Built 1950 (76 yrs old)",
+        "points": 8,
+      },
+    ],
+    "score": 54,
+    "trigger": {
+      "boost": 14,
+      "date": "2026-10-01",
+      "event_id": 5010,
+      "kind": "permit",
+      "label": "New pool permit (fence required)",
+    },
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0011",
+  },
+  {
+    "home": "cuyahoga:snap0012",
+    "pitch": "Sold 8 months ago for $188,000. A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-03-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/12",
+          "value": 188000,
+        },
+        "key": "new_owner",
+        "label": "Sold 8 months ago for $188,000",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 264000,
+        },
+        "key": "price_band",
+        "label": "Valued at $264,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 1962,
+        },
+        "key": "home_age",
+        "label": "Built 1962 (64 yrs old)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 79% in your area)",
+        "points": 5,
+      },
+    ],
+    "score": 53,
+    "trigger": null,
+  },
+  {
+    "filtered": "condo",
+    "home": "cuyahoga:snap0013",
+  },
+  {
+    "home": "cuyahoga:snap0014",
+    "pitch": "0.32 acre lot (top 5% in your area). A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 5% in your area)",
+        "points": 20,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 298000,
+        },
+        "key": "price_band",
+        "label": "Valued at $298,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 1974,
+        },
+        "key": "home_age",
+        "label": "Built 1974 (52 yrs old)",
+        "points": 5,
+      },
+    ],
+    "score": 46,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0015",
+    "pitch": "Owner lives here. A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 315000,
+        },
+        "key": "price_band",
+        "label": "Valued at $315,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 0.08,
+        },
+        "key": "lot_size",
+        "label": "0.08 acre lot (top 74% in your area)",
+        "points": 7,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 1980,
+        },
+        "key": "home_age",
+        "label": "Built 1980 (46 yrs old)",
+        "points": 6,
+      },
+    ],
+    "score": 37,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0016",
+  },
+  {
+    "home": "cuyahoga:snap0017",
+    "pitch": "0.20 acre lot (top 1% in your area). A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 1% in your area)",
+        "points": 21,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 349000,
+        },
+        "key": "price_band",
+        "label": "Valued at $349,000, in your range",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 1992,
+        },
+        "key": "home_age",
+        "label": "Built 1992 (34 yrs old)",
+        "points": 4,
+      },
+    ],
+    "score": 46,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0018",
+    "pitch": "Owner lives here. A free fence quote while they settle in is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 366000,
+        },
+        "key": "price_band",
+        "label": "Valued at $366,000, in your range",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 68% in your area)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 1998,
+        },
+        "key": "home_age",
+        "label": "Built 1998 (28 yrs old)",
+        "points": 4,
+      },
+    ],
+    "score": 36,
+    "trigger": null,
+  },
+  {
+    "filtered": "condemned",
+    "home": "cuyahoga:snap0019",
+  },
+]
+`;
+
+exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
+[
+  {
+    "home": "cuyahoga:snap0000",
+    "pitch": "Built 1890. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 1890,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 1890,
+        },
+        "key": "home_age",
+        "label": "Built 1890 (136 yrs old)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+        },
+        "key": "no_gas",
+        "label": "No gas line: electric, oil or propane heat",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "date": "2026-01-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/0",
+          "value": 80000,
+        },
+        "key": "new_owner",
+        "label": "Sold 10 months ago for $80,000",
+        "points": 5,
+      },
+    ],
+    "score": 73,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0001",
+  },
+  {
+    "home": "cuyahoga:snap0002",
+    "pitch": "Built 1902. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1902,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1902,
+        },
+        "key": "home_age",
+        "label": "Built 1902 (124 yrs old)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1120,
+        },
+        "key": "living_area",
+        "label": "1,120 sq ft (bigger than 11% nearby)",
+        "points": 1,
+      },
+    ],
+    "score": 59,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0003",
+    "pitch": "Built 1908. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1908,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1908,
+        },
+        "key": "home_age",
+        "label": "Built 1908 (118 yrs old)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1230,
+        },
+        "key": "living_area",
+        "label": "1,230 sq ft (bigger than 16% nearby)",
+        "points": 2,
+      },
+    ],
+    "score": 60,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0004",
+    "pitch": "Built 1914. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1914,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1914,
+        },
+        "key": "home_age",
+        "label": "Built 1914 (112 yrs old)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "date": "2026-05-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/4",
+          "value": 116000,
+        },
+        "key": "new_owner",
+        "label": "Sold 6 months ago for $116,000",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1340,
+        },
+        "key": "living_area",
+        "label": "1,340 sq ft (bigger than 21% nearby)",
+        "points": 2,
+      },
+    ],
+    "score": 72,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0005",
+    "pitch": "Built 1920. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1920,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1920,
+        },
+        "key": "home_age",
+        "label": "Built 1920 (106 yrs old)",
+        "points": 16,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1450,
+        },
+        "key": "living_area",
+        "label": "1,450 sq ft (bigger than 26% nearby)",
+        "points": 3,
+      },
+    ],
+    "score": 61,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0006",
+  },
+  {
+    "home": "cuyahoga:snap0007",
+    "pitch": "Built 1932. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1932,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1932,
+        },
+        "key": "home_age",
+        "label": "Built 1932 (94 yrs old)",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1670,
+        },
+        "key": "living_area",
+        "label": "1,670 sq ft (bigger than 37% nearby)",
+        "points": 4,
+      },
+    ],
+    "score": 61,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0008",
+    "pitch": "Built 1938. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1938,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "date": "2026-09-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/8",
+          "value": 152000,
+        },
+        "key": "new_owner",
+        "label": "Sold 7 weeks ago for $152,000",
+        "points": 20,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1938,
+        },
+        "key": "home_age",
+        "label": "Built 1938 (88 yrs old)",
+        "points": 14,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1780,
+        },
+        "key": "living_area",
+        "label": "1,780 sq ft (bigger than 42% nearby)",
+        "points": 4,
+      },
+    ],
+    "score": 80,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0009",
+    "pitch": "Built 1944. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1944,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1944,
+        },
+        "key": "home_age",
+        "label": "Built 1944 (82 yrs old)",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1890,
+        },
+        "key": "living_area",
+        "label": "1,890 sq ft (bigger than 47% nearby)",
+        "points": 5,
+      },
+    ],
+    "score": 60,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0010",
+    "pitch": "Built 1950. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 1950,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 1950,
+        },
+        "key": "home_age",
+        "label": "Built 1950 (76 yrs old)",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 2000,
+        },
+        "key": "living_area",
+        "label": "2,000 sq ft (bigger than 53% nearby)",
+        "points": 6,
+      },
+    ],
+    "score": 60,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0011",
+  },
+  {
+    "home": "cuyahoga:snap0012",
+    "pitch": "Built 1962. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 1962,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+        },
+        "key": "no_gas",
+        "label": "No gas line: electric, oil or propane heat",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 1962,
+        },
+        "key": "home_age",
+        "label": "Built 1962 (64 yrs old)",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "date": "2026-03-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/12",
+          "value": 188000,
+        },
+        "key": "new_owner",
+        "label": "Sold 8 months ago for $188,000",
+        "points": 8,
+      },
+    ],
+    "score": 78,
+    "trigger": null,
+  },
+  {
+    "filtered": "condo",
+    "home": "cuyahoga:snap0013",
+  },
+  {
+    "home": "cuyahoga:snap0014",
+    "pitch": "Built 1974. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 1974,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 1974,
+        },
+        "key": "home_age",
+        "label": "Built 1974 (52 yrs old)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 2440,
+        },
+        "key": "living_area",
+        "label": "2,440 sq ft (bigger than 74% nearby)",
+        "points": 8,
+      },
+    ],
+    "score": 58,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0015",
+    "pitch": "Built 1980. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 1980,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 2550,
+        },
+        "key": "living_area",
+        "label": "2,550 sq ft (bigger than 79% nearby)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 1980,
+        },
+        "key": "home_age",
+        "label": "Built 1980 (46 yrs old)",
+        "points": 7,
+      },
+    ],
+    "score": 58,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0016",
+  },
+  {
+    "home": "cuyahoga:snap0017",
+    "pitch": "Built 1992. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 1992,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 2770,
+        },
+        "key": "living_area",
+        "label": "2,770 sq ft (bigger than 89% nearby)",
+        "points": 9,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 1992,
+        },
+        "key": "home_age",
+        "label": "Built 1992 (34 yrs old)",
+        "points": 5,
+      },
+    ],
+    "score": 65,
+    "trigger": {
+      "boost": 8,
+      "date": "2026-10-10",
+      "event_id": 3017,
+      "kind": "neighbor_job",
+      "label": "Neighbors replacing HVAC",
+    },
+  },
+  {
+    "home": "cuyahoga:snap0018",
+    "pitch": "Built 1998. HVAC likely past its 18-yr life (no Lakewood permit records online). A tune-up and safety check now beats a no-heat call in January.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 1998,
+        },
+        "key": "last_permit_age:hvac",
+        "label": "HVAC likely past its 18-yr life (no Lakewood permit records online)",
+        "points": 32,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+        },
+        "key": "no_gas",
+        "label": "No gas line: electric, oil or propane heat",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 2880,
+        },
+        "key": "living_area",
+        "label": "2,880 sq ft (bigger than 95% nearby)",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 1998,
+        },
+        "key": "home_age",
+        "label": "Built 1998 (28 yrs old)",
+        "points": 4,
+      },
+    ],
+    "score": 67,
+    "trigger": null,
+  },
+  {
+    "filtered": "condemned",
+    "home": "cuyahoga:snap0019",
+  },
+]
+`;
+
+exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
+[
+  {
+    "filtered": "lot",
+    "home": "cuyahoga:snap0000",
+  },
+  {
+    "filtered": "rental",
+    "home": "cuyahoga:snap0001",
+  },
+  {
+    "home": "cuyahoga:snap0002",
+    "pitch": "0.20 acre lot (top 26% in your area). First mow free for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 26% in your area)",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 94000,
+        },
+        "key": "price_band",
+        "label": "Valued at $94,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 22,
+        },
+        "key": "grass",
+        "label": "22% of the lot is lawn",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+    ],
+    "score": 54,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0003",
+    "pitch": "33% of the lot is lawn. First mow free for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 33,
+        },
+        "key": "grass",
+        "label": "33% of the lot is lawn",
+        "points": 17,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 111000,
+        },
+        "key": "price_band",
+        "label": "Valued at $111,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 95% in your area)",
+        "points": 1,
+      },
+    ],
+    "score": 53,
+    "trigger": {
+      "boost": 10,
+      "date": "2026-10-01",
+      "event_id": 5003,
+      "kind": "permit",
+      "label": "New home (new lawn)",
+    },
+  },
+  {
+    "home": "cuyahoga:snap0004",
+    "pitch": "44% of the lot is lawn. First mow free for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 44,
+        },
+        "key": "grass",
+        "label": "44% of the lot is lawn",
+        "points": 22,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 128000,
+        },
+        "key": "price_band",
+        "label": "Valued at $128,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "date": "2026-05-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/4",
+          "value": 116000,
+        },
+        "key": "new_owner",
+        "label": "Sold 6 months ago for $116,000",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 58% in your area)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+    ],
+    "score": 69,
+    "trigger": null,
+  },
+  {
+    "filtered": "lot",
+    "home": "cuyahoga:snap0005",
+  },
+  {
+    "filtered": "rental",
+    "home": "cuyahoga:snap0006",
+  },
+  {
+    "home": "cuyahoga:snap0007",
+    "pitch": "Valued at $179,000, in your range. First mow free for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 179000,
+        },
+        "key": "price_band",
+        "label": "Valued at $179,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 53% in your area)",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 12,
+        },
+        "key": "grass",
+        "label": "12% of the lot is lawn",
+        "points": 6,
+      },
+    ],
+    "score": 43,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0008",
+    "pitch": "0.26 acre lot (top 16% in your area). First mow free for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 16% in your area)",
+        "points": 21,
+      },
+      {
+        "evidence": {
+          "date": "2026-09-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/8",
+          "value": 152000,
+        },
+        "key": "new_owner",
+        "label": "Sold 7 weeks ago for $152,000",
+        "points": 19,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 196000,
+        },
+        "key": "price_band",
+        "label": "Valued at $196,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 23,
+        },
+        "key": "grass",
+        "label": "23% of the lot is lawn",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+    ],
+    "score": 77,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0009",
+    "pitch": "34% of the lot is lawn. First mow free for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 34,
+        },
+        "key": "grass",
+        "label": "34% of the lot is lawn",
+        "points": 17,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 213000,
+        },
+        "key": "price_band",
+        "label": "Valued at $213,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 84% in your area)",
+        "points": 4,
+      },
+    ],
+    "score": 46,
+    "trigger": null,
+  },
+  {
+    "filtered": "lot",
+    "home": "cuyahoga:snap0010",
+  },
+  {
+    "filtered": "rental",
+    "home": "cuyahoga:snap0011",
+  },
+  {
+    "home": "cuyahoga:snap0012",
+    "pitch": "Valued at $264,000, in your range. First mow free for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 264000,
+        },
+        "key": "price_band",
+        "label": "Valued at $264,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "date": "2026-03-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/12",
+          "value": 188000,
+        },
+        "key": "new_owner",
+        "label": "Sold 8 months ago for $188,000",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 79% in your area)",
+        "points": 5,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 2,
+        },
+        "key": "grass",
+        "label": "2% of the lot is lawn",
+        "points": 1,
+      },
+    ],
+    "score": 39,
+    "trigger": null,
+  },
+  {
+    "filtered": "condo",
+    "home": "cuyahoga:snap0013",
+  },
+  {
+    "home": "cuyahoga:snap0014",
+    "pitch": "0.32 acre lot (top 5% in your area). First mow free for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 0.32,
+        },
+        "key": "lot_size",
+        "label": "0.32 acre lot (top 5% in your area)",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 298000,
+        },
+        "key": "price_band",
+        "label": "Valued at $298,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 24,
+        },
+        "key": "grass",
+        "label": "24% of the lot is lawn",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+    ],
+    "score": 61,
+    "trigger": null,
+  },
+  {
+    "filtered": "lot",
+    "home": "cuyahoga:snap0015",
+  },
+  {
+    "filtered": "rental",
+    "home": "cuyahoga:snap0016",
+  },
+  {
+    "home": "cuyahoga:snap0017",
+    "pitch": "57% of the lot is lawn. First mow free for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 57,
+        },
+        "key": "grass",
+        "label": "57% of the lot is lawn",
+        "points": 29,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 0.2,
+        },
+        "key": "lot_size",
+        "label": "0.20 acre lot (top 1% in your area)",
+        "points": 25,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 349000,
+        },
+        "key": "price_band",
+        "label": "Valued at $349,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+    ],
+    "score": 79,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0018",
+    "pitch": "Valued at $366,000, in your range. First mow free for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 366000,
+        },
+        "key": "price_band",
+        "label": "Valued at $366,000, in your range",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 10,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 0.26,
+        },
+        "key": "lot_size",
+        "label": "0.26 acre lot (top 68% in your area)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 3,
+        },
+        "key": "grass",
+        "label": "3% of the lot is lawn",
+        "points": 2,
+      },
+    ],
+    "score": 34,
+    "trigger": null,
+  },
+  {
+    "filtered": "condemned",
+    "home": "cuyahoga:snap0019",
+  },
+]
+`;
+
+exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
+[
+  {
+    "home": "cuyahoga:snap0000",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 60000,
+        },
+        "key": "price_band",
+        "label": "Valued at $60,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "date": "2026-01-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/0",
+          "value": 80000,
+        },
+        "key": "new_owner",
+        "label": "Sold 10 months ago for $80,000",
+        "points": 11,
+      },
+    ],
+    "score": 52,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0001",
+    "pitch": "Valued at $77,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/1",
+          "value": 77000,
+        },
+        "key": "price_band",
+        "label": "Valued at $77,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/1",
+          "value": 1010,
+        },
+        "key": "living_area",
+        "label": "1,010 sq ft (bigger than 5% nearby)",
+        "points": 1,
+      },
+    ],
+    "score": 18,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0002",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 94000,
+        },
+        "key": "price_band",
+        "label": "Valued at $94,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1120,
+        },
+        "key": "living_area",
+        "label": "1,120 sq ft (bigger than 11% nearby)",
+        "points": 1,
+      },
+    ],
+    "score": 42,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0003",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 111000,
+        },
+        "key": "price_band",
+        "label": "Valued at $111,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1230,
+        },
+        "key": "living_area",
+        "label": "1,230 sq ft (bigger than 16% nearby)",
+        "points": 2,
+      },
+    ],
+    "score": 53,
+    "trigger": {
+      "boost": 10,
+      "date": "2026-10-01",
+      "event_id": 5003,
+      "kind": "permit",
+      "label": "New home built",
+    },
+  },
+  {
+    "home": "cuyahoga:snap0004",
+    "pitch": "Sold 6 months ago for $116,000. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-05-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/4",
+          "value": 116000,
+        },
+        "key": "new_owner",
+        "label": "Sold 6 months ago for $116,000",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 128000,
+        },
+        "key": "price_band",
+        "label": "Valued at $128,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1340,
+        },
+        "key": "living_area",
+        "label": "1,340 sq ft (bigger than 21% nearby)",
+        "points": 2,
+      },
+    ],
+    "score": 71,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0005",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 145000,
+        },
+        "key": "price_band",
+        "label": "Valued at $145,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1450,
+        },
+        "key": "living_area",
+        "label": "1,450 sq ft (bigger than 26% nearby)",
+        "points": 3,
+      },
+    ],
+    "score": 44,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0006",
+    "pitch": "Valued at $162,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/6",
+          "value": 162000,
+        },
+        "key": "price_band",
+        "label": "Valued at $162,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/6",
+          "value": 1560,
+        },
+        "key": "living_area",
+        "label": "1,560 sq ft (bigger than 32% nearby)",
+        "points": 4,
+      },
+    ],
+    "score": 21,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0007",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 179000,
+        },
+        "key": "price_band",
+        "label": "Valued at $179,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1670,
+        },
+        "key": "living_area",
+        "label": "1,670 sq ft (bigger than 37% nearby)",
+        "points": 4,
+      },
+    ],
+    "score": 46,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0008",
+    "pitch": "Sold 7 weeks ago for $152,000. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-09-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/8",
+          "value": 152000,
+        },
+        "key": "new_owner",
+        "label": "Sold 7 weeks ago for $152,000",
+        "points": 45,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 196000,
+        },
+        "key": "price_band",
+        "label": "Valued at $196,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1780,
+        },
+        "key": "living_area",
+        "label": "1,780 sq ft (bigger than 42% nearby)",
+        "points": 5,
+      },
+    ],
+    "score": 91,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0009",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 213000,
+        },
+        "key": "price_band",
+        "label": "Valued at $213,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1890,
+        },
+        "key": "living_area",
+        "label": "1,890 sq ft (bigger than 47% nearby)",
+        "points": 6,
+      },
+    ],
+    "score": 47,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0010",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 230000,
+        },
+        "key": "price_band",
+        "label": "Valued at $230,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 2000,
+        },
+        "key": "living_area",
+        "label": "2,000 sq ft (bigger than 53% nearby)",
+        "points": 6,
+      },
+    ],
+    "score": 47,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0011",
+    "pitch": "Valued at $247,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/11",
+          "value": 247000,
+        },
+        "key": "price_band",
+        "label": "Valued at $247,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/11",
+          "value": 2110,
+        },
+        "key": "living_area",
+        "label": "2,110 sq ft (bigger than 58% nearby)",
+        "points": 7,
+      },
+    ],
+    "score": 24,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0012",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "date": "2026-03-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/12",
+          "value": 188000,
+        },
+        "key": "new_owner",
+        "label": "Sold 8 months ago for $188,000",
+        "points": 19,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 264000,
+        },
+        "key": "price_band",
+        "label": "Valued at $264,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 2220,
+        },
+        "key": "living_area",
+        "label": "2,220 sq ft (bigger than 63% nearby)",
+        "points": 7,
+      },
+    ],
+    "score": 67,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0013",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/13",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/13",
+          "value": 281000,
+        },
+        "key": "price_band",
+        "label": "Valued at $281,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/13",
+          "value": 2330,
+        },
+        "key": "living_area",
+        "label": "2,330 sq ft (bigger than 68% nearby)",
+        "points": 8,
+      },
+    ],
+    "score": 49,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0014",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 298000,
+        },
+        "key": "price_band",
+        "label": "Valued at $298,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 2440,
+        },
+        "key": "living_area",
+        "label": "2,440 sq ft (bigger than 74% nearby)",
+        "points": 9,
+      },
+    ],
+    "score": 50,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0015",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 315000,
+        },
+        "key": "price_band",
+        "label": "Valued at $315,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 2550,
+        },
+        "key": "living_area",
+        "label": "2,550 sq ft (bigger than 79% nearby)",
+        "points": 9,
+      },
+    ],
+    "score": 50,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0016",
+    "pitch": "Sold 4 months ago for $224,000. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-07-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/16",
+          "value": 224000,
+        },
+        "key": "new_owner",
+        "label": "Sold 4 months ago for $224,000",
+        "points": 36,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/16",
+          "value": 332000,
+        },
+        "key": "price_band",
+        "label": "Valued at $332,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/16",
+          "value": 2660,
+        },
+        "key": "living_area",
+        "label": "2,660 sq ft (bigger than 84% nearby)",
+        "points": 10,
+      },
+    ],
+    "score": 64,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0017",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 349000,
+        },
+        "key": "price_band",
+        "label": "Valued at $349,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 2770,
+        },
+        "key": "living_area",
+        "label": "2,770 sq ft (bigger than 89% nearby)",
+        "points": 11,
+      },
+    ],
+    "score": 52,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0018",
+    "pitch": "Owner lives here. A welcome offer for new neighbors is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+        },
+        "key": "owner_occupied",
+        "label": "Owner lives here",
+        "points": 24,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 366000,
+        },
+        "key": "price_band",
+        "label": "Valued at $366,000, in your range",
+        "points": 18,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 2880,
+        },
+        "key": "living_area",
+        "label": "2,880 sq ft (bigger than 95% nearby)",
+        "points": 11,
+      },
+    ],
+    "score": 52,
+    "trigger": null,
+  },
+  {
+    "filtered": "condemned",
+    "home": "cuyahoga:snap0019",
+  },
+]
+`;
+
+exports[`scoring determinism snapshot (spec 15) > roofing 1`] = `
+[
+  {
+    "home": "cuyahoga:snap0000",
+    "pitch": "Built 1890 (136 yrs old). A free roof check before winter is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/0",
+          "value": 1890,
+        },
+        "key": "home_age",
+        "label": "Built 1890 (136 yrs old)",
+        "points": 14,
+      },
+      {
+        "evidence": {
+          "date": "2016-04-02",
+          "event_id": 1000,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Last roof permit 2016 (10 yrs ago)",
+        "points": 12,
+      },
+      {
+        "evidence": {
+          "date": "2026-01-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/0",
+          "value": 80000,
+        },
+        "key": "new_owner",
+        "label": "Sold 10 months ago for $80,000",
+        "points": 3,
+      },
+    ],
+    "score": 40,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0001",
+  },
+  {
+    "home": "cuyahoga:snap0002",
+    "pitch": "Built 1902. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1902,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+          "value": 1902,
+        },
+        "key": "home_age",
+        "label": "Built 1902 (124 yrs old)",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/2",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 26,
+        },
+        "key": "canopy",
+        "label": "26% tree canopy over the lot",
+        "points": 3,
+      },
+    ],
+    "score": 63,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0003",
+    "pitch": "Built 1908. Roof likely past its 22-yr life (no Lakewood permit records online). A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1908,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life (no Lakewood permit records online)",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/3",
+          "value": 1908,
+        },
+        "key": "home_age",
+        "label": "Built 1908 (118 yrs old)",
+        "points": 14,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 39,
+        },
+        "key": "canopy",
+        "label": "39% tree canopy over the lot",
+        "points": 5,
+      },
+    ],
+    "score": 57,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0004",
+    "pitch": "Built 1914. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1914,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+          "value": 1914,
+        },
+        "key": "home_age",
+        "label": "Built 1914 (112 yrs old)",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/4",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "date": "2026-05-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/4",
+          "value": 116000,
+        },
+        "key": "new_owner",
+        "label": "Sold 6 months ago for $116,000",
+        "points": 9,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 52,
+        },
+        "key": "canopy",
+        "label": "52% tree canopy over the lot",
+        "points": 7,
+      },
+    ],
+    "score": 76,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0005",
+    "pitch": "Built 1920. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1920,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+          "value": 1920,
+        },
+        "key": "home_age",
+        "label": "Built 1920 (106 yrs old)",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/5",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 65,
+        },
+        "key": "canopy",
+        "label": "65% tree canopy over the lot",
+        "points": 8,
+      },
+    ],
+    "score": 68,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0006",
+  },
+  {
+    "home": "cuyahoga:snap0007",
+    "pitch": "Built 1932. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1932,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/7",
+          "value": 1932,
+        },
+        "key": "home_age",
+        "label": "Built 1932 (94 yrs old)",
+        "points": 14,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 21,
+        },
+        "key": "canopy",
+        "label": "21% tree canopy over the lot",
+        "points": 3,
+      },
+    ],
+    "score": 62,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0008",
+    "pitch": "Built 1938. Sold 7 weeks ago for $152,000. A free roof check before winter is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "date": "2026-09-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/8",
+          "value": 152000,
+        },
+        "key": "new_owner",
+        "label": "Sold 7 weeks ago for $152,000",
+        "points": 14,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/8",
+          "value": 1938,
+        },
+        "key": "home_age",
+        "label": "Built 1938 (88 yrs old)",
+        "points": 13,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 34,
+        },
+        "key": "canopy",
+        "label": "34% tree canopy over the lot",
+        "points": 5,
+      },
+      {
+        "evidence": {
+          "date": "2024-04-02",
+          "event_id": 1008,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Last roof permit 2024 (2 yrs ago)",
+        "points": 3,
+      },
+    ],
+    "score": 35,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0009",
+    "pitch": "Built 1944. Roof likely past its 22-yr life (no Lakewood permit records online). A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1944,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life (no Lakewood permit records online)",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/9",
+          "value": 1944,
+        },
+        "key": "home_age",
+        "label": "Built 1944 (82 yrs old)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 47,
+        },
+        "key": "canopy",
+        "label": "47% tree canopy over the lot",
+        "points": 6,
+      },
+    ],
+    "score": 56,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0010",
+    "pitch": "Built 1950. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 1950,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/10",
+          "value": 1950,
+        },
+        "key": "home_age",
+        "label": "Built 1950 (76 yrs old)",
+        "points": 11,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 60,
+        },
+        "key": "canopy",
+        "label": "60% tree canopy over the lot",
+        "points": 8,
+      },
+    ],
+    "score": 64,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0011",
+  },
+  {
+    "home": "cuyahoga:snap0012",
+    "pitch": "Built 1962. Roof likely past its 22-yr life (no Lakewood permit records online). A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 1962,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life (no Lakewood permit records online)",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/12",
+          "value": 1962,
+        },
+        "key": "home_age",
+        "label": "Built 1962 (64 yrs old)",
+        "points": 9,
+      },
+      {
+        "evidence": {
+          "date": "2026-03-15",
+          "event_id": undefined,
+          "url": "https://example.test/parcel/12",
+          "value": 188000,
+        },
+        "key": "new_owner",
+        "label": "Sold 8 months ago for $188,000",
+        "points": 5,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 16,
+        },
+        "key": "canopy",
+        "label": "16% tree canopy over the lot",
+        "points": 2,
+      },
+    ],
+    "score": 55,
+    "trigger": null,
+  },
+  {
+    "filtered": "condo",
+    "home": "cuyahoga:snap0013",
+  },
+  {
+    "home": "cuyahoga:snap0014",
+    "pitch": "Built 1974. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": true,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 1974,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/14",
+          "value": 1974,
+        },
+        "key": "home_age",
+        "label": "Built 1974 (52 yrs old)",
+        "points": 8,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 42,
+        },
+        "key": "canopy",
+        "label": "42% tree canopy over the lot",
+        "points": 6,
+      },
+    ],
+    "score": 58,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0015",
+    "pitch": "Built 1980. Roof likely past its 22-yr life (no Lakewood permit records online). A free roof check before winter is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 1980,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life (no Lakewood permit records online)",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 55,
+        },
+        "key": "canopy",
+        "label": "55% tree canopy over the lot",
+        "points": 7,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/15",
+          "value": 1980,
+        },
+        "key": "home_age",
+        "label": "Built 1980 (46 yrs old)",
+        "points": 6,
+      },
+    ],
+    "score": 52,
+    "trigger": null,
+  },
+  {
+    "filtered": "not_owner_occupied",
+    "home": "cuyahoga:snap0016",
+  },
+  {
+    "home": "cuyahoga:snap0017",
+    "pitch": "Built 1992. Roof likely past its 22-yr life. A free roof check before winter is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 1992,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life",
+        "points": 30,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+        },
+        "key": "no_recent_permit:roofing",
+        "label": "No roof permit on record since 2015",
+        "points": 15,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/17",
+          "value": 1992,
+        },
+        "key": "home_age",
+        "label": "Built 1992 (34 yrs old)",
+        "points": 5,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 11,
+        },
+        "key": "canopy",
+        "label": "11% tree canopy over the lot",
+        "points": 1,
+      },
+    ],
+    "score": 52,
+    "trigger": null,
+  },
+  {
+    "home": "cuyahoga:snap0018",
+    "pitch": "Built 1998. Roof likely past its 22-yr life (no Lakewood permit records online). A free roof check before winter is an easy yes.",
+    "qualifies": false,
+    "reasons": [
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 1998,
+        },
+        "key": "last_permit_age:roofing",
+        "label": "Roof likely past its 22-yr life (no Lakewood permit records online)",
+        "points": 27,
+      },
+      {
+        "evidence": {
+          "url": "https://example.test/parcel/18",
+          "value": 1998,
+        },
+        "key": "home_age",
+        "label": "Built 1998 (28 yrs old)",
+        "points": 4,
+      },
+      {
+        "evidence": {
+          "source": "ccpc_2019",
+          "url": undefined,
+          "value": 24,
+        },
+        "key": "canopy",
+        "label": "24% tree canopy over the lot",
+        "points": 3,
+      },
+    ],
+    "score": 45,
+    "trigger": null,
+  },
+  {
+    "filtered": "condemned",
+    "home": "cuyahoga:snap0019",
+  },
+]
+`;
