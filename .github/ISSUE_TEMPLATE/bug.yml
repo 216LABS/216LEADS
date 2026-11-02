@@ -1,0 +1,44 @@
+name: Bug
+description: Something in 216 Leads is broken or wrong.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps from a signed-in or signed-out start.
+      placeholder: |
+        1. Sign in as ...
+        2. Open Leads, filter by ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+    validations:
+      required: true
+  - type: dropdown
+    id: env
+    attributes:
+      label: Environment
+      options: [production, staging / PR preview, local]
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page URL, org id, user id
+      description: The in-app "Report a problem" link fills these in. Never paste homeowner names or customer emails.
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot or recording
+      description: Drag files here.
