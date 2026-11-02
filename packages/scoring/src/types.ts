@@ -140,6 +140,8 @@ export interface ScoreInput {
    * (e.g. its town publishes no permits), so missing data neither inflates nor sinks a score.
    */
   priors?: Record<string, number>;
+  /** Town the home is in, as named in our parcel data (e.g. "SHAKER HEIGHTS"), for town-level rules. */
+  municipality?: string | null;
   /** YYYY-MM-DD in America/New_York. */
   today: string;
 }

@@ -3,6 +3,7 @@ version: 1
 label: Roofing
 threshold: 55
 signals:
+  pos_city_sale: { weight: 5 }
   last_permit_age:roofing: { weight: 30, lifespan_years: 22 }
   no_recent_permit:roofing: { weight: 15 }
   home_age: { weight: 15 }

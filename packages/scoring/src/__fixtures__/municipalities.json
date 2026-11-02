@@ -1,0 +1,580 @@
+{
+ "note": "Municipality names in the loaded parcel data (Cuyahoga tax districts, Lake G_COMM, Summit permit-page towns), checked 2026-11-02.",
+ "municipalities": [
+  {
+   "county": "cuyahoga",
+   "name": "BAY VILLAGE",
+   "parcels": 6984
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BEACHWOOD",
+   "parcels": 5313
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BEDFORD",
+   "parcels": 5994
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BEDFORD HEIGHTS",
+   "parcels": 4578
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BENTLEYVILLE",
+   "parcels": 425
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BEREA",
+   "parcels": 8082
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BRATENAHL",
+   "parcels": 1014
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BRECKSVILLE",
+   "parcels": 6613
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BROADVIEW HEIGHTS",
+   "parcels": 9243
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BROOK PARK",
+   "parcels": 8933
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BROOKLYN",
+   "parcels": 4435
+  },
+  {
+   "county": "cuyahoga",
+   "name": "BROOKLYN HEIGHTS",
+   "parcels": 1015
+  },
+  {
+   "county": "cuyahoga",
+   "name": "CHAGRIN FALLS",
+   "parcels": 2214
+  },
+  {
+   "county": "cuyahoga",
+   "name": "CHAGRIN FALLS TOWNSHIP",
+   "parcels": 64
+  },
+  {
+   "county": "cuyahoga",
+   "name": "CLEVELAND",
+   "parcels": 189285
+  },
+  {
+   "county": "cuyahoga",
+   "name": "CLEVELAND HEIGHTS",
+   "parcels": 16895
+  },
+  {
+   "county": "cuyahoga",
+   "name": "CUYAHOGA HEIGHTS",
+   "parcels": 583
+  },
+  {
+   "county": "cuyahoga",
+   "name": "EAST CLEVELAND",
+   "parcels": 7283
+  },
+  {
+   "county": "cuyahoga",
+   "name": "EUCLID",
+   "parcels": 19742
+  },
+  {
+   "county": "cuyahoga",
+   "name": "FAIRVIEW PARK",
+   "parcels": 7184
+  },
+  {
+   "county": "cuyahoga",
+   "name": "GARFIELD HEIGHTS",
+   "parcels": 13826
+  },
+  {
+   "county": "cuyahoga",
+   "name": "GATES MILLS",
+   "parcels": 1475
+  },
+  {
+   "county": "cuyahoga",
+   "name": "GLENWILLOW",
+   "parcels": 520
+  },
+  {
+   "county": "cuyahoga",
+   "name": "HIGHLAND HEIGHTS",
+   "parcels": 3983
+  },
+  {
+   "county": "cuyahoga",
+   "name": "HIGHLAND HILLS",
+   "parcels": 226
+  },
+  {
+   "county": "cuyahoga",
+   "name": "HUNTING VALLEY",
+   "parcels": 450
+  },
+  {
+   "county": "cuyahoga",
+   "name": "INDEPENDENCE",
+   "parcels": 4276
+  },
+  {
+   "county": "cuyahoga",
+   "name": "LAKEWOOD",
+   "parcels": 18615
+  },
+  {
+   "county": "cuyahoga",
+   "name": "LINNDALE",
+   "parcels": 123
+  },
+  {
+   "county": "cuyahoga",
+   "name": "LYNDHURST",
+   "parcels": 7209
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MAPLE HEIGHTS",
+   "parcels": 12214
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MAYFIELD",
+   "parcels": 214
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MAYFIELD HEIGHTS",
+   "parcels": 7095
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MAYFIELD VILLAGE",
+   "parcels": 1506
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MIDDLEBURG HEIGHTS",
+   "parcels": 7135
+  },
+  {
+   "county": "cuyahoga",
+   "name": "MORELAND HILLS",
+   "parcels": 1881
+  },
+  {
+   "county": "cuyahoga",
+   "name": "NEWBURGH HEIGHTS",
+   "parcels": 982
+  },
+  {
+   "county": "cuyahoga",
+   "name": "NORTH OLMSTED",
+   "parcels": 14035
+  },
+  {
+   "county": "cuyahoga",
+   "name": "NORTH RANDALL",
+   "parcels": 299
+  },
+  {
+   "county": "cuyahoga",
+   "name": "NORTH ROYALTON",
+   "parcels": 12511
+  },
+  {
+   "county": "cuyahoga",
+   "name": "OAKWOOD",
+   "parcels": 2529
+  },
+  {
+   "county": "cuyahoga",
+   "name": "OLMSTED FALLS",
+   "parcels": 4593
+  },
+  {
+   "county": "cuyahoga",
+   "name": "OLMSTED TOWNSHIP",
+   "parcels": 6170
+  },
+  {
+   "county": "cuyahoga",
+   "name": "ORANGE",
+   "parcels": 2084
+  },
+  {
+   "county": "cuyahoga",
+   "name": "PARMA",
+   "parcels": 33010
+  },
+  {
+   "county": "cuyahoga",
+   "name": "PARMA HEIGHTS",
+   "parcels": 7325
+  },
+  {
+   "county": "cuyahoga",
+   "name": "PEPPER PIKE",
+   "parcels": 3128
+  },
+  {
+   "county": "cuyahoga",
+   "name": "RICHMOND HEIGHTS",
+   "parcels": 4414
+  },
+  {
+   "county": "cuyahoga",
+   "name": "ROCKY RIVER",
+   "parcels": 9825
+  },
+  {
+   "county": "cuyahoga",
+   "name": "SEVEN HILLS",
+   "parcels": 5788
+  },
+  {
+   "county": "cuyahoga",
+   "name": "SHAKER HEIGHTS",
+   "parcels": 10875
+  },
+  {
+   "county": "cuyahoga",
+   "name": "SOLON",
+   "parcels": 10890
+  },
+  {
+   "county": "cuyahoga",
+   "name": "SOUTH EUCLID",
+   "parcels": 10171
+  },
+  {
+   "county": "cuyahoga",
+   "name": "STRONGSVILLE",
+   "parcels": 18884
+  },
+  {
+   "county": "cuyahoga",
+   "name": "UNIVERSITY HEIGHTS",
+   "parcels": 4780
+  },
+  {
+   "county": "cuyahoga",
+   "name": "UNKNOWN",
+   "parcels": 2
+  },
+  {
+   "county": "cuyahoga",
+   "name": "VALLEY VIEW",
+   "parcels": 1523
+  },
+  {
+   "county": "cuyahoga",
+   "name": "WALTON HILLS",
+   "parcels": 1348
+  },
+  {
+   "county": "cuyahoga",
+   "name": "WARRENSVILLE",
+   "parcels": 4
+  },
+  {
+   "county": "cuyahoga",
+   "name": "WARRENSVILLE HEIGHTS",
+   "parcels": 5746
+  },
+  {
+   "county": "cuyahoga",
+   "name": "WESTLAKE",
+   "parcels": 14844
+  },
+  {
+   "county": "cuyahoga",
+   "name": "WOODMERE",
+   "parcels": 439
+  },
+  {
+   "county": "lake",
+   "name": "CONCORD TOWNSHIP",
+   "parcels": 9108
+  },
+  {
+   "county": "lake",
+   "name": "EASTLAKE",
+   "parcels": 8928
+  },
+  {
+   "county": "lake",
+   "name": "FAIRPORT HARBOR",
+   "parcels": 1650
+  },
+  {
+   "county": "lake",
+   "name": "GRAND RIVER",
+   "parcels": 406
+  },
+  {
+   "county": "lake",
+   "name": "KIRTLAND",
+   "parcels": 3275
+  },
+  {
+   "county": "lake",
+   "name": "KIRTLAND HILLS",
+   "parcels": 396
+  },
+  {
+   "county": "lake",
+   "name": "LAKELINE",
+   "parcels": 115
+  },
+  {
+   "county": "lake",
+   "name": "LEROY TOWNSHIP",
+   "parcels": 1881
+  },
+  {
+   "county": "lake",
+   "name": "MADISON",
+   "parcels": 1651
+  },
+  {
+   "county": "lake",
+   "name": "MADISON TOWNSHIP",
+   "parcels": 8952
+  },
+  {
+   "county": "lake",
+   "name": "MENTOR",
+   "parcels": 23640
+  },
+  {
+   "county": "lake",
+   "name": "MENTOR ON THE LAKE",
+   "parcels": 3309
+  },
+  {
+   "county": "lake",
+   "name": "NORTH PERRY",
+   "parcels": 549
+  },
+  {
+   "county": "lake",
+   "name": "PAINESVILLE",
+   "parcels": 7384
+  },
+  {
+   "county": "lake",
+   "name": "PAINESVILLE TOWNSHIP",
+   "parcels": 9415
+  },
+  {
+   "county": "lake",
+   "name": "PERRY",
+   "parcels": 1186
+  },
+  {
+   "county": "lake",
+   "name": "PERRY TOWNSHIP",
+   "parcels": 3274
+  },
+  {
+   "county": "lake",
+   "name": "TIMBERLAKE",
+   "parcels": 366
+  },
+  {
+   "county": "lake",
+   "name": "UNKNOWN",
+   "parcels": 448
+  },
+  {
+   "county": "lake",
+   "name": "WAITE HILL",
+   "parcels": 355
+  },
+  {
+   "county": "lake",
+   "name": "WICKLIFFE",
+   "parcels": 6489
+  },
+  {
+   "county": "lake",
+   "name": "WILLOUGHBY",
+   "parcels": 10674
+  },
+  {
+   "county": "lake",
+   "name": "WILLOUGHBY HILLS",
+   "parcels": 3313
+  },
+  {
+   "county": "lake",
+   "name": "WILLOWICK",
+   "parcels": 6414
+  },
+  {
+   "county": "summit",
+   "name": "AKRON",
+   "parcels": 894
+  },
+  {
+   "county": "summit",
+   "name": "BARBERTON",
+   "parcels": 31
+  },
+  {
+   "county": "summit",
+   "name": "BATH TWP",
+   "parcels": 107
+  },
+  {
+   "county": "summit",
+   "name": "BOSTON HEIGHTS",
+   "parcels": 9
+  },
+  {
+   "county": "summit",
+   "name": "BOSTON TWP",
+   "parcels": 12
+  },
+  {
+   "county": "summit",
+   "name": "CLINTON",
+   "parcels": 4
+  },
+  {
+   "county": "summit",
+   "name": "COPLEY",
+   "parcels": 1
+  },
+  {
+   "county": "summit",
+   "name": "COPLEY TWP",
+   "parcels": 100
+  },
+  {
+   "county": "summit",
+   "name": "COVENTRY TWP",
+   "parcels": 69
+  },
+  {
+   "county": "summit",
+   "name": "CUAHOGA FALLS",
+   "parcels": 1
+  },
+  {
+   "county": "summit",
+   "name": "CUYAHOGA FALLS",
+   "parcels": 198
+  },
+  {
+   "county": "summit",
+   "name": "FAIRLAWN",
+   "parcels": 18
+  },
+  {
+   "county": "summit",
+   "name": "GREEN",
+   "parcels": 158
+  },
+  {
+   "county": "summit",
+   "name": "HUDSON",
+   "parcels": 209
+  },
+  {
+   "county": "summit",
+   "name": "LAKEMORE",
+   "parcels": 13
+  },
+  {
+   "county": "summit",
+   "name": "MOGADORE",
+   "parcels": 18
+  },
+  {
+   "county": "summit",
+   "name": "NEW FRANKLIN",
+   "parcels": 88
+  },
+  {
+   "county": "summit",
+   "name": "NORTHFIELD",
+   "parcels": 9
+  },
+  {
+   "county": "summit",
+   "name": "NORTHFIELD CENTER TWP",
+   "parcels": 34
+  },
+  {
+   "county": "summit",
+   "name": "NORTON",
+   "parcels": 60
+  },
+  {
+   "county": "summit",
+   "name": "RICHFIELD",
+   "parcels": 39
+  },
+  {
+   "county": "summit",
+   "name": "RICHFIELD TWP",
+   "parcels": 30
+  },
+  {
+   "county": "summit",
+   "name": "SAGAMORE HILLS TWP",
+   "parcels": 66
+  },
+  {
+   "county": "summit",
+   "name": "SILVER LAKE",
+   "parcels": 31
+  },
+  {
+   "county": "summit",
+   "name": "SPRINGFIELD",
+   "parcels": 1
+  },
+  {
+   "county": "summit",
+   "name": "SPRINGFIELD TWP",
+   "parcels": 84
+  },
+  {
+   "county": "summit",
+   "name": "TALLMADGE",
+   "parcels": 91
+  },
+  {
+   "county": "summit",
+   "name": "TWINSBURG TWP",
+   "parcels": 29
+  },
+  {
+   "county": "summit",
+   "name": "UNKNOWN",
+   "parcels": 171
+  }
+ ]
+}

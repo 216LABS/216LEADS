@@ -1,0 +1,24 @@
+key: concrete
+version: 1
+label: Concrete and masonry
+threshold: 55
+signals:
+  home_age: { weight: 20 }
+  last_permit_age:concrete: { weight: 25 }
+  new_owner: { weight: 25 }
+  neighbor_job:concrete: { weight: 15 }
+  price_band: { weight: 10 }
+  pos_city_sale: { weight: 5 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: permit, category: garage, within_days: 90, boost: 10, label: "New garage permit (driveway next)" }
+  - { kind: permit, category: new_build, within_days: 90, boost: 10, label: "New home being built" }
+  - { kind: permit, category: demolition, within_days: 90, boost: 6, label: "Demolition permit" }
+  - { kind: neighbor_job, category: concrete, within_days: 60, boost: 6, label: "Neighbors redoing driveways" }
+sliders:
+  - { key: last_permit_age:concrete, label: "Driveway or walk is due" }
+  - { key: new_owner, label: "Just moved in" }
+  - { key: pos_city_sale, label: "Sold in a point-of-sale city" }
+default_filters: { owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "{top_reason}. A new driveway or walk is the first thing people notice."

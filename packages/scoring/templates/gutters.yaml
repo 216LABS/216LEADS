@@ -3,6 +3,7 @@ version: 1
 label: Gutters
 threshold: 55
 signals:
+  pos_city_sale: { weight: 5 }
   canopy: { weight: 30 }
   survey_condition:gutters: { weight: 20 }
   home_age: { weight: 15 }

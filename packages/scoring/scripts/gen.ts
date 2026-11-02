@@ -12,10 +12,13 @@ export function buildGenerated(): string {
   // An ordered list of [category, pattern]; a category may appear more than once (first match wins).
   const categories = parse(readFileSync(join(dir, "categories.yaml"), "utf8")) as [string, string][];
   const templates: Record<string, unknown> = {};
-  for (const f of readdirSync(dir).filter((f) => f.endsWith(".yaml") && f !== "categories.yaml").sort()) {
+  const NOT_TEMPLATES = new Set(["categories.yaml", "pos_cities.yaml"]);
+  for (const f of readdirSync(dir).filter((f) => f.endsWith(".yaml") && !NOT_TEMPLATES.has(f)).sort()) {
     const t = parse(readFileSync(join(dir, f), "utf8")) as { key: string };
     templates[t.key] = t;
   }
+  // Issue #11: point-of-sale inspection cities for the `pos_city_sale` signal.
+  const pos = parse(readFileSync(join(dir, "pos_cities.yaml"), "utf8")) as { source: string; cities: unknown[] };
   // Addendum A3: the profile wizard prompt; signals, categories and presets are filled in from code.
   const prompt = readFileSync(join(pkg, "profile", "prompt.md"), "utf8").replace(/\r\n/g, "\n");
   return [
@@ -25,6 +28,10 @@ export function buildGenerated(): string {
     `export const CATEGORY_PATTERNS: [string, string][] = ${JSON.stringify(categories, null, 2)};`,
     "",
     `export const TEMPLATES: Record<string, Template> = ${JSON.stringify(templates, null, 2)} as Record<string, Template>;`,
+    "",
+    `export const POS_SOURCE = ${JSON.stringify(pos.source)};`,
+    "",
+    `export const POS_CITIES: { name: string; county: string; municipality: string; in_data?: boolean }[] = ${JSON.stringify(pos.cities, null, 2)};`,
     "",
     `export const PROFILE_PROMPT = ${JSON.stringify(prompt)};`,
     "",

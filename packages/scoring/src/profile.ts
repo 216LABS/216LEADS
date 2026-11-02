@@ -61,7 +61,8 @@ const PRESET_WORDS: [string, RegExp][] = [
   ["lawn_care", /\blawn|landscap|mow|yard|sod\b|irrigation/],
   ["fence", /\bfenc/],
   ["pest", /\bpest|extermin|termite|rodent|bed ?bug|mosquito/],
-  ["remodel", /\bremodel|kitchen|bath|renovat|general contract|handyman|addition|concrete|driveway|deck/],
+  ["concrete", /\bconcrete|driveway|masonry|mason\b|brick|paver|tuckpoint|flatwork/],
+  ["remodel", /\bremodel|kitchen|bath|renovat|general contract|handyman|addition|deck/],
 ];
 
 /** The preset whose keywords appear earliest in the description; `new_movers` when none do. */
@@ -93,12 +94,11 @@ const ADJACENT: Record<string, { categories: string[]; days: number }> = {
 };
 
 function adjacentKey(text: string): string {
-  // Cleaning and concrete have rows in the A5 table but no preset of their own.
+  // Cleaning has a row in the A5 table but no preset of its own.
   const t = text.toLowerCase();
   const preset = closestPreset(t);
   // A cleaning *business*, not "teeth cleanings" or "yard cleanups".
   if (preset === "new_movers" && /\b(house|home|office|carpet|window|move-?out|deep) ?clean|cleaning (company|service|business)|\bmaids?\b|\bjunk\b|\bhauling\b/.test(t)) return "cleaning";
-  if (preset === "remodel" && /\bconcrete|driveway|paving/.test(t)) return "concrete";
   return preset;
 }
 

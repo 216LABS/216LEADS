@@ -1,0 +1,35 @@
+# Point-of-sale (POS) inspection cities (issue #11). A home that just sold in one of these had a
+# city inspection at sale, which tends to flag roof, masonry, electrical, plumbing, gutters and
+# driveways (HVAC is not on the report's list).
+# source: Akron Cleveland Association of REALTORS (ACAR), Point-of-Sale Final Report, Feb 2025, Table 1.
+# `municipality` is the name used in our parcel data (Cuyahoga tax district, Lake G_COMM, Summit
+# permit-page town). `in_data: false` marks cities whose homes we don't have yet: Twinsburg (city)
+# and Macedonia run their own building departments, so Summit County's permit list doesn't cover
+# them ("TWINSBURG TWP" is a different jurisdiction and is deliberately not mapped).
+source: "ACAR Point-of-Sale Final Report (Feb 2025), Table 1"
+cities:
+  - { name: Bedford Heights, county: cuyahoga, municipality: BEDFORD HEIGHTS }
+  - { name: Brooklyn Heights, county: cuyahoga, municipality: BROOKLYN HEIGHTS }
+  - { name: Brook Park, county: cuyahoga, municipality: BROOK PARK }
+  - { name: Cleveland Heights, county: cuyahoga, municipality: CLEVELAND HEIGHTS }
+  - { name: Cuyahoga Heights, county: cuyahoga, municipality: CUYAHOGA HEIGHTS }
+  - { name: East Cleveland, county: cuyahoga, municipality: EAST CLEVELAND }
+  - { name: Euclid, county: cuyahoga, municipality: EUCLID }
+  - { name: Garfield Heights, county: cuyahoga, municipality: GARFIELD HEIGHTS }
+  - { name: Gates Mills, county: cuyahoga, municipality: GATES MILLS }
+  - { name: Hunting Valley, county: cuyahoga, municipality: HUNTING VALLEY }
+  - { name: Linndale, county: cuyahoga, municipality: LINNDALE }
+  - { name: Maple Heights, county: cuyahoga, municipality: MAPLE HEIGHTS }
+  - { name: Mayfield Heights, county: cuyahoga, municipality: MAYFIELD HEIGHTS }
+  - { name: Moreland Hills, county: cuyahoga, municipality: MORELAND HILLS }
+  - { name: Newburgh Heights, county: cuyahoga, municipality: NEWBURGH HEIGHTS }
+  - { name: North Randall, county: cuyahoga, municipality: NORTH RANDALL }
+  - { name: Oakwood, county: cuyahoga, municipality: OAKWOOD }
+  - { name: Shaker Heights, county: cuyahoga, municipality: SHAKER HEIGHTS }
+  - { name: University Heights, county: cuyahoga, municipality: UNIVERSITY HEIGHTS }
+  - { name: Warrensville Heights, county: cuyahoga, municipality: WARRENSVILLE HEIGHTS }
+  - { name: Woodmere, county: cuyahoga, municipality: WOODMERE }
+  - { name: Willoughby, county: lake, municipality: WILLOUGHBY }
+  - { name: Macedonia, county: summit, municipality: MACEDONIA, in_data: false }
+  - { name: Northfield Village, county: summit, municipality: NORTHFIELD }
+  - { name: Twinsburg, county: summit, municipality: TWINSBURG, in_data: false }

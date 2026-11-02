@@ -17,6 +17,7 @@ const PLAIN: Record<string, string> = {
   owner_occupied: "Owner lives there",
   condo: "Condo",
   garage: "Has a garage",
+  pos_city_sale: "Just sold in a point-of-sale inspection city",
 };
 
 const PART: Record<string, string> = {
