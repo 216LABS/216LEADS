@@ -31,7 +31,9 @@ export default async function RecipePage() {
     select count(*)::int as outcomes from lead where org_id = ${org.id} and status in ('won', 'lost', 'skipped')
       and (${learned.learned_since}::timestamptz is null or status_changed_at >= ${learned.learned_since}::timestamptz)`;
   const outcomes = counted?.outcomes ?? 0;
-  const nudges = Object.entries(learned.learned_weights).sort((a, b) => Math.abs(b[1] - 1) - Math.abs(a[1] - 1));
+  // The nightly job saves nudges as a "Learned from your wins" version; the factors behind it are kept here.
+  const nudges = Object.entries(learned.learned_meta).filter(([, m]) => m.factor !== 1).map(([k, m]) => [k, m.factor] as const)
+    .sort((a, b) => Math.abs(b[1] - 1) - Math.abs(a[1] - 1));
   const weights = Object.entries(template.signals).sort((a, b) => b[1].weight - a[1].weight);
   const total = weights.reduce((s, [, v]) => s + v.weight, 0) || 1;
 
