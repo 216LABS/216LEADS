@@ -1,0 +1,20 @@
+key: septic
+version: 1
+label: Septic
+threshold: 55
+# Cuyahoga sewer codes SP/SPS read as private/septic (spec 5.1 [S]); they cluster in outer-ring
+# towns (Westlake, North Royalton, Broadview Heights, Moreland Hills), which fits that reading.
+signals:
+  # Spec 7.5 weights 60/25/15, scaled to fit Addendum A3's 0-40 cap with the same proportions.
+  septic: { weight: 40 }
+  new_owner: { weight: 17 }
+  home_age: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 12, label: "Just sold (inspect the tank)" }
+sliders:
+  - { key: new_owner, label: "Just moved in" }
+  - { key: home_age, label: "Older systems" }
+  - { key: septic, label: "Septic homes only" }
+default_filters: { sewer_in: ["SP", "SPS"] }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "{top_reason}. A pump-out and inspection in the first year is an easy yes."

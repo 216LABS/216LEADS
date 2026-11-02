@@ -1,0 +1,22 @@
+key: gutters
+version: 1
+label: Gutters
+threshold: 55
+signals:
+  canopy: { weight: 30 }
+  survey_condition:gutters: { weight: 20 }
+  home_age: { weight: 15 }
+  new_owner: { weight: 20 }
+  neighbor_job:gutters: { weight: 15 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: permit, category: roofing, within_days: 60, boost: 12, label: "New roof permit (gutters next)" }
+  - { kind: permit, category: siding, within_days: 60, boost: 8, label: "New siding permit" }
+  - { kind: neighbor_job, category: gutters, within_days: 60, boost: 6, label: "Neighbors replacing gutters" }
+sliders:
+  - { key: canopy, label: "Trees over the roof" }
+  - { key: survey_condition:gutters, label: "Gutter condition" }
+  - { key: new_owner, label: "Just moved in" }
+default_filters: { owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "{top_reason}. Guards before the leaves fall are an easy yes."

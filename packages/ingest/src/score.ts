@@ -2,11 +2,12 @@
 // pure engine, and (for orgs) diff-upsert leads (spec 7.1, 7.7).
 import type { Sql } from "@216leads/db";
 import {
-  effectiveProfile, getTemplate, hasTemplate, passesFilters, percentileRanks, scoreParcel,
+  effectiveProfile, getTemplate, hasTemplate, parseRecipe, passesFilters, percentileRanks, scoreParcel,
   type MaterializedSignal, type ParcelFacts, type Profile, type RecentEvent, type ScoreInput, type ScoreResult, type Template,
 } from "@216leads/scoring";
 import { todayEt } from "@216leads/shared";
 import { canopyUrl, floodUrl, parcelRecordUrl, surveyUrl } from "./urls";
+import { activeRecipe } from "./recipes";
 import { withJobRun } from "./runtime";
 
 export interface LoadedHome {
@@ -170,8 +171,12 @@ export async function loadOrgProfile(sql: Sql, orgId: string): Promise<{ templat
     select o.trade, sp.template_key, sp.weights, sp.filters, sp.exclusions, sp.learned_weights
     from org o left join scoring_profile sp on sp.org_id = o.id where o.id = ${orgId}`;
   if (!row) throw new Error(`org ${orgId} not found`);
+  // The org's active recipe version wins (Addendum A6); otherwise its trade preset.
+  const active = await activeRecipe(sql, orgId);
+  const parsed = active ? parseRecipe(active.recipe) : null;
+  if (parsed && !parsed.ok) console.error(`org ${orgId}: active recipe ${active!.id} is invalid; using the preset`, parsed.errors);
   const key = row.template_key && hasTemplate(row.template_key) ? row.template_key : row.trade;
-  const template = getTemplate(key);
+  const template = parsed?.ok ? parsed.recipe : getTemplate(hasTemplate(key) ? key : "roofing");
   const profile = effectiveProfile(template, {
     weights: row.weights ?? {}, filters: row.filters ?? {}, exclusions: row.exclusions ?? {}, learned_weights: row.learned_weights ?? {},
   });

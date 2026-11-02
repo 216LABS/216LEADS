@@ -1,0 +1,19 @@
+key: remodel
+version: 1
+label: Remodeling
+threshold: 55
+signals:
+  new_owner: { weight: 35 }
+  price_band: { weight: 25 }
+  living_area: { weight: 15 }
+  last_permit_age:remodel: { weight: 15, lifespan_years: 25 }
+  owner_occupied: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+sliders:
+  - { key: new_owner, label: "Just moved in" }
+  - { key: price_band, label: "Home value fit" }
+  - { key: living_area, label: "Bigger homes" }
+default_filters: { price_min: 150000, owner_occupied: true }
+default_exclusions: { rentals: true, condos: false, condemned: true }
+pitch: "{top_reason}. New owners plan the kitchen in the first year; a free design visit is an easy yes."

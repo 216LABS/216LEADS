@@ -59,4 +59,6 @@
 - [garage,           '\b(?<!parking )(garages?|carports?)\b']
 - [pool,             '\b(swimming pools?|(above|in)[- ]ground pools?|pools?|spas?|hot tubs?)\b']
 - [tree,             '\b(tree (removal|trimming|pruning|service|work|cutting)|(remove|removal of|cut down|trim)( \w+){0,2} trees?|stumps?( grinding| removal)?)\b']
+# pest: not in spec 7.3; added for the pest-control preset (mostly city violation notices).
+- [pest,             '\b(rodents?|rats?|mice|roach\w*|infest\w*|vermin|bed ?bugs?|termites?|insects?|pests?)\b']
 - [remodel,          '\b(kitchens?|bath\w*|remodel\w*|alteration\w*|additions?|renovat\w*|demo\w*)\b']

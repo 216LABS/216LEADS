@@ -10,6 +10,10 @@ signals:
   owner_occupied: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: permit, category: new_build, within_days: 120, boost: 10, label: "New home (new lawn)" }
+  - { kind: permit, category: pool, within_days: 120, boost: 8, label: "New pool (yard rework)" }
+  - { kind: permit, category: remodel, within_days: 120, boost: 6, label: "Addition or remodel" }
+  - { kind: permit, category: demolition, within_days: 120, boost: 6, label: "Demolition (yard to restore)" }
 sliders:
   - { key: grass, label: "Lawn area" }
   - { key: lot_size, label: "Lot size" }

@@ -135,6 +135,10 @@ export const CATEGORY_PATTERNS: [string, string][] = [
     "\\b(tree (removal|trimming|pruning|service|work|cutting)|(remove|removal of|cut down|trim)( \\w+){0,2} trees?|stumps?( grinding| removal)?)\\b"
   ],
   [
+    "pest",
+    "\\b(rodents?|rats?|mice|roach\\w*|infest\\w*|vermin|bed ?bugs?|termites?|insects?|pests?)\\b"
+  ],
+  [
     "remodel",
     "\\b(kitchens?|bath\\w*|remodel\\w*|alteration\\w*|additions?|renovat\\w*|demo\\w*)\\b"
   ]
@@ -173,6 +177,34 @@ export const TEMPLATES: Record<string, Template> = {
         "within_days": 30,
         "boost": 10,
         "label": "Just sold"
+      },
+      {
+        "kind": "permit",
+        "category": "pool",
+        "within_days": 60,
+        "boost": 10,
+        "label": "New pool needs wiring"
+      },
+      {
+        "kind": "permit",
+        "category": "hvac",
+        "within_days": 60,
+        "boost": 8,
+        "label": "New HVAC (heat pump circuit)"
+      },
+      {
+        "kind": "permit",
+        "category": "garage",
+        "within_days": 60,
+        "boost": 8,
+        "label": "New garage needs power"
+      },
+      {
+        "kind": "permit",
+        "category": "remodel",
+        "within_days": 60,
+        "boost": 6,
+        "label": "Remodel underway"
       }
     ],
     "sliders": [
@@ -278,6 +310,81 @@ export const TEMPLATES: Record<string, Template> = {
     },
     "pitch": "{top_reason}. A free fence quote while they settle in is an easy yes."
   },
+  "gutters": {
+    "key": "gutters",
+    "version": 1,
+    "label": "Gutters",
+    "threshold": 55,
+    "signals": {
+      "canopy": {
+        "weight": 30
+      },
+      "survey_condition:gutters": {
+        "weight": 20
+      },
+      "home_age": {
+        "weight": 15
+      },
+      "new_owner": {
+        "weight": 20
+      },
+      "neighbor_job:gutters": {
+        "weight": 15
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      },
+      {
+        "kind": "permit",
+        "category": "roofing",
+        "within_days": 60,
+        "boost": 12,
+        "label": "New roof permit (gutters next)"
+      },
+      {
+        "kind": "permit",
+        "category": "siding",
+        "within_days": 60,
+        "boost": 8,
+        "label": "New siding permit"
+      },
+      {
+        "kind": "neighbor_job",
+        "category": "gutters",
+        "within_days": 60,
+        "boost": 6,
+        "label": "Neighbors replacing gutters"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "canopy",
+        "label": "Trees over the roof"
+      },
+      {
+        "key": "survey_condition:gutters",
+        "label": "Gutter condition"
+      },
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      }
+    ],
+    "default_filters": {
+      "owner_occupied": true
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": true,
+      "condemned": true
+    },
+    "pitch": "{top_reason}. Guards before the leaves fall are an easy yes."
+  },
   "hvac": {
     "key": "hvac",
     "version": 1,
@@ -372,6 +479,34 @@ export const TEMPLATES: Record<string, Template> = {
         "within_days": 30,
         "boost": 10,
         "label": "Just sold"
+      },
+      {
+        "kind": "permit",
+        "category": "new_build",
+        "within_days": 120,
+        "boost": 10,
+        "label": "New home (new lawn)"
+      },
+      {
+        "kind": "permit",
+        "category": "pool",
+        "within_days": 120,
+        "boost": 8,
+        "label": "New pool (yard rework)"
+      },
+      {
+        "kind": "permit",
+        "category": "remodel",
+        "within_days": 120,
+        "boost": 6,
+        "label": "Addition or remodel"
+      },
+      {
+        "kind": "permit",
+        "category": "demolition",
+        "within_days": 120,
+        "boost": 6,
+        "label": "Demolition (yard to restore)"
       }
     ],
     "sliders": [
@@ -398,6 +533,166 @@ export const TEMPLATES: Record<string, Template> = {
       "condemned": true
     },
     "pitch": "{top_reason}. First mow free for new neighbors is an easy yes."
+  },
+  "painting": {
+    "key": "painting",
+    "version": 1,
+    "label": "Painting",
+    "threshold": 55,
+    "signals": {
+      "era_pre1950": {
+        "weight": 20
+      },
+      "survey_condition:paint_peeling": {
+        "weight": 15
+      },
+      "survey_condition:siding": {
+        "weight": 10
+      },
+      "new_owner": {
+        "weight": 20
+      },
+      "active_violation:painting": {
+        "weight": 20
+      },
+      "no_recent_permit:painting": {
+        "weight": 15
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      },
+      {
+        "kind": "violation",
+        "category": "painting",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City paint citation"
+      },
+      {
+        "kind": "permit",
+        "category": "siding",
+        "within_days": 90,
+        "boost": 8,
+        "label": "New siding permit"
+      },
+      {
+        "kind": "permit",
+        "category": "windows",
+        "within_days": 90,
+        "boost": 6,
+        "label": "New windows permit"
+      },
+      {
+        "kind": "permit",
+        "category": "remodel",
+        "within_days": 90,
+        "boost": 6,
+        "label": "Remodel underway"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "survey_condition:paint_peeling",
+        "label": "Peeling paint"
+      },
+      {
+        "key": "era_pre1950",
+        "label": "Older homes (pre-1950)"
+      },
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      }
+    ],
+    "default_filters": {
+      "owner_occupied": true
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": true,
+      "condemned": true
+    },
+    "pitch": "Built {year_built}. {top_reason}. A fresh coat before the trim rots is an easy yes."
+  },
+  "pest": {
+    "key": "pest",
+    "version": 1,
+    "label": "Pest control",
+    "threshold": 55,
+    "signals": {
+      "era_pre1950": {
+        "weight": 20
+      },
+      "canopy": {
+        "weight": 20
+      },
+      "new_owner": {
+        "weight": 30
+      },
+      "flood": {
+        "weight": 10
+      },
+      "active_violation:pest": {
+        "weight": 20
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      },
+      {
+        "kind": "violation",
+        "category": "pest",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City pest citation"
+      },
+      {
+        "kind": "neighbor_job",
+        "category": "demolition",
+        "within_days": 60,
+        "boost": 8,
+        "label": "Demolition nearby (pests move)"
+      },
+      {
+        "kind": "permit",
+        "category": "new_build",
+        "within_days": 60,
+        "boost": 6,
+        "label": "New construction"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      },
+      {
+        "key": "era_pre1950",
+        "label": "Older homes"
+      },
+      {
+        "key": "canopy",
+        "label": "Trees and shade"
+      }
+    ],
+    "default_filters": {
+      "owner_occupied": false
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": false,
+      "condemned": true
+    },
+    "pitch": "{top_reason}. A first inspection free for new neighbors is an easy yes."
   },
   "plumbing": {
     "key": "plumbing",
@@ -467,6 +762,62 @@ export const TEMPLATES: Record<string, Template> = {
       "condemned": true
     },
     "pitch": "Built {year_built}. {top_reason}. A camera look at the main line is cheap peace of mind."
+  },
+  "remodel": {
+    "key": "remodel",
+    "version": 1,
+    "label": "Remodeling",
+    "threshold": 55,
+    "signals": {
+      "new_owner": {
+        "weight": 35
+      },
+      "price_band": {
+        "weight": 25
+      },
+      "living_area": {
+        "weight": 15
+      },
+      "last_permit_age:remodel": {
+        "weight": 15,
+        "lifespan_years": 25
+      },
+      "owner_occupied": {
+        "weight": 10
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      },
+      {
+        "key": "price_band",
+        "label": "Home value fit"
+      },
+      {
+        "key": "living_area",
+        "label": "Bigger homes"
+      }
+    ],
+    "default_filters": {
+      "price_min": 150000,
+      "owner_occupied": true
+    },
+    "default_exclusions": {
+      "rentals": true,
+      "condos": false,
+      "condemned": true
+    },
+    "pitch": "{top_reason}. New owners plan the kitchen in the first year; a free design visit is an easy yes."
   },
   "roofing": {
     "key": "roofing",
@@ -547,6 +898,119 @@ export const TEMPLATES: Record<string, Template> = {
     },
     "pitch": "Built {year_built}. {top_reason}. A free roof check before winter is an easy yes."
   },
+  "septic": {
+    "key": "septic",
+    "version": 1,
+    "label": "Septic",
+    "threshold": 55,
+    "signals": {
+      "septic": {
+        "weight": 40
+      },
+      "new_owner": {
+        "weight": 17
+      },
+      "home_age": {
+        "weight": 10
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 12,
+        "label": "Just sold (inspect the tank)"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      },
+      {
+        "key": "home_age",
+        "label": "Older systems"
+      },
+      {
+        "key": "septic",
+        "label": "Septic homes only"
+      }
+    ],
+    "default_filters": {
+      "sewer_in": [
+        "SP",
+        "SPS"
+      ]
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": true,
+      "condemned": true
+    },
+    "pitch": "{top_reason}. A pump-out and inspection in the first year is an easy yes."
+  },
+  "siding": {
+    "key": "siding",
+    "version": 1,
+    "label": "Siding",
+    "threshold": 55,
+    "signals": {
+      "survey_condition:siding": {
+        "weight": 25
+      },
+      "last_permit_age:siding": {
+        "weight": 25,
+        "lifespan_years": 30
+      },
+      "home_age": {
+        "weight": 20
+      },
+      "new_owner": {
+        "weight": 15
+      },
+      "active_violation:siding": {
+        "weight": 15
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      },
+      {
+        "kind": "violation",
+        "category": "siding",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City siding citation"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "survey_condition:siding",
+        "label": "Siding condition"
+      },
+      {
+        "key": "last_permit_age:siding",
+        "label": "Siding age"
+      },
+      {
+        "key": "new_owner",
+        "label": "Just moved in"
+      }
+    ],
+    "default_filters": {
+      "owner_occupied": true
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": true,
+      "condemned": true
+    },
+    "pitch": "Built {year_built}. {top_reason}. A free siding estimate is an easy yes."
+  },
   "tree": {
     "key": "tree",
     "version": 1,
@@ -608,5 +1072,74 @@ export const TEMPLATES: Record<string, Template> = {
       "condemned": true
     },
     "pitch": "{top_reason}. A free look at overhanging limbs before the next storm is an easy yes."
+  },
+  "waterproofing": {
+    "key": "waterproofing",
+    "version": 1,
+    "label": "Waterproofing",
+    "threshold": 55,
+    "signals": {
+      "flood": {
+        "weight": 30
+      },
+      "era_pre1950": {
+        "weight": 20
+      },
+      "new_owner": {
+        "weight": 20
+      },
+      "last_permit_age:waterproof": {
+        "weight": 15,
+        "lifespan_years": 30
+      },
+      "neighbor_job:waterproof": {
+        "weight": 15
+      }
+    },
+    "triggers": [
+      {
+        "kind": "sale",
+        "within_days": 30,
+        "boost": 10,
+        "label": "Just sold"
+      },
+      {
+        "kind": "neighbor_job",
+        "category": "waterproof",
+        "within_days": 60,
+        "boost": 8,
+        "label": "Neighbors waterproofing"
+      },
+      {
+        "kind": "permit",
+        "category": "plumbing",
+        "within_days": 60,
+        "boost": 8,
+        "label": "Plumbing work (water issues)"
+      }
+    ],
+    "sliders": [
+      {
+        "key": "flood",
+        "label": "Flood zone"
+      },
+      {
+        "key": "era_pre1950",
+        "label": "Older foundations"
+      },
+      {
+        "key": "neighbor_job:waterproof",
+        "label": "Neighbors waterproofing"
+      }
+    ],
+    "default_filters": {
+      "owner_occupied": true
+    },
+    "default_exclusions": {
+      "rentals": false,
+      "condos": true,
+      "condemned": true
+    },
+    "pitch": "Built {year_built}. {top_reason}. A dry-basement check before spring rain is an easy yes."
   }
 } as Record<string, Template>;
