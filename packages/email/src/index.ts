@@ -6,7 +6,7 @@ import { optionalEnv, type Sql } from "@216leads/db";
 import { BRAND } from "@216leads/shared";
 import { emailFromEnv, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
 
-export { emailFromEnv, outbox, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
+export { dbOutbox, emailFromEnv, outbox, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
 export { Digest, digestSubject, type DigestLead, type DigestProps } from "./templates/digest";
 export { AutoMailSummary, Invite, MailBatch, PaymentFailed, TrialEnding, Welcome } from "./templates/transactional";
 export { TrialDay3, trialDay3Subject, type TrialDay3Props } from "./templates/day3";

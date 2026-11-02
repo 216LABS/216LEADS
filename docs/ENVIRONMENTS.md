@@ -10,7 +10,7 @@
 | Database + auth | Supabase project `216homesignal-prod` (Pro plan) | Supabase project `216homesignal-staging` (free plan, in a separate Supabase org) | `supabase start` |
 | Stripe | live keys | test keys (`sk_test_`) | test keys or none |
 | Lob | live key | test key (`test_`) | test key or none (dry run) |
-| Resend | live domain | sandbox or test domain | none (emails go to `.data/outbox`) |
+| Resend | live domain | sandbox or test domain | none (emails go to the `email_outbox` table, shown at `/admin/outbox`; `EMAIL_OUTBOX=file` writes `.data/outbox` files) |
 | Data | real public records + customers | real public records + 3 QA orgs from `pnpm seed:staging` | fixtures or a local full ingest |
 
 Outside production the app shows a STAGING or LOCAL banner and **refuses live Stripe and Lob keys in code** (`assertKeyAllowed` in `packages/shared/src/app-env.ts`), so a misconfigured preview cannot charge a card or mail a postcard.

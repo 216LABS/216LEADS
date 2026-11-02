@@ -222,7 +222,7 @@ Final acceptance (spec 15), checked 2026-11-02:
 7. **Seed data** is real: `pnpm fixtures:pull` downloads small samples from the live endpoints (owner fields dropped) into `packages/ingest/fixtures`. `pnpm local` loads them when the DB is empty. `pnpm ingest:cleveland` pulls the full real data.
 8. **UI** uses Tailwind with hand-written components in the shadcn style instead of the shadcn CLI.
 9. **Scheduling**: no always-on scheduler locally. Jobs run via `pnpm ingest <job>`; production schedules are in a GitHub Actions workflow; light jobs are callable at `/api/cron/:job`.
-10. **Email** without `RESEND_API_KEY` writes rendered emails to `.data/outbox` instead of sending.
+10. **Email** without `RESEND_API_KEY` (or outside production) goes to the `email_outbox` table instead of being sent; `/admin/outbox` shows it (issue #40). `EMAIL_OUTBOX=file` writes `.data/outbox` files for local work; serverless previews can't write to disk, so the table is the default. Ops alerts use the same sink, and staging never sends real mail even with a key. Rows are pruned after 30 days by the lifecycle job.
 11. **Stripe** runs only with test keys (`sk_test_`). Without keys the app stays on the free trial and billing buttons explain that billing is not configured.
 12. **Lob** runs only with test keys (`test_`); the provider throws on a live key or `LOB_ENV=live`. Without a key, a dry-run provider records pieces locally and never contacts any service.
 13. **Map tiles** default to OpenFreeMap's free style (no key); `NEXT_PUBLIC_MAP_STYLE_URL` overrides it.
