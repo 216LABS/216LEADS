@@ -52,7 +52,7 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25 }:
     onChange(next);
     setText("");
     setMatches([]);
-    setError(found.length + zips.length > max ? `Up to ${max} ZIP codes` : null);
+    setError(new Set([...zips, ...found]).size > max ? `Up to ${max} ZIP codes on this plan. We kept the first ${max}.` : null);
   }
 
   function add() {

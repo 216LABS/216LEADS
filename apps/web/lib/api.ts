@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrgContext, getUser, type OrgContext, type SessionUser } from "./session";
 import { rateLimit } from "./ratelimit";
+import { canUseApp } from "@216leads/shared";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -21,6 +22,13 @@ export async function apiOrg(): Promise<OrgContext> {
   if (!rateLimit(`user:${user.id}`, 60, 60_000)) throw new ApiError(429, "Too many requests. Try again in a minute.");
   const ctx = await getOrgContext();
   if (!ctx) throw new ApiError(403, "Finish onboarding first");
+  return ctx;
+}
+
+/** apiOrg for paid features (export, mail): 402 while the account is locked or canceled (issue #4). */
+export async function apiActiveOrg(): Promise<OrgContext> {
+  const ctx = await apiOrg();
+  if (!canUseApp(ctx.org.billing_state)) throw new ApiError(402, "Your plan isn't active. Pick a plan in Settings → Billing to keep going.");
   return ctx;
 }
 

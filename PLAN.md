@@ -118,8 +118,17 @@ Result: Leads has a sticky filter bar (search, 5 chips, sort, status tabs with c
 Result: new package `@216leads/email` with React Email templates: digest (top 10 leads, trigger counts, competitor of the week, one-tap links, postal footer, List-Unsubscribe; about 16 KB) and transactional (welcome, trial ending, payment failed, mail batch, auto-mail summary, team invite). `sendEmail` renders, claims an `email_log` row by dedupe key, then sends, so no message goes out twice. Jobs `digest` (each org's day from 06:00 ET, one per address per ISO week) and `lifecycle` (day-3 check-in from Sam, issue #8; trial ending, day 11) run from `/api/cron/:job` and the CLI; `schedule.yml` calls them hourly and runs the daily ingest pipeline. The welcome email is sent at onboarding and invite emails from Settings → Team. A signed one-tap unsubscribe link works without signing in.
 
 ### M7: Billing
-- [ ] Stripe Checkout, Customer Portal, webhooks (test mode only)
-- [ ] Plans, trial, zip limits per plan, monthly postcard credits
+- [x] Stripe Checkout, Customer Portal, webhooks (test mode only)
+- [x] Plans, trial, zip limits per plan, monthly postcard credits
+
+Result:
+- **Stripe:** `POST /api/billing/checkout` (keeps remaining trial days, adds the metered postcard price, applies the founding coupon to Pro monthly while spots remain), `POST /api/billing/portal`, and `POST /api/webhooks/stripe` (signature-checked, idempotent via `stripe_event`).
+- **Billing state (issue #4):** one pure function, `deriveBillingState`, decides `trialing / active / past_due / locked / canceled`. The webhook and the hourly lifecycle job store it, and the session derives it live. Locked or canceled accounts see a lock panel everywhere except Settings → Billing, CSV export returns 402, digests stop, and unsent postcards are canceled. One trial per email.
+- **Credits:** 25 postcards when a trial adds a card; monthly plan credits (the first grant adds to the trial's).
+- **Zip limits:** per plan in Settings → Your area; 3 on the trial at onboarding.
+- **UI:** plan cards with a monthly/yearly toggle and the founding "n of 20 spots left" line (issue #5) on Settings → Billing and the onboarding plan step.
+- **Docs:** `docs/STRIPE_SETUP.md` covers the dashboard steps.
+- **Tests:** an integration test walks a full lifecycle through synthetic webhook events.
 
 ### M8: Print and mail
 - [ ] `MailProvider` interface; Lob (test keys only, live sends refused); PostGrid behind the same interface
@@ -199,6 +208,10 @@ Result: new package `@216leads/email` with React Email templates: digest (top 10
 53. **Scheduler is `.github/workflows/schedule.yml`.** It runs the daily ingest pipeline at 09:30 UTC with the production DB secret, and calls `/api/cron/digest` and `/api/cron/lifecycle` hourly. Each job skips with a notice until its secrets exist.
 55. **Day-3 check-in (issue #8)** is part of the `lifecycle` job, not a separate table: `email_log` (dedupe key `trial_day3:<user>`) is the "sends at most once" record the issue asks for, and `email_optout` holds lifecycle unsubscribes. We store no first names, so it opens "hey there". Orgs with no homes are listed in the job run's meta (`day3_no_homes`) instead of being emailed. The admin preview route comes with the admin tools (issues #6/#10).
 54. **Line endings:** `.gitattributes` forces LF in the repo. Windows tools had committed some files with CRLF in M4/M5; this PR renormalized them, so its diff touches those files without changing their content.
+56. **`billing_state` is stored and derived.** `deriveBillingState` (shared, unit-tested for every transition) is the single rule. The column is what jobs filter on (digest, lifecycle); the session recomputes it per request so a trial that ended a minute ago is already locked in the UI. The webhook and the hourly `lifecycle` job keep the column current.
+57. **Checkout during the trial keeps the trial.** Checkout sets `trial_end` to the org's `trial_ends_at` when it's 49+ hours away (Stripe's minimum), so subscribing on day 2 doesn't cut the free days short. The 25 trial postcards are granted at `checkout.session.completed` and kept when the first month's credits arrive.
+58. **Credits reset monthly, annual plans included.** The lifecycle job grants plan credits to active paid orgs once every 30 days (`usage_ledger` `credit_grant`); credits don't roll over. Exclusive-plan zip locks are M10.
+59. **The founding coupon is Pro monthly only.** Issue #5 leaves annual open; the PR asks Sam.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
@@ -225,7 +238,7 @@ Checked 2026-11-01 from this machine. All reachable without login.
 ## Stubs and gaps
 
 - **Cloud accounts (D1):** Vercel project, Supabase `216leads-prod` / `216leads-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
-- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
+- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
 
 - **Tree category has no real Cleveland examples** (tree work does not need a building permit there); it is low-confidence per Addendum A5.
 - **Records without a parcel number or matching address** (about 0.8% of Cleveland permits, mostly commercial or multi-parcel projects) stay in `unmatched_record` and show at `/admin/unmatched`.
