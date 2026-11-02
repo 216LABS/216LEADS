@@ -8,8 +8,10 @@ import { Button, Input, Label } from "./ui";
 interface Match { kind: "zip" | "town"; label: string; zips: string[]; homes: number }
 interface Count { zip: string; town: string; matching: number; taken: boolean }
 
-export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25 }: {
+export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25, showAvailable = false }: {
   zips: string[]; onChange: (z: string[]) => void; trade?: string; tradeLabel?: string; max?: number;
+  /** Exclusive plan: open ZIPs get an "Available" badge next to the "Taken" ones. */
+  showAvailable?: boolean;
 }) {
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +67,7 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25 }:
   return (
     <div>
       <Label htmlFor="area">Where do you work?</Label>
-      <p className="mb-2 text-sm text-slate">Type ZIP codes or towns in Cuyahoga County. You can change these later.</p>
+      <p className="mb-2 text-sm text-slate">Type ZIP codes or towns in Cuyahoga, Lake, Medina or Stark County. You can change these later.</p>
       <div className="relative">
         <div className="flex gap-2">
           <Input id="area" placeholder="44107 or Lakewood" value={text} aria-invalid={!!error} autoComplete="off"
@@ -103,7 +105,8 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25 }:
               <li key={z} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
                 <span><span className="num font-semibold">{z}</span>{c?.town ? ` ${c.town}` : ""}</span>
                 {c ? <span className="text-slate">: {c.matching.toLocaleString("en-US")} homes match</span> : null}
-                {c?.taken ? <span className="ml-1 rounded-full bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span> : null}
+                {c?.taken ? <span className="ml-1 rounded-full bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span>
+                  : c && showAvailable ? <span className="ml-1 rounded-full bg-won/10 px-2 text-xs font-semibold text-won">Available</span> : null}
                 <button type="button" aria-label={`Remove ${z}`} onClick={() => onChange(zips.filter((x) => x !== z))}
                   className="focus-ring grid h-7 w-7 place-items-center rounded-full text-slate hover:bg-white hover:text-navy">×</button>
               </li>

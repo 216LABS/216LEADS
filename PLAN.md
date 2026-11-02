@@ -155,8 +155,14 @@ Result:
 - **Tests:** `market.int.test.ts` checks the ring, competitor and heat counts against independent SQL over the fixtures (spec 15 M2 acceptance). The smoke test covers map pins, the ring and the competitors page on phone and desktop. Checked on the full local load in a `/leads` production build: map ready in about 2 s, ring query 14 ms.
 
 ### M10: More counties and exclusivity
-- [ ] Lake parcels + sales, Lake monthly permits XLSX, Medina permits, Stark sales
-- [ ] Exclusivity lock (409 "Taken") and 72-hour visibility delay
+- [x] Lake parcels + sales, Lake monthly permits XLSX, Medina permits, Stark sales
+- [x] Exclusivity lock (409 "Taken") and 72-hour visibility delay
+
+Result:
+- **Jobs:** `lake_parcels`, `lake_permits_xlsx`, `stark_sales`, `medina_permits` (in `packages/ingest/src/sources/`), all in the daily pipeline; `pnpm ingest pipeline counties` does the first full load. FEMA flood now covers all four counties.
+- **Local load (real data):** Lake 114,583 parcels (87,531 homes) and 27,912 permit rows from 68 monthly reports (2021-01 to 2026-07), 90.6% matched to a parcel (93.7% of residential permits); Stark 304,288 sales -> 107,588 home stubs, 225,764 sale events; Medina Oct 2026 list: 364 permits on 315 home stubs, 197 placed on the map. Privacy audit 0 hits.
+- **Exclusivity:** on the Exclusive plan, Settings > Your area has "Make exclusive" on each ZIP (up to 5). Saving locks them for the org's trade in the same transaction; a ZIP another business holds returns 409 "Taken" and nothing is saved. Everyone else's new leads in a locked ZIP show 72 hours later (also never auto-mailed before then). Locks are freed when the org leaves the Exclusive plan. The area picker shows "Available" next to "Taken" on the Exclusive plan.
+- **Tests:** `counties.test.ts` (parsers, owner cells never read), `exclusivity.int.test.ts` (Taken + rollback, other trades, plan cap, 72-hour delay, release).
 
 ### M11: Prove it
 - [ ] Attribution matcher + ROI dashboard + monthly PDF
@@ -239,6 +245,16 @@ Result:
 70. **The competitor tracker defaults to the org's trade category** ("All permits" is one tap away) and lists businesses only; permits by individual license holders are counted in one line, never named (decision 32).
 71. **MapLibre 6's worker is emitted by webpack** (`new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url)` + `setWorkerUrl`), so it is served under the base path and follows Dependabot bumps. If the basemap style can't load, the map falls back to a plain background and pins still work.
 72. **The map fits the 1st-99th percentile of the area's homes.** A few county parcel points sit miles from their ZIP and made the raw extent about 4 times too wide.
+73. **Lake parcels refresh weekly, sales daily.** The layer has no update stamp, so the daily delta is parcels with a sale in the last 21 days; a full refresh runs when the last one is 7+ days old. Sale dates are midnight-UTC epochs, read as UTC (reading them as ET put every sale a day early).
+74. **Lake town names are normalized** (uppercase, hyphens to spaces, trailing CITY/VILLAGE dropped, TOWNSHIP kept) so the parcel layer's "Mentor-on-the-Lake City" and the report's "Mentor on the Lake" are one town, while Painesville City and Painesville Township stay apart.
+75. **Lake permit reports are read by header name.** Column order changes between years (2021, 2022, 2024 and 2026 layouts differ). Jan and Mar 2023 have no Issued Date column; their rows are skipped and counted (decision 30). Each file's SHA-256 is kept in the source cursor so a file is processed once; `--full` re-reads all. Applicant Name is never read; DBA "OWNER" is not a contractor.
+76. **Lake permits without a parcel number match by address within the town.** The report has no ZIP; parcel "0" is a placeholder. Such rows take the ZIP of the single Lake home at that street address in the same town, then go through normal matching.
+77. **Towns in a Lake report get permit coverage** (`permits_source = lake_permits_xlsx`). County Building Inspection doesn't serve every Lake city (Mentor, Eastlake, Willoughby run their own), so those towns stay "no permit data" and use the population average (decision 18).
+78. **Medina stubs are geocoded by postal city when the township name fails.** The list gives a township ("SHARON"), which the Census geocoder can't place. Unplaced rows are tried against that township's usual postal cities, then all of Medina County's; a point counts only if every city that matches puts it in the same spot inside the county box. Placed stubs keep their point; unplaced ones (mostly brand-new streets the Census doesn't know yet) are retried the next time the list changes, and have no ZIP until then, so they sit outside every ZIP territory. The job does nothing until the list's date range changes (`--full` forces a pass).
+82. **Medina sub-permits.** Electrical and HVAC permits reuse the building permit's number and leave the PPN blank. They're stored as `<permit>:<section>`, take the PPN of the same permit or address in the list, and otherwise join the stub already at that address in that town, or get an address-keyed stub (`medina:A<hash>`). The electrical contractor is kept (in the description or as the contractor) only when it's a business name; a person's name is never stored, including in the raw page store.
+79. **Stark stubs only for numbered land-and-building sales.** The sales layer has no land-use code; vacant land (`1+LAND`) and unaddressed lots aren't homes and would otherwise score as limited-data homes. Events are keyed `PARID:CONVEYANCE_NUMBER` (one conveyance covers several parcels). Arms-length = `ARMS_LENGTH = 'Yes'` and $10,000+ (decision 20).
+80. **One source failing doesn't stop the daily run.** `pipeline daily` runs every job, then fails at the end naming the ones that broke, so a Medina or Census outage still lets matching and scoring run.
+81. **Exclusive ZIPs are chosen, not implied.** The Exclusive plan covers 10 ZIPs, 5 of them exclusive, so the owner marks which ones; saving the area without the Exclusive plan releases any locks. A Stripe subscription change to any other plan also releases them.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
@@ -269,4 +285,5 @@ Checked 2026-11-01 from this machine. All reachable without login.
 
 - **Tree category has no real Cleveland examples** (tree work does not need a building permit there); it is low-confidence per Addendum A5.
 - **Records without a parcel number or matching address** (about 0.8% of Cleveland permits, mostly commercial or multi-parcel projects) stay in `unmatched_record` and show at `/admin/unmatched`.
+- **Medina has no parcel layer** (checked again 2026-11-02): homes exist only once they have a permit, and have no year built, value or sale. Stark homes likewise have only sales (no year built or size).
 - **Certificates of occupancy match at 86%**: many carry multi-parcel or retired parcel numbers. They are an M3 signal source only, so this is logged rather than worked around.

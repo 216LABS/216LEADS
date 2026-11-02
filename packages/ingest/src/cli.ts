@@ -6,7 +6,7 @@
 //   pnpm ingest seed --staging      (QA orgs + QA login; never production)
 //   pnpm ingest fixtures pull
 import { closeAll, getDirectSql, migrate } from "@216leads/db";
-import { CLEVELAND_FULL, DAILY, JOBS, runJob, type JobOpts } from "./jobs";
+import { CLEVELAND_FULL, COUNTIES_FULL, DAILY, JOBS, runJob, type JobOpts } from "./jobs";
 import { pullFixtures, seed, seedStaging } from "./seed";
 import { rawStore } from "./rawstore";
 import { initSentry, reportError } from "./sentry";
@@ -55,15 +55,23 @@ async function main() {
       await runJob(sql, arg, jobOpts(flags));
       break;
     case "pipeline": {
-      const list = arg === "daily" ? DAILY : arg === "cleveland" ? CLEVELAND_FULL : null;
-      if (!list) throw new Error("usage: pipeline cleveland|daily");
+      const list = arg === "daily" ? DAILY : arg === "cleveland" ? CLEVELAND_FULL : arg === "counties" ? COUNTIES_FULL : null;
+      if (!list) throw new Error("usage: pipeline cleveland|counties|daily");
       await migrate(() => {});
       const o = jobOpts(flags);
+      const failed: string[] = [];
       for (const j of list) {
-        // The first Cleveland load is a full one; later daily runs are deltas.
-        await runJob(sql, j, { ...o, full: arg === "cleveland" ? true : o.full });
+        // The first Cleveland load is a full one; later daily runs are deltas. One source being
+        // down must not stop the rest of the day (matching, scoring), so failures are collected.
+        try {
+          await runJob(sql, j, { ...o, full: arg === "cleveland" ? true : o.full });
+        } catch (e) {
+          failed.push(j);
+          console.error(`[${j}] failed: ${e instanceof Error ? e.message : String(e)}`);
+        }
       }
       if (arg === "daily") console.log(`purged ${rawStore().purgeOlderThan(180)} raw day folders older than 180 days`);
+      if (failed.length) throw new Error(`pipeline ${arg}: ${failed.join(", ")} failed`);
       break;
     }
     case "seed":

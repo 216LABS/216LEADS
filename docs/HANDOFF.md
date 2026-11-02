@@ -23,7 +23,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (#44), M9 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (#44), M9 (#46), M10 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
@@ -42,12 +42,14 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - M9: MapLibre map (pins, permit/sale/violation/flood/heat layers, lasso to mail), neighbor ring, competitor tracker (`packages/ingest/src/market.ts`, decisions 65-72).
 
-**Next:** M10 (more counties and exclusivity), then M11 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M10: Lake parcels/sales + monthly permit XLSX, Stark sales stubs, Medina permit-list stubs (Census geocoder), `pipeline counties`; Exclusive-plan ZIP locks (409 "Taken"), 72-hour delay for others, locks released off-plan (decisions 73-81).
+
+**Next:** M11 (prove it), then M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
 - `pnpm local` = Docker + local Supabase + `.env` + migrations + fixtures + dev server. Supabase containers are `supabase_*_216-leads`; DB at `postgresql://postgres:postgres@127.0.0.1:54322/postgres`; auth mail at http://127.0.0.1:54324.
-- **The local DB has the full real load**: all 572,828 Cuyahoga parcels; all Cleveland layers; canopy, centroids, FEMA. Don't wipe it. For a fresh-machine test use a scratch database (see the CI stub below).
+- **The local DB has the full real load**: all 572,828 Cuyahoga parcels; all Cleveland layers; canopy, centroids, FEMA; plus (M10) all Lake parcels and permit reports, all Stark sales, and the current Medina list. Don't wipe it. For a fresh-machine test use a scratch database (see the CI stub below).
 - Logins (local only): `demo@216leads.test` / `demo-roofing-216` (Demo Roofing, also admin via `ADMIN_EMAILS`); QA `qa@216leads.test` / `qa-216-leads-local` (QA HVAC/Roofing/Fence; created by `pnpm seed:staging`).
 - Dev server: `pnpm dev` on :3000 (restart it after `.env` changes; `next.config.ts` reads the root `.env`).
 - Useful: `pnpm ingest jobs`, `pnpm ingest run <job> [--full]`, `pnpm ingest run privacy_audit` (must report 0 hits), `/admin/jobs`.
