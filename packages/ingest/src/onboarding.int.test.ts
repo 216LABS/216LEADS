@@ -36,8 +36,8 @@ describe("onboarding (spec 9.1)", () => {
   });
 
   it("counts homes per ZIP and flags a ZIP another org holds exclusively", async () => {
-    const [{ zip }] = (await sql<{ zip: string }[]>`
-      select zip from parcel where is_residential(land_use_code, data_limited) group by zip order by count(*) desc limit 1`) as [{ zip: string }];
+    const zip = (await sql<{ zip: string }[]>`
+      select zip from parcel where is_residential(land_use_code, data_limited) group by zip order by count(*) desc limit 1`)[0]!.zip;
     const holder = (await sql<{ id: string }[]>`insert into org (name, trade) values ('Lock Holder', 'roofing') returning id`)[0]!.id;
     orgs.push(holder);
     await sql`insert into exclusivity_lock (trade, zip, org_id) values ('roofing', ${zip}, ${holder})`;
