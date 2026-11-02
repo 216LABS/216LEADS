@@ -31,7 +31,7 @@ async function post<T>(path: string, payload: unknown): Promise<T> {
   return data as T;
 }
 
-export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; initial: Draft; onBack: () => void }) {
+export function Confirm({ answers, initial, onBack, refToken }: { answers: WizardAnswers; initial: Draft; onBack: () => void; refToken?: string | null }) {
   const router = useRouter();
   const [draft, setDraft] = useState(initial);
   const [m, setM] = useState<Record<string, number>>({});
@@ -80,7 +80,7 @@ export function Confirm({ answers, initial, onBack }: { answers: WizardAnswers; 
     setBusy("save");
     setError(null);
     try {
-      await post("/api/profile/activate", { recipe: draft.recipe, multipliers: m, answers, source: "wizard", customers: customers?.lines });
+      await post("/api/profile/activate", { recipe: draft.recipe, multipliers: m, answers, source: "wizard", customers: customers?.lines, ref: refToken ?? undefined });
       router.replace("/onboarding/brand");
       router.refresh();
     } catch (err) {
