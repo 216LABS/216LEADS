@@ -18,6 +18,7 @@
     "db:stop": "supabase stop",
     "db:migrate": "pnpm --filter @216leads/db migrate",
     "db:seed": "pnpm --filter @216leads/ingest seed",
+    "seed:staging": "pnpm --filter @216leads/ingest cli seed --staging",
     "ingest": "pnpm --filter @216leads/ingest cli",
     "ingest:cleveland": "pnpm --filter @216leads/ingest cli pipeline cleveland",
     "fixtures:pull": "pnpm --filter @216leads/ingest fixtures:pull"

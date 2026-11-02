@@ -198,25 +198,63 @@ async function ensureAuthUser(sql: Sql, email: string, password: string): Promis
   return ((await res.json()) as { id: string }).id;
 }
 
-export async function ensureDemoOrg(sql: Sql): Promise<string | null> {
-  const userId = await ensureAuthUser(sql, DEMO.email, DEMO.password);
-  const [existing] = await sql<{ id: string }[]>`select id from org where name = ${DEMO.org} order by created_at limit 1`;
+async function ensureOrg(
+  sql: Sql,
+  o: { name: string; trade: string; zips: string[]; offer: string; email: string; userId: string | null },
+): Promise<string> {
+  const [existing] = await sql<{ id: string }[]>`select id from org where name = ${o.name} order by created_at limit 1`;
   let orgId = existing?.id;
   if (!orgId) {
-    const t = getTemplate("roofing");
-    const [o] = await sql<{ id: string }[]>`
+    const t = getTemplate(o.trade);
+    const [row] = await sql<{ id: string }[]>`
       insert into org (name, trade, plan, trial_ends_at, onboarded_at, phone, website, default_offer, digest_emails, coach_marks_seen)
-      values (${DEMO.org}, 'roofing', 'trial', now() + interval '14 days', now(), '(216) 555-0142', 'https://example.com',
-        '$150 off a full roof replacement', ${[DEMO.email]}, false)
+      values (${o.name}, ${o.trade}, 'trial', now() + interval '14 days', now(), '(216) 555-0142', 'https://example.com',
+        ${o.offer}, ${[o.email]}, false)
       returning id`;
-    orgId = o!.id;
-    for (const z of DEMO.zips) await sql`insert into territory (org_id, kind, zip) values (${orgId}, 'zip', ${z})`;
+    orgId = row!.id;
+    for (const z of o.zips) await sql`insert into territory (org_id, kind, zip) values (${orgId}, 'zip', ${z})`;
     await sql`insert into scoring_profile (org_id, template_key, template_version) values (${orgId}, ${t.key}, ${t.version})`;
   }
-  if (userId) {
-    await sql`insert into org_member (org_id, user_id, role) values (${orgId}, ${userId}, 'owner') on conflict do nothing`;
+  if (o.userId) {
+    await sql`insert into org_member (org_id, user_id, role) values (${orgId}, ${o.userId}, 'owner') on conflict do nothing`;
   }
   return orgId;
+}
+
+export async function ensureDemoOrg(sql: Sql): Promise<string | null> {
+  const userId = await ensureAuthUser(sql, DEMO.email, DEMO.password);
+  return ensureOrg(sql, { name: DEMO.org, trade: "roofing", zips: DEMO.zips, offer: "$150 off a full roof replacement", email: DEMO.email, userId });
+}
+
+/** QA orgs for staging (D1): HVAC, roofing and fence, all on the real-data fixtures. */
+export const QA_ORGS = [
+  { name: "QA HVAC Co", trade: "hvac", offer: "$89 furnace tune-up" },
+  { name: "QA Roofing Co", trade: "roofing", offer: "$150 off a full roof replacement" },
+  { name: "QA Fence Co", trade: "fence", offer: "Free fence quote this month" },
+];
+
+/**
+ * `pnpm seed:staging`: real public fixtures plus 3 QA orgs and a QA login. Never customer data.
+ * The QA login is a member of all three orgs (the app opens the first, QA HVAC Co).
+ */
+export async function seedStaging(sql: Sql) {
+  const env = process.env.APP_ENV ?? "local";
+  if (env === "production") throw new Error("seed:staging refuses to run with APP_ENV=production");
+  const email = optionalEnv("QA_EMAIL") ?? "qa@216leads.test";
+  const password = optionalEnv("QA_PASSWORD") ?? (env === "local" ? "qa-216-leads-local" : null);
+  if (!password) throw new Error("Set QA_PASSWORD for the staging QA login");
+  const [row] = await sql<{ n: number }[]>`select count(*)::int as n from parcel`;
+  if ((row?.n ?? 0) === 0) {
+    await loadFixtures(sql);
+    await runSignals(sql);
+  }
+  const userId = await ensureAuthUser(sql, email, password);
+  for (const q of QA_ORGS) {
+    const orgId = await ensureOrg(sql, { ...q, zips: FIXTURE_ZIPS, email, userId });
+    const s = await scoreOrg(sql, orgId);
+    console.log(`seed:staging: ${q.name} has ${s.qualified} scored leads`);
+  }
+  console.log(`seed:staging: QA login ${email}${env === "local" ? ` / ${password}` : " (password from QA_PASSWORD)"}`);
 }
 
 export async function seed(sql: Sql, o: { force?: boolean } = {}) {

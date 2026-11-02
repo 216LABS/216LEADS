@@ -3,15 +3,21 @@ import { supabaseServer } from "@/lib/supabase";
 
 /** Magic-link and OAuth return: exchange the code for a session cookie. */
 export async function GET(req: NextRequest) {
-  const url = req.nextUrl;
-  const code = url.searchParams.get("code");
-  const next = url.searchParams.get("next") || "/leads";
-  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/leads";
+  const code = req.nextUrl.searchParams.get("code");
+  const next = req.nextUrl.searchParams.get("next") || "/leads";
+  const [safePath, safeQuery = ""] = (next.startsWith("/") && !next.startsWith("//") ? next : "/leads").split("?");
+  // Cloning nextUrl keeps the base path (/leads in production) on every redirect.
+  const to = (pathname: string, search = "") => {
+    const u = req.nextUrl.clone();
+    u.pathname = pathname;
+    u.search = search;
+    return u;
+  };
   if (code) {
     const supabase = await supabaseServer();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(new URL(safeNext, url.origin));
-    return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message)}`, url.origin));
+    if (!error) return NextResponse.redirect(to(safePath!, safeQuery ? `?${safeQuery}` : ""));
+    return NextResponse.redirect(to("/login", `?error=${encodeURIComponent(error.message)}`));
   }
-  return NextResponse.redirect(new URL("/login", url.origin));
+  return NextResponse.redirect(to("/login"));
 }
