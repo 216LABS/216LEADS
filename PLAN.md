@@ -53,8 +53,9 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: the migrate and backup workflows skip with a notice until `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL` and `BACKUP_ENCRYPTION_KEY` exist. Migrations stay on our runner (`packages/db/migrations`, tracked in `_migrations`) rather than the Supabase CLI's folder (decision 3). CI also fails PRs that edit a merged migration and warns on `drop column/table`.
 
 ### D8: Repo setup for the backlog loop (DevOps addendum)
-- [ ] Issue templates (bug, feature), labels (`ready`, `in-progress`, `needs-qa`, `blocked`, `bug`, `feature`, `p0`-`p3`, `risky`)
-- [ ] PR template (`Closes #<issue>`, how to test on the preview); `CONTRIBUTING.md` describing the issue -> PR -> `needs-qa` loop
+- [x] Issue templates (bug, feature), labels (`ready`, `in-progress`, `needs-qa`, `blocked`, `bug`, `feature`, `p0`-`p3`, `risky`)
+- [x] PR template (`Closes #<issue>`, how to test on the preview); `CONTRIBUTING.md` describing the issue -> PR -> `needs-qa` loop
+- Notes: all the D8 labels already existed on the repo. Issues #1-#12 were already written in this format.
 
 ### D5: Security checks (DevOps addendum)
 - [ ] Dependabot (npm + Actions, weekly, grouped minor/patch); gitleaks in CI; `npm audit --audit-level=high` (warn only)
