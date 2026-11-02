@@ -1,4 +1,4 @@
-// Post-deploy check for the base-path deploy (M12): node scripts/dev/check-deploy.mjs https://216labs.dev/leads
+// Post-deploy check for the base-path deploy (M12): node scripts/dev/check-deploy.mjs https://216labs.dev/homesignal
 // Fetches the public pages and the health route, and checks that page assets are served under the base path.
 const base = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const path = new URL(base).pathname.replace(/\/$/, "");
@@ -19,6 +19,11 @@ for (const p of pages) {
 const h = await fetch(`${base}/api/health`);
 const body = await h.json().catch(() => ({}));
 check(h.status === 200 && body.db === "ok", `api/health ${h.status} db=${body.db} ingest_ok=${body.ingest?.ok}`);
+// #42: links from before the rename (/leads/...) answer 308 with the same page under /homesignal.
+if (path === "/homesignal") {
+  const old = await fetch(`${new URL(base).origin}/leads/pricing`, { redirect: "manual" });
+  check(old.status === 308 && (old.headers.get("location") ?? "").endsWith("/homesignal/pricing"), `old /leads/pricing -> ${old.status} ${old.headers.get("location")}`);
+}
 const app = await fetch(`${base}/leads`, { redirect: "manual" });
 check([307, 308].includes(app.status) && (app.headers.get("location") ?? "").includes(`${path}/login`), `signed-out /leads -> ${app.headers.get("location")}`);
 process.exit(failed ? 1 : 0);

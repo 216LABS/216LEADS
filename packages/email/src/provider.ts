@@ -30,8 +30,8 @@ function resend(key: string): EmailProvider {
     name: "resend",
     async send(msg) {
       const from = msg.stream === "digest"
-        ? optionalEnv("RESEND_FROM_DIGEST") ?? "216 Leads <digest@mail.216labs.dev>"
-        : optionalEnv("RESEND_FROM_TRANSACTIONAL") ?? "216 Leads <hello@mail.216labs.dev>";
+        ? optionalEnv("RESEND_FROM_DIGEST") ?? "216 HomeSignal <digest@mail.216labs.dev>"
+        : optionalEnv("RESEND_FROM_TRANSACTIONAL") ?? "216 HomeSignal <hello@mail.216labs.dev>";
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },

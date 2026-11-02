@@ -1,5 +1,5 @@
 name: Bug
-description: Something in 216 Leads is broken or wrong.
+description: Something in 216 HomeSignal is broken or wrong.
 labels: ["bug"]
 body:
   - type: textarea

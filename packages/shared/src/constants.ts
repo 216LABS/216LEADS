@@ -1,9 +1,9 @@
 export const BRAND = {
-  name: "216 Leads",
+  name: "216 HomeSignal",
   by: "216LABS",
   tagline: "Know which homes need you next.",
-  domain: "216labs.dev/leads",
-  optoutUrl: "216labs.dev/leads/optout",
+  domain: "216labs.dev/homesignal",
+  optoutUrl: "216labs.dev/homesignal/optout",
   footerAddress: "216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107",
   /** Support contact (issue #7); SUPPORT_EMAIL overrides it for reply-to. */
   supportEmail: "sam@216labs.dev",

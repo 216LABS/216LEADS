@@ -54,7 +54,7 @@ export function utmUrl(website: string | null, design: Design): string | null {
   if (!website) return null;
   try {
     const u = new URL(/^https?:\/\//i.test(website) ? website : `https://${website}`);
-    u.searchParams.set("utm_source", "216leads");
+    u.searchParams.set("utm_source", "216homesignal");
     u.searchParams.set("utm_medium", "postcard");
     u.searchParams.set("utm_campaign", design);
     return u.toString();

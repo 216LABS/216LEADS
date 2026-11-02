@@ -174,7 +174,7 @@ export async function commitSend(sql: Sql, r: SendRequest, plan: SendPlan, provi
       });
       const res = await provider.createPostcard({
         idempotencyKey: piece!.id, to: p.to, from, frontHtml: html.front, backHtml: html.back, size: "4x6", sendDate: sendAfter.toISOString(),
-        description: `216 Leads ${batchId.slice(0, 8)}`,
+        description: `216 HomeSignal ${batchId.slice(0, 8)}`,
       });
       await sql`
         update mail_piece set provider_id = ${res.id}, status = 'submitted', expected_delivery = ${res.expectedDelivery ?? null}, cost_cents = ${res.costCents ?? null},

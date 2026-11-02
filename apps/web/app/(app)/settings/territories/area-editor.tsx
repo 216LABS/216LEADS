@@ -42,7 +42,7 @@ export function AreaEditor({ zips: initial, exclusive: initialExclusive, exclusi
       {exclusiveMax > 0 && zips.length ? (
         <fieldset className="space-y-2">
           <legend className="text-sm font-semibold text-navy">Exclusive ZIP codes ({held.length} of {exclusiveMax})</legend>
-          <p className="text-xs text-slate">No other {tradeLabel} business on 216 Leads gets these homes. Others in a ZIP you hold see new homes 72 hours after you.</p>
+          <p className="text-xs text-slate">No other {tradeLabel} business on 216 HomeSignal gets these homes. Others in a ZIP you hold see new homes 72 hours after you.</p>
           <ul className="flex flex-wrap gap-2">
             {zips.map((z) => {
               const on = held.includes(z);

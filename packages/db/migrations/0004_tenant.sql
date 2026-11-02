@@ -5,21 +5,21 @@ create table org (
   logo_path text,
   phone text,
   website text,
-  default_offer text,                 -- 216 Leads addition: onboarding step 4
+  default_offer text,                 -- 216 HomeSignal addition: onboarding step 4
   return_address jsonb,               -- {name,line1,line2,city,state,zip}
   stripe_customer_id text unique,
   plan text not null default 'trial', -- trial | starter | pro | exclusive | canceled
   plan_status text,
-  plan_interval text,                 -- 216 Leads addition: month | year
+  plan_interval text,                 -- 216 HomeSignal addition: month | year
   trial_ends_at timestamptz,
-  payment_failed_at timestamptz,      -- 216 Leads addition: banner + 7-day grace
+  payment_failed_at timestamptz,      -- 216 HomeSignal addition: banner + 7-day grace
   postcard_credits int not null default 0,
   digest_enabled boolean not null default true,
   digest_emails citext[] not null default '{}',
-  digest_day int not null default 1,  -- 216 Leads addition: 0=Sun..6=Sat, default Monday
+  digest_day int not null default 1,  -- 216 HomeSignal addition: 0=Sun..6=Sat, default Monday
   streetview_enabled boolean not null default false,
-  onboarded_at timestamptz,           -- 216 Leads addition
-  coach_marks_seen boolean not null default false, -- 216 Leads addition
+  onboarded_at timestamptz,           -- 216 HomeSignal addition
+  coach_marks_seen boolean not null default false, -- 216 HomeSignal addition
   created_at timestamptz not null default now()
 );
 
@@ -31,7 +31,7 @@ create table org_member (
 );
 create index org_member_user_idx on org_member (user_id);
 
--- 216 Leads addition: team invites (Settings > Team)
+-- 216 HomeSignal addition: team invites (Settings > Team)
 create table org_invite (
   id uuid primary key default gen_random_uuid(),
   org_id uuid not null references org(id) on delete cascade,
@@ -93,7 +93,7 @@ create table lead (
   pitch text,
   trigger_event_id bigint references parcel_event(id),
   trigger_label text,
-  trigger_date date,                  -- 216 Leads addition: drives "Sold 6 days ago"
+  trigger_date date,                  -- 216 HomeSignal addition: drives "Sold 6 days ago"
   status lead_status not null default 'new',
   status_changed_at timestamptz not null default now(),
   first_touch_at timestamptz,
@@ -164,7 +164,7 @@ create table mail_piece (
   status text not null default 'queued',
   to_name text not null default 'Current Resident',
   to_address jsonb not null,
-  merge_variables jsonb not null default '{}'::jsonb, -- 216 Leads addition
+  merge_variables jsonb not null default '{}'::jsonb, -- 216 HomeSignal addition
   send_after timestamptz not null default now() + interval '15 minutes',
   cost_cents int,
   price_cents int,

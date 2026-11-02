@@ -1,10 +1,10 @@
-# Handoff: 216 Leads build (for the next agent)
+# Handoff: 216 HomeSignal build (for the next agent)
 
 Written 2026-11-02 at the end of a long session, so a new chat can pick up cleanly. Read this first, then `PLAN.md`.
 
 ## 1. What this is
 
-**216 Leads** (by 216LABS; formerly "HomeTrigger" in older notes, fully renamed) ranks Northeast Ohio homes for a home-service trade from free public records and shows the record-backed reasons. Served at **216labs.dev/leads**.
+**216 HomeSignal** (by 216LABS; renamed from "216 Leads" on 2026-11-02, issue #42, decision 93; "HomeTrigger" in the oldest notes) ranks Northeast Ohio homes for a home-service trade from free public records and shows the record-backed reasons. Served at **216labs.dev/homesignal**.
 
 - Repo: `C:\Users\samfi\OneDrive\Desktop\216LABSSTUFF\216_LEADS` → GitHub `216LABS/216LEADS` (remote `origin`).
 - Specs (read in this order): `BUILD_SPEC.md` (source of truth) → `ADDENDUM_PROFILE_WIZARD.md` → `ADDENDUM_DEVOPS.md` → `216_LEADS_PLAN.md` (product/pricing context).
@@ -64,7 +64,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - Bash heredocs that contain backticks or `${` break in this shell: write files with the Write tool, or write a Python script to the scratchpad and run it. Python on Windows writes CRLF unless you pass `newline='\n'` (`.gitattributes` normalizes the index anyway).
 - `tsx` applies a package's tsconfig only to files in its `include`; the email templates carry a `@jsxRuntime automatic` pragma so the CLI can render them.
-- A dev server left over from an earlier run keeps port 3000; stop it before starting another (`Get-NetTCPConnection -LocalPort 3000`). In M9 an old dev server served stale compiled pages (files edited under OneDrive weren't picked up) and stopping it was blocked by the auto-mode guard. Workaround: `git worktree add --detach <scratch>/wt HEAD`, copy `.env`, `pnpm install --frozen-lockfile --prefer-offline`, `NEXT_PUBLIC_BASE_PATH=/leads npx next build`, then `next start -p 3001` with the same env, and point `E2E_BASE_URL=http://localhost:3001/leads/` at it.
+- A dev server left over from an earlier run keeps port 3000; stop it before starting another (`Get-NetTCPConnection -LocalPort 3000`). In M9 an old dev server served stale compiled pages (files edited under OneDrive weren't picked up) and stopping it was blocked by the auto-mode guard. Workaround: `git worktree add --detach <scratch>/wt HEAD`, copy `.env`, `pnpm install --frozen-lockfile --prefer-offline`, `NEXT_PUBLIC_BASE_PATH=/homesignal npx next build`, then `next start -p 3001` with the same env, and point `E2E_BASE_URL=http://localhost:3001/leads/` at it.
 
 - **Git Bash rewrites args starting with `/`** into Windows paths (`/leads`, `/pulls/13`). Prefix commands with `MSYS_NO_PATHCONV=1`.
 - **The Bash tool collapses `\\` in heredocs/python strings.** For regex-heavy edits (YAML categories, regex in TS), use the Edit/Write tools, not sed/python.
@@ -76,7 +76,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
   - Screenshots: `MSYS_NO_PATHCONV=1 node scripts/dev/shot.mjs <outPrefix> <email> <password> /path` (env `WIDTH=390` phone, `FULL=1`, `BASE=` for base-path builds)
 - Gate commits on checks: `pnpm lint && pnpm typecheck && pnpm test` (D5 once failed in CI because typecheck output was chained with `;`).
 - Rebase-merged stacked PRs conflict; prefer **squash** merges and don't stack branches.
-- Production build check of the `/leads` base path: `cd apps/web && MSYS_NO_PATHCONV=1 APP_ENV=staging NEXT_PUBLIC_BASE_PATH=/leads npx next build` (stop the dev server first; they share `.next`). Never use raw `"/..."` app paths in `fetch()` or form `action` (a lint rule enforces `withBase()`).
+- Production build check of the `/homesignal` base path: `cd apps/web && MSYS_NO_PATHCONV=1 APP_ENV=staging NEXT_PUBLIC_BASE_PATH=/homesignal npx next build` (stop the dev server first; they share `.next`). Never use raw `"/..."` app paths in `fetch()` or form `action` (a lint rule enforces `withBase()`).
 
 ## 6. CI (GitHub Actions)
 

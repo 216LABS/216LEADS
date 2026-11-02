@@ -112,6 +112,16 @@ test("help page opens and a problem report sends", async ({ page }) => {
   await expect(dialog.getByText("Thanks. We got it")).toBeVisible();
 });
 
+test("old /leads links 308 to the same page under /homesignal (#42)", async ({ page, baseURL }) => {
+  test.skip(!baseURL?.includes("/homesignal/"), "only when served under the /homesignal base path");
+  const res = await page.request.get(`${new URL(baseURL!).origin}/leads/pricing`, { maxRedirects: 0 });
+  expect(res.status()).toBe(308);
+  expect(res.headers().location).toMatch(/\/homesignal\/pricing$/);
+  await page.goto(`${new URL(baseURL!).origin}/leads/pricing`);
+  await expect(page).toHaveURL(/\/homesignal\/pricing$/);
+  await expect(page.getByRole("heading", { name: "Pricing" })).toBeVisible();
+});
+
 test("signed-out visitors are sent to sign in", async ({ page }) => {
   await page.goto("leads");
   await expect(page).toHaveURL(/\/login\?next=/);

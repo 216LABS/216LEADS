@@ -1,4 +1,4 @@
-# 216 Leads: Full Product & Business Plan
+# 216 HomeSignal: Full Product & Business Plan
 
 Brand, features, UX, architecture, pricing, unit economics, cold-email go-to-market, launch timeline and risks for a NE Ohio public-records lead product for home-service trades. Researched 2026-11-01 (ET).
 
@@ -28,7 +28,7 @@ Brand, features, UX, architecture, pricing, unit economics, cold-email go-to-mar
 
 | Metric | Value | Detail |
 |---|---|---|
-| Brand | **216 Leads** | by 216LABS; served at 216labs.dev/leads |
+| Brand | **216 HomeSignal** | by 216LABS; served at 216labs.dev/homesignal |
 | Starter / Pro / Exclusive | **$99 / $199 / $349** | + $0.99 postcards [J] |
 | Customers for $10K/mo take-home | **~70-80** | ~150 if all Starter [J] |
 | To a sellable v1 | **3 weeks** | M1 list in 2 wks, mail in wk 3 [J] |
@@ -51,15 +51,15 @@ Every name below had its .com checked by RDAP; unregistered means RDAP returned 
 | Leadstoop | available [V] | Cute; reads as generic lead-gen | Pass |
 | Doorlist | taken; doorlisthq.com free [V] | Existing brand with 1,900 searches/mo [V] | Pass |
 | FirstKnock | taken [V] | Live competitor at firstknock.app selling $0.94 new-homeowner postcards [V] | Pass |
-| 216 Leads | served at 216labs.dev/leads | Local and memorable for Cleveland; 216 is the city area code. Chosen 2026-11-01 | **Pick** |
+| 216 HomeSignal | served at 216labs.dev/homesignal | Local and memorable for Cleveland; 216 is the city area code. Chosen 2026-11-01 | **Pick** |
 
-- **Name:** 216 Leads, "by 216LABS" in the footer and emails, served at 216labs.dev/leads
+- **Name:** 216 HomeSignal, "by 216LABS" in the footer and emails, served at 216labs.dev/homesignal
 - **Tagline:** Know which homes need you next.
 - **Voice:** Plain, local, a little blunt. Talks like a sharp office manager, not a SaaS deck. Numbers first, no hype words.
 - **Colors:** Navy #0F2A44, Signal Orange #F26B1D, Paper #F7F5F0, Slate #4A5563, Green #2E7D4F (won), Red #B42318 (lost)
 - **Type:** Inter for UI, JetBrains Mono for addresses and numbers
 - **Mark:** House outline with an orange pulse dot at the roof peak
-- **Domain:** the product lives at 216labs.dev/leads; buy a separate cold-email domain, see section 8
+- **Domain:** the product lives at 216labs.dev/homesignal; buy a separate cold-email domain, see section 8
 
 ---
 
@@ -189,7 +189,7 @@ Assumptions [J]: plan mix 50% Starter / 35% Pro / 15% Exclusive gives about $172
 ## 8. Getting customers (cold email)
 
 - **Prospects: DataForSEO business listings by trade and radius.** 272 HVAC contractors within 40 km of Cleveland with 5+ reviews; every sampled one had a website and phone, none had an email [V]. Get emails only from each business's own site contact page. No appends.
-- **Domain: separate sending domain (e.g. a try-216leads style domain; check availability) on 2-3 Google Workspace inboxes.** SPF, DKIM, DMARC; 2-3 weeks warm-up; never from the product domain.
+- **Domain: separate sending domain (e.g. a try-216homesignal style domain; check availability) on 2-3 Google Workspace inboxes.** SPF, DKIM, DMARC; 2-3 weeks warm-up; never from the product domain.
 - **Volume: 20-40 emails/day, sent by hand or a light tool.** Personalize town and trade. Stop on any reply.
 - **Teaser: real local numbers + 5-row sample.** e.g. 1,190 single-family sales in Cuyahoga in October, 840 built before 1960 [V]. Sample rows are generated from live data at send time with house numbers partly masked and no names.
 - **Replies: "list" = send their free zip list within a day, then offer a 15-minute screen share.** "stop" or any opt-out = suppress forever, honored well inside CAN-SPAM's 10 business days.
@@ -294,7 +294,7 @@ Fixed software costs at list price [J, re-check before launch]: Vercel, Supabase
 - Sources can change or move (Summit to GovWell [S])
 - USPS address hygiene and "Current Resident" rules for First Class need confirming with Lob [S]
 - Ohio telemarketing law (ORC 4719) is why there are no cold calls; attorney review still pending
-- "216 Leads" trademark not searched at USPTO [S]
+- "216 HomeSignal" trademark not searched at USPTO [S]
 
 ---
 

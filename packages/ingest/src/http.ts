@@ -9,7 +9,7 @@ const nextSlot = new Map<string, number>();
 const browserUaHosts = new Set<string>();
 
 export function userAgent(): string {
-  return optionalEnv("INGEST_USER_AGENT") ?? "216Leads/1.0 (+https://216labs.dev/leads/data)";
+  return optionalEnv("INGEST_USER_AGENT") ?? "216HomeSignal/1.0 (+https://216labs.dev/homesignal/data)";
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

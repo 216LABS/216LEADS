@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// One command to run 216 Leads locally:
+// One command to run 216 HomeSignal locally:
 //   1. make sure Docker is running
 //   2. start the local Supabase stack (Postgres + PostGIS + Auth + Mailpit)
 //   3. create .env from .env.example and fill Supabase keys from the running stack
@@ -122,6 +122,6 @@ if (args.has("--no-dev")) {
   process.exit(0);
 }
 
-step("Starting 216 Leads at http://localhost:3000");
+step("Starting 216 HomeSignal at http://localhost:3000");
 const dev = spawn("pnpm", ["dev"], { cwd: root, stdio: "inherit", shell: isWin });
 dev.on("exit", (code) => process.exit(code ?? 0));

@@ -11,7 +11,7 @@ function Cta({ href, children }: { href: string; children: string }) {
 export function Welcome({ orgName, leads, leadsUrl }: { orgName: string; leads: number; leadsUrl: string }) {
   return (
     <Layout preview={`${leads} homes are on your list`}>
-      <Heading as="h1" style={{ fontSize: 20, margin: "0 0 8px" }}>Welcome to 216 Leads</Heading>
+      <Heading as="h1" style={{ fontSize: 20, margin: "0 0 8px" }}>Welcome to 216 HomeSignal</Heading>
       <Text style={p}>{orgName} is set up. {leads.toLocaleString("en-US")} homes in your area match right now, each with the public records behind it.</Text>
       <Text style={p}>New sales post daily and Cleveland permits every morning, so check back, or watch for your weekly digest.</Text>
       <Cta href={leadsUrl}>See my leads</Cta>
@@ -62,8 +62,8 @@ export function AutoMailSummary({ sent, skipped, spentText, mailUrl }: { sent: n
 
 export function Invite({ orgName, inviteUrl }: { orgName: string; inviteUrl: string }) {
   return (
-    <Layout preview={`Join ${orgName} on 216 Leads`}>
-      <Heading as="h1" style={{ fontSize: 20, margin: "0 0 8px" }}>Join {orgName} on 216 Leads</Heading>
+    <Layout preview={`Join ${orgName} on 216 HomeSignal`}>
+      <Heading as="h1" style={{ fontSize: 20, margin: "0 0 8px" }}>Join {orgName} on 216 HomeSignal</Heading>
       <Text style={p}>You&rsquo;ve been invited to the team&rsquo;s lead list. The link works for 14 days.</Text>
       <Cta href={inviteUrl}>Accept the invite</Cta>
     </Layout>

@@ -32,9 +32,9 @@ export default tseslint.config(
       // the base path. next/link and next/navigation add it on their own.
       "no-restricted-syntax": [
         "error",
-        { selector: "CallExpression[callee.name='fetch'] > Literal[value=/^\\u002F/]", message: "Wrap app paths in withBase() so the /leads base path is kept." },
-        { selector: "CallExpression[callee.name='fetch'] > TemplateLiteral > TemplateElement:first-child[value.raw=/^\\u002F/]", message: "Wrap app paths in withBase() so the /leads base path is kept." },
-        { selector: "JSXAttribute[name.name='action'] > Literal[value=/^\\u002F/]", message: "Wrap form actions in withBase() so the /leads base path is kept." },
+        { selector: "CallExpression[callee.name='fetch'] > Literal[value=/^\\u002F/]", message: "Wrap app paths in withBase() so the /homesignal base path is kept." },
+        { selector: "CallExpression[callee.name='fetch'] > TemplateLiteral > TemplateElement:first-child[value.raw=/^\\u002F/]", message: "Wrap app paths in withBase() so the /homesignal base path is kept." },
+        { selector: "JSXAttribute[name.name='action'] > Literal[value=/^\\u002F/]", message: "Wrap form actions in withBase() so the /homesignal base path is kept." },
       ],
     },
   },

@@ -1,4 +1,4 @@
-# Contributing to 216 Leads
+# Contributing to 216 HomeSignal
 
 This repo is built mostly by Claude Code working through the GitHub issue backlog. The same loop applies to people.
 

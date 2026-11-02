@@ -1,6 +1,6 @@
 # Changelog
 
-What changed in 216 Leads, in plain words. Release notes per tag are generated on GitHub from PR titles; this page is the short customer-facing version.
+What changed in 216 HomeSignal, in plain words. Release notes per tag are generated on GitHub from PR titles; this page is the short customer-facing version.
 
 ## Unreleased (build phase)
 

@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 // Secrets live in the repo-root .env (shared with the ingest CLI).
 loadDotenv({ path: join(process.cwd(), "..", "..", ".env"), quiet: true } as Parameters<typeof loadDotenv>[0]);
 
-// Production and staging serve the app under 216labs.dev/leads; local runs at the root.
+// Production and staging serve the app under 216labs.dev/homesignal; local runs at the root.
 const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
@@ -16,6 +16,17 @@ const nextConfig: NextConfig = {
   // Legal and help text is read from content/*.mdx at request time (issues #3, #7).
   outputFileTracingIncludes: { "/**": ["./content/**/*"] },
   typedRoutes: false,
+  // #42: the product moved from /leads to /homesignal; old links 308 to the same page.
+  ...(basePath === "/homesignal"
+    ? {
+        async redirects() {
+          return [
+            { source: "/leads", destination: "/homesignal", permanent: true, basePath: false as const },
+            { source: "/leads/:path*", destination: "/homesignal/:path*", permanent: true, basePath: false as const },
+          ];
+        },
+      }
+    : {}),
   env: {
     NEXT_PUBLIC_APP_ENV: process.env.APP_ENV ?? "local",
     NEXT_PUBLIC_BASE_PATH: basePath,

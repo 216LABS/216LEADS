@@ -1,7 +1,7 @@
 {
   "name": "216-leads",
   "private": true,
-  "description": "216 Leads by 216LABS: which Northeast Ohio homes need your trade next, and why.",
+  "description": "216 HomeSignal by 216LABS: which Northeast Ohio homes need your trade next, and why.",
   "packageManager": "pnpm@10.11.0",
   "engines": {
     "node": ">=20"

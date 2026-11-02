@@ -102,10 +102,13 @@ jobs:
       - name: QA orgs and login
         run: pnpm seed:staging
       - name: Build and start the app
+        # Production layout: served under the /homesignal base path (#42).
+        env:
+          NEXT_PUBLIC_BASE_PATH: /homesignal
         run: |
           pnpm --filter @216leads/web build
           (pnpm --filter @216leads/web start > /tmp/web.log 2>&1 &)
-          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/login && exit 0; sleep 2; done
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/homesignal/login && exit 0; sleep 2; done
           cat /tmp/web.log; exit 1
       - name: Playwright
         run: |
@@ -113,7 +116,7 @@ jobs:
           pnpm --filter @216leads/web test:e2e
         env:
           # Point at a Vercel preview once previews exist (repository variable E2E_BASE_URL).
-          E2E_BASE_URL: ${{ vars.E2E_BASE_URL || 'http://localhost:3000/' }}
+          E2E_BASE_URL: ${{ vars.E2E_BASE_URL || 'http://localhost:3000/homesignal/' }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

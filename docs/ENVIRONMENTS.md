@@ -1,13 +1,13 @@
 # Environments
 
-216 Leads runs in three environments. `main` is production; every change reaches it through a pull request, and every PR gets a Vercel preview that runs against **staging**.
+216 HomeSignal runs in three environments. `main` is production; every change reaches it through a pull request, and every PR gets a Vercel preview that runs against **staging**.
 
 | | production | staging | local |
 |---|---|---|---|
-| URL | 216labs.dev/leads | Vercel preview URL per PR (`.../leads`) | http://localhost:3000 |
+| URL | 216labs.dev/homesignal | Vercel preview URL per PR (`.../homesignal`) | http://localhost:3000 |
 | `APP_ENV` | `production` | `staging` | `local` |
-| `NEXT_PUBLIC_BASE_PATH` | `/leads` | `/leads` | blank |
-| Database + auth | Supabase project `216leads-prod` (Pro plan) | Supabase project `216leads-staging` (free plan, in a separate Supabase org) | `supabase start` |
+| `NEXT_PUBLIC_BASE_PATH` | `/homesignal` | `/homesignal` | blank |
+| Database + auth | Supabase project `216homesignal-prod` (Pro plan) | Supabase project `216homesignal-staging` (free plan, in a separate Supabase org) | `supabase start` |
 | Stripe | live keys | test keys (`sk_test_`) | test keys or none |
 | Lob | live key | test key (`test_`) | test key or none (dry run) |
 | Resend | live domain | sandbox or test domain | none (emails go to `.data/outbox`) |
@@ -20,14 +20,14 @@ Outside production the app shows a STAGING or LOCAL banner and **refuses live St
 These need the 216LABS accounts and are not done by the code:
 
 1. **Supabase**
-   - Create `216leads-prod` on the paid org (Pro) and `216leads-staging` on a separate free org (Supabase does not mix plans in one org). Staging may pause after a week idle; that is fine.
-   - In each project: Authentication → URL configuration. Site URL: `https://216labs.dev/leads` (prod) or the staging preview domain. Add redirect URLs `https://216labs.dev/leads/**` (prod) and `https://*-216labs.vercel.app/leads/**` (staging previews).
+   - Create `216homesignal-prod` on the paid org (Pro) and `216homesignal-staging` on a separate free org (Supabase does not mix plans in one org). Staging may pause after a week idle; that is fine.
+   - In each project: Authentication → URL configuration. Site URL: `https://216labs.dev/homesignal` (prod) or the staging preview domain. Add redirect URLs `https://216labs.dev/homesignal/**` (prod) and `https://*-216labs.vercel.app/leads/**` (staging previews).
    - Copy the API URL, anon key, service role key and the direct database URL for each into the Vercel and GitHub secrets below.
 2. **Vercel**
    - Import `216LABS/216LEADS`, Root Directory `apps/web` (pnpm workspace is detected; `apps/web/vercel.json` sets the build).
-   - **Production** environment variables: production values from `.env.example`, `APP_ENV=production`, `NEXT_PUBLIC_BASE_PATH=/leads`.
-   - **Preview** environment variables: staging values, `APP_ENV=staging`, `NEXT_PUBLIC_BASE_PATH=/leads`. Previews must never get production keys.
-   - Point `216labs.dev` at the project with a `/leads` rewrite, or serve the project on `216labs.dev` directly with the base path.
+   - **Production** environment variables: production values from `.env.example`, `APP_ENV=production`, `NEXT_PUBLIC_BASE_PATH=/homesignal`.
+   - **Preview** environment variables: staging values, `APP_ENV=staging`, `NEXT_PUBLIC_BASE_PATH=/homesignal`. Previews must never get production keys.
+   - Point `216labs.dev` at the project with a `/homesignal` rewrite, or serve the project on `216labs.dev` directly with the base path.
 3. **GitHub secrets** (Settings → Secrets → Actions), used by the migration and backup workflows (milestones D2/D4): `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL`, `BACKUP_ENCRYPTION_KEY`. The scheduler (`schedule.yml`, M6) also needs `PRODUCTION_DATABASE_URL_DIRECT` (daily ingest), `PRODUCTION_APP_URL` + `CRON_SECRET` (hourly digest/lifecycle calls), and optionally `SENTRY_DSN`, `RESEND_API_KEY`, `ALERT_EMAILS`.
 4. **Email (M6):** set `APP_BASE_URL=https://216labs.dev`, `EMAIL_LINK_SECRET` (random, 32+ chars) and `RESEND_API_KEY` in production. Resend sends only when `APP_ENV=production`; staging and local write every email to `.data/outbox`. Verify `mail.216labs.dev` in Resend with SPF, DKIM and DMARC (`p=none` first, `p=quarantine` after two clean weeks).
 4. **Staging data**: with the staging env loaded, run `pnpm db:migrate` then `pnpm seed:staging` (set `QA_PASSWORD` first; the QA login is `qa@216leads.test`).
@@ -38,4 +38,4 @@ These need the 216LABS accounts and are not done by the code:
 
 ## Supabase magic-link email (M6)
 
-In each Supabase project: Authentication → Emails → Magic Link. Subject "Your 216 Leads sign-in link". Body: "Tap to sign in to 216 Leads: {{ .ConfirmationURL }} — the link works once and expires in an hour. If you didn't ask for it, ignore this email. 216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107". Set SMTP to Resend (`smtp.resend.com`, user `resend`, password = `RESEND_API_KEY`) with sender `hello@mail.216labs.dev`.
+In each Supabase project: Authentication → Emails → Magic Link. Subject "Your 216 HomeSignal sign-in link". Body: "Tap to sign in to 216 HomeSignal: {{ .ConfirmationURL }} — the link works once and expires in an hour. If you didn't ask for it, ignore this email. 216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107". Set SMTP to Resend (`smtp.resend.com`, user `resend`, password = `RESEND_API_KEY`) with sender `hello@mail.216labs.dev`.

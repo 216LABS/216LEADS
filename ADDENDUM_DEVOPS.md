@@ -1,13 +1,13 @@
-# Addendum: Dev Pipeline, Staging and Safety Nets (216 Leads)
+# Addendum: Dev Pipeline, Staging and Safety Nets (216 HomeSignal)
 
 This adds to BUILD_SPEC.md and ADDENDUM_PROFILE_WIZARD.md. It does not replace anything. Don't redo finished work. Goal: a cheap, real software-team pipeline where every change is tested on a preview before it reaches customers. Prefer free tiers; the only paid items at launch are Vercel Pro and Supabase Pro on production.
 
 ## D1. Branches and environments
-- `main` is production (216labs.dev/leads). Nothing is pushed straight to main; every change is a PR.
+- `main` is production (216labs.dev/homesignal). Nothing is pushed straight to main; every change is a PR.
 - Every PR gets a Vercel preview deployment automatically. Previews use the **staging** env vars, never production ones.
 - Environments:
-  - **production**: Supabase project `216leads-prod` (Pro plan), Stripe live, Lob live, Resend live.
-  - **staging**: a second Supabase project `216leads-staging` on a separate free Supabase org (Supabase can't mix plans in one org). Stripe test mode, Lob test key, Resend sandbox or a test domain. It may pause after a week idle; that's fine.
+  - **production**: Supabase project `216homesignal-prod` (Pro plan), Stripe live, Lob live, Resend live.
+  - **staging**: a second Supabase project `216homesignal-staging` on a separate free Supabase org (Supabase can't mix plans in one org). Stripe test mode, Lob test key, Resend sandbox or a test domain. It may pause after a week idle; that's fine.
   - **local**: `supabase start` with the same migrations.
 - Add `APP_ENV` = production | staging | local. When not production: show a small "STAGING" banner, block real mail sends and real charges in code even if a live key is misconfigured.
 - Seed script `pnpm seed:staging` loads a small fixed set of real public parcels plus 3 test orgs (HVAC, roofing, fence) and a QA login. No customer data ever goes into staging.
@@ -21,7 +21,7 @@ This adds to BUILD_SPEC.md and ADDENDUM_PROFILE_WIZARD.md. It does not replace a
 
 ## D3. Error tracking and uptime (free)
 - Sentry Developer plan (free: 1 user, 5k errors/month). Add `@sentry/nextjs` to the app and Sentry to the Fly.io ingest workers. Tag events with `APP_ENV` and release (git SHA). Sample down noisy client errors so one bug can't burn the monthly quota. Staging errors go to a separate Sentry environment.
-- Uptime: Sentry's free plan includes 1 uptime monitor; point it at `/leads/api/health`. Add that health route (checks DB connection and last ingest run age).
+- Uptime: Sentry's free plan includes 1 uptime monitor; point it at `/homesignal/api/health`. Add that health route (checks DB connection and last ingest run age).
 - Ingest jobs: alert by email if a nightly ingest hasn't succeeded in 36 hours (write `ingest_run` rows; the health route reads them).
 
 ## D4. Database safety

@@ -42,7 +42,7 @@ export function assertKeyAllowed(service: LiveService, key: string | null | unde
 /** Real postcards and real customer email only go out from production. */
 export const liveSendsAllowed = (env: AppEnv = appEnv()) => env === "production";
 
-/** Path prefix the app is served under (production and staging: "/leads"). */
+/** Path prefix the app is served under (production and staging: "/homesignal"). */
 export function basePath(): string {
   const v = typeof process !== "undefined" ? process.env.NEXT_PUBLIC_BASE_PATH ?? "" : "";
   return v === "/" ? "" : v.replace(/\/$/, "");

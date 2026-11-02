@@ -19,7 +19,7 @@ const FAQ = [
   ["Do you sell homeowner names or phone numbers?", "No. We never store homeowner names, and there's no calling, texting or contact lists. Postcards go to \"Current Resident\", and any homeowner can opt out."],
   ["Which areas do you cover?", "Cuyahoga, Lake, Stark and Medina counties, with Summit permits where available. Cleveland has the richest data (daily permits and violations)."],
   ["How much does it cost?", "Plans start at $99 a month after a 14-day free trial, no card needed to start. Postcards are $0.99 each beyond your plan's monthly credits."],
-  ["Can I cancel?", "Any time, from Settings. If you don't book a job from 216 Leads in your first 60 days, we refund month 2."],
+  ["Can I cancel?", "Any time, from Settings. If you don't book a job from 216 HomeSignal in your first 60 days, we refund month 2."],
 ] as const;
 
 export default async function Landing() {
