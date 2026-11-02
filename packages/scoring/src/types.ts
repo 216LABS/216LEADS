@@ -3,7 +3,8 @@ export interface TemplateSignal {
   lifespan_years?: number;
 }
 
-export type TriggerKind = "sale" | "neighbor_job" | "violation" | "manual";
+/** `permit` = an adjacent permit on the same home (Addendum A5); `neighbor_job` = nearby homes. */
+export type TriggerKind = "sale" | "neighbor_job" | "violation" | "permit" | "manual";
 
 export interface TriggerDef {
   kind: TriggerKind;
@@ -126,7 +127,7 @@ export interface ScoreInput {
   coverage: Coverage;
   /** Percentile ranks (0..1) within the org's territory. */
   derived: { lot_pct?: number | null; living_pct?: number | null };
-  /** Sales, violations and permits at this home in the last 90 days. */
+  /** Sales, violations and permits at this home in the last 120 days. */
   recentEvents: RecentEvent[];
   /** Active condemnation / demolition / boardup at this home. */
   flags?: { condemned?: boolean; demolished?: boolean; boarded?: boolean };

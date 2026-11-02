@@ -82,6 +82,16 @@ function firedTriggers(t: Template, input: ScoreInput): FiredTrigger | null {
         .filter((e) => e.kind === "violation" && e.category === tr.category && daysBetween(e.event_date, input.today) <= tr.within_days)
         .sort((a, b) => (a.event_date < b.event_date ? 1 : -1))[0];
       if (ev) consider({ kind: "violation", label: tr.label, boost: tr.boost, date: ev.event_date, event_id: ev.id });
+    } else if (tr.kind === "permit") {
+      // Adjacent permit on this same home, e.g. a new pool for a fence company (Addendum A5).
+      const ev = input.recentEvents
+        .filter((e) => e.kind === "permit" && e.category === tr.category)
+        .filter((e) => {
+          const d = daysBetween(e.event_date, input.today);
+          return d >= 0 && d <= tr.within_days;
+        })
+        .sort((a, b) => (a.event_date < b.event_date ? 1 : -1))[0];
+      if (ev) consider({ kind: "permit", label: tr.label, boost: tr.boost, date: ev.event_date, event_id: ev.id });
     } else if (tr.kind === "neighbor_job") {
       const s = input.signals[`neighbor_job:${tr.category}`];
       const date = s?.evidence.date;

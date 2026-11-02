@@ -59,7 +59,7 @@ export async function loadHomes(sql: Sql, scope: Scope, today = todayEt()): Prom
     select e.id, e.parcel_key, e.kind::text as kind, e.category, e.event_date::text as event_date, e.source_url,
       e.amount, e.arms_length, e.is_active
     from parcel_event e join parcel p on p.parcel_key = e.parcel_key
-    where e.event_date >= ${today}::date - 90 and e.kind in ('sale', 'violation', 'permit')
+    where e.event_date >= ${today}::date - 120 and e.kind in ('sale', 'violation', 'permit')
       and is_residential(p.land_use_code, p.data_limited) and ${where()}`;
 
   const priors: Record<string, number> = {};

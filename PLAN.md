@@ -27,10 +27,11 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Result: permits/violations/parcels second run changed 0 rows; Cleveland permits match 99.21% (violations 99.16%, rentals 99.43%); `pnpm ingest run privacy_audit` found no owner names (see below)
 
 ### D1: Branches and environments (DevOps addendum)
-- [ ] `main` = production; every change is a PR; Vercel preview per PR using staging env vars (`vercel.json`, env docs)
-- [ ] `APP_ENV` = production | staging | local: "STAGING" banner when not production; real mail sends and real charges blocked in code outside production even with a live key
-- [ ] `pnpm seed:staging`: fixed real public parcels + 3 test orgs (HVAC, roofing, fence) + QA login; never customer data
-- [ ] Staging/production Supabase projects documented (`docs/ENVIRONMENTS.md`)
+- [x] `main` = production; every change is a PR; Vercel preview per PR using staging env vars (`vercel.json`, env docs)
+- [x] `APP_ENV` = production | staging | local: "STAGING" banner when not production; real mail sends and real charges blocked in code outside production even with a live key
+- [x] `pnpm seed:staging`: fixed real public parcels + 3 test orgs (HVAC, roofing, fence) + QA login; never customer data
+- [x] Staging/production Supabase projects documented (`docs/ENVIRONMENTS.md`)
+- Done in code: `APP_ENV` + banner, live-key guard with tests, `/leads` base path (production build verified), `pnpm seed:staging`, `apps/web/vercel.json`, `docs/ENVIRONMENTS.md`. Creating the Vercel project and the two Supabase cloud projects needs the 216LABS accounts; the steps are in `docs/ENVIRONMENTS.md`.
 
 ### D2: CI on every PR (DevOps addendum)
 - [ ] `ci.yml` on pull_request: install (cached), typecheck, lint, unit tests, build
@@ -161,6 +162,8 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 31. **No-owner-name check is a job, not a fixture.** `privacy_audit` fetches real owner names for a sample of stored homes live from the county and city, holds them only in memory, and searches every text column and the raw page store. Storing names in a test fixture would itself break the rule.
 32. **Contractor names: businesses only.** Cleveland's `CONTRACTOR_NAME` is the license holder and is sometimes the homeowner pulling their own permit, so it is never requested. A contractor known only as a person is stored as "Independent contractor" keyed by city license number (migration 0008 scrubbed earlier rows; the M1 fixture was corrected before it was ever pushed).
 33. **GitHub:** the repo already had GitHub's "Initial commit" (a one-line README); M1 was rebased on top of it and pushed as a fast-forward, so nothing was force-pushed.
+35. **Lead list URL under the base path is `/leads/leads`.** Production serves the app at 216labs.dev/leads, so the in-app `/leads` route becomes `/leads/leads`. It works; renaming the in-app route is left for a later product decision.
+36. **A 14th preset, `fence`,** backs the staging QA fence org and the no-key fallback for fence companies (the addendum's A5 table and A8 golden tests both use fencing).
 34. **Pull requests are stacked and not self-merged.** D2 requires an approving review before merge, so each milestone's PR is opened for review and the next milestone branches from it (its PR targets the previous branch until that one merges). PRs are opened through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
@@ -185,6 +188,9 @@ Checked 2026-11-01 from this machine. All reachable without login.
 | Summit permit search | reachable |
 
 ## Stubs and gaps
+
+- **Cloud accounts (D1):** Vercel project, Supabase `216leads-prod` / `216leads-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
+- **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8), #3 legal pages and #7 help page (M11 marketing/legal, pulled earlier if a PR touches signup), #4 trial/past-due states and #5 founding offer (M7), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).
 
 - **Tree category has no real Cleveland examples** (tree work does not need a building permit there); it is low-confidence per Addendum A5.
 - **Records without a parcel number or matching address** (about 0.8% of Cleveland permits, mostly commercial or multi-parcel projects) stay in `unmatched_record` and show at `/admin/unmatched`.

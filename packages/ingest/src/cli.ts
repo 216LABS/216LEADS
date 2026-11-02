@@ -2,11 +2,12 @@
 //   pnpm ingest run <job> [--full] [--zips 44111,44107] [--city CLEVELAND] [--since 2026-01-01] [--limit N] [--org <uuid>]
 //   pnpm ingest pipeline cleveland|daily
 //   pnpm ingest jobs
-//   pnpm ingest seed [--force]
+//   pnpm ingest seed [--force]      (local demo)
+//   pnpm ingest seed --staging      (QA orgs + QA login; never production)
 //   pnpm ingest fixtures pull
 import { closeAll, getDirectSql, migrate } from "@216leads/db";
 import { CLEVELAND_FULL, DAILY, JOBS, runJob, type JobOpts } from "./jobs";
-import { pullFixtures, seed } from "./seed";
+import { pullFixtures, seed, seedStaging } from "./seed";
 import { rawStore } from "./rawstore";
 
 function parseArgs(argv: string[]) {
@@ -64,7 +65,8 @@ async function main() {
       break;
     }
     case "seed":
-      await seed(sql, { force: flags.force === true });
+      if (flags.staging === true) await seedStaging(sql);
+      else await seed(sql, { force: flags.force === true });
       break;
     case "fixtures":
       if (arg !== "pull") throw new Error("usage: fixtures pull");

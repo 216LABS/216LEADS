@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { withBase } from "@216leads/shared";
 import { supabaseBrowser } from "@/lib/supabase-browser";
 import { Button, Input, Label } from "./ui";
 
@@ -16,7 +17,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; go
   const [sent, setSent] = useState(false);
   const [useLink, setUseLink] = useState(false);
 
-  const redirectTo = () => `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+  const redirectTo = () => `${window.location.origin}${withBase("/auth/callback")}?next=${encodeURIComponent(next)}`;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();

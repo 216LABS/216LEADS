@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { withBase } from "@216leads/shared";
 import { Button } from "@/components/ui";
 
 export function RunJobButton({ job }: { job: string }) {
@@ -8,7 +9,7 @@ export function RunJobButton({ job }: { job: string }) {
   const [state, setState] = useState<"idle" | "busy" | "started" | "error">("idle");
   async function run() {
     setState("busy");
-    const res = await fetch("/api/admin/jobs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ job }) });
+    const res = await fetch(withBase("/api/admin/jobs"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ job }) });
     setState(res.ok ? "started" : "error");
     setTimeout(() => router.refresh(), 1500);
   }

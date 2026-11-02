@@ -1,0 +1,23 @@
+key: fence
+version: 1
+label: Fencing
+threshold: 55
+signals:
+  new_owner: { weight: 30 }
+  lot_size: { weight: 20 }
+  neighbor_job:fence_deck: { weight: 15 }
+  owner_occupied: { weight: 10 }
+  price_band: { weight: 10 }
+  home_age: { weight: 10 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: permit, category: pool, within_days: 90, boost: 14, label: "New pool permit (fence required)" }
+  - { kind: permit, category: new_build, within_days: 90, boost: 12, label: "New home built" }
+  - { kind: neighbor_job, category: fence_deck, within_days: 60, boost: 8, label: "Neighbors adding fences" }
+sliders:
+  - { key: new_owner, label: "Just moved in" }
+  - { key: lot_size, label: "Lot size" }
+  - { key: neighbor_job:fence_deck, label: "Neighbors fencing" }
+default_filters: { owner_occupied: true }
+default_exclusions: { rentals: false, condos: true, condemned: true }
+pitch: "{top_reason}. A free fence quote while they settle in is an easy yes."
