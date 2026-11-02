@@ -6,6 +6,7 @@ import { lakeMunicipality, lakePermitEvent, lakeReportLinks, parcelFromLake, par
 import { medinaPermitEvent, medinaTown, parseMedinaList } from "./medina";
 import { parseStarkAddress, starkSaleEvent, starkStub } from "./stark";
 import { parseCensusBatch } from "../geocode";
+import { parseSummitPermit, summitEvent } from "./summit";
 
 describe("Lake County", () => {
   it("normalizes town names across the parcel layer and the permit report", () => {
@@ -163,5 +164,31 @@ describe("Census batch geocoder", () => {
     const m = parseCensusBatch(text);
     expect(m.size).toBe(1);
     expect(m.get("a3")).toEqual({ lon: -81.707075764135, lat: 41.110385115579, city: "WADSWORTH", zip: "44281" });
+  });
+});
+
+describe("Summit County", () => {
+  const page = (num: string) => `<html><body><h2>Permit Details</h2>
+    <div>Permit: ${num}</div><div>Address: 369 SANDHURST RD, AKRON 44333</div><div>Parcel: </div><div>6723707</div>
+    <div>Owner: OWNER PLACEHOLDER</div><div>Amount Due: $0.00</div>
+    <h3>Permit Information</h3><div>Number: ${num}</div><div>Type: Building</div><div>Applied Date: 01/15/2026</div>
+    <div>Issue Date: 01/20/2026</div><div>Work Description: Install 142LNFT of basement gutter with a sump pump</div>
+    <div>Category: ALTERATION</div><div>Status: COMPLY</div><h3>Inspections</h3>
+    <h3>Contractor Information</h3><div>Name: </div><div>Address: </div>
+    <h3>Applicant Information</h3><div>Name: APPLICANT PLACEHOLDER</div>
+    <h3>Owner Information</h3><div>Name: OWNER PLACEHOLDER</div></body></html>`;
+
+  it("reads permit details and the contractor block only", () => {
+    const p = parseSummitPermit(page("BP2600100"))!;
+    expect(p).toMatchObject({
+      permit: "BP2600100", address: "369 SANDHURST RD", city: "AKRON", zip: "44333", parcel: "6723707", type: "Building",
+      category: "ALTERATION", issued: "2026-01-20", contractor: null,
+    });
+    expect(JSON.stringify(p)).not.toContain("PLACEHOLDER");
+    expect(summitEvent(p, "summit:6723707")).toMatchObject({ source_record_id: "BP2600100", category: "waterproof", raw_type: "Building / ALTERATION" });
+  });
+
+  it("treats an empty result page as a miss", () => {
+    expect(parseSummitPermit(page(""))).toBeNull();
   });
 });

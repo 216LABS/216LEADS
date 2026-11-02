@@ -9,12 +9,15 @@ import { runFemaFlood } from "./sources/fema";
 import { runLakeParcels, runLakePermits } from "./sources/lake";
 import { runMedinaPermits } from "./sources/medina";
 import { runStarkSales } from "./sources/stark";
+import { runSummitPermits } from "./sources/summit";
 import { runRecategorize } from "./recategorize";
 import { runPrivacyAudit } from "./privacy";
 import { runIngestWatchdog } from "./watchdog";
 import { runDigest, runLifecycle } from "./digest";
 import { runAutomail } from "./mail/events";
 import { mailFromEnv } from "./mail/provider";
+import { runAttribution } from "./attribution";
+import { runLearned } from "./learned";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -31,7 +34,8 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   lake_permits_xlsx: { fn: (sql, o) => runLakePermits(sql, o), describe: "Lake County monthly permit reports (new files only; --full re-reads all)" },
   medina_permits: { fn: (sql, o) => runMedinaPermits(sql, o), describe: "Medina County residential permit list + stub parcels" },
   stark_sales: { fn: (sql, o) => runStarkSales(sql, o), describe: "Stark County sales + stub parcels (delta; --full for all)" },
-  fema_flood: { fn: (sql) => runFemaFlood(sql, ["cuyahoga", "lake", "medina", "stark"]), describe: "FEMA flood hazard zones -> parcel.flood_zone" },
+  summit_permits: { fn: (sql, o) => runSummitPermits(sql, o), describe: "Summit County permits, walking BP{yy}##### forward (best effort)" },
+  fema_flood: { fn: (sql) => runFemaFlood(sql, ["cuyahoga", "lake", "medina", "stark", "summit"]), describe: "FEMA flood hazard zones -> parcel.flood_zone" },
   cle_survey: { fn: (sql) => runCleSurvey(sql), describe: "Cleveland 2022 property survey (one-time)" },
   cle_contractors: { fn: (sql) => runCleContractors(sql), describe: "Cleveland contractor registry" },
   match: { fn: (sql) => runMatchRetry(sql), describe: "Retry unmatched records (14 days)" },
@@ -39,7 +43,9 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   signals: { fn: (sql) => runSignals(sql), describe: "Recompute event-derived signals" },
   ingest_watchdog: { fn: (sql) => runIngestWatchdog(sql), describe: "Email ops if a daily ingest has not succeeded in 36 hours" },
   privacy_audit: { fn: (sql, o) => runPrivacyAudit(sql, o.limit ?? 400), describe: "Check no owner names are stored (fetches a sample live, keeps it in memory)" },
+  learned_weights: { fn: (sql, o) => runLearned(sql, o.org), describe: "Feedback loop: learned weight factors from won/lost/skipped leads" },
   score: { fn: (sql, o) => runScoreAll(sql, o.org), describe: "Score all orgs (or --org <id>)" },
+  attribution: { fn: (sql, o) => runAttribution(sql, o.org), describe: "Attribute later permits/sales at touched homes (won / lost to a competitor)" },
   digest: { fn: (sql, o) => runDigest(sql, { org: o.org, force: o.full }), describe: "Weekly digest for orgs whose day is today, 06:00 ET+ (--full sends now)" },
   lifecycle: { fn: (sql) => runLifecycle(sql), describe: "Lifecycle email: trial ending (day 11)" },
   automail: { fn: (sql) => runAutomail(sql, mailFromEnv()), describe: "Auto-mail rules, follow-ups, metered postcard reporting" },
@@ -51,10 +57,10 @@ for (const l of CLE_LAYERS) {
 
 /** Spec 5.13 daily order (ET). */
 export const DAILY = ["cuy_parcels", "lake_parcels", "cle_permits", "cle_violations", "cle_rentals", "cle_condemnations", "cle_demo", "cle_boardup", "stark_sales",
-  "lake_permits_xlsx", "medina_permits", "match", "signals", "score", "automail"];
+  "lake_permits_xlsx", "medina_permits", "summit_permits", "match", "signals", "learned_weights", "score", "automail", "attribution"];
 
 /** First full load for Lake, Stark and Medina (after CLEVELAND_FULL). */
-export const COUNTIES_FULL = ["lake_parcels", "lake_permits_xlsx", "stark_sales", "medina_permits", "fema_flood", "match", "signals", "score"];
+export const COUNTIES_FULL = ["lake_parcels", "lake_permits_xlsx", "stark_sales", "medina_permits", "summit_permits", "fema_flood", "match", "signals", "score"];
 
 /** First full load for Cuyahoga + Cleveland. */
 export const CLEVELAND_FULL = [

@@ -25,3 +25,10 @@ export {
   LAYER_KINDS, RING_RADIUS_M, RING_LIMIT, MAX_BBOX_DEG, type Bbox, type LayerKind, type LeadPoint, type EventPoint, type HeatCell,
   type NeighborRing, type RingHome, type Competitor, type CompetitorReport,
 } from "./market";
+export { attributeOrg, attributionCategory } from "./attribution";
+export { learnOrg, learnedFor, resetLearned } from "./learned";
+export { roiMetrics, proofRows, monthlySeries, type RoiMetrics, type ProofRow, type MonthPoint } from "./roi";
+export { roiPdf } from "./roi-pdf";
+export { fixList, type FixRow } from "./fixlist";
+export { parseUpload, runRecordsImport, savedMapping, mappingErrors, sourceCode, IMPORT_FIELDS, OWNER_HEADER, type ImportMapping, type Table } from "./imports";
+export { liveCounter, publicCoverage, publicSample, saveProspect, type CountyCoverage, type PublicSample } from "./marketing";

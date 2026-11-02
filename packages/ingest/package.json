@@ -25,6 +25,7 @@
     "@sentry/node": "^11.10.0",
     "exceljs": "^4.4.0",
     "node-html-parser": "^6.1.13",
+    "pdf-lib": "1.17.1",
     "qrcode": "1.5.4",
     "react": "19.1.10"
   },

@@ -29,6 +29,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
       <PageHeader
         title="Leads"
         sub={`${counts.active.toLocaleString()} ${tradeLabel(org.trade).toLowerCase()} homes in your area · ${counts.new_week.toLocaleString()} new this week`}
+        actions={<Link href="/fix-list" className="focus-ring tap inline-flex items-center rounded-full border border-line bg-white px-4 text-sm font-semibold text-navy hover:border-navy/30">Fix list</Link>}
       />
       <FilterBar counts={{ active: counts.active, won: counts.won, lost: counts.lost, skipped: counts.skipped }} />
       {rows.length === 0 ? (
@@ -38,7 +39,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           </EmptyState>
         ) : (
           <EmptyState title="No homes match yet">
-            Cuyahoga sales update daily and Cleveland permits update every morning; Lake permits post monthly. Widen your area or loosen your
+            Cuyahoga, Lake and Stark sales update daily and Cleveland permits every morning; Lake and Medina permits post monthly. Widen your area or loosen your
             perfect-customer settings in Settings to see more homes.
           </EmptyState>
         )

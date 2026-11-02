@@ -3,7 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { render } from "@react-email/components";
 import type { ReactElement } from "react";
 import { optionalEnv, type Sql } from "@216leads/db";
-import { basePath } from "@216leads/shared";
+import { BRAND } from "@216leads/shared";
 import { emailFromEnv, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
 
 export { emailFromEnv, outbox, type EmailMessage, type EmailProvider, type SendResult } from "./provider";
@@ -11,11 +11,7 @@ export { Digest, digestSubject, type DigestLead, type DigestProps } from "./temp
 export { AutoMailSummary, Invite, MailBatch, PaymentFailed, TrialEnding, Welcome } from "./templates/transactional";
 export { TrialDay3, trialDay3Subject, type TrialDay3Props } from "./templates/day3";
 
-/** Absolute link into the app: APP_BASE_URL (origin) + base path + path. */
-export function appUrl(path: string): string {
-  const origin = (optionalEnv("APP_BASE_URL") ?? "http://localhost:3000").replace(/\/$/, "");
-  return `${origin}${basePath()}${path.startsWith("/") ? path : `/${path}`}`;
-}
+export { appUrl } from "./url";
 
 export async function renderEmail(el: ReactElement): Promise<{ html: string; text: string }> {
   const [html, text] = await Promise.all([render(el), render(el, { plainText: true })]);
@@ -79,7 +75,9 @@ export async function sendEmail(sql: Sql, o: SendOpts): Promise<SendResult | nul
   try {
     const { html, text } = await renderEmail(o.element);
     const res = await (o.provider ?? emailFromEnv()).send({
-      to, subject: o.subject, html, text, stream: o.stream ?? "transactional", headers: o.headers, replyTo: o.replyTo, tag: o.kind,
+      to, subject: o.subject, html, text, stream: o.stream ?? "transactional", headers: o.headers,
+      // Every email answers to support (issue #7).
+      replyTo: o.replyTo ?? optionalEnv("SUPPORT_EMAIL") ?? BRAND.supportEmail, tag: o.kind,
     });
     await sql`update email_log set via = ${res.via}, ref = ${res.ref}, sent_at = now() where id = ${claim.id}`;
     return res;
