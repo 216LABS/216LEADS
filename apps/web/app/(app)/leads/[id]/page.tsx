@@ -6,7 +6,7 @@ import { requireOrg } from "@/lib/session";
 import { getLead, type LeadFacts, type TimelineItem } from "@/lib/leads";
 import { track } from "@/lib/events";
 import { ReasonList, ScoreChip, TriggerPill } from "@/components/lead-bits";
-import { Card } from "@/components/ui";
+import { Card, LinkButton } from "@/components/ui";
 import { CopyButton, LeadStatus, NoteBox } from "./lead-actions";
 
 export const metadata = { title: "Lead" };
@@ -53,7 +53,10 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
           <p className="text-slate">{titleCase(lead.city)}, OH {lead.zip}</p>
           <div className="mt-2"><TriggerPill label={lead.trigger_label} date={lead.trigger_date} /></div>
         </div>
-        <LeadStatus id={lead.id} status={lead.status} wonAmount={lead.won_amount} lostReason={lead.lost_reason} />
+        <div className="flex items-end gap-2">
+          <LeadStatus id={lead.id} status={lead.status} wonAmount={lead.won_amount} lostReason={lead.lost_reason} />
+          <LinkButton href={`/mail/send?leads=${lead.id}`}>Mail</LinkButton>
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">

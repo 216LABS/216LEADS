@@ -71,6 +71,7 @@ function LeadCard({ lead, onStatus }: { lead: ListLead; onStatus: (id: string, s
         <div className="flex gap-2 border-t border-line px-4 py-2">
           <button type="button" className="focus-ring tap flex-1 rounded-[10px] text-sm font-semibold text-navy hover:bg-navy-50"
             onClick={() => onStatus(lead.id, "contacted")} disabled={lead.status === "contacted"}>Contacted</button>
+          <Link href={`/mail/send?leads=${lead.id}`} className="focus-ring tap flex flex-1 items-center justify-center rounded-[10px] text-sm font-semibold text-signal-600 hover:bg-navy-50">Mail</Link>
           <button type="button" className="focus-ring tap flex-1 rounded-[10px] text-sm font-semibold text-slate hover:bg-navy-50"
             onClick={() => onStatus(lead.id, "skipped")} disabled={lead.status === "skipped"}>Skip</button>
         </div>
@@ -129,6 +130,8 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
               <span className="text-sm font-semibold">{selected.size} selected</span>
               <Button variant="secondary" onClick={() => void change([...selected], "contacted")}>Mark contacted</Button>
               <Button variant="secondary" onClick={() => void change([...selected], "skipped")}>Skip</Button>
+              <Link className="focus-ring tap inline-flex items-center rounded-[10px] bg-signal px-4 text-sm font-semibold text-white"
+                href={`/mail/send?leads=${[...selected].join(",")}`}>Mail selected</Link>
               <a className="focus-ring tap inline-flex items-center rounded-[10px] border border-line bg-white px-4 text-sm font-semibold text-navy hover:border-navy"
                 href={exportHref([...selected])}>Export selected</a>
             </>

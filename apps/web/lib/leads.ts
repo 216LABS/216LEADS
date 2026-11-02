@@ -78,6 +78,7 @@ export async function listLeads(orgId: string, q: LeadQuery): Promise<{ rows: Le
 
   const where = sql`
     l.org_id = ${orgId} and not l.hidden and l.visible_from <= now()
+    and not exists (select 1 from suppression s where s.addr_norm = p.addr_norm)
     and l.status::text = any(${statuses})
     and l.score >= ${minScore}
     and (${trig}::text is null or l.trigger_label ilike ${trig})
