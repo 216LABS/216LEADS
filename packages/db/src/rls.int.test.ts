@@ -1,5 +1,5 @@
 // Row-level security (spec 4 "RLS", DevOps addendum D5): a user from org A cannot read or
-// change org B's leads, profiles, CRM rows or mail jobs, and nobody signed in can read the
+// change org B's leads, profiles, recipe versions, CRM rows or mail jobs, and nobody signed in can read the
 // public-record tables directly. Runs as the `authenticated` role with a JWT subject, the way
 // Supabase's REST API does.
 import { randomUUID } from "node:crypto";
@@ -47,6 +47,8 @@ beforeAll(async () => {
     await sql`insert into territory (org_id, kind, zip) values (${o}, 'zip', '44111')`;
     await sql`insert into scoring_profile (org_id, template_key, template_version) values (${o}, 'roofing', 1)`;
     await sql`insert into org_suppression (org_id, addr_norm) values (${o}, ${`1 TEST ST|${o.slice(0, 5)}`})`;
+    await sql`insert into org_profile (org_id, answers) values (${o}, '{"business":"roofing"}')`;
+    await sql`insert into recipe_version (org_id, recipe, source, active) values (${o}, '{"key":"roofing"}', 'preset', true)`;
     const [l] = await sql<{ id: string }[]>`
       insert into lead (org_id, parcel_key, score, reasons) values (${o}, ${parcel.parcel_key}, 70, '[]') returning id`;
     await sql`insert into lead_note (org_id, lead_id, body) values (${o}, ${l!.id}, 'note')`;
@@ -63,7 +65,7 @@ afterAll(async () => {
   await closeAll();
 });
 
-const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "lead", "lead_note", "lead_activity", "mail_piece"];
+const TENANT_TABLES = ["org_member", "territory", "scoring_profile", "org_suppression", "org_profile", "recipe_version", "lead", "lead_note", "lead_activity", "mail_piece"];
 
 describe("RLS: org isolation", () => {
   for (const table of TENANT_TABLES) {
@@ -88,6 +90,14 @@ describe("RLS: org isolation", () => {
     await expect(asUser(userA, (tx) => tx`insert into lead_note (org_id, lead_id, body) values (${orgB}, ${leadB}, 'x')`)).rejects.toThrow(
       /row-level security/i,
     );
+  });
+
+  it("user A cannot activate or add org B's recipe versions", async () => {
+    const res = await asUser(userA, (tx) => tx`update recipe_version set active = false where org_id = ${orgB}`);
+    expect(res.count).toBe(0);
+    await expect(
+      asUser(userA, (tx) => tx`insert into recipe_version (org_id, recipe, source) values (${orgB}, '{}', 'tweak')`),
+    ).rejects.toThrow(/row-level security/i);
   });
 
   it("signed-out (anon) sees no tenant rows", async () => {

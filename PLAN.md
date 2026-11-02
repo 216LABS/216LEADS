@@ -70,11 +70,12 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: `signup` is recorded now; `onboarding_done`, `lead_viewed`, `stage_changed`, `postcard_queued`, `checkout_started` and `subscribed` are recorded by the milestones that build those flows (A2/M4, M5, M7, M8) with `track()`. A lint rule now rejects raw app paths in `fetch()` and form actions (they skip the `/leads` base path); this caught the sign-out form.
 
 ### A1: Template presets + adjacent-permit triggers (Addendum A)
-- [ ] All 13 trade templates (7.5) as starting presets in YAML (the 7 that were in M11 move here)
-- [ ] `new_build` category placed before `remodel` (A5); regexes checked against real Cleveland and Lake permit text; categories with fewer than 20 real matches flagged low-confidence in the UI
-- [ ] New trigger kind `permit` (same home, category, window) in the engine and template format; adjacent-permit triggers on presets per the A5 table
-- [ ] `org_profile` and `recipe_version` tables; scoring reads the org's active recipe version; revert to any version in Settings
+- [x] All 13 trade templates (7.5) as starting presets in YAML (the 7 that were in M11 move here)
+- [x] `new_build` category placed before `remodel` (A5); regexes checked against real Cleveland and Lake permit text; categories with fewer than 20 real matches flagged low-confidence in the UI
+- [x] New trigger kind `permit` (same home, category, window) in the engine and template format; adjacent-permit triggers on presets per the A5 table
+- [x] `org_profile` and `recipe_version` tables; scoring reads the org's active recipe version; revert to any version in Settings
 - Check: every preset validates against the recipe schema; a same-home roofing permit fires the gutters preset's trigger
+- Result: 14 presets (the 13 spec trades plus `fence`, decision 36) pass `recipeSchema`; the gutters preset fires on a same-home roofing permit (engine test). Lake check: 414 hand-labeled real residential permits from four 2026 monthly XLSX files (`categories.lake.json`); every Lake category with 20+ rows is at 94% or better (HVAC, electrical, plumbing, new_build, fence_deck, garage, remodel, waterproof), while roofing, demolition and windows have under 20 Lake rows. The Cleveland fixture scores are unchanged by the new rules; `recategorize` moved about 1,500 of 264K stored Cleveland events. Settings shows recipe history with "Use this version"; RLS and an integration test (save, activate, re-score, revert restores the preset's leads exactly) cover the new tables.
 
 ### A2: AI business profile wizard (Addendum A)
 - [ ] Wizard questions (A2) replace "pick your trade" in onboarding; territory via TerritoryPicker
@@ -170,6 +171,9 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 33. **GitHub:** the repo already had GitHub's "Initial commit" (a one-line README); M1 was rebased on top of it and pushed as a fast-forward, so nothing was force-pushed.
 35. **Lead list URL under the base path is `/leads/leads`.** Production serves the app at 216labs.dev/leads, so the in-app `/leads` route becomes `/leads/leads`. It works; renaming the in-app route is left for a later product decision.
 36. **A 14th preset, `fence`,** backs the staging QA fence org and the no-key fallback for fence companies (the addendum's A5 table and A8 golden tests both use fencing).
+37. **`pest` permit/violation category** (not in spec 7.3) backs the pest-control preset; it matches rodent/roach/infestation/bed bug/termite wording, mostly in city violation notices, and sits just before the catch-all `remodel` rule.
+38. **Septic preset weights are scaled** from spec 7.5's 60/25/15 to 40/17/10 so they fit Addendum A3's 0-40 weight cap with the same proportions.
+39. **Lake County permits: the permit type decides first.** Lake's monthly XLSX repeats the whole project's description on every trade sub-permit (an ELECTRICAL permit reads "NEW DWELLING W/ATTACHED GARAGE"), so its raw_type is `Permit Type / Use Code` and the type prefixes (HEATING/AIR CONDITIONING, HYDRONICS, REFRIGERATION, MECHANICAL -> hvac; ELECTRICAL incl. ELECTRICAL TO SEPTIC -> electrical; PLUMBING and FUEL GAS PIPING -> plumbing) lead, like Cleveland's. BUILDING permits fall through to the description rules; new rules from that review: whole-description demolition ("DEMOLITION", "GARAGE DEMO"), foundation wall/helical pier/wall brace work -> waterproof, finished basements -> remodel, patio roofs and covered patios -> fence_deck, "pool house" is not pool work. Applicant names are never read.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.

@@ -18,13 +18,17 @@
 #   - demolition means a whole structure; interior "selective demo" falls through to remodel;
 #   - painting means painting work: "painted sign" and "tuck paint" (tuckpointing) don't count;
 #   - tree only matches tree *work* (removal, trimming, stumps), not any mention of a tree.
+# Lake County monthly permits (raw_type "Permit Type / Use Code") were checked against labeled
+# real rows too (categories.lake.json). Lake repeats the *project* description on every trade
+# sub-permit (an ELECTRICAL permit reads "NEW DWELLING W/ATTACHED GARAGE"), so its permit types
+# lead like Cleveland's; fuel gas piping counts as plumbing work.
 
-# City permit category prefixes
+# City/county permit category prefixes
 - [boardup,          '^board-?ups?\b']
 - [demolition,       '^demolitions?\b']
-- [hvac,             '^(residential |commercial )?hvac\b']
+- [hvac,             '^(residential |commercial )?(hvac|heating/air conditioning|hydronics|refrigeration|mechanical)\b']
 - [electrical,       '^(residential |commercial )?electrical\b']
-- [plumbing,         '^(residential |commercial )?plumbing\b']
+- [plumbing,         '^(residential |commercial )?plumbing\b|^fuel gas piping\b']
 - [fence_deck,       '^zoning - fences\b']
 - [signage,          '^zoning - signs\b']
 
@@ -33,23 +37,24 @@
 - [signage,          '\b(signs?|signage|awnings?|canop(y|ies)|tents?|billboards?|banners?|marquee|pylon)\b']
 - [occupancy,        '\| .{0,20}\b(establish\w*\b.{0,40}\b(occupancy|use)|change (of )?use)\b']
 - [elevator,         '\b(elevators?|hoistways?|escalators?|dumbwaiters?|wheelchair lifts?|stair lifts?)\b']
-- [demolition,       '\b(raze[sd]?|razing)(\b|(?=\d))|\bdemolish\w* (the |an? |all )?(existing )?(\w+ )?(\w+ )?(\w+ )?(structure|building|bldg|house|dwelling|residence)s?\b|\bdemolition of (the |an? )?(existing )?(\w+ )?(\w+ )?(structure|building|house|dwelling|residence)s?\b']
-- [new_build,        '\b(new construction|townhomes?|townhouses?|new (\w+ )?(residence|dwelling|home))\b|\b(erect|construct|build)\b.{0,50}\b(?<!existing )(single|two)[- ]fam\w*|\b(erect|construct|build) (a |an )?(new )?(\S+ )?(\S+ )?(\S+ )?(\S+ )?(residence|dwelling|house)\b']
+- [demolition,       '\b(raze[sd]?|razing)(\b|(?=\d))|\bdemolish\w* (the |an? |all )?(existing )?(\w+ )?(\w+ )?(\w+ )?(structure|building|bldg|house|dwelling|residence)s?\b|\bdemolition of (the |an? )?(existing )?(\w+ )?(\w+ )?(structure|building|house|dwelling|residence)s?\b|\| ((house|garage|shed) )?demo(lition)?( permit|-?house| ?/ ?(house|garage|shed))?\s*$']
+- [new_build,        '\b(new construction|townhomes?|townhouses?|new (\w+ )?(residence|dwelling\w*|home))\b|\b(erect|construct|build)\b.{0,50}\b(?<!existing )(single|two)[- ]fam\w*|\b(erect|construct|build) (a |an )?(new )?(\S+ )?(\S+ )?(\S+ )?(\S+ )?(residence|dwelling|house)\b']
 
 # Narrow early rules
 - [garage,           '\b(erect|construct|build)\b.{0,60}\b(?<!parking )(garages?|carports?)\b']
 - [remodel,          '\b(erect|construct|build)\b.{0,60}\badditions?\b']
 - [fence_deck,       '\b(install\w*|erect|replace|build|construct)\b.{0,60}\b(fenc\w*|decks?)\b']
 - [pool,             '\b(install\w*|erect|construct)\b.{0,60}\b(swimming pools?|(above|in)[- ]ground pools?|pools?)\b']
-- [waterproof,       '\bwaterproof(ing)?\b(?! floor)']
-- [remodel,          '\bremodel\w*\b']
+- [waterproof,       '(\b|interior)waterproof(ing)?\b(?! floor)']
+- [remodel,          '\bremodel\w*\b|\bbasement finish\w*|\bfinish\w* (the )?basement\b']
+- [fence_deck,       '\b(patio roofs?|roofs? over (\w+ )?patios?|covered patios?)\b']
 
 # Spec categories, spec order
 - [roofing,          '\b(roof|roofs|roofing|re-?roof\w*|shingle[sd]?|tear ?offs?)\b']
 - [hvac,             '\b(furnaces?|hvac|a/?c|air condition\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical)\b']
 - [plumbing,         '\b(plumb\w*|water heaters?|sewer lines?|drains?|backflow|fixtures?)\b']
 - [electrical,       '\b(electric\w*|service upgrades?|panels?|amp service|ev chargers?|generators?|wiring)\b']
-- [waterproof,       '\b(waterproof\w*|basement walls?|sump\w*|drain tile|foundation repairs?)\b']
+- [waterproof,       '\b(waterproof\w*|basement walls?|sump\w*|drain tile|foundation repairs?|foundation (wall|structural)( \w+)?|helical piers?|(intelli|wall) ?braces?)\b']
 - [siding,           '\b(siding|vinyl|hardie\w*)\b']
 - [windows,          '\b(windows?|door replacements?)\b|\b(replace\w*|install\w*)\b.{0,25}\b(?<!garage )doors?\b']
 - [gutters,          '\b(gutters?|downspouts?)\b']
@@ -57,7 +62,7 @@
 - [concrete,         '\| .{0,70}\b((?<!over |in )driveways?(?! gate)|aprons?|flatwork|(?<!exist |existing )concrete (patio|slab|steps?|walk\w*|driveway|apron|sidewalk|stoop)s?|(replace|install|pour)\w*\b.{0,30}\bsidewalks?(?! obstruction))\b']
 - [fence_deck,       '\b(fenc\w*|decks?|decking|porch\w*)\b']
 - [garage,           '\b(?<!parking )(garages?|carports?)\b']
-- [pool,             '\b(swimming pools?|(above|in)[- ]ground pools?|pools?|spas?|hot tubs?)\b']
+- [pool,             '\b(swimming pools?|(above|in)[- ]ground pools?|pools?(?! house)|spas?|hot tubs?)\b']
 - [tree,             '\b(tree (removal|trimming|pruning|service|work|cutting)|(remove|removal of|cut down|trim)( \w+){0,2} trees?|stumps?( grinding| removal)?)\b']
 # pest: not in spec 7.3; added for the pest-control preset (mostly city violation notices).
 - [pest,             '\b(rodents?|rats?|mice|roach\w*|infest\w*|vermin|bed ?bugs?|termites?|insects?|pests?)\b']

@@ -12,7 +12,7 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "hvac",
-    "^(residential |commercial )?hvac\\b"
+    "^(residential |commercial )?(hvac|heating/air conditioning|hydronics|refrigeration|mechanical)\\b"
   ],
   [
     "electrical",
@@ -20,7 +20,7 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "plumbing",
-    "^(residential |commercial )?plumbing\\b"
+    "^(residential |commercial )?plumbing\\b|^fuel gas piping\\b"
   ],
   [
     "fence_deck",
@@ -48,11 +48,11 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "demolition",
-    "\\b(raze[sd]?|razing)(\\b|(?=\\d))|\\bdemolish\\w* (the |an? |all )?(existing )?(\\w+ )?(\\w+ )?(\\w+ )?(structure|building|bldg|house|dwelling|residence)s?\\b|\\bdemolition of (the |an? )?(existing )?(\\w+ )?(\\w+ )?(structure|building|house|dwelling|residence)s?\\b"
+    "\\b(raze[sd]?|razing)(\\b|(?=\\d))|\\bdemolish\\w* (the |an? |all )?(existing )?(\\w+ )?(\\w+ )?(\\w+ )?(structure|building|bldg|house|dwelling|residence)s?\\b|\\bdemolition of (the |an? )?(existing )?(\\w+ )?(\\w+ )?(structure|building|house|dwelling|residence)s?\\b|\\| ((house|garage|shed) )?demo(lition)?( permit|-?house| ?/ ?(house|garage|shed))?\\s*$"
   ],
   [
     "new_build",
-    "\\b(new construction|townhomes?|townhouses?|new (\\w+ )?(residence|dwelling|home))\\b|\\b(erect|construct|build)\\b.{0,50}\\b(?<!existing )(single|two)[- ]fam\\w*|\\b(erect|construct|build) (a |an )?(new )?(\\S+ )?(\\S+ )?(\\S+ )?(\\S+ )?(residence|dwelling|house)\\b"
+    "\\b(new construction|townhomes?|townhouses?|new (\\w+ )?(residence|dwelling\\w*|home))\\b|\\b(erect|construct|build)\\b.{0,50}\\b(?<!existing )(single|two)[- ]fam\\w*|\\b(erect|construct|build) (a |an )?(new )?(\\S+ )?(\\S+ )?(\\S+ )?(\\S+ )?(residence|dwelling|house)\\b"
   ],
   [
     "garage",
@@ -72,11 +72,15 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "waterproof",
-    "\\bwaterproof(ing)?\\b(?! floor)"
+    "(\\b|interior)waterproof(ing)?\\b(?! floor)"
   ],
   [
     "remodel",
-    "\\bremodel\\w*\\b"
+    "\\bremodel\\w*\\b|\\bbasement finish\\w*|\\bfinish\\w* (the )?basement\\b"
+  ],
+  [
+    "fence_deck",
+    "\\b(patio roofs?|roofs? over (\\w+ )?patios?|covered patios?)\\b"
   ],
   [
     "roofing",
@@ -96,7 +100,7 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "waterproof",
-    "\\b(waterproof\\w*|basement walls?|sump\\w*|drain tile|foundation repairs?)\\b"
+    "\\b(waterproof\\w*|basement walls?|sump\\w*|drain tile|foundation repairs?|foundation (wall|structural)( \\w+)?|helical piers?|(intelli|wall) ?braces?)\\b"
   ],
   [
     "siding",
@@ -128,7 +132,7 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "pool",
-    "\\b(swimming pools?|(above|in)[- ]ground pools?|pools?|spas?|hot tubs?)\\b"
+    "\\b(swimming pools?|(above|in)[- ]ground pools?|pools?(?! house)|spas?|hot tubs?)\\b"
   ],
   [
     "tree",
