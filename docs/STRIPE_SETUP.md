@@ -32,7 +32,7 @@ Settings → Billing → Subscriptions and emails: **Smart Retries on**; **send 
 
 ## 5. Webhook
 
-Endpoint: `https://216labs.dev/leads/api/webhooks/stripe`, events:
+Endpoint: `https://216labs.dev/homesignal/api/webhooks/stripe`, events:
 `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`.
 Copy the signing secret into `STRIPE_WEBHOOK_SECRET`. Every event is processed once (by `event.id`).
 

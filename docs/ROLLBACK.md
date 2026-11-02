@@ -1,6 +1,6 @@
 # Rollback
 
-How to undo a bad release. Production is `main` on Vercel plus the `216leads-prod` Supabase project.
+How to undo a bad release. Production is `main` on Vercel plus the `216homesignal-prod` Supabase project.
 
 ## The app (Vercel)
 
@@ -16,11 +16,11 @@ Prefer a **forward fix** (a new migration that corrects the problem) over a rest
 
 When data is lost or corrupted and a restore is needed:
 
-1. **Point in time / daily backup (first choice).** Supabase dashboard → `216leads-prod` → Database → Backups. Pro keeps 7 daily backups. Restore the latest one before the incident. This replaces the whole database.
+1. **Point in time / daily backup (first choice).** Supabase dashboard → `216homesignal-prod` → Database → Backups. Pro keeps 7 daily backups. Restore the latest one before the incident. This replaces the whole database.
 2. **Weekly off-site copy.** GitHub → Actions → "Weekly database backup" → the run → artifact `db-backup` (kept 30 days). Decrypt and restore into a new or empty database:
    ```bash
    openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass env:BACKUP_ENCRYPTION_KEY \
-     -in 216leads-prod-YYYYMMDD.dump.enc -out restore.dump
+     -in 216homesignal-prod-YYYYMMDD.dump.enc -out restore.dump
    pg_restore --no-owner --no-privileges --clean --if-exists -d "$TARGET_DATABASE_URL" restore.dump
    ```
    Restore into staging or a scratch project first to check it, then into production.

@@ -1,4 +1,4 @@
-// 216 Leads ingest CLI.
+// 216 HomeSignal ingest CLI.
 //   pnpm ingest run <job> [--full] [--zips 44111,44107] [--city CLEVELAND] [--since 2026-01-01] [--limit N] [--org <uuid>]
 //   pnpm ingest pipeline cleveland|daily
 //   pnpm ingest jobs

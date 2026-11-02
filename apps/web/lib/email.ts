@@ -7,7 +7,7 @@ import { appUrl, Invite, sendEmail, Welcome } from "@216leads/email";
 export async function sendWelcome(orgId: string, orgName: string, to: string, leads: number) {
   try {
     await sendEmail(getDirectSql(), {
-      orgId, kind: "welcome", dedupeKey: `welcome:${orgId}`, to: [to], subject: "Your 216 Leads list is ready",
+      orgId, kind: "welcome", dedupeKey: `welcome:${orgId}`, to: [to], subject: "Your 216 HomeSignal list is ready",
       element: createElement(Welcome, { orgName, leads, leadsUrl: appUrl("/leads") }),
     });
   } catch (e) {
@@ -18,7 +18,7 @@ export async function sendWelcome(orgId: string, orgName: string, to: string, le
 export async function sendInvite(orgId: string, orgName: string, to: string, path: string, inviteId: string, token: string) {
   try {
     await sendEmail(getDirectSql(), {
-      orgId, kind: "invite", dedupeKey: `invite:${inviteId}:${token.slice(0, 8)}`, to: [to], subject: `Join ${orgName} on 216 Leads`,
+      orgId, kind: "invite", dedupeKey: `invite:${inviteId}:${token.slice(0, 8)}`, to: [to], subject: `Join ${orgName} on 216 HomeSignal`,
       element: createElement(Invite, { orgName, inviteUrl: appUrl(path) }),
     });
   } catch (e) {

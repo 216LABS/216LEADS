@@ -1,6 +1,6 @@
-# 216 Leads: Build Spec (v1.0, 2026-11-01)
+# 216 HomeSignal: Build Spec (v1.0, 2026-11-01)
 
-Product: **216 Leads by 216LABS** (served at 216labs.dev/leads). Owner: Sam Filipiak (216LABS LLC, Lakewood, OH).
+Product: **216 HomeSignal by 216LABS** (served at 216labs.dev/homesignal). Owner: Sam Filipiak (216LABS LLC, Lakewood, OH).
 Audience: an AI coding agent (Claude Code) building the product end to end in a fresh repo. Facts checked live on 2026-11-01 are marked **[V]**. Design decisions are **[J]**. Secondary-source facts to re-check before relying on them are **[S]**.
 
 Read sections 0, 1 and 16 before writing any code.
@@ -21,7 +21,7 @@ Read sections 0, 1 and 16 before writing any code.
 
 ## 1. Product summary
 
-216 Leads is a mobile-friendly web app that tells a Northeast Ohio home-service business (roofer, HVAC, plumber, electrician, lawn care, tree, painter, gutters, siding, remodeler, pest, septic, waterproofing) **which specific homes are most likely to need them next, and why**. It is built from free public records: county parcels and sales, city permits, code violations, rental registry, condemnations, FEMA flood zones and county tree canopy. Then it lets them **act**: track leads in a tiny pipeline and mail a postcard to one, many, or every new matching home automatically. Won/lost outcomes and later public permits feed back into scoring and power an ROI report.
+216 HomeSignal is a mobile-friendly web app that tells a Northeast Ohio home-service business (roofer, HVAC, plumber, electrician, lawn care, tree, painter, gutters, siding, remodeler, pest, septic, waterproofing) **which specific homes are most likely to need them next, and why**. It is built from free public records: county parcels and sales, city permits, code violations, rental registry, condemnations, FEMA flood zones and county tree canopy. Then it lets them **act**: track leads in a tiny pipeline and mail a postcard to one, many, or every new matching home automatically. Won/lost outcomes and later public permits feed back into scoring and power an ROI report.
 
 It is **not** a field-service CRM. No invoicing, scheduling, dispatch, estimates or payments.
 
@@ -129,7 +129,7 @@ SENTRY_DSN
 NEXT_PUBLIC_SENTRY_DSN
 AXIOM_TOKEN                  # optional
 # Ingest
-INGEST_USER_AGENT            # "216Leads/1.0 (+https://216labs.dev/leads/data)"
+INGEST_USER_AGENT            # "216HomeSignal/1.0 (+https://216labs.dev/homesignal/data)"
 INGEST_RAW_BUCKET            # Supabase Storage bucket for raw payloads
 ```
 
@@ -888,7 +888,7 @@ Mobile first. Bottom tab bar on phones (Leads, Map, Mail, ROI, Settings); left s
 ### 9.5 Postcard builder (Mail tab)
 - 3 system templates per trade (front image + headline, back offer + map pin + phone + QR to their site with UTM).
 - Fields: headline, offer, expiry, phone, URL, logo. Live front/back preview; "Get proof PDF" from provider.
-- Addressing is always "Current Resident" plus address. Back footer includes return address and small print: "Based on public records. To stop mail: 216labs.dev/leads/optout".
+- Addressing is always "Current Resident" plus address. Back footer includes return address and small print: "Based on public records. To stop mail: 216labs.dev/homesignal/optout".
 - Send screen: N homes, M removed by suppression/30-day rule, cost (credits first, then $0.99 each), expected delivery window, 15-minute undo.
 - Auto-mail card: toggle, "Mail every new home scoring 70+ that just sold", weekly cap, monthly $ cap, optional follow-up on day 21.
 
@@ -942,7 +942,7 @@ Use credits first (`usage_ledger credit_use`), then report Stripe meter events (
 | Pro | $199 | $1,990 | up to 10 zips, map, neighbor ring, competitor tracker, auto-mail, ROI, 50 postcard credits/mo |
 | Exclusive | $349 | $3,490 | Pro + exclusivity in up to 5 zips for their trade, 150 credits/mo, 4 users |
 
-Postcards beyond credits: $0.99 metered. Trial: 14 days, no card, 25 free postcards when they add a card. Founding offer: Pro at $149/mo locked for the first 20 customers (coupon). Guarantee copy: "If you don't book a job from 216 Leads in your first 60 days, we refund month 2."
+Postcards beyond credits: $0.99 metered. Trial: 14 days, no card, 25 free postcards when they add a card. Founding offer: Pro at $149/mo locked for the first 20 customers (coupon). Guarantee copy: "If you don't book a job from 216 HomeSignal in your first 60 days, we refund month 2."
 Webhooks: checkout.session.completed, customer.subscription.created/updated/deleted, invoice.paid (grant monthly credits), invoice.payment_failed (banner + 7-day grace).
 
 ---

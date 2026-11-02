@@ -22,7 +22,7 @@ export async function runIngestWatchdog(sql: Sql) {
     }
     const lines = h.stale_sources.map((s) => `- ${s.source}: last success ${s.last_success_at ?? "never"}`);
     const r = await sendOpsEmail({
-      subject: `216 Leads: ingest has not succeeded in ${STALE_AFTER_HOURS} hours`,
+      subject: `216 HomeSignal: ingest has not succeeded in ${STALE_AFTER_HOURS} hours`,
       text: [`These daily sources have no successful run in the last ${STALE_AFTER_HOURS} hours:`, ...lines, "",
         "Check /admin/jobs for errors, then rerun with `pnpm ingest run <source>`."].join("\n"),
     });

@@ -20,7 +20,7 @@ export function opsRecipients(): string[] {
 export async function sendOpsEmail(msg: OpsMessage): Promise<{ via: "resend" | "outbox"; ref: string }> {
   const to = msg.to?.length ? msg.to : opsRecipients();
   const key = optionalEnv("RESEND_API_KEY");
-  const from = optionalEnv("RESEND_FROM_TRANSACTIONAL") ?? "216 Leads <hello@mail.216labs.dev>";
+  const from = optionalEnv("RESEND_FROM_TRANSACTIONAL") ?? "216 HomeSignal <hello@mail.216labs.dev>";
   const env = optionalEnv("APP_ENV") ?? "local";
   const subject = env === "production" ? msg.subject : `[${env}] ${msg.subject}`;
   if (key && to.length) {

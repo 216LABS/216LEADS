@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // E2E_BASE_URL is the app root including the base path, e.g. a Vercel preview's
-// "https://...vercel.app/leads/" or the local "http://localhost:3000/". Tests use relative
+// "https://...vercel.app/homesignal/" or the local "http://localhost:3000/". Tests use relative
 // paths ("login", "leads") so the base path is kept.
 const base = process.env.E2E_BASE_URL ?? "http://localhost:3000/";
 

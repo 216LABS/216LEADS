@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
   const next = req.nextUrl.searchParams.get("next") || "/leads";
   const [safePath, safeQuery = ""] = (next.startsWith("/") && !next.startsWith("//") ? next : "/leads").split("?");
-  // Cloning nextUrl keeps the base path (/leads in production) on every redirect.
+  // Cloning nextUrl keeps the base path (/homesignal in production) on every redirect.
   const to = (pathname: string, search = "") => {
     const u = req.nextUrl.clone();
     u.pathname = pathname;

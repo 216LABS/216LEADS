@@ -1,4 +1,4 @@
-// Uptime check (D3), served at /leads/api/health in production. 200 when the database answers
+// Uptime check (D3), served at /homesignal/api/health in production. 200 when the database answers
 // and daily ingest is fresh; 503 otherwise, so the Sentry uptime monitor alerts.
 import { NextResponse } from "next/server";
 import { getSql } from "@216leads/db";

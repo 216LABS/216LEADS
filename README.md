@@ -1,8 +1,8 @@
-# 216 Leads
+# 216 HomeSignal
 
-**Know which homes need you next.** 216 Leads (by 216LABS) ranks Northeast Ohio homes for a home-service trade using free public records (county parcels and sales, city permits, code violations, tree canopy, flood zones) and shows the reasons behind every score. Then it lets the business act: a small pipeline, postcards to one home or a whole block, and an ROI report backed by later public permits.
+**Know which homes need you next.** 216 HomeSignal (by 216LABS) ranks Northeast Ohio homes for a home-service trade using free public records (county parcels and sales, city permits, code violations, tree canopy, flood zones) and shows the reasons behind every score. Then it lets the business act: a small pipeline, postcards to one home or a whole block, and an ROI report backed by later public permits.
 
-Served at **216labs.dev/leads**.
+Served at **216labs.dev/homesignal**.
 
 ## Run it locally (one command)
 
@@ -65,7 +65,7 @@ CI runs all of them on every PR, plus gitleaks and a Playwright smoke against a 
 
 ## Deploying
 
-See `docs/DEPLOY.md` (base path under 216labs.dev/leads, environment variables, webhooks, post-deploy check) and `docs/ENVIRONMENTS.md`. `PLAN.md` has the milestones and decisions; `BUILD_SPEC.md` is the full spec.
+See `docs/DEPLOY.md` (base path under 216labs.dev/homesignal, environment variables, webhooks, post-deploy check) and `docs/ENVIRONMENTS.md`. `PLAN.md` has the milestones and decisions; `BUILD_SPEC.md` is the full spec.
 
 ---
 

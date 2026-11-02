@@ -76,6 +76,6 @@ export async function roiPdf(o: { orgName: string; month: string; metrics: RoiMe
     page.drawLine({ start: { x: 48, y: y - 5 }, end: { x: 564, y: y - 5 }, thickness: 0.5, color: LINE });
     y -= 16;
   }
-  text(page, `${BRAND.footerAddress}. Figures from your 216 Leads account and public permit and sale records.`, 48, 36, 7, font, SLATE);
+  text(page, `${BRAND.footerAddress}. Figures from your 216 HomeSignal account and public permit and sale records.`, 48, 36, 7, font, SLATE);
   return doc.save();
 }

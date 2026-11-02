@@ -1,7 +1,7 @@
-# 216 Leads build plan
+# 216 HomeSignal build plan
 
 Source of truth: `BUILD_SPEC.md`, plus `ADDENDUM_PROFILE_WIZARD.md` and `ADDENDUM_DEVOPS.md` (both add to the spec, replace nothing). Product and UX context: `216_LEADS_PLAN.md`.
-Product name: **216 Leads** (by 216LABS), served at 216labs.dev/leads.
+Product name: **216 HomeSignal** (by 216LABS), served at 216labs.dev/homesignal.
 
 Each milestone is finished only after it runs locally, its checks pass, it is committed, and its box below is ticked.
 Since M2, every change goes through a pull request on github.com/216LABS/216LEADS. During the build phase PRs are self-merged once CI is green; review-before-merge and branch protection start at launch.
@@ -42,7 +42,7 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 
 ### D3: Error tracking and uptime (DevOps addendum)
 - [x] `@sentry/nextjs` in the app and Sentry in the ingest worker, tagged with `APP_ENV` and release (git SHA); client errors sampled down
-- [x] `/leads/api/health` (DB connection + last ingest age) for the Sentry uptime monitor
+- [x] `/homesignal/api/health` (DB connection + last ingest age) for the Sentry uptime monitor
 - [x] Email alert when a nightly ingest has not succeeded in 36 hours
 - Notes: Sentry stays off until `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` are set (account later). `ingest_run` is a view over `job_run`. The watchdog runs from `.github/workflows/watchdog.yml` via `/api/cron/ingest_watchdog` once `PRODUCTION_APP_URL` and `CRON_SECRET` secrets exist; without Resend it writes alerts to `.data/outbox`.
 
@@ -184,12 +184,12 @@ Result:
 ### M12: Hardening and acceptance
 - [x] RLS SQL tests, webhook signature tests, mail pre-send check tests
 - [x] Playwright: onboarding, lead list, mark won, ROI shows it
-- [x] API rate limits; base-path deploy under 216labs.dev/leads; README one-command run; final acceptance pass
+- [x] API rate limits; base-path deploy under 216labs.dev/homesignal; README one-command run; final acceptance pass
 
 Result:
 - **Tests:** RLS adds parcels-only-inside-the-area (`org_parcel_keys`), attribution and terms-acceptance isolation, and the new server-only tables; `apps/web/lib/webhooks.test.ts` signs real Stripe test headers (missing, wrong secret, stale, tampered body, valid); `ratelimit.test.ts`; the smoke's CRM test now ends on the ROI tab (jobs won, revenue, PDF). Pre-send checks were already in `mail.int.test.ts`.
 - **Rate limits:** every signed-in API route was already 60/min per user; admin routes now are too, and the public logo (300/min/IP) and unsubscribe (30/h/IP) routes got limits. Signed webhooks, the cron secret and health stay unthrottled.
-- **Deploy:** `docs/DEPLOY.md` (rewrite from 216labs.dev, env, webhooks, schedules) and `scripts/dev/check-deploy.mjs`, passing against a local `/leads` production build. The favicon now carries the base path (it 404'd under `/leads`).
+- **Deploy:** `docs/DEPLOY.md` (rewrite from 216labs.dev, env, webhooks, schedules) and `scripts/dev/check-deploy.mjs`, passing against a local `/homesignal` production build. The favicon now carries the base path (it 404'd under `/leads`).
 - **Performance:** the browser Sentry SDK loads lazily and only with a DSN; Leads went from 83 to 96 on Lighthouse mobile performance (best practices 100). Text on orange uses a darker orange for WCAG AA contrast.
 - **README:** one-command local run, full data loads, features, tests, deploy pointer.
 
@@ -242,7 +242,7 @@ Final acceptance (spec 15), checked 2026-11-02:
 31. **No-owner-name check is a job, not a fixture.** `privacy_audit` fetches real owner names for a sample of stored homes live from the county and city, holds them only in memory, and searches every text column and the raw page store. Storing names in a test fixture would itself break the rule.
 32. **Contractor names: businesses only.** Cleveland's `CONTRACTOR_NAME` is the license holder and is sometimes the homeowner pulling their own permit, so it is never requested. A contractor known only as a person is stored as "Independent contractor" keyed by city license number (migration 0008 scrubbed earlier rows; the M1 fixture was corrected before it was ever pushed).
 33. **GitHub:** the repo already had GitHub's "Initial commit" (a one-line README); M1 was rebased on top of it and pushed as a fast-forward, so nothing was force-pushed.
-35. **Lead list URL under the base path is `/leads/leads`.** Production serves the app at 216labs.dev/leads, so the in-app `/leads` route becomes `/leads/leads`. It works; renaming the in-app route is left for a later product decision.
+35. **Lead list URL under the base path is `/leads/leads`.** Production serves the app at 216labs.dev/homesignal, so the in-app `/leads` route becomes `/leads/leads`. It works; renaming the in-app route is left for a later product decision.
 36. **A 14th preset, `fence`,** backs the staging QA fence org and the no-key fallback for fence companies (the addendum's A5 table and A8 golden tests both use fencing).
 37. **`pest` permit/violation category** (not in spec 7.3) backs the pest-control preset; it matches rodent/roach/infestation/bed bug/termite wording, mostly in city violation notices, and sits just before the catch-all `remodel` rule.
 38. **Septic preset weights are scaled** from spec 7.5's 60/25/15 to 40/17/10 so they fit Addendum A3's 0-40 weight cap with the same proportions.
@@ -296,13 +296,14 @@ Final acceptance (spec 15), checked 2026-11-02:
 90. **Rate limits stay in-process** (decision 15) and cover every route a person calls; machine callers authenticate instead (Stripe/Lob signatures, `CRON_SECRET`).
 91. **Browser Sentry is lazy.** With no DSN the SDK isn't loaded at all; with one, it loads on idle after the page is interactive. Errors in the first second of a page load can be missed; the server SDK still reports server errors.
 92. **Accessible orange.** `signal-600` is #C2410C (5.2:1 on white) for text, primary buttons and 80+ score chips; the brand #F26B1D stays on the logo, progress bars and decoration.
+93. **Renamed 216 Leads to 216 HomeSignal (2026-11-02, issue #42).** Flip renamed the product: every product-facing string says 216 HomeSignal ("216 HomeSignal by 216LABS"), the app is served at 216labs.dev/homesignal, and old `/leads` and `/leads/*` links answer 308 to the same path under `/homesignal` (a `next.config` redirect outside the base path; the main site forwards `/leads` too, see `docs/DEPLOY.md`). Unchanged on purpose: the GitHub repo, database tables, the `lead` model, the in-app `/leads` lead-list route (now `/homesignal/leads`), the `@216leads/*` package scope, the local QA logins (`*@216leads.test`) and comments inside already-applied migrations (they are append-only). The CI smoke now builds and tests under `/homesignal`.
 82. **Medina sub-permits.** Electrical and HVAC permits reuse the building permit's number and leave the PPN blank. They're stored as `<permit>:<section>`, take the PPN of the same permit or address in the list, and otherwise join the stub already at that address in that town, or get an address-keyed stub (`medina:A<hash>`). The electrical contractor is kept (in the description or as the contractor) only when it's a business name; a person's name is never stored, including in the raw page store.
 79. **Stark stubs only for numbered land-and-building sales.** The sales layer has no land-use code; vacant land (`1+LAND`) and unaddressed lots aren't homes and would otherwise score as limited-data homes. Events are keyed `PARID:CONVEYANCE_NUMBER` (one conveyance covers several parcels). Arms-length = `ARMS_LENGTH = 'Yes'` and $10,000+ (decision 20).
 80. **One source failing doesn't stop the daily run.** `pipeline daily` runs every job, then fails at the end naming the ones that broke, so a Medina or Census outage still lets matching and scoring run.
 81. **Exclusive ZIPs are chosen, not implied.** The Exclusive plan covers 10 ZIPs, 5 of them exclusive, so the owner marks which ones; saving the area without the Exclusive plan releases any locks. A Stripe subscription change to any other plan also releases them.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
-24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
+24. **Domain is 216labs.dev/homesignal** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
 25. **One new-construction category:** the addendum's `new_build` replaces the `new_construction` category added during the M2/M3 regex work, so there is a single category for new homes.
 26. **No LLM key locally:** without `ANTHROPIC_API_KEY`/`OPENAI_API_KEY` the wizard maps answers to the closest preset with keyword rules (the same path as A3's fallback), so `pnpm local` needs no paid key.
 
@@ -327,7 +328,7 @@ Checked 2026-11-01 from this machine. All reachable without login.
 
 - **Addenda audit (2026-11-02, after M12):** every A1-A9 and D1-D9 item checked against the code. Fixed in the addenda PR: A6 feedback nudges now write `recipe_version` rows; A3 `LLM_PROVIDER=openai` is implemented. Not code: D2 branch protection waits for launch (decision 34), D2/D3 preview-URL smoke and Sentry need Sam's Vercel/Sentry accounts (CI runs the smoke against a local production build meanwhile).
 
-- **Cloud accounts (D1):** Vercel project, Supabase `216leads-prod` / `216leads-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
+- **Cloud accounts (D1):** Vercel project, Supabase `216homesignal-prod` / `216homesignal-staging`, and their env vars need the owner's accounts. `docs/ENVIRONMENTS.md` lists the exact steps.
 - **Records-request PDF in production:** needs Python + pdfplumber on the host; Vercel has neither, so PDF import runs locally or on the worker (CSV/XLSX work everywhere).
 - **Legal text is a draft** (issue #3): attorney-reviewed text replaces `content/legal/*.mdx` before launch; /admin warns in production until then.
 - **Backlog issues already on GitHub (#1-#12):** handled in the matching milestones: #1 base path/URLs (D1 + PR #13), #2 opt-out page ships with postcards (M8, done), #3 legal pages and #7 help page (M11, done), #4 trial/past-due states and #5 founding offer (M7, done), #8 day-3 check-in (M6, done), #6/#10 admin tools (after M5), #8/#9 lifecycle emails (M6), #11 point-of-sale trigger (A1/M3), #12 Stripe Tax (blocked).

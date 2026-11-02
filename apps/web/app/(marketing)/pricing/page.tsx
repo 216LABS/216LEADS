@@ -27,7 +27,7 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
           </Card>
         ))}
       </div>
-      <p className="mt-6 text-sm text-slate">If you don&apos;t book a job from 216 Leads in your first 60 days, we refund month 2. <Link href="/refunds" className="underline">Refunds</Link></p>
+      <p className="mt-6 text-sm text-slate">If you don&apos;t book a job from 216 HomeSignal in your first 60 days, we refund month 2. <Link href="/refunds" className="underline">Refunds</Link></p>
     </section>
   );
 }

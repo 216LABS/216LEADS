@@ -1,10 +1,10 @@
 # Addendum A: AI Business Profile Wizard + Adjacent-Permit Triggers
 
 Add-on to BUILD_SPEC.md. Everything in BUILD_SPEC.md stays as written; this only adds to it.
-Product name: **216 Leads** (by 216LABS), served at 216labs.dev/leads. Use this name in all UI and copy.
+Product name: **216 HomeSignal** (by 216LABS), served at 216labs.dev/homesignal. Use this name in all UI and copy.
 
 ## A1. Goal
-Let any business that sells to homeowners (trades, plus dentists, insurance agents, cleaners, etc.) set up 216 Leads by answering plain questions. An LLM turns the answers into a scoring recipe in the existing template format (BUILD_SPEC 7.4). The 13 templates in 7.5 become **starting presets**, not the only options.
+Let any business that sells to homeowners (trades, plus dentists, insurance agents, cleaners, etc.) set up 216 HomeSignal by answering plain questions. An LLM turns the answers into a scoring recipe in the existing template format (BUILD_SPEC 7.4). The 13 templates in 7.5 become **starting presets**, not the only options.
 
 Out of scope: businesses that sell to other businesses (B2B). All data here is residential.
 

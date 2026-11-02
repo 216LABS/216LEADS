@@ -10,12 +10,12 @@ import {
 const digest: DigestProps = {
   orgName: "Test Roofing", trade: "roofing", topTown: "Lakewood", total: 214, newThisWeek: 37,
   leads: Array.from({ length: 10 }, (_, i) => ({
-    url: `https://216labs.dev/leads/leads/${i}`, address: `${1200 + i} Test Ave`, town: "Lakewood", score: 90 - i,
+    url: `https://216labs.dev/homesignal/leads/${i}`, address: `${1200 + i} Test Ave`, town: "Lakewood", score: 90 - i,
     reason: "No roof permit on record since 2011", trigger: i % 2 ? "Just sold" : null,
   })),
-  triggers: [{ label: "Just sold", count: 12, url: "https://216labs.dev/leads/leads?chips=sold" }],
+  triggers: [{ label: "Just sold", count: 12, url: "https://216labs.dev/homesignal/leads?chips=sold" }],
   competitor: { name: "Acme Roofing LLC", count: 4 },
-  leadsUrl: "https://216labs.dev/leads/leads", unsubscribeUrl: "https://216labs.dev/leads/api/public/unsubscribe?t=x",
+  leadsUrl: "https://216labs.dev/homesignal/leads", unsubscribeUrl: "https://216labs.dev/homesignal/api/public/unsubscribe?t=x",
 };
 
 describe("digest (spec 12)", () => {

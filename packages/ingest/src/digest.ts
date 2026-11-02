@@ -192,7 +192,7 @@ export async function runLifecycle(sql: Sql, o: { now?: Date } = {}) {
     for (const org of ending) {
       const res = await sendEmail(sql, {
         orgId: org.id, kind: "trial_ending", dedupeKey: `trial_ending:${org.id}`, to: await recipients(sql, org.id, []),
-        subject: `Your 216 Leads trial ends in ${org.days} day${org.days === 1 ? "" : "s"}`,
+        subject: `Your 216 HomeSignal trial ends in ${org.days} day${org.days === 1 ? "" : "s"}`,
         element: createElement(TrialEnding, { orgName: org.name, daysLeft: org.days, billingUrl: appUrl("/settings/billing") }),
       });
       if (res) sent++;

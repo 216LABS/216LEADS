@@ -41,7 +41,7 @@ jobs:
           KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
         run: |
           set -euo pipefail
-          name="216leads-prod-$(date -u +%Y%m%d).dump"
+          name="216homesignal-prod-$(date -u +%Y%m%d).dump"
           /usr/lib/postgresql/17/bin/pg_dump --format=custom --no-owner --no-privileges \
             --schema=public --schema=auth "$DB" > "$name"
           openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:KEY -in "$name" -out "$name.enc"

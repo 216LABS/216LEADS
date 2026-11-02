@@ -57,7 +57,7 @@ export function PlanCards({ current, foundingLeft, canBuy, billingOn }: { curren
         })}
       </div>
       <p className="text-xs text-slate">
-        Postcards beyond your monthly credits are $0.99 each. If you don&rsquo;t book a job from 216 Leads in your first 60 days, we refund month 2.
+        Postcards beyond your monthly credits are $0.99 each. If you don&rsquo;t book a job from 216 HomeSignal in your first 60 days, we refund month 2.
         {foundingLeft > 0 ? " The founding price stays while you stay on Pro monthly; switching plans drops it." : ""}
       </p>
       {!billingOn ? <p className="text-sm text-slate" role="status">Plans open soon. Your trial keeps running until then.</p> : null}

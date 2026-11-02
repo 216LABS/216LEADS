@@ -36,8 +36,8 @@ describe("live-key guard (D1)", () => {
 
 describe("base path", () => {
   it("prefixes paths with the configured base path", () => {
-    process.env.NEXT_PUBLIC_BASE_PATH = "/leads";
-    expect(withBase("/api/health")).toBe("/leads/api/health");
+    process.env.NEXT_PUBLIC_BASE_PATH = "/homesignal";
+    expect(withBase("/api/health")).toBe("/homesignal/api/health");
     process.env.NEXT_PUBLIC_BASE_PATH = "";
     expect(withBase("/api/health")).toBe("/api/health");
   });

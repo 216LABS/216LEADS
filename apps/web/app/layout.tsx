@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "216 Leads", template: "%s · 216 Leads" },
+  title: { default: "216 HomeSignal", template: "%s · 216 HomeSignal" },
   description: "Know which homes need you next. Built from public records by 216LABS.",
   // Metadata URLs don't get the base path automatically.
   icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/icon.svg` },

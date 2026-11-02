@@ -21,7 +21,7 @@ export function trialDay3Subject(d: Pick<TrialDay3Props, "trade" | "town">): str
 export function TrialDay3(d: TrialDay3Props) {
   return (
     <Layout preview="here are your top 3 homes right now" unsubscribeUrl={d.unsubscribeUrl} unsubscribeLabel="Unsubscribe from check-ins" contact={SAM}>
-      <Text style={p}>hey there, it&rsquo;s sam from 216 Leads. here are your top 3 homes right now:</Text>
+      <Text style={p}>hey there, it&rsquo;s sam from 216 HomeSignal. here are your top 3 homes right now:</Text>
       {d.homes.map((h) => (
         <Section key={h.url} style={{ borderTop: `1px solid ${C.line}`, padding: "8px 0" }}>
           <Text style={{ ...p, margin: 0 }}>

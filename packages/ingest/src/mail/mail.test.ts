@@ -10,7 +10,7 @@ describe("postcards", () => {
       website: "acme.example", logoUrl: null, returnAddress: "1 Main St, Lakewood, OH 44107",
     });
     expect(front).toContain("Your neighbors are re-roofing.");
-    expect(back).toContain("To stop mail: 216labs.dev/leads/optout");
+    expect(back).toContain("To stop mail: 216labs.dev/homesignal/optout");
     expect(back).toContain("$150 off");
     expect(back).toContain("<svg");
   });
@@ -25,7 +25,7 @@ describe("postcards", () => {
   it("personalizes per home and tags the site link", () => {
     expect(personalize("Built in {year_built}? Time for a roof check.", { street: "Elm Ave", year_built: 1931 })).toBe("Built in 1931? Time for a roof check.");
     expect(personalize("Built in {year_built}? Time for a roof check.", { street: null, year_built: null })).toBe("Time for a roof check.");
-    expect(utmUrl("acme.example", "checkup")).toBe("https://acme.example/?utm_source=216leads&utm_medium=postcard&utm_campaign=checkup");
+    expect(utmUrl("acme.example", "checkup")).toBe("https://acme.example/?utm_source=216homesignal&utm_medium=postcard&utm_campaign=checkup");
   });
 });
 

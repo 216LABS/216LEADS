@@ -21,7 +21,7 @@ export function Layout({ preview, children, unsubscribeUrl, unsubscribeLabel = "
       <Body style={{ backgroundColor: C.paper, fontFamily: font, color: C.navy, margin: 0, padding: "24px 0" }}>
         <Container style={{ maxWidth: 560, backgroundColor: "#ffffff", borderRadius: 12, padding: "24px 20px", border: `1px solid ${C.line}` }}>
           <Text style={{ margin: "0 0 16px", fontSize: 16, fontWeight: 700 }}>
-            216 <span style={{ color: C.orange }}>Leads</span>
+            216 <span style={{ color: C.orange }}>HomeSignal</span>
           </Text>
           {children}
           <Hr style={{ borderColor: C.line, margin: "24px 0 12px" }} />
