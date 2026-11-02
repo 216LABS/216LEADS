@@ -32,6 +32,22 @@ jobs:
       DATABASE_URL_DIRECT: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Migrations are append-only
+        if: github.event_name == 'pull_request'
+        run: |
+          base="origin/${{ github.base_ref }}"
+          changed=$(git diff --name-status "$base"...HEAD -- packages/db/migrations | grep -v '^A' || true)
+          if [ -n "$changed" ]; then
+            echo "::error::Merged migrations must not be edited or deleted; add a new migration instead (docs/ROLLBACK.md):"
+            echo "$changed"; exit 1
+          fi
+          for f in $(git diff --name-only --diff-filter=A "$base"...HEAD -- packages/db/migrations); do
+            if grep -Eiq 'drop[[:space:]]+(column|table)' "$f"; then
+              echo "::warning file=$f::Destructive migration. Ship it only after a release that stopped using it (docs/ROLLBACK.md)."
+            fi
+          done
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
