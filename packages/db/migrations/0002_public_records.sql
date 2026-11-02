@@ -31,7 +31,7 @@ create table parcel (
   land_use_code text,
   land_use_desc text,
   is_single_family boolean,
-  is_condo boolean not null default false, -- 216 HomeSignal addition: derived from land use
+  is_condo boolean not null default false, -- 216 Leads addition: derived from land use
   year_built int,
   living_sqft int,
   rooms int,
