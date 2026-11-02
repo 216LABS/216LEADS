@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrgContext, getUser, type OrgContext, type SessionUser } from "./session";
 import { rateLimit } from "./ratelimit";
-import { canUseApp } from "@216leads/shared";
+import { canUseApp, planLimits } from "@216leads/shared";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
@@ -29,6 +29,13 @@ export async function apiOrg(): Promise<OrgContext> {
 export async function apiActiveOrg(): Promise<OrgContext> {
   const ctx = await apiOrg();
   if (!canUseApp(ctx.org.billing_state)) throw new ApiError(402, "Your plan isn't active. Pick a plan in Settings → Billing to keep going.");
+  return ctx;
+}
+
+/** apiActiveOrg for the map and market tools, which are Pro features (spec 11; the trial has them). */
+export async function apiMarketOrg(): Promise<OrgContext> {
+  const ctx = await apiActiveOrg();
+  if (!planLimits(ctx.org.plan).marketTools) throw new ApiError(403, "The map, neighbor ring and competitor tracker come with Pro. Upgrade in Settings → Billing.");
   return ctx;
 }
 

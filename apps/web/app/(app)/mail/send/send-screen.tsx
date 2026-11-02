@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { withBase } from "@216leads/shared";
 import { Button, Card, Label, Select } from "@/components/ui";
+import { MAP_SELECTION_KEY } from "@/lib/map-selection";
 import { PostcardFrames, type TplView } from "../mail-client";
 
 interface Preview {
@@ -15,7 +16,9 @@ const REMOVED_LABEL: Record<string, string> = {
   mailed_recently: "mailed in the last 30 days", no_funds: "no credits left and no card on file", bad_address: "incomplete address",
 };
 
-export function SendScreen({ leadIds, parcelKeys, templates }: { leadIds: string[]; parcelKeys: string[]; templates: TplView[] }) {
+export function SendScreen({ leadIds: initialLeadIds, parcelKeys, templates, fromMap }: { leadIds: string[]; parcelKeys: string[]; templates: TplView[]; fromMap?: boolean }) {
+  const [leadIds, setLeadIds] = useState(initialLeadIds);
+  const [ready, setReady] = useState(!fromMap);
   const [tid, setTid] = useState(templates[0]?.id ?? "");
   const [p, setP] = useState<Preview | null>(null);
   const [busy, setBusy] = useState(false);
@@ -32,11 +35,23 @@ export function SendScreen({ leadIds, parcelKeys, templates }: { leadIds: string
   }
 
   useEffect(() => {
+    if (!fromMap) return;
+    try {
+      const ids = JSON.parse(sessionStorage.getItem(MAP_SELECTION_KEY) ?? "[]");
+      if (Array.isArray(ids)) setLeadIds(ids.filter((x): x is string => typeof x === "string").slice(0, 500));
+    } catch {
+      // storage blocked or empty: the screen falls back to "pick homes first"
+    }
+    setReady(true);
+  }, [fromMap]);
+
+  useEffect(() => {
     if (!tid || (!leadIds.length && !parcelKeys.length)) return;
     call(false).then(setP).catch((e) => setError(e.message));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tid]);
+  }, [tid, leadIds]);
 
+  if (!ready) return null;
   if (!leadIds.length && !parcelKeys.length) return <p className="text-slate">Pick homes on <Link className="underline" href="/leads">Leads</Link> first.</p>;
   if (p?.batch_id) {
     return (

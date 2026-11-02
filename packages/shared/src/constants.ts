@@ -35,11 +35,11 @@ export function tradeLabel(key: string): string {
 export type PlanKey = "trial" | "starter" | "pro" | "exclusive" | "canceled";
 
 export const PLANS = {
-  starter: { key: "starter", label: "Starter", monthly: 99, annual: 990, maxZips: 3, credits: 0, users: 1, exclusiveZips: 0,
+  starter: { key: "starter", label: "Starter", monthly: 99, annual: 990, maxZips: 3, credits: 0, users: 1, exclusiveZips: 0, marketTools: false,
     features: ["1 trade, up to 3 zips", "Lead list + Monday digest", "Tracker + CSV export"] },
-  pro: { key: "pro", label: "Pro", monthly: 199, annual: 1990, maxZips: 10, credits: 50, users: 2, exclusiveZips: 0,
+  pro: { key: "pro", label: "Pro", monthly: 199, annual: 1990, maxZips: 10, credits: 50, users: 2, exclusiveZips: 0, marketTools: true,
     features: ["Up to 10 zips", "Map, neighbor ring, competitor tracker", "Auto-mail + ROI", "50 postcard credits/mo"] },
-  exclusive: { key: "exclusive", label: "Exclusive", monthly: 349, annual: 3490, maxZips: 10, credits: 150, users: 4, exclusiveZips: 5,
+  exclusive: { key: "exclusive", label: "Exclusive", monthly: 349, annual: 3490, maxZips: 10, credits: 150, users: 4, exclusiveZips: 5, marketTools: true,
     features: ["Everything in Pro", "Your trade locked in up to 5 zips", "150 postcard credits/mo", "4 users"] },
 } as const;
 

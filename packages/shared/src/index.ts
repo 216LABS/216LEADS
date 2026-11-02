@@ -6,3 +6,4 @@ export * from "./municipality";
 export * from "./app-env";
 export * from "./customers-csv";
 export * from "./billing";
+export * from "./geo";
