@@ -19,3 +19,7 @@ export function getTemplate(key: string): Template {
 export function hasTemplate(key: string): boolean {
   return key in TEMPLATES;
 }
+export {
+  answersSchema, applyAnswers, answersMessage, closestPreset, describeRecipe, keywordTweak, presetRecipe, profilePrompt, recipeDiff,
+  suggestAdjacent, ADJACENT_CHOICES, FOCUS, JOB_VALUES, type WizardAnswers,
+} from "./profile";

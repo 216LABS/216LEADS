@@ -1,7 +1,7 @@
 import "server-only";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getOrgContext, getUser, type OrgContext } from "./session";
+import { getOrgContext, getUser, type OrgContext, type SessionUser } from "./session";
 import { rateLimit } from "./ratelimit";
 
 export class ApiError extends Error {
@@ -22,6 +22,14 @@ export async function apiOrg(): Promise<OrgContext> {
   const ctx = await getOrgContext();
   if (!ctx) throw new ApiError(403, "Finish onboarding first");
   return ctx;
+}
+
+/** Signed in, org optional (the onboarding wizard runs before the org exists). Same rate limit. */
+export async function apiUser(): Promise<{ user: SessionUser; ctx: OrgContext | null }> {
+  const user = await getUser();
+  if (!user) throw new ApiError(401, "Sign in first");
+  if (!rateLimit(`user:${user.id}`, 60, 60_000)) throw new ApiError(429, "Too many requests. Try again in a minute.");
+  return { user, ctx: await getOrgContext() };
 }
 
 export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response>) {

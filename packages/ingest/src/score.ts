@@ -340,9 +340,10 @@ export interface PreviewHome {
 
 export async function previewTerritory(
   sql: Sql,
-  args: { trade: string; zips: string[]; profile?: Partial<Profile>; orgId?: string | null },
+  args: { trade?: string; template?: Template; zips: string[]; profile?: Partial<Profile>; orgId?: string | null },
 ): Promise<{ zips: PreviewZip[]; sample: PreviewHome[]; total: number }> {
-  const t = getTemplate(args.trade);
+  // A wizard draft recipe (Addendum A4) or a preset by key.
+  const t = args.template ?? getTemplate(args.trade ?? "roofing");
   const profile = effectiveProfile(t, args.profile ?? {});
   const zips = [...new Set(args.zips.map((z) => z.trim()).filter((z) => /^\d{5}$/.test(z)))].slice(0, 25);
   if (!zips.length) return { zips: [], sample: [], total: 0 };
