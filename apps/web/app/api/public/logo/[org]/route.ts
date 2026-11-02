@@ -6,7 +6,7 @@ import { rateLimit } from "@/lib/ratelimit";
 import { clientIp } from "@/lib/turnstile";
 
 export async function GET(req: Request, { params }: { params: Promise<{ org: string }> }) {
-  if (!rateLimit(`logo:${clientIp(req)}`, 300, 60_000)) return new Response("slow down", { status: 429 });
+  if (!(await rateLimit(`logo:${clientIp(req)}`, 300, 60_000))) return new Response("slow down", { status: 429 });
   const { org } = await params;
   const sig = new URL(req.url).searchParams.get("s") ?? "";
   if (!/^[0-9a-f-]{36}$/i.test(org) || !linkSecretVerify(`logo:${org}`, sig)) return new Response("not found", { status: 404 });

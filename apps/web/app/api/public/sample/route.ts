@@ -17,7 +17,7 @@ const Body = z.object({
 
 export const POST = handle(async (req: Request) => {
   const ip = clientIp(req);
-  if (!rateLimit(`sample:${ip}`, 5, 60 * 60_000)) throw new ApiError(429, "Too many requests. Try again in an hour.");
+  if (!(await rateLimit(`sample:${ip}`, 5, 60 * 60_000))) throw new ApiError(429, "Too many requests. Try again in an hour.");
   const b = await body(req, Body);
   if (!(await turnstileOk(b.token, ip))) throw new ApiError(400, "Please complete the check and try again.");
   await saveProspect(getDirectSql(), b);

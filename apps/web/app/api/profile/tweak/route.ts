@@ -12,7 +12,7 @@ const Body = z.object({ recipe: z.record(z.unknown()), instruction: z.string().t
 export const POST = handle(async (req: Request) => {
   const { user, ctx } = await apiUser();
   const input = await body(req, Body);
-  if (!rateLimit(`llm:${user.id}`, 10, 10 * 60_000)) throw new ApiError(429, "That's a lot of tweaks. Try again in a few minutes.");
+  if (!(await rateLimit(`llm:${user.id}`, 10, 10 * 60_000))) throw new ApiError(429, "That's a lot of tweaks. Try again in a few minutes.");
   const before = draftRecipe(input.recipe);
   const t = await tweakRecipe(before, input.instruction);
   return json({

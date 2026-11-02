@@ -14,7 +14,7 @@ const Body = z.object({
 export const POST = handle(async (req: Request) => {
   const user = await getUser();
   if (!user) throw new ApiError(401, "Sign in first");
-  if (!rateLimit(`report:${user.id}`, 5, 60 * 60_000)) throw new ApiError(429, "Thanks. We already have a few reports from you this hour.");
+  if (!(await rateLimit(`report:${user.id}`, 5, 60 * 60_000))) throw new ApiError(429, "Thanks. We already have a few reports from you this hour.");
   const ctx = await getOrgContext();
   const { message, page } = await body(req, Body);
   const r = await sendOpsEmail({
