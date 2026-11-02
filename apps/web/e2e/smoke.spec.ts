@@ -146,3 +146,12 @@ test("CRM: filter, open a lead, add a note, mark it won, export CSV", async ({ p
   expect(csv).toContain("Not a consumer report");
   expect(csv).toMatch(/,won\r?\n/);
 });
+
+test("billing page shows the plans and the trial, with billing off when Stripe isn't configured", async ({ page }) => {
+  await signInQa(page);
+  await page.goto("settings/billing");
+  await expect(page.getByRole("heading", { name: "Billing" })).toBeVisible();
+  await expect(page.getByText("Free trial", { exact: true })).toBeVisible();
+  for (const plan of ["Starter", "Pro", "Exclusive"]) await expect(page.getByRole("heading", { name: plan, exact: true })).toBeVisible();
+  if (!process.env.STRIPE_SECRET_KEY) await expect(page.getByText("Plans open soon")).toBeVisible();
+});

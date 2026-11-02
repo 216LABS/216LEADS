@@ -4,7 +4,7 @@ import { Card, PageHeader } from "@/components/ui";
 
 export const metadata = { title: "Settings" };
 
-// Spec 9.7. Billing (Stripe portal) and mail rules join this list with M7 and M8.
+// Spec 9.7. Mail rules join this list with M8.
 const SECTIONS = [
   { href: "/settings/profile", title: "Perfect customer", sub: "Home age, value, lot, heat, what to leave out, and what matters most." },
   { href: "/settings/recipe", title: "Scoring recipe", sub: "What makes a home a good lead for you, and every past version." },
@@ -13,6 +13,7 @@ const SECTIONS = [
   { href: "/settings/brand", title: "Brand", sub: "Logo, phone, website and default offer for postcards." },
   { href: "/settings/digest", title: "Digest and return address", sub: "Who gets the weekly email, which day, and where returned mail goes." },
   { href: "/settings/team", title: "Team", sub: "Invite people by email." },
+  { href: "/settings/billing", title: "Billing", sub: "Your plan, postcard credits, card and invoices." },
   { href: "/settings/coverage", title: "Data coverage", sub: "Which public records we have for each town in your area, and how fresh." },
 ];
 

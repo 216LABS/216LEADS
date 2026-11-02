@@ -8,6 +8,7 @@ import {
 import { TRADE_CATEGORY } from "@216leads/scoring";
 import { addDays, titleCase, tradeLabel, TZ } from "@216leads/shared";
 import { withJobRun } from "./runtime";
+import { grantMonthlyCredits, refreshBillingStates } from "./billing";
 
 const TRIGGER_CHIPS: { label: string; match: RegExp; chip: string }[] = [
   { label: "Just sold", match: /sold|moved/i, chip: "sold" },
@@ -99,7 +100,7 @@ export async function runDigest(sql: Sql, o: { org?: string; force?: boolean; no
     const clock = etClock(o.now ?? new Date());
     const orgs = await sql<{ id: string; digest_day: number; digest_emails: string[] }[]>`
       select id, digest_day, digest_emails::text[] as digest_emails from org
-      where digest_enabled and onboarded_at is not null and plan <> 'canceled'
+      where digest_enabled and onboarded_at is not null and billing_state in ('trialing', 'active', 'past_due')
         and (${o.org ?? null}::uuid is null or id = ${o.org ?? null}::uuid)`;
     let sent = 0;
     let skipped = 0;
@@ -138,7 +139,7 @@ async function sendDay3(sql: Sql, now: Date) {
   const created = addDays(clock.date, -3);
   const orgs = await sql<{ id: string; trade: string }[]>`
     select id, trade from org
-    where plan = 'trial' and trial_ends_at > now() and onboarded_at is not null
+    where billing_state = 'trialing' and onboarded_at is not null
       and (created_at at time zone ${TZ})::date = ${created}::date`;
   let sent = 0;
   const noHomes: string[] = [];
@@ -177,12 +178,16 @@ async function sendDay3(sql: Sql, now: Date) {
 /** Lifecycle mail: day-3 check-in and trial ending on day 11 of 14 (spec 12). Payment-failed goes out from the Stripe webhook. */
 export async function runLifecycle(sql: Sql, o: { now?: Date } = {}) {
   return withJobRun(sql, { job: "lifecycle" }, async (ctx) => {
+    // Time-based billing moves first (trial end, grace end, period end), then monthly credits.
+    const moved = await refreshBillingStates(sql, undefined, o.now ?? new Date());
+    ctx.meta.billing_changes = moved.length;
+    ctx.meta.credit_grants = await grantMonthlyCredits(sql);
     const day3 = await sendDay3(sql, o.now ?? new Date());
     ctx.meta.trial_day3 = day3.sent;
     if (day3.noHomes.length) ctx.meta.day3_no_homes = day3.noHomes;
     const ending = await sql<{ id: string; name: string; days: number }[]>`
       select id, name, ceil(extract(epoch from trial_ends_at - now()) / 86400)::int as days from org
-      where plan = 'trial' and trial_ends_at > now() and trial_ends_at <= now() + interval '3 days'`;
+      where billing_state = 'trialing' and trial_ends_at > now() and trial_ends_at <= now() + interval '3 days'`;
     let sent = 0;
     for (const org of ending) {
       const res = await sendEmail(sql, {

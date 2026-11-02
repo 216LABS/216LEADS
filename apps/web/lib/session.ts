@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { getSql } from "@216leads/db";
+import { deriveBillingState, type BillingState } from "@216leads/shared";
 import { supabaseServer } from "./supabase";
 
 export interface SessionUser {
@@ -30,6 +31,11 @@ export interface OrgRow {
   coach_marks_seen: boolean;
   stripe_customer_id: string | null;
   streetview_enabled: boolean;
+  plan_interval: string | null;
+  period_end: string | null;
+  founding_member: boolean;
+  /** Derived live from the facts below (issue #4); the stored column can lag by up to an hour. */
+  billing_state: BillingState;
 }
 
 export interface OrgContext {
@@ -50,15 +56,17 @@ export const getOrgContext = cache(async (): Promise<OrgContext | null> => {
   const user = await getUser();
   if (!user) return null;
   const sql = getSql();
-  const [row] = await sql<(OrgRow & { role: string })[]>`
+  const [row] = await sql<(Omit<OrgRow, "billing_state"> & { role: string })[]>`
     select o.id, o.name, o.trade, o.plan, o.plan_status, o.trial_ends_at, o.payment_failed_at, o.postcard_credits, o.phone,
       o.website, o.default_offer, o.logo_path, o.return_address, o.digest_enabled, o.digest_emails::text[] as digest_emails,
-      o.digest_day, o.onboarded_at, o.coach_marks_seen, o.stripe_customer_id, o.streetview_enabled, m.role
+      o.digest_day, o.onboarded_at, o.coach_marks_seen, o.stripe_customer_id, o.streetview_enabled, o.plan_interval, o.period_end,
+      o.founding_member, m.role
     from org_member m join org o on o.id = m.org_id
     where m.user_id = ${user.id}
     order by o.created_at limit 1`;
   if (!row) return null;
-  const { role, ...org } = row;
+  const { role, ...rest } = row;
+  const org = { ...rest, billing_state: deriveBillingState(rest) };
   return { user, org, role };
 });
 

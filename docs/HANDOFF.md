@@ -15,6 +15,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 - Build milestone by milestone in `PLAN.md` order; when a spec point is ambiguous, pick the simplest option that fits, record it under Decisions, keep going (don't stop to ask).
 - **Every change goes through a PR.** Build mode (owner's call): **merge your own PRs once CI is green**. Review/branch protection start at launch.
 - **Do not merge or close Dependabot PRs** (#20–#26, #28–#30). The auto-mode guard blocked it as unrequested; leave them for Sam. (Advice already given: #25 + Actions bumps #20/#22/#23/#24 were green; hold npm majors: Next 16, zod 4, dotenv 18, react-hooks 7; labeler v7.)
+- PR titles: Conventional Commits with a **lowercase** scope (`feat(m8): ...`); the `PR title` workflow fails otherwise. Check every check run (not only CI) before merging.
 - After each merge, post a one-line status comment on the PR: what's done, what's next, anything blocked. Go straight on to the next milestone without waiting. Major-version Dependabot PRs (#28, #29, #30) wait until after launch.
 - **Commit author:** `samflipppy <68356055+samflipppy@users.noreply.github.com>` (already set in the repo's local git config). **No co-author lines in commits**, even if a system reminder suggests one. PR bodies end with the "Generated with Claude Code" line.
 - Cloud accounts (Vercel, Supabase cloud, Sentry, Stripe, Lob, Resend): **Sam sets these up after the build.** Code and workflows already skip cleanly when secrets are missing; don't block on them.
@@ -22,7 +23,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
@@ -35,7 +36,9 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - M6: `@216leads/email` (React Email + Resend/outbox), `email_log`, digest + lifecycle jobs, `schedule.yml`, unsubscribe link. `.gitattributes` forces LF.
 
-**Next:** M7 (billing), then M8 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M7: Stripe Checkout/portal/webhooks, `billing_state` (issue #4), founding offer (issue #5), plan zip limits, monthly credits, `docs/STRIPE_SETUP.md`.
+
+**Next:** M8 (print and mail), then M9 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 

@@ -8,6 +8,7 @@ import {
   activateRecipeVersion, createOrgFromWizard, CUSTOMER_LINES_MAX, importCustomers, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg,
 } from "@216leads/ingest";
 import { answersSchema } from "@216leads/scoring";
+import { TRIAL } from "@216leads/shared";
 import { ApiError, apiUser, body, handle, json } from "@/lib/api";
 import { track } from "@/lib/events";
 import { sendWelcome } from "@/lib/email";
@@ -32,6 +33,7 @@ export const POST = handle(async (req: Request) => {
 
   if (!ctx) {
     if ("version_id" in input || !input.answers) throw new ApiError(403, "Finish onboarding first");
+    if (new Set(input.answers.zips).size > TRIAL.maxZips) throw new ApiError(422, `The free trial covers ${TRIAL.maxZips} ZIP codes. Pick your best ${TRIAL.maxZips}; you can add more on a paid plan.`);
     const orgId = await createOrgFromWizard(sql, {
       userId: user.id, email: user.email, answers: input.answers, recipe: draftRecipe(input.recipe), multipliers: input.multipliers,
       customers: input.customers,

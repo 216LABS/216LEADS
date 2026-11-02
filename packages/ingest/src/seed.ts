@@ -215,6 +215,9 @@ async function ensureOrg(
     orgId = row!.id;
     for (const z of o.zips) await sql`insert into territory (org_id, kind, zip) values (${orgId}, 'zip', ${z})`;
     await sql`insert into scoring_profile (org_id, template_key, template_version) values (${orgId}, ${t.key}, ${t.version})`;
+  } else {
+    // Re-seeding keeps demo and QA orgs usable: a fresh 14-day trial unless they subscribed.
+    await sql`update org set trial_ends_at = now() + interval '14 days', billing_state = 'trialing' where id = ${orgId} and plan = 'trial'`;
   }
   await ensurePresetVersion(sql, orgId, o.trade);
   if (o.userId) {

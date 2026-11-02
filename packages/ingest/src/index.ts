@@ -14,3 +14,4 @@ export { buildRecipe, tweakRecipe, extractJson, createOrgFromWizard, saveOrgAnsw
 export { importCustomers, searchAreas, areaCounts, CUSTOMER_LINES_MAX, type AreaMatch, type AreaCount } from "./onboarding";
 export { setZipTerritories, orgZips, createInvite, listTeam, acceptInvite, territoryCoverage, MAX_ZIPS, type AcceptResult, type CoverageRow } from "./settings";
 export { runDigest, runLifecycle, buildDigest, etClock } from "./digest";
+export { applyStripeEvent, refreshBillingStates, grantMonthlyCredits, claimTrial, priceFor, priceTable, type StripeEventLike, type PaidPlan } from "./billing";

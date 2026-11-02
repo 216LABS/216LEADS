@@ -9,6 +9,7 @@ import {
 } from "@216leads/scoring";
 import { saveRecipeVersion } from "./recipes";
 import { importCustomers } from "./onboarding";
+import { claimTrial } from "./billing";
 
 export type Recipe = Template & { preset_base?: string | null; rationale?: string[] };
 
@@ -151,6 +152,10 @@ export async function createOrgFromWizard(
     await tx`insert into org_profile (org_id, answers) values (${org!.id}, ${tx.json(v.answers as never)})`;
     return org!.id;
   });
+  // A second trial for the same email starts locked (issue #4).
+  if (!(await claimTrial(sql, v.email, orgId))) {
+    await sql`update org set trial_ends_at = now(), billing_state = 'locked' where id = ${orgId}`;
+  }
   await saveRecipeVersion(sql, {
     orgId, recipe: r, multipliers: v.multipliers, source: v.answers.preset ? "preset" : "wizard", userId: v.userId, activate: true,
     note: v.answers.preset ? "Started from a preset" : "Built from your answers",

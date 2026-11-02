@@ -7,6 +7,19 @@ import type { ReactNode } from "react";
 import { withBase } from "@216leads/shared";
 import { Logo } from "./logo";
 import { ReportProblem } from "./report-problem";
+import { LinkButton } from "./ui";
+
+function LockPanel({ kind }: { kind: "locked" | "canceled" }) {
+  return (
+    <div className="card mx-auto max-w-lg p-6 text-center" role="alert">
+      <h1 className="text-xl font-bold">{kind === "canceled" ? "Your plan ended" : "Your trial ended"}</h1>
+      <p className="mt-2 text-slate">
+        Pick a plan to keep getting homes. Your leads, notes and history are all still here.
+      </p>
+      <LinkButton href="/settings/billing" className="mt-5">See plans</LinkButton>
+    </div>
+  );
+}
 
 const TABS = [
   { href: "/leads", label: "Leads", icon: Home },
@@ -16,8 +29,10 @@ const TABS = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function AppShell({ children, orgName, trade, banner, isAdmin }: {
+export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: {
   children: ReactNode; orgName: string; trade: string; banner?: ReactNode; isAdmin?: boolean;
+  /** Trial over, grace over or plan ended (issue #4): only Billing stays open. */
+  locked?: "locked" | "canceled" | null;
 }) {
   const path = usePathname();
   const active = (href: string) => path === href || path.startsWith(`${href}/`);
@@ -70,7 +85,9 @@ export function AppShell({ children, orgName, trade, banner, isAdmin }: {
           </span>
         </header>
         {banner}
-        <main className="mx-auto w-full max-w-6xl px-4 py-5 md:px-8 md:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-6xl px-4 py-5 md:px-8 md:py-8">
+          {locked && !path.startsWith("/settings/billing") ? <LockPanel kind={locked} /> : children}
+        </main>
       </div>
 
       <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-white pb-[env(safe-area-inset-bottom)] md:hidden">
