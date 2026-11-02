@@ -7,7 +7,8 @@ import { PostcardPreview } from "@/components/postcard-preview";
 
 interface BrandOrg { name: string; phone: string | null; website: string | null; default_offer: string | null; has_logo: boolean }
 
-export function BrandForm({ org }: { org: BrandOrg }) {
+/** Onboarding step 4, also Settings → Brand (`inSettings`: save in place instead of moving on). */
+export function BrandForm({ org, inSettings = false }: { org: BrandOrg; inSettings?: boolean }) {
   const router = useRouter();
   const [phone, setPhone] = useState(org.phone ?? "");
   const [website, setWebsite] = useState(org.website ?? "");
@@ -15,6 +16,7 @@ export function BrandForm({ org }: { org: BrandOrg }) {
   const [logoUrl, setLogoUrl] = useState<string | null>(org.has_logo ? withBase("/api/org/logo") : null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function upload(file: File) {
     setError(null);
@@ -39,7 +41,10 @@ export function BrandForm({ org }: { org: BrandOrg }) {
       setBusy(false);
       return setError(data.issues?.[0]?.message ?? data.error ?? "Could not save");
     }
-    router.push("/onboarding/plan");
+    if (!inSettings) return router.push("/onboarding/plan");
+    setBusy(false);
+    setSaved(true);
+    router.refresh();
   }
 
   return (
@@ -68,9 +73,10 @@ export function BrandForm({ org }: { org: BrandOrg }) {
       </Card>
       <PostcardPreview business={org.name} headline="Your neighbors are getting work done." offer={offer} phone={phone} website={website} logoUrl={logoUrl} />
       {error ? <p role="alert" className="text-sm text-lost">{error}</p> : null}
+      {saved ? <p role="status" className="text-sm text-won">Saved.</p> : null}
       <div className="flex gap-3">
-        <Button type="button" variant="secondary" onClick={() => router.push("/onboarding/plan")}>Skip for now</Button>
-        <Button type="submit" className="flex-1" disabled={busy}>{busy ? "Saving…" : "Save and continue"}</Button>
+        {inSettings ? null : <Button type="button" variant="secondary" onClick={() => router.push("/onboarding/plan")}>Skip for now</Button>}
+        <Button type="submit" className="flex-1" disabled={busy}>{busy ? "Saving…" : inSettings ? "Save" : "Save and continue"}</Button>
       </div>
     </form>
   );

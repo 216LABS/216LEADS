@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { customerLinesFromCsv } from "./customers-csv";
+import { csvCell, customerLinesFromCsv } from "./customers-csv";
 
 describe("customerLinesFromCsv", () => {
   it("uses named columns and drops everything else", () => {
@@ -14,5 +14,14 @@ describe("customerLinesFromCsv", () => {
   });
   it("never returns a line without a street number and zip", () => {
     expect(customerLinesFromCsv("address,zip\nPO Box 12,44107\nMain St,44107")).toEqual([]);
+  });
+});
+
+describe("csvCell", () => {
+  it("quotes and defuses formulas", () => {
+    expect(csvCell("plain")).toBe("plain");
+    expect(csvCell('say "hi", ok')).toBe('"say ""hi"", ok"');
+    expect(csvCell("=HYPERLINK(1)")).toBe("'=HYPERLINK(1)");
+    expect(csvCell(null)).toBe("");
   });
 });

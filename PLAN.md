@@ -102,11 +102,13 @@ Result: "Skip the questions and pick your trade" leads to 14 trade tiles, then t
 - Check: new user signs up, picks a trade, describes their customer, lands on scored leads
 
 ### M5: CRM views
-- [ ] Lead list: search, filter chips, sort, mobile cards with swipe, desktop table with multi-select
-- [ ] Lead detail: reasons with evidence links, pitch, facts, timeline, notes, won/lost flows
-- [ ] CSV export (no names, 2,000 rows/day cap)
-- [ ] Settings: profile, territories, brand, digest, team invites, data coverage
-- [ ] Coach marks, empty states, bottom tab bar / sidebar
+- [x] Lead list: search, filter chips, sort, mobile cards with swipe, desktop table with multi-select
+- [x] Lead detail: reasons with evidence links, pitch, facts, timeline, notes, won/lost flows
+- [x] CSV export (no names, 2,000 rows/day cap)
+- [x] Settings: profile, territories, brand, digest, team invites, data coverage
+- [x] Coach marks, empty states, bottom tab bar / sidebar
+
+Result: Leads has a sticky filter bar (search, 5 chips, sort, status tabs with counts; all in the URL), phone cards with Contacted/Skip buttons and swipe, and a desktop table with select-all, bulk status and "Export selected". Lead detail shows evidence-linked reasons, a copyable pitch, a facts grid, a timeline of every public record plus notes, mail and status moves, a notes box, and won (job amount) / lost (reason) flows. API: `GET /api/leads`, `GET/PATCH /api/leads/:id`, `POST /api/leads/:id/notes`, `POST /api/leads/bulk`, `GET /api/leads/export.csv` (address, city, zip, score, trigger, reasons, status, disclaimer; formula-safe; 2,000 rows per ET day per org). Settings: perfect customer, recipe, area, current customers, brand, digest + return address, team invites, data coverage. Three first-visit coach marks. The smoke test now covers filter, note, won flow and CSV export on phone and desktop.
 
 ### M6: Digest and email
 - [ ] React Email digest + transactional templates
@@ -187,6 +189,9 @@ Result: "Skip the questions and pick your trade" leads to 14 trade tiles, then t
 45. **Logos live in the database** (`org_logo`, PNG/JPEG/WebP up to 512 KB, checked by magic bytes; SVG refused because it can carry script). The serverless host has no disk and Supabase Storage isn't set up; a bucket can replace the table later.
 46. **Current-customer CSVs are read in the browser.** Only "street, ZIP" lines are uploaded (up to 5,000), so names, emails and phones in the user's file never reach the server. They become `org_suppression` rows, matched to a home where the address matches.
 47. **The plan step starts everyone on the trial.** The three cards are shown; paying is M7's Stripe Checkout. The perfect-customer controls write the draft recipe's filters and exclusions, so they're saved as part of the first recipe version (`source = preset` for the tile path).
+48. **"Mail" actions arrive with M8.** The lead card, lead detail and bulk bar get their Mail buttons with the postcard send flow; M5 ships Contacted/Skip, the status selector and CSV export.
+49. **One business per account, invites by link.** An invite is for one email address, lasts 14 days, and the owner copies the link (invite emails come with the M6 email provider). Someone already in another org can't accept; seats follow `planLimits().users`. Roles are owner and member; only the owner changes area, digest and team.
+50. **Exports are counted in `lead_activity`** (`kind = 'export'`, rows in `data`), so the 2,000-row daily cap needs no new table. Cells starting with = + - @ get a leading apostrophe so spreadsheets don't run them.
 34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.

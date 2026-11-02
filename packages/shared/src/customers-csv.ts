@@ -56,3 +56,10 @@ export function customerLinesFromCsv(text: string, max = 5000): string[] {
   }
   return [...out];
 }
+
+/** One CSV cell for exports: quoted when needed, and spreadsheet formulas (=, +, -, @ first) defused. */
+export function csvCell(v: unknown): string {
+  const s = v === null || v === undefined ? "" : String(v);
+  const safe = /^[=+\-@]/.test(s) ? `'${s}` : s;
+  return /[",\n]/.test(safe) ? `"${safe.replace(/"/g, '""')}"` : safe;
+}
