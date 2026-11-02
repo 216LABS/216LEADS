@@ -5,7 +5,8 @@ import { closeAll, getDirectSql } from "@216leads/db";
 import { answersSchema, getTemplate } from "@216leads/scoring";
 import { attributeOrg } from "./attribution";
 import { createOrgFromWizard } from "./profile";
-import { learnOrg, learnedFor, resetLearned } from "./learned";
+import { learnOrg, learnedFor, nudgedRecipe, resetLearned } from "./learned";
+import { activeRecipe } from "./recipes";
 import { monthlySeries, proofRows, roiMetrics } from "./roi";
 import { roiPdf } from "./roi-pdf";
 import { fixList } from "./fixlist";
@@ -83,16 +84,21 @@ describe("ROI", () => {
 });
 
 describe("learned weights (spec 7.6)", () => {
-  it("nudges weights once 10 outcomes exist, and Reset clears them", async () => {
-    // Twelve homes in the area with outcomes: six won, six lost.
-    const homes = await sql<{ parcel_key: string }[]>`
-      select parcel_key from parcel where zip = ${permit.zip} and is_residential(land_use_code, data_limited) and parcel_key <> ${permit.parcel_key}
-      order by parcel_key limit 12`;
-    expect(homes.length).toBe(12);
-    await sql`delete from lead where org_id = ${orgId} and parcel_key = any(${homes.map((h) => h.parcel_key)})`;
+  it("nudges weights once 10 outcomes exist as a feedback recipe version (A6), and Reset goes back", async () => {
+    const before = await activeRecipe(sql, orgId);
+    // Twelve homes in the area with outcomes: the six oldest won, the six newest lost, so age differs.
+    const pick = (dir: "asc" | "desc") => sql<{ parcel_key: string }[]>`
+      select parcel_key from parcel where zip = ${permit.zip} and is_residential(land_use_code, data_limited)
+        and parcel_key <> ${permit.parcel_key} and year_built is not null
+      order by year_built ${dir === "asc" ? sql`asc` : sql`desc`}, parcel_key limit 6`;
+    const won = await pick("asc");
+    const lost = await pick("desc");
+    expect(won.length + lost.length).toBe(12);
+    const keys = [...won, ...lost].map((h) => h.parcel_key);
+    await sql`delete from lead where org_id = ${orgId} and parcel_key = any(${keys})`;
     await sql`insert into lead (org_id, parcel_key, score, reasons, status)
       select ${orgId}, k, 60, '[]'::jsonb, (case when n <= 6 then 'won' else 'lost' end)::lead_status
-      from unnest(${homes.map((h) => h.parcel_key)}::text[]) with ordinality as x(k, n)`;
+      from unnest(${keys}::text[]) with ordinality as x(k, n)`;
     const r = await learnOrg(sql, orgId);
     expect(r.outcomes).toBe(13);
     expect(Object.keys(r.meta).length).toBeGreaterThan(0);
@@ -101,7 +107,19 @@ describe("learned weights (spec 7.6)", () => {
       expect(f).toBeLessThanOrEqual(1.25);
     }
     expect((await learnedFor(sql, orgId)).learned_meta).toEqual(r.meta);
+    expect((await learnedFor(sql, orgId)).learned_weights).toEqual({}); // baked into the recipe instead
+    const after = await activeRecipe(sql, orgId);
+    expect(Object.keys(r.weights).length).toBeGreaterThan(0);
+    {
+      expect(after!.source).toBe("feedback");
+      expect(after!.parent_id).toBe(before!.id);
+      expect(after!.recipe.signals).toEqual(nudgedRecipe(before!.recipe, r.weights).signals);
+      // Running again with the same outcomes doesn't stack another nudge.
+      await learnOrg(sql, orgId);
+      expect((await activeRecipe(sql, orgId))!.id).toBe(after!.id);
+    }
     await resetLearned(sql, orgId);
+    expect((await activeRecipe(sql, orgId))!.id).toBe(before!.id);
     expect((await learnOrg(sql, orgId)).outcomes).toBe(0);
     expect((await learnedFor(sql, orgId)).learned_weights).toEqual({});
   });

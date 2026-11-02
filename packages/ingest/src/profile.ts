@@ -44,18 +44,42 @@ function anthropicProvider(apiKey: string): LlmProvider {
   };
 }
 
-/**
- * The configured provider, or null (then every build uses the closest preset, decision 26).
- * `LLM_PROVIDER=openai` is not wired yet (decision 41) and also falls back.
- */
+/** OpenAI Chat Completions in JSON mode (Addendum A3 `LLM_PROVIDER=openai`). Model from `OPENAI_MODEL`. */
+export function openaiProvider(apiKey: string, model = optionalEnv("OPENAI_MODEL") ?? "gpt-4.1", fetchImpl: typeof fetch = fetch): LlmProvider {
+  return {
+    name: "openai",
+    async complete(system, turns) {
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 90_000);
+      try {
+        const res = await fetchImpl("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model, response_format: { type: "json_object" }, messages: [{ role: "system", content: system }, ...turns] }),
+          signal: ctl.signal,
+        });
+        const body = (await res.json().catch(() => ({}))) as { choices?: { message?: { content?: string; refusal?: string }; finish_reason?: string }[]; error?: { message?: string } };
+        if (!res.ok) throw new Error(`OpenAI ${res.status}: ${body.error?.message ?? "request failed"}`);
+        const choice = body.choices?.[0];
+        if (choice?.message?.refusal) throw new Error("LLM refused");
+        if (choice?.finish_reason === "length") throw new Error("LLM reply was cut off");
+        return choice?.message?.content ?? "";
+      } finally {
+        clearTimeout(timer);
+      }
+    },
+  };
+}
+
+/** The configured provider, or null (then every build uses the closest preset, decision 26). */
 export function llmFromEnv(): LlmProvider | null {
   const provider = (optionalEnv("LLM_PROVIDER") ?? "anthropic").toLowerCase();
-  if (provider === "anthropic") {
-    const key = optionalEnv("ANTHROPIC_API_KEY");
-    return key ? anthropicProvider(key) : null;
+  if (provider === "openai") {
+    const key = optionalEnv("OPENAI_API_KEY");
+    return key ? openaiProvider(key) : null;
   }
-  if (provider === "openai" && optionalEnv("OPENAI_API_KEY")) console.warn("LLM_PROVIDER=openai is not supported yet; using presets");
-  return null;
+  const key = optionalEnv("ANTHROPIC_API_KEY");
+  return key ? anthropicProvider(key) : null;
 }
 
 /** The JSON object in a reply (models sometimes wrap it in a code fence). */

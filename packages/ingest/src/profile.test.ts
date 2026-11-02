@@ -2,7 +2,7 @@
 // `pnpm local` run; fake providers cover the LLM path's retry and fallback.
 import { describe, expect, it } from "vitest";
 import { answersSchema, getTemplate, keywordTweak, parseRecipe, recipeDiff, suggestAdjacent } from "@216leads/scoring";
-import { buildRecipe, extractJson, tweakRecipe, type LlmProvider } from "./profile";
+import { buildRecipe, extractJson, openaiProvider, tweakRecipe, type LlmProvider } from "./profile";
 import { GOLDEN, goldenAnswers } from "./profile.golden";
 
 const fake = (replies: (string | Error)[]): LlmProvider & { calls: number } => {
@@ -118,5 +118,37 @@ describe("preset path (spec 9.1 step 1)", () => {
 
   it("refuses an unknown preset", () => {
     expect(answersSchema.safeParse({ business_name: "X Co", sells: "Stuff", job_value: "2k_10k", zips: ["44107"], preset: "nope" }).success).toBe(false);
+  });
+});
+
+describe("OpenAI provider (A3 LLM_PROVIDER=openai)", () => {
+  const reply = (status: number, body: unknown) => (async () => new Response(JSON.stringify(body), { status })) as unknown as typeof fetch;
+
+  it("sends the system prompt and turns in JSON mode and returns the reply text", async () => {
+    let sent: { url: string; body: { model: string; response_format: unknown; messages: { role: string }[] }; auth: string } | null = null;
+    const f = (async (url: string, init: RequestInit) => {
+      sent = { url, body: JSON.parse(String(init.body)), auth: String((init.headers as Record<string, string>).Authorization) };
+      return new Response(JSON.stringify({ choices: [{ message: { content: '{"ok":true}' }, finish_reason: "stop" }] }), { status: 200 });
+    }) as unknown as typeof fetch;
+    const out = await openaiProvider("unit-key", "test-model", f).complete("SYSTEM", [{ role: "user", content: "hi" }]);
+    expect(out).toBe('{"ok":true}');
+    expect(sent!.url).toContain("/v1/chat/completions");
+    expect(sent!.auth).toBe("Bearer unit-key");
+    expect(sent!.body.model).toBe("test-model");
+    expect(sent!.body.response_format).toEqual({ type: "json_object" });
+    expect(sent!.body.messages.map((m) => m.role)).toEqual(["system", "user"]);
+  });
+
+  it("turns API errors, refusals and cut-off replies into errors (so the preset fallback runs)", async () => {
+    await expect(openaiProvider("k", "m", reply(401, { error: { message: "bad key" } })).complete("s", [])).rejects.toThrow(/401/);
+    await expect(openaiProvider("k", "m", reply(200, { choices: [{ message: { refusal: "no" } }] })).complete("s", [])).rejects.toThrow(/refused/);
+    await expect(openaiProvider("k", "m", reply(200, { choices: [{ message: { content: "{" }, finish_reason: "length" }] })).complete("s", [])).rejects.toThrow(/cut off/);
+  });
+
+  it("an OpenAI failure still ends on the closest preset with no user-facing error", async () => {
+    const llm = openaiProvider("k", "m", reply(500, { error: { message: "down" } }));
+    const answers = answersSchema.parse({ business_name: "Fence Co", sells: "Fences and decks", job_value: "2k_10k", zips: ["44107"] });
+    const r = await buildRecipe(answers, llm);
+    expect(r.via).toBe("preset");
   });
 });
