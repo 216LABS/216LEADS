@@ -10,6 +10,7 @@ const TABS = [
   { href: "/admin/unmatched", label: "Unmatched" },
   { href: "/admin/imports", label: "Imports" },
   { href: "/admin/orgs", label: "Orgs" },
+  { href: "/admin/prospect-lists", label: "Free lists" },
   { href: "/admin/suppression", label: "Suppression" },
   { href: "/admin/outbox", label: "Outbox" },
 ];

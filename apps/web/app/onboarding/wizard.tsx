@@ -23,12 +23,17 @@ const blank: WizardAnswers = {
 const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const dollars = (v: string) => (v.trim() === "" ? null : Math.max(0, Math.round(Number(v.replace(/[^\d]/g, "")) || 0)));
 
-export function Wizard() {
+/** A free-list link (issue #6) opens signup with the trade and ZIPs filled in. */
+export interface WizardPrefill { trade: string; zips: string[]; ref: string | null }
+
+export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
   const [step, setStep] = useState(0);
-  const [mode, setMode] = useState<"ai" | "preset">("ai");
+  const [mode, setMode] = useState<"ai" | "preset">(prefill ? "preset" : "ai");
   const STEPS = mode === "ai" ? AI_STEPS : PRESET_STEPS;
   const zipStep = mode === "ai" ? 2 : 1;
-  const [a, setA] = useState<WizardAnswers>(blank);
+  const [a, setA] = useState<WizardAnswers>(prefill
+    ? { ...blank, preset: prefill.trade, sells: TEMPLATES[prefill.trade]?.label ?? prefill.trade, zips: prefill.zips.slice(0, TRIAL.maxZips) }
+    : blank);
   const [adjacentTouched, setAdjacentTouched] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +76,7 @@ export function Wizard() {
     }
   }
 
-  if (draft) return <Confirm answers={a} initial={draft} onBack={() => setDraft(null)} />;
+  if (draft) return <Confirm answers={a} initial={draft} onBack={() => setDraft(null)} refToken={prefill?.ref} />;
 
   return (
     <form

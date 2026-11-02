@@ -5,7 +5,7 @@
 import { z } from "zod";
 import { getDirectSql } from "@216leads/db";
 import {
-  activateRecipeVersion, createOrgFromWizard, CUSTOMER_LINES_MAX, importCustomers, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg,
+  activateRecipeVersion, attachProspectToken, createOrgFromWizard, CUSTOMER_LINES_MAX, importCustomers, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg,
 } from "@216leads/ingest";
 import { answersSchema } from "@216leads/scoring";
 import { TRIAL } from "@216leads/shared";
@@ -24,6 +24,8 @@ const Draft = z.object({
   answers: answersSchema.optional(),
   /** "Upload my current customers" (spec 9.1 step 3): address lines only, hidden from leads. */
   customers: z.array(z.string().max(200)).max(CUSTOMER_LINES_MAX).optional(),
+  /** Free-list token when the signup came through a shared list (issue #6). */
+  ref: z.string().regex(/^[A-Za-z0-9_-]{16,40}$/).optional(),
 });
 const Body = z.union([z.object({ version_id: z.string().uuid() }), Draft]);
 
@@ -41,6 +43,7 @@ export const POST = handle(async (req: Request) => {
     });
     // Sign-up required the terms checkbox; record which versions were accepted (issue #3).
     await recordAcceptance(user.id, orgId);
+    await attachProspectToken(sql, orgId, input.ref);
     const stats = await scoreOrg(sql, orgId);
     await track("onboarding_done", { orgId, userId: user.id }, {
       path: input.answers.preset ? "preset" : "wizard", leads: stats.qualified, zips: input.answers.zips.length, customers: input.customers?.length ?? 0,
