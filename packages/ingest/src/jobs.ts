@@ -9,6 +9,7 @@ import { runFemaFlood } from "./sources/fema";
 import { runRecategorize } from "./recategorize";
 import { runPrivacyAudit } from "./privacy";
 import { runIngestWatchdog } from "./watchdog";
+import { runDigest, runLifecycle } from "./digest";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -30,6 +31,8 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   ingest_watchdog: { fn: (sql) => runIngestWatchdog(sql), describe: "Email ops if a daily ingest has not succeeded in 36 hours" },
   privacy_audit: { fn: (sql, o) => runPrivacyAudit(sql, o.limit ?? 400), describe: "Check no owner names are stored (fetches a sample live, keeps it in memory)" },
   score: { fn: (sql, o) => runScoreAll(sql, o.org), describe: "Score all orgs (or --org <id>)" },
+  digest: { fn: (sql, o) => runDigest(sql, { org: o.org, force: o.full }), describe: "Weekly digest for orgs whose day is today, 06:00 ET+ (--full sends now)" },
+  lifecycle: { fn: (sql) => runLifecycle(sql), describe: "Lifecycle email: trial ending (day 11)" },
 };
 
 for (const l of CLE_LAYERS) {

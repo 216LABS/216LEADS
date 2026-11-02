@@ -1,0 +1,82 @@
+name: Scheduled jobs
+
+# The production job scheduler (decision 9). GitHub cron is UTC and can run late; every job here
+# is idempotent, so a late or repeated run is harmless.
+#   - daily ingest pipeline (spec 5.13): 09:30 UTC = 04:30 EST / 05:30 EDT, on the worker runner
+#   - digest + lifecycle email (spec 12): hourly; the digest job itself waits for each org's day, 06:00 ET
+# Each job skips with a notice until its secrets exist.
+on:
+  schedule:
+    - cron: "30 9 * * *"
+    - cron: "5 * * * *"
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Run one: ingest | digest | lifecycle"
+        required: true
+        default: digest
+
+permissions:
+  contents: read
+
+concurrency:
+  group: schedule-${{ github.event.schedule || inputs.job }}
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: github.event.schedule == '30 9 * * *' || inputs.job == 'ingest'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Check secrets
+        id: check
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+        run: |
+          if [ -z "$DATABASE_URL_DIRECT" ]; then
+            echo "::notice::PRODUCTION_DATABASE_URL_DIRECT not set yet; skipping the daily ingest."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.skip != 'true'
+      - uses: pnpm/action-setup@v4
+        if: steps.check.outputs.skip != 'true'
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.skip != 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: steps.check.outputs.skip != 'true'
+      - name: Daily pipeline
+        if: steps.check.outputs.skip != 'true'
+        env:
+          APP_ENV: production
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+          DATABASE_URL_DIRECT: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAILS: ${{ secrets.ALERT_EMAILS }}
+        run: pnpm ingest pipeline daily
+
+  email:
+    if: github.event.schedule == '5 * * * *' || inputs.job == 'digest' || inputs.job == 'lifecycle'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Call /api/cron/digest and /api/cron/lifecycle on production
+        env:
+          APP_URL: ${{ secrets.PRODUCTION_APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          ONLY: ${{ inputs.job }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "::notice::PRODUCTION_APP_URL / CRON_SECRET not set yet; skipping."
+            exit 0
+          fi
+          for job in digest lifecycle; do
+            if [ -n "$ONLY" ] && [ "$ONLY" != "$job" ]; then continue; fi
+            curl -fsS -X POST -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/$job"
+            echo
+          done

@@ -28,9 +28,14 @@ These need the 216LABS accounts and are not done by the code:
    - **Production** environment variables: production values from `.env.example`, `APP_ENV=production`, `NEXT_PUBLIC_BASE_PATH=/leads`.
    - **Preview** environment variables: staging values, `APP_ENV=staging`, `NEXT_PUBLIC_BASE_PATH=/leads`. Previews must never get production keys.
    - Point `216labs.dev` at the project with a `/leads` rewrite, or serve the project on `216labs.dev` directly with the base path.
-3. **GitHub secrets** (Settings → Secrets → Actions), used by the migration and backup workflows (milestones D2/D4): `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL`, `BACKUP_ENCRYPTION_KEY`.
+3. **GitHub secrets** (Settings → Secrets → Actions), used by the migration and backup workflows (milestones D2/D4): `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL`, `BACKUP_ENCRYPTION_KEY`. The scheduler (`schedule.yml`, M6) also needs `PRODUCTION_DATABASE_URL_DIRECT` (daily ingest), `PRODUCTION_APP_URL` + `CRON_SECRET` (hourly digest/lifecycle calls), and optionally `SENTRY_DSN`, `RESEND_API_KEY`, `ALERT_EMAILS`.
+4. **Email (M6):** set `APP_BASE_URL=https://216labs.dev`, `EMAIL_LINK_SECRET` (random, 32+ chars) and `RESEND_API_KEY` in production. Resend sends only when `APP_ENV=production`; staging and local write every email to `.data/outbox`. Verify `mail.216labs.dev` in Resend with SPF, DKIM and DMARC (`p=none` first, `p=quarantine` after two clean weeks).
 4. **Staging data**: with the staging env loaded, run `pnpm db:migrate` then `pnpm seed:staging` (set `QA_PASSWORD` first; the QA login is `qa@216leads.test`).
 
 ## Local
 
 `pnpm local` (see README). `APP_ENV` defaults to `local`; `pnpm seed:staging` also works locally and prints the QA password.
+
+## Supabase magic-link email (M6)
+
+In each Supabase project: Authentication → Emails → Magic Link. Subject "Your 216 Leads sign-in link". Body: "Tap to sign in to 216 Leads: {{ .ConfirmationURL }} — the link works once and expires in an hour. If you didn't ask for it, ignore this email. 216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107". Set SMTP to Resend (`smtp.resend.com`, user `resend`, password = `RESEND_API_KEY`) with sender `hello@mail.216labs.dev`.

@@ -22,7 +22,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (see the latest PR).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
@@ -33,7 +33,9 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - M5: lead list filters/swipe/table, lead detail with timeline and won/lost, CSV export, full Settings, coach marks, `/invite/[token]`.
 
-**Next:** M6 (digest and email), then M7 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- M6: `@216leads/email` (React Email + Resend/outbox), `email_log`, digest + lifecycle jobs, `schedule.yml`, unsubscribe link. `.gitattributes` forces LF.
+
+**Next:** M7 (billing), then M8 ... M12, then the addenda leftovers. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
@@ -45,6 +47,10 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 - Integration tests locally the CI way: create DB `ci_test`, apply `scripts/ci/auth-stub.sql`, then `DATABASE_URL=...ci_test DATABASE_URL_DIRECT=...ci_test NEXT_PUBLIC_SUPABASE_URL= pnpm db:migrate && pnpm db:seed && pnpm test:integration`, then drop it.
 
 ## 5. Tooling gotchas (these cost time; avoid them)
+
+- Bash heredocs that contain backticks or `${` break in this shell: write files with the Write tool, or write a Python script to the scratchpad and run it. Python on Windows writes CRLF unless you pass `newline='\n'` (`.gitattributes` normalizes the index anyway).
+- `tsx` applies a package's tsconfig only to files in its `include`; the email templates carry a `@jsxRuntime automatic` pragma so the CLI can render them.
+- A dev server left over from an earlier run keeps port 3000; stop it before starting another (`Get-NetTCPConnection -LocalPort 3000`).
 
 - **Git Bash rewrites args starting with `/`** into Windows paths (`/leads`, `/pulls/13`). Prefix commands with `MSYS_NO_PATHCONV=1`.
 - **The Bash tool collapses `\\` in heredocs/python strings.** For regex-heavy edits (YAML categories, regex in TS), use the Edit/Write tools, not sed/python.

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@216leads/db": "workspace:*",
+    "@216leads/email": "workspace:*",
     "@216leads/ingest": "workspace:*",
     "@216leads/scoring": "workspace:*",
     "@216leads/shared": "workspace:*",
