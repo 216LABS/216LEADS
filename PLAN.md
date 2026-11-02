@@ -41,9 +41,10 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: the smoke job runs against the app built inside CI on a local Supabase stack until Vercel previews exist; setting the repository variable `E2E_BASE_URL` points it at a preview. Lint is ESLint 9 with the TypeScript and Next recommended rules. The smoke test grows with onboarding (A2/M4), CRM stages (M5) and test-mode postcards (M8).
 
 ### D3: Error tracking and uptime (DevOps addendum)
-- [ ] `@sentry/nextjs` in the app and Sentry in the ingest worker, tagged with `APP_ENV` and release (git SHA); client errors sampled down
-- [ ] `/leads/api/health` (DB connection + last ingest age) for the Sentry uptime monitor
-- [ ] Email alert when a nightly ingest has not succeeded in 36 hours
+- [x] `@sentry/nextjs` in the app and Sentry in the ingest worker, tagged with `APP_ENV` and release (git SHA); client errors sampled down
+- [x] `/leads/api/health` (DB connection + last ingest age) for the Sentry uptime monitor
+- [x] Email alert when a nightly ingest has not succeeded in 36 hours
+- Notes: Sentry stays off until `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` are set (account later). `ingest_run` is a view over `job_run`. The watchdog runs from `.github/workflows/watchdog.yml` via `/api/cron/ingest_watchdog` once `PRODUCTION_APP_URL` and `CRON_SECRET` secrets exist; without Resend it writes alerts to `.data/outbox`.
 
 ### D4: Database safety (DevOps addendum)
 - [ ] Workflow on merge to `main`: apply migrations to staging, then production after staging succeeds

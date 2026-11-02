@@ -5,6 +5,8 @@ import { closeAll, getDirectSql } from "@216leads/db";
 import { TEMPLATES, getTemplate } from "@216leads/scoring";
 import { loadFixtures } from "./seed";
 import { scoreOrg } from "./score";
+import { ingestHealth } from "./health";
+import { runIngestWatchdog } from "./watchdog";
 
 const sql = getDirectSql();
 afterAll(() => closeAll());
@@ -69,5 +71,20 @@ describe("scoring", () => {
 
   it("every preset template loads", () => {
     for (const key of Object.keys(TEMPLATES)) expect(getTemplate(key).key).toBe(key);
+  });
+});
+
+describe("ingest health (D3)", () => {
+  it("flags daily sources with no successful run in 36 hours and alerts once", async () => {
+    // Fixtures are loaded without ingest runs, so every daily source is stale here.
+    await sql`delete from job_run where job = 'ingest_watchdog'`;
+    const h = await ingestHealth(sql);
+    expect(h.ok).toBe(false);
+    expect(h.stale_sources.map((s) => s.source)).toContain("cle_permits");
+    await runIngestWatchdog(sql);
+    await runIngestWatchdog(sql); // second run the same day must not alert again
+    const runs = await sql<{ alerted: boolean | null }[]>`
+      select (meta->>'alerted')::boolean as alerted from job_run where job = 'ingest_watchdog' order by id`;
+    expect(runs.map((r) => r.alerted === true)).toEqual([true, false]);
   });
 });

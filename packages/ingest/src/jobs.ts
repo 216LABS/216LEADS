@@ -8,6 +8,7 @@ import { runMatchRetry } from "./retry";
 import { runFemaFlood } from "./sources/fema";
 import { runRecategorize } from "./recategorize";
 import { runPrivacyAudit } from "./privacy";
+import { runIngestWatchdog } from "./watchdog";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -26,6 +27,7 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   match: { fn: (sql) => runMatchRetry(sql), describe: "Retry unmatched records (14 days)" },
   recategorize: { fn: (sql) => runRecategorize(sql), describe: "Re-run category regex over permits/violations" },
   signals: { fn: (sql) => runSignals(sql), describe: "Recompute event-derived signals" },
+  ingest_watchdog: { fn: (sql) => runIngestWatchdog(sql), describe: "Email ops if a daily ingest has not succeeded in 36 hours" },
   privacy_audit: { fn: (sql, o) => runPrivacyAudit(sql, o.limit ?? 400), describe: "Check no owner names are stored (fetches a sample live, keeps it in memory)" },
   score: { fn: (sql, o) => runScoreAll(sql, o.org), describe: "Score all orgs (or --org <id>)" },
 };
