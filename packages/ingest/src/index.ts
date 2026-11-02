@@ -20,3 +20,8 @@ export { planSend, commitSend, cancelPieces, templatesFor, ensureSystemTemplates
 export { applyMailEvent, optOut, reportMeteredPostcards, runAutomail } from "./mail/events";
 export { renderPostcard, DESIGNS, designLabel, defaultHeadline, personalize, type Design, type PostcardFields } from "./mail/templates";
 export { linkSecretVerify } from "./mail/sign";
+export {
+  mapPoints, eventLayer, floodZones, territoryExtent, heatGrid, neighborRing, competitors, parseBbox, bboxTooLarge,
+  LAYER_KINDS, RING_RADIUS_M, RING_LIMIT, MAX_BBOX_DEG, type Bbox, type LayerKind, type LeadPoint, type EventPoint, type HeatCell,
+  type NeighborRing, type RingHome, type Competitor, type CompetitorReport,
+} from "./market";

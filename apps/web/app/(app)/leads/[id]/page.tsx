@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { BRAND, titleCase } from "@216leads/shared";
+import { BRAND, planLimits, titleCase } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { getLead, type LeadFacts, type TimelineItem } from "@/lib/leads";
 import { track } from "@/lib/events";
@@ -40,6 +40,7 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
   const lead = await getLead(org.id, (await params).id);
   if (!lead) notFound();
   await track("lead_viewed", { orgId: org.id, userId: user.id }, { lead_id: lead.id });
+  const showRing = planLimits(org.plan).marketTools;
 
   return (
     <div className="space-y-4">
@@ -55,6 +56,7 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
         </div>
         <div className="flex items-end gap-2">
           <LeadStatus id={lead.id} status={lead.status} wonAmount={lead.won_amount} lostReason={lead.lost_reason} />
+          {showRing ? <LinkButton variant={lead.status === "won" ? "primary" : "secondary"} href={`/map?ring=${lead.parcel_key}`}>Neighbor ring</LinkButton> : null}
           <LinkButton href={`/mail/send?leads=${lead.id}`}>Mail</LinkButton>
         </div>
       </div>
