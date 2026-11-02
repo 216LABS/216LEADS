@@ -5,6 +5,14 @@ import { expect, test } from "@playwright/test";
 const email = process.env.E2E_EMAIL ?? "qa@216leads.test";
 const password = process.env.E2E_PASSWORD ?? "qa-216-leads-local";
 
+async function signInQa(page: import("@playwright/test").Page) {
+  await page.goto("login");
+  await page.getByLabel("Work email").fill(email);
+  await page.getByLabel("Password").fill(password);
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
+}
+
 test("QA login sees scored leads", async ({ page }) => {
   await page.goto("login");
   await page.getByLabel("Work email").fill(email);
@@ -14,7 +22,7 @@ test("QA login sees scored leads", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
   // Not production: the environment banner is always shown.
   await expect(page.getByRole("note")).toContainText(/STAGING|LOCAL/);
-  const firstLead = page.locator("main li a").first();
+  const firstLead = page.locator("main [data-lead-link]:visible").first();
   await expect(firstLead).toBeVisible();
   await expect(firstLead).toContainText(/\d/); // score chip and street number
 });
@@ -55,7 +63,7 @@ test("a new user signs up, answers the wizard, confirms the recipe and lands on 
   await page.getByRole("link", { name: "Start my free trial" }).click();
   await expect(page).toHaveURL(/\/leads(\?|$)/, { timeout: 30_000 });
   await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
-  await expect(page.locator("main li a").first()).toBeVisible();
+  await expect(page.locator("main [data-lead-link]:visible").first()).toBeVisible();
 });
 
 test("the preset path: pick a trade, add a town, set the perfect customer, land on leads", async ({ page }) => {
@@ -102,4 +110,39 @@ test("report a problem sends", async ({ page }) => {
 test("signed-out visitors are sent to sign in", async ({ page }) => {
   await page.goto("leads");
   await expect(page).toHaveURL(/\/login\?next=/);
+});
+
+test("CRM: filter, open a lead, add a note, mark it won, export CSV", async ({ page }, info) => {
+  await signInQa(page);
+  // Spec 9.2 filter chips live in the URL.
+  await page.getByRole("button", { name: "Score 70+" }).click();
+  await expect(page).toHaveURL(/chips=score70/);
+  await page.getByRole("button", { name: "Score 70+" }).click();
+  await expect(page).not.toHaveURL(/chips=score70/);
+
+  // Phone and desktop run at the same time on the same QA org: each takes a different lead.
+  const lead = page.locator("main [data-lead-link]:visible").nth(info.project.name === "phone" ? 0 : 1);
+  await lead.click();
+  await expect(page.getByRole("heading", { name: "Why this home" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Home facts" })).toBeVisible();
+
+  const note = `Left a door hanger ${Date.now()}`;
+  await page.getByLabel("Add a note").fill(note);
+  await page.getByRole("button", { name: "Add note" }).click();
+  await expect(page.getByText(note)).toBeVisible();
+
+  // Spec 9.4 won flow asks the job amount.
+  await page.getByLabel("Status").selectOption("won");
+  await page.getByLabel("Job amount in dollars").fill("9800");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.getByText("Marked won")).toBeVisible();
+  await expect(page.getByLabel("Status")).toHaveValue("won");
+
+  // CSV export: addresses, scores and reasons, the disclaimer, never names.
+  const res = await page.request.get("api/leads/export.csv?view=won");
+  expect(res.status()).toBe(200);
+  const csv = await res.text();
+  expect(csv.split("\n")[0]).toBe("address,city,zip,score,trigger,reasons,status");
+  expect(csv).toContain("Not a consumer report");
+  expect(csv).toMatch(/,won\r?\n/);
 });
