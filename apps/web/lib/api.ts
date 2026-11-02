@@ -19,7 +19,7 @@ export function json(data: unknown, init?: number | ResponseInit) {
 export async function apiOrg(): Promise<OrgContext> {
   const user = await getUser();
   if (!user) throw new ApiError(401, "Sign in first");
-  if (!rateLimit(`user:${user.id}`, 60, 60_000)) throw new ApiError(429, "Too many requests. Try again in a minute.");
+  if (!(await rateLimit(`user:${user.id}`, 60, 60_000))) throw new ApiError(429, "Too many requests. Try again in a minute.");
   const ctx = await getOrgContext();
   if (!ctx) throw new ApiError(403, "Finish onboarding first");
   return ctx;
@@ -43,7 +43,7 @@ export async function apiMarketOrg(): Promise<OrgContext> {
 export async function apiUser(): Promise<{ user: SessionUser; ctx: OrgContext | null }> {
   const user = await getUser();
   if (!user) throw new ApiError(401, "Sign in first");
-  if (!rateLimit(`user:${user.id}`, 60, 60_000)) throw new ApiError(429, "Too many requests. Try again in a minute.");
+  if (!(await rateLimit(`user:${user.id}`, 60, 60_000))) throw new ApiError(429, "Too many requests. Try again in a minute.");
   return { user, ctx: await getOrgContext() };
 }
 

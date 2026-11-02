@@ -9,7 +9,7 @@ import { clientIp } from "@/lib/turnstile";
 export const dynamic = "force-dynamic";
 
 async function unsubscribe(req: Request): Promise<boolean> {
-  if (!rateLimit(`unsub:${clientIp(req)}`, 30, 60 * 60_000)) return false;
+  if (!(await rateLimit(`unsub:${clientIp(req)}`, 30, 60 * 60_000))) return false;
   const t = new URL(req.url).searchParams.get("t") ?? "";
   const v = readUnsubscribeToken(t.slice(0, 600));
   if (!v) return false;

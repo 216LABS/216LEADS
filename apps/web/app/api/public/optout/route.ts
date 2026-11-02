@@ -11,7 +11,7 @@ const Body = z.object({ street: z.string().trim().min(3).max(120), zip: z.string
 
 export const POST = handle(async (req: Request) => {
   const ip = clientIp(req);
-  if (!rateLimit(`optout:${ip}`, 10, 60 * 60_000)) throw new ApiError(429, "Too many requests. Try again in an hour.");
+  if (!(await rateLimit(`optout:${ip}`, 10, 60 * 60_000))) throw new ApiError(429, "Too many requests. Try again in an hour.");
   const b = await body(req, Body);
   if (!(await turnstileOk(b.token, ip))) throw new ApiError(400, "Please complete the check and try again.");
   await optOut(getDirectSql(), b.street, b.zip, mailFromEnv());

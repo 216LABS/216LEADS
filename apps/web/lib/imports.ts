@@ -10,7 +10,7 @@ const MAX_BYTES = 10 * 1024 * 1024;
 export async function requireAdminApi() {
   const user = await getUser();
   if (!user || !isAdmin(user.email)) throw new ApiError(404, "Not found");
-  if (!rateLimit(`admin:${user.id}`, 60, 60_000)) throw new ApiError(429, "Too many requests. Wait a minute.");
+  if (!(await rateLimit(`admin:${user.id}`, 60, 60_000))) throw new ApiError(429, "Too many requests. Wait a minute.");
   return user;
 }
 
