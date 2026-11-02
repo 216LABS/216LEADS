@@ -1,4 +1,4 @@
-# HomeTrigger: Full Product & Business Plan
+# 216 Leads: Full Product & Business Plan
 
 Brand, features, UX, architecture, pricing, unit economics, cold-email go-to-market, launch timeline and risks for a NE Ohio public-records lead product for home-service trades. Researched 2026-11-01 (ET).
 
@@ -28,7 +28,7 @@ Brand, features, UX, architecture, pricing, unit economics, cold-email go-to-mar
 
 | Metric | Value | Detail |
 |---|---|---|
-| Recommended brand | **HomeTrigger** | by 216LABS; hometrigger.com unregistered [V] |
+| Brand | **216 Leads** | by 216LABS; served at 216labs.dev/leads |
 | Starter / Pro / Exclusive | **$99 / $199 / $349** | + $0.99 postcards [J] |
 | Customers for $10K/mo take-home | **~70-80** | ~150 if all Starter [J] |
 | To a sellable v1 | **3 weeks** | M1 list in 2 wks, mail in wk 3 [J] |
@@ -41,26 +41,25 @@ Search demand for this kind of product is tiny in SEO terms ("permit leads", "ne
 
 ## 1. Brand
 
-Every name below had its .com checked by RDAP today; unregistered means RDAP returned not found [V]. No USPTO search was run directly, so trademark status is unverified [S]. A web search turned up only a "Hometrigger" room spray from Culti Milano, which is fragrance, not software [S].
+Every name below had its .com checked by RDAP; unregistered means RDAP returned not found [V]. No USPTO search was run directly, so trademark status is unverified [S].
 
 | Name | .com | Notes | Verdict |
 |---|---|---|---|
-| HomeTrigger | available [V] | hometrigger.app also free [V]. Says what it does: life events at a home trigger a job. No search volume, so no confusion [V] | **Pick** |
 | North Coast Signal | available [V] | Very local, warm. Harder to spell over the phone; limits expansion past NE Ohio | Alternate |
 | Keyturn | taken; keyturnleads.com and keyturn.co free [V] | 260 searches/mo for existing use [V]; split brand | Alternate |
 | Doorstep Brief / New Owner Brief | available [V] | Nice for the Monday digest; too narrow for the whole app | Use as digest name |
 | Leadstoop | available [V] | Cute; reads as generic lead-gen | Pass |
 | Doorlist | taken; doorlisthq.com free [V] | Existing brand with 1,900 searches/mo [V] | Pass |
 | FirstKnock | taken [V] | Live competitor at firstknock.app selling $0.94 new-homeowner postcards [V] | Pass |
-| 216 Leads | 216leads.com available [V] | Fun for Cleveland; 216 excludes Akron (330) and Lake (440) buyers | Pass |
+| 216 Leads | served at 216labs.dev/leads | Local and memorable for Cleveland; 216 is the city area code. Chosen 2026-11-01 | **Pick** |
 
-- **Name:** HomeTrigger, "by 216LABS" in the footer and emails [J]
+- **Name:** 216 Leads, "by 216LABS" in the footer and emails, served at 216labs.dev/leads
 - **Tagline:** Know which homes need you next.
 - **Voice:** Plain, local, a little blunt. Talks like a sharp office manager, not a SaaS deck. Numbers first, no hype words.
 - **Colors:** Navy #0F2A44, Signal Orange #F26B1D, Paper #F7F5F0, Slate #4A5563, Green #2E7D4F (won), Red #B42318 (lost)
 - **Type:** Inter for UI, JetBrains Mono for addresses and numbers
 - **Mark:** House outline with an orange pulse dot at the roof peak
-- **Buy now:** hometrigger.com and hometrigger.app (both free today [V]); a separate cold-email domain, see section 8
+- **Domain:** the product lives at 216labs.dev/leads; buy a separate cold-email domain, see section 8
 
 ---
 
@@ -190,7 +189,7 @@ Assumptions [J]: plan mix 50% Starter / 35% Pro / 15% Exclusive gives about $172
 ## 8. Getting customers (cold email)
 
 - **Prospects: DataForSEO business listings by trade and radius.** 272 HVAC contractors within 40 km of Cleveland with 5+ reviews; every sampled one had a website and phone, none had an email [V]. Get emails only from each business's own site contact page. No appends.
-- **Domain: separate sending domain (e.g. tryhometrigger.com; check availability) on 2-3 Google Workspace inboxes.** SPF, DKIM, DMARC; 2-3 weeks warm-up; never from the product domain.
+- **Domain: separate sending domain (e.g. a try-216leads style domain; check availability) on 2-3 Google Workspace inboxes.** SPF, DKIM, DMARC; 2-3 weeks warm-up; never from the product domain.
 - **Volume: 20-40 emails/day, sent by hand or a light tool.** Personalize town and trade. Stop on any reply.
 - **Teaser: real local numbers + 5-row sample.** e.g. 1,190 single-family sales in Cuyahoga in October, 840 built before 1960 [V]. Sample rows are generated from live data at send time with house numbers partly masked and no names.
 - **Replies: "list" = send their free zip list within a day, then offer a 15-minute screen share.** "stop" or any opt-out = suppress forever, honored well inside CAN-SPAM's 10 business days.
@@ -295,7 +294,7 @@ Fixed software costs at list price [J, re-check before launch]: Vercel, Supabase
 - Sources can change or move (Summit to GovWell [S])
 - USPS address hygiene and "Current Resident" rules for First Class need confirming with Lob [S]
 - Ohio telemarketing law (ORC 4719) is why there are no cold calls; attorney review still pending
-- "HomeTrigger" trademark not searched at USPTO [S]
+- "216 Leads" trademark not searched at USPTO [S]
 
 ---
 

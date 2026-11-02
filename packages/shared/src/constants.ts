@@ -2,8 +2,8 @@ export const BRAND = {
   name: "216 Leads",
   by: "216LABS",
   tagline: "Know which homes need you next.",
-  domain: "216leads.com",
-  optoutUrl: "216leads.com/optout",
+  domain: "216labs.dev/leads",
+  optoutUrl: "216labs.dev/leads/optout",
   footerAddress: "216LABS LLC, 1474 Rosewood Ave, Lakewood, OH 44107",
   disclaimer:
     "Built from public records. May be incomplete or out of date. Not a consumer report; do not use for credit, insurance, employment or housing decisions.",
