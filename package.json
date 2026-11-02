@@ -11,7 +11,9 @@
     "dev": "pnpm --filter @216leads/web dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
+    "lint": "eslint .",
     "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:watch": "vitest",
     "test:e2e": "pnpm --filter @216leads/web test:e2e",
     "db:start": "supabase start",
@@ -24,11 +26,15 @@
     "fixtures:pull": "pnpm --filter @216leads/ingest fixtures:pull"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.5.28",
     "@types/node": "^22.10.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "supabase": "2.122.0",
     "tsx": "^4.19.2",
     "turbo": "^2.3.3",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.72.1",
     "vitest": "^2.1.8"
   },
   "pnpm": {

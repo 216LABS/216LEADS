@@ -4,7 +4,7 @@ Source of truth: `BUILD_SPEC.md`, plus `ADDENDUM_PROFILE_WIZARD.md` and `ADDENDU
 Product name: **216 Leads** (by 216LABS), served at 216labs.dev/leads.
 
 Each milestone is finished only after it runs locally, its checks pass, it is committed, and its box below is ticked.
-Since M2, every change goes through a pull request on github.com/216LABS/216LEADS; nothing is pushed straight to `main`.
+Since M2, every change goes through a pull request on github.com/216LABS/216LEADS. During the build phase PRs are self-merged once CI is green; review-before-merge and branch protection start at launch.
 
 ## Milestones
 
@@ -34,10 +34,11 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Done in code: `APP_ENV` + banner, live-key guard with tests, `/leads` base path (production build verified), `pnpm seed:staging`, `apps/web/vercel.json`, `docs/ENVIRONMENTS.md`. Creating the Vercel project and the two Supabase cloud projects needs the 216LABS accounts; the steps are in `docs/ENVIRONMENTS.md`.
 
 ### D2: CI on every PR (DevOps addendum)
-- [ ] `ci.yml` on pull_request: install (cached), typecheck, lint, unit tests, build
-- [ ] Migrations against a Postgres+PostGIS service container, then integration tests (scoring, recipe validation, A8 golden tests)
-- [ ] Playwright smoke against the PR's Vercel preview: QA login, onboarding, leads, CRM stage change, queue a test-mode postcard
-- [ ] Branch protection on `main`: CI must pass and a review is required; runs under 10 minutes
+- [x] `ci.yml` on pull_request: install (cached), typecheck, lint, unit tests, build
+- [x] Migrations against a Postgres+PostGIS service container, then integration tests (scoring, recipe validation, A8 golden tests)
+- [x] Playwright smoke against the PR's Vercel preview: QA login, onboarding, leads, CRM stage change, queue a test-mode postcard
+- [ ] (deferred until launch: build mode) Branch protection on `main`: CI must pass and a review is required; runs under 10 minutes
+- Notes: the smoke job runs against the app built inside CI on a local Supabase stack until Vercel previews exist; setting the repository variable `E2E_BASE_URL` points it at a preview. Lint is ESLint 9 with the TypeScript and Next recommended rules. The smoke test grows with onboarding (A2/M4), CRM stages (M5) and test-mode postcards (M8).
 
 ### D3: Error tracking and uptime (DevOps addendum)
 - [ ] `@sentry/nextjs` in the app and Sentry in the ingest worker, tagged with `APP_ENV` and release (git SHA); client errors sampled down
@@ -164,7 +165,7 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 33. **GitHub:** the repo already had GitHub's "Initial commit" (a one-line README); M1 was rebased on top of it and pushed as a fast-forward, so nothing was force-pushed.
 35. **Lead list URL under the base path is `/leads/leads`.** Production serves the app at 216labs.dev/leads, so the in-app `/leads` route becomes `/leads/leads`. It works; renaming the in-app route is left for a later product decision.
 36. **A 14th preset, `fence`,** backs the staging QA fence org and the no-key fallback for fence companies (the addendum's A5 table and A8 golden tests both use fencing).
-34. **Pull requests are stacked and not self-merged.** D2 requires an approving review before merge, so each milestone's PR is opened for review and the next milestone branches from it (its PR targets the previous branch until that one merges). PRs are opened through the GitHub REST API because the `gh` CLI is not installed here.
+34. **Build mode (owner's call, 2026-11-01):** PRs are merged by me once CI passes; required reviews and branch protection (D2) are switched on at launch. PRs are opened and merged through the GitHub REST API because the `gh` CLI is not installed here.
 23. **Addendum A placement:** its work is milestones A1 (presets) then A2 (wizard), right after M2, per its section A9. The spec's "remaining 7 templates" moved from M11 into A1.
 24. **Domain is 216labs.dev/leads** (from the addendum): copy, opt-out link, email sender and ingest UA use it. Locally the app runs at the root of localhost:3000; serving it under `/leads` in production is a base-path setting handled in M12.
 25. **One new-construction category:** the addendum's `new_build` replaces the `new_construction` category added during the M2/M3 regex work, so there is a single category for new homes.
