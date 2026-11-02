@@ -3,6 +3,7 @@ version: 1
 label: Plumbing
 threshold: 55
 signals:
+  pos_city_sale: { weight: 5 }
   era_pre1950: { weight: 20 }
   last_permit_age:plumbing: { weight: 20, lifespan_years: 25 }
   new_owner: { weight: 20 }

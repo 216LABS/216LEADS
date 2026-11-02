@@ -117,6 +117,7 @@ export async function loadHomes(sql: Sql, scope: Scope, today = todayEt()): Prom
         flood: floodUrl(p.lon, p.lat),
       },
       priors,
+      municipality: p.muni,
       today,
     };
     return { input, addr_norm: p.addr_norm, municipality: p.muni, lon: p.lon, lat: p.lat };

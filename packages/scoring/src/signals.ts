@@ -2,6 +2,7 @@
 // event signals (last permit per category, open violations, neighbor jobs, flags) are
 // materialized in parcel_signal by the `signals` job and passed in.
 import { CATEGORY_NOUN } from "./categories";
+import { POS_CITIES } from "./generated";
 import type { Evidence, Profile, ScoreInput, TemplateSignal } from "./types";
 
 export interface Resolved {
@@ -54,6 +55,16 @@ const SURVEY_PART_LABEL: Record<string, string> = {
  * Resolve one template signal for a parcel. Returns null when the data needed is not
  * available for this home (the signal is then left out of the score, not counted as 0).
  */
+/** Days after a sale that `pos_city_sale` counts (issue #11). */
+export const POS_SALE_DAYS = 90;
+
+const POS_BY_MUNI = new Map(POS_CITIES.map((c) => [c.municipality, c]));
+
+/** The point-of-sale city for a municipality name from our parcel data, or null. */
+export function posCity(municipality: string | null | undefined) {
+  return municipality ? POS_BY_MUNI.get(municipality.toUpperCase()) ?? null : null;
+}
+
 export function resolveSignal(key: string, ts: TemplateSignal, input: ScoreInput, profile: Profile): Resolved | null {
   const p = input.parcel;
   const today = input.today;
@@ -139,6 +150,23 @@ export function resolveSignal(key: string, ts: TemplateSignal, input: ScoreInput
         v: clamp01(r),
         label: `${p.living_sqft.toLocaleString("en-US")} sq ft (bigger than ${Math.round(r * 100)}% nearby)`,
         evidence: { value: p.living_sqft, ...rec },
+      };
+    }
+    case "pos_city_sale": {
+      // Issue #11: a sale in the last 90 days in a town with a point-of-sale inspection (the
+      // inspection tends to flag roof, masonry, electrical, plumbing, gutters and driveways).
+      const city = posCity(input.municipality);
+      // Outside a POS town the rule doesn't apply: leave the signal out (no prior is kept for it),
+      // so adding it to a template doesn't lower anyone else's score.
+      if (!city) return null;
+      if (!p.last_sale_date || (p.last_sale_price ?? 0) < 10_000) return { v: 0, label: "", evidence: {} };
+      const d = daysBetween(p.last_sale_date, today);
+      if (d < 0 || d > POS_SALE_DAYS) return { v: 0, label: "", evidence: {} };
+      const sale = input.recentEvents.find((e) => e.kind === "sale" && e.event_date === p.last_sale_date);
+      return {
+        v: 1,
+        label: `Sold in ${city.name}, which requires a point-of-sale inspection`,
+        evidence: { date: p.last_sale_date, value: p.last_sale_price ?? undefined, event_id: sale?.id, source: "acar_pos_2025", ...rec },
       };
     }
     case "price_band": {

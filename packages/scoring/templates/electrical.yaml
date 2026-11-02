@@ -3,6 +3,7 @@ version: 1
 label: Electrical
 threshold: 55
 signals:
+  pos_city_sale: { weight: 5 }
   era_pre1950: { weight: 25 }
   last_permit_age:electrical: { weight: 25, lifespan_years: 35 }
   new_owner: { weight: 20 }

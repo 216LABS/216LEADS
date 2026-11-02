@@ -7,7 +7,7 @@ import type { Template } from "./types";
 /** Signals with no argument (spec 7.2, plus `garage` used by the electrical preset). */
 export const PLAIN_SIGNALS = [
   "new_owner", "home_age", "era_pre1950", "price_band", "lot_size", "canopy", "grass", "living_area",
-  "no_gas", "well_water", "septic", "flood", "owner_occupied", "condo", "garage",
+  "no_gas", "well_water", "septic", "flood", "owner_occupied", "condo", "garage", "pos_city_sale",
 ] as const;
 
 /** Signals that take a permit/violation category: `last_permit_age:roofing`. */
