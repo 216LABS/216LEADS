@@ -58,9 +58,10 @@ Since M2, every change goes through a pull request on github.com/216LABS/216LEAD
 - Notes: all the D8 labels already existed on the repo. Issues #1-#12 were already written in this format.
 
 ### D5: Security checks (DevOps addendum)
-- [ ] Dependabot (npm + Actions, weekly, grouped minor/patch); gitleaks in CI; `npm audit --audit-level=high` (warn only)
-- [ ] RLS test: a user from org A cannot read org B's leads, profiles, CRM rows or mail jobs
-- [ ] Labeler action adds `risky` to PRs touching auth, Stripe, Lob sends, RLS policies or data deletion; PR template asks for a test plan
+- [x] Dependabot (npm + Actions, weekly, grouped minor/patch); gitleaks in CI; `npm audit --audit-level=high` (warn only)
+- [x] RLS test: a user from org A cannot read org B's leads, profiles, CRM rows or mail jobs
+- [x] Labeler action adds `risky` to PRs touching auth, Stripe, Lob sends, RLS policies or data deletion; PR template asks for a test plan
+- Notes: gitleaks runs as the open-source binary (the GitHub Action needs a paid license for org repos); full history scanned clean. The RLS test passes on both the CI Postgres (with Supabase's default grants mirrored) and real local Supabase. The `risky` labeler runs from `main`, so it applies from the next PR on. Recipe/profile tables from A1 join the RLS test when they land.
 
 ### D6 + D7: Usage events, feedback, release notes (DevOps addendum)
 - [ ] `event` table with product events (signup, onboarding_done, lead_viewed, stage_changed, postcard_queued, checkout_started, subscribed)
