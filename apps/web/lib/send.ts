@@ -20,8 +20,12 @@ export async function sendHomes(
   b: { leadIds: string[]; parcelKeys: string[]; templateId: string; merge?: Merge; confirm: boolean },
 ) {
   const sql = getDirectSql();
+  // Another org's template or leads are a 404, like every cross-org id (issue #38).
+  const [tpl] = await sql`select 1 from postcard_template where id = ${b.templateId} and (org_id is null or org_id = ${org.id})`;
+  if (!tpl) throw new ApiError(404, "Template not found");
   const r = { orgId: org.id, leadIds: b.leadIds, parcelKeys: b.parcelKeys, templateId: b.templateId, merge: b.merge };
   const plan = await planSend(sql, r);
+  if (!plan.requested) throw new ApiError(404, "None of these homes are in your account");
   const preview = { requested: plan.requested, sending: plan.pieces.length, removed: plan.removed, credits: plan.credits, metered: plan.metered,
     cost_cents: plan.costCents, delivery: plan.deliveryWindow };
   if (!b.confirm) return json(preview);

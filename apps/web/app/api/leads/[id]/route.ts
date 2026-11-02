@@ -9,7 +9,8 @@ type Ctx = { params: Promise<{ id: string }> };
 
 export const GET = handle(async (_req: Request, { params }: Ctx) => {
   const { org, user } = await apiOrg();
-  const lead = await getLead(org.id, (await params).id);
+  const { id } = await params;
+  const lead = z.string().uuid().safeParse(id).success ? await getLead(org.id, id) : null;
   if (!lead) throw new ApiError(404, "Lead not found");
   await track("lead_viewed", { orgId: org.id, userId: user.id }, { lead_id: lead.id });
   return json(lead);

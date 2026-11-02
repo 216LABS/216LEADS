@@ -36,6 +36,7 @@ CI (`.github/workflows/ci.yml`) runs all of these on every PR, against a throwaw
 - **No SMS, calling or contact appends** for homeowners.
 - **Secrets live in `.env` only** (see `.env.example`). Outside production, live Stripe and Lob keys are refused in code.
 - **Schema changes are new migration files** in `packages/db/migrations`. Never edit a merged migration; destructive changes ship in two releases (`docs/ROLLBACK.md`).
+- **Every org-scoped query filters by the session's org.** The app connects as a privileged role, so RLS doesn't protect the request path: any query in `apps/web` (or `packages/ingest` called from a route) on an org-scoped table must have `org_id = <org from apiOrg()/requireOrg()>`. A new org route gets a cross-org case in `apps/web/lib/isolation.int.test.ts` (another org's ids answer 404/403 and change nothing).
 - Commits are authored as the repo owner's account with no co-author lines.
 
 ## Local setup

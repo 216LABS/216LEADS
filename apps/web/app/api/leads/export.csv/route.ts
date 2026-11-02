@@ -13,6 +13,7 @@ export const GET = handle(async (req: Request) => {
   if (left <= 0) throw new ApiError(429, `You've exported ${CSV_DAILY_ROW_CAP.toLocaleString("en-US")} rows today. The limit resets at midnight.`);
   const ids = (sp.get("ids") ?? "").split(",").filter((x) => /^[0-9a-f-]{36}$/i.test(x)).slice(0, 500);
   const { csv, rows } = await exportLeadsCsv(org.id, { ...leadQueryFromParams(sp), ids }, left, BRAND.disclaimer);
+  if (ids.length && !rows) throw new ApiError(404, "None of these leads are in your account");
   return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
