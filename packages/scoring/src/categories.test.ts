@@ -34,6 +34,38 @@ describe("category regex (spec 7.3) on real Cleveland permits", () => {
   }
 });
 
+// Real Lake County residential permits (monthly permit XLSX, April-July 2026), raw_type
+// "Permit Type / Use Code", up to 50 per predicted category, hand-labeled. Lake publishes
+// few permit kinds, so only some categories reach 20 rows.
+const lake = JSON.parse(readFileSync(new URL("./__fixtures__/categories.lake.json", import.meta.url), "utf8")) as Row[];
+
+describe("category regex (spec 7.3) on real Lake County permits", () => {
+  const byCat = new Map<string, Row[]>();
+  for (const r of lake) byCat.set(r.sampled_as, [...(byCat.get(r.sampled_as) ?? []), r]);
+
+  it("has a real sample for the categories Lake actually publishes", () => {
+    for (const c of ["hvac", "electrical", "plumbing", "new_build", "fence_deck", "garage", "remodel", "waterproof"]) {
+      expect(byCat.get(c)?.length ?? 0, c).toBeGreaterThanOrEqual(20);
+    }
+  });
+
+  for (const [cat, list] of byCat) {
+    if (list.length < 20) continue;
+    it(`${cat}: at least 90% correct (${list.length} real permits)`, () => {
+      const correct = list.filter((r) => categorize(r.raw_type, r.description) === r.expected).length;
+      expect(correct / list.length).toBeGreaterThanOrEqual(0.9);
+    });
+  }
+
+  it("lets the permit type decide when the description names the whole project", () => {
+    expect(categorize("HEATING/AIR CONDITIONING / Residential", "NEW DWELLING W/ATTACHED GARAGE")).toBe("hvac");
+    expect(categorize("FUEL GAS PIPING PERMIT / Residential", "GENERATOR")).toBe("plumbing");
+    expect(categorize("BUILDING / Residential", "NEW DWELLING W/ATTACHED GARAGE")).toBe("new_build");
+    expect(categorize("BUILDING / Residential", "GARAGE DEMO")).toBe("demolition");
+    expect(categorize("BUILDING / Residential", "PATIO ROOF")).toBe("fence_deck");
+  });
+});
+
 describe("category edge cases", () => {
   const c = (raw: string, d: string) => categorize(raw, d);
   it("uses the city's own category prefix", () => {

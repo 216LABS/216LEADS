@@ -1,0 +1,2486 @@
+[
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "BASEMENT FINISH",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE & MINI SPLIT REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE & A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE & A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HOT WATER HEATER REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "UNIT EQUIPMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE AND HOT WATER HEATER REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE & A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "HVAC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "FURNACE & A/C REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "TOWNHOME 3 0F 3 NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "hvac",
+  "raw_type": "HEATING/AIR CONDITIONING / Residential",
+  "description": "AC REPLACEMENT",
+  "expected": "hvac"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "TEMPORARY POWER POLE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "RUN ELECTRIC FROM HOUSE TO SHED",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL TO SEPTIC / Residential",
+  "description": "ELECTRIC TO SEPTIC",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL TO SEPTIC / Residential",
+  "description": "ELECTRIC TO SEPTIC",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "EV CHARGING STATION",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC UPGRADE WITH SUBPANEL",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ACCESSORY STRUCTURE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC PANEL CHANGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL TO SEPTIC / Residential",
+  "description": "ELECTRIC TO SEPTIC",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR & ELECTRIC UPGRADE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ADDITION",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC UPGRADE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRICAL UPGRADE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ADDITION",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE & 3 COVERED PORCHES",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC CHANGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL TO SEPTIC / Residential",
+  "description": "ELECTRIC TO SEPTIC",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "TEMPORARY POWER POLE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ADDITION - LIVING SPACE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "SOLAR PANELS",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "GENERATOR",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC FOR SHED",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "COVERED PORCH ADDITON",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL TO SEPTIC / Residential",
+  "description": "ELECTRIC TO SEPTIC",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ALTERATION OF ADDING WALLS",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC SERVICE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ADDITION OF GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "ELECTRIC UPGRADE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "TEMPORARY POWER POLE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "electrical",
+  "raw_type": "ELECTRICAL / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "electrical"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "SHOWER REPLACEMENT",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "PLUMBING REPAIR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER TANK",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "ADDITION",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "ADDITION WITH GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "ALTERATION / BATH REMODEL",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "ADDITION WITH GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "KITCHEN ALTERATION",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE & 3 COVERED PORCHES",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "SHOWER REPLACEMENT",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GAS PIPING FOR POOL",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "GENERATOR",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "TOWNHOME 1 0F 3 NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "HOT WATER HEATER",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "FUEL GAS PIPING PERMIT / Residential",
+  "description": "POOL HOUSE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "plumbing",
+  "raw_type": "PLUMBING / Residential",
+  "description": "ACCESSORY STRUCTURE",
+  "expected": "plumbing"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE & 3 COVERED PORCHES",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLINGW/ATTCHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING W/ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "new_build",
+  "raw_type": "BUILDING / Residential",
+  "description": "NEW DWELLING WITH ATTACHED GARAGE",
+  "expected": "new_build"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED PORCH W/ADDED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "ALTERATION - ENCLOSED PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK REPLACEMENT",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "BACK DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "POOL DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "FRONT PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION WITH COVERED PORCH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED PORCH ADDITION TO SHED",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION OF COVERED PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "ENCLOSED PORCH",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "fence_deck",
+  "raw_type": "BUILDING / Residential",
+  "description": "DECK",
+  "expected": "fence_deck"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION TO GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "DETACHED GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE ADDITION",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ATTACHED GARAGE ALTERATION/FIRE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "DETACHED GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION 2 CAR GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE FLOOR REPLACEMENT",
+  "expected": "concrete"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION WITH GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE ADDITION",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE ADDITION",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ATTACHED GARAGE W/BREEZEWAY",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "garage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE N/ GARAGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION / FIRE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION - IN LAW SUITE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION OF LIVING SPACE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION - INLAW SUITE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION - SECOND FLOOR",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BEDROOM ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT FINISH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "LIVING SPACE ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT FINISH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT FINISH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION OF LIVING SPACE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "FIRE RENOVATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "WHOLE HOUSE FIRE ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR ALTERATION / DROP HEADER",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ALTERATION / BATH REMODEL",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION - LIVING SPACE",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "2ND FLOOR WITH BATH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ALTERATION OF ADDING WALLS",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BATHROOM REMODEL",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT FINISH",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "KITCHEN ALTERATION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "3-SEASON ROOM ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "remodel",
+  "raw_type": "BUILDING / Residential",
+  "description": "ADDITION",
+  "expected": "remodel"
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "FRONT STAIRS",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "STEP REPLACEMENT",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "COVERED PAVILION",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "POOL HOUSE",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / STORAGE BUILDING",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "FRONT STAIRS",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "STAIRS AND LANDING",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARGE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / POLE BARN",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "Accessory Structure / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / POLE BARN",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "INSULTATION REPAIR & PUNCH LIST",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / POLE BARN",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "RETAINING WALL / GAS FIRE PIT",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / POLE BARN",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "CHIMNEY REBUILD",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "PAVILLION",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "IBEAM FOR BASEMENT",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "CRAWL SPACE TO FOUNDATION",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "CHIMNEY REBUILD",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / GARAGWE",
+  "expected": "garage"
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "none",
+  "raw_type": "BUILDING / Residential",
+  "description": "ACCESSORY STRUCTURE / SHED",
+  "expected": null
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "FOUNDATION STRUCTURAL REPAIR",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "REPLACE BASEMENT WALL, & PORCH",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "FOUNDATION WALL",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTEERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "FOUNDATION WALL REPAIR",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTELLI BRACES",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIORWATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "FOUNDATION WALL",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "BASEMENT WALL SUPPORTS",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "HELICAL PIERS - FOUNDATION WALL",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "INTERIOR WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "waterproof",
+  "raw_type": "BUILDING / Residential",
+  "description": "FAST TRACK DRAIN/WATERPROOFING",
+  "expected": "waterproof"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "ROOF ALTERATION",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "roofing",
+  "raw_type": "BUILDING / Residential",
+  "description": "METAL ROOF",
+  "expected": "roofing"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "SHED DEMOLITION",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE DEMO",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMO-HOUSE",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION PERMIT",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "GARAGE DEMO",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION / GARAGE",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "demolition",
+  "raw_type": "BUILDING / Residential",
+  "description": "DEMOLITION",
+  "expected": "demolition"
+ },
+ {
+  "sampled_as": "windows",
+  "raw_type": "BUILDING / Residential",
+  "description": "EGRESS WINDOWS",
+  "expected": "windows"
+ },
+ {
+  "sampled_as": "windows",
+  "raw_type": "BUILDING / Residential",
+  "description": "CHANGE IN WINDOW SIZE",
+  "expected": "windows"
+ },
+ {
+  "sampled_as": "windows",
+  "raw_type": "BUILDING / Residential",
+  "description": "ENLARGE WINDOW SIZE",
+  "expected": "windows"
+ },
+ {
+  "sampled_as": "signage",
+  "raw_type": "BUILDING / Residential",
+  "description": "ALUMINUM AWNING",
+  "expected": null
+ }
+]

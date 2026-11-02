@@ -11,6 +11,10 @@ signals:
   active_violation:electrical: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: permit, category: pool, within_days: 60, boost: 10, label: "New pool needs wiring" }
+  - { kind: permit, category: hvac, within_days: 60, boost: 8, label: "New HVAC (heat pump circuit)" }
+  - { kind: permit, category: garage, within_days: 60, boost: 8, label: "New garage needs power" }
+  - { kind: permit, category: remodel, within_days: 60, boost: 6, label: "Remodel underway" }
 sliders:
   - { key: era_pre1950, label: "Older wiring (pre-1950)" }
   - { key: new_owner, label: "Just moved in" }

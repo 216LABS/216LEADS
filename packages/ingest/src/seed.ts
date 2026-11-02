@@ -16,6 +16,7 @@ import { upsertParcels, municipalityIds, type ParcelRow } from "./parcels";
 import { writeEvents, type EventInput } from "./events";
 import { runSignals } from "./signals";
 import { scoreOrg } from "./score";
+import { ensurePresetVersion } from "./recipes";
 
 const FIXTURE_DIR = () => join(repoRoot(), "packages", "ingest", "fixtures");
 export const FIXTURE_ZIPS = ["44107", "44111"];
@@ -215,6 +216,7 @@ async function ensureOrg(
     for (const z of o.zips) await sql`insert into territory (org_id, kind, zip) values (${orgId}, 'zip', ${z})`;
     await sql`insert into scoring_profile (org_id, template_key, template_version) values (${orgId}, ${t.key}, ${t.version})`;
   }
+  await ensurePresetVersion(sql, orgId, o.trade);
   if (o.userId) {
     await sql`insert into org_member (org_id, user_id, role) values (${orgId}, ${o.userId}, 'owner') on conflict do nothing`;
   }

@@ -1,0 +1,22 @@
+key: pest
+version: 1
+label: Pest control
+threshold: 55
+signals:
+  era_pre1950: { weight: 20 }
+  canopy: { weight: 20 }
+  new_owner: { weight: 30 }
+  flood: { weight: 10 }
+  active_violation:pest: { weight: 20 }
+triggers:
+  - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: violation, category: pest, within_days: 90, boost: 12, label: "City pest citation" }
+  - { kind: neighbor_job, category: demolition, within_days: 60, boost: 8, label: "Demolition nearby (pests move)" }
+  - { kind: permit, category: new_build, within_days: 60, boost: 6, label: "New construction" }
+sliders:
+  - { key: new_owner, label: "Just moved in" }
+  - { key: era_pre1950, label: "Older homes" }
+  - { key: canopy, label: "Trees and shade" }
+default_filters: { owner_occupied: false }
+default_exclusions: { rentals: false, condos: false, condemned: true }
+pitch: "{top_reason}. A first inspection free for new neighbors is an easy yes."
