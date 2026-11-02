@@ -38,7 +38,7 @@ jobs:
             echo "::notice::PRODUCTION_DATABASE_URL_DIRECT not set yet; skipping the daily ingest."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: steps.check.outputs.skip != 'true'
       - uses: pnpm/action-setup@v4
         if: steps.check.outputs.skip != 'true'
