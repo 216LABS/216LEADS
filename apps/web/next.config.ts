@@ -10,7 +10,7 @@ const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
   ...(basePath ? { basePath } : {}),
-  transpilePackages: ["@216leads/db", "@216leads/scoring", "@216leads/shared", "@216leads/ingest"],
+  transpilePackages: ["@216leads/db", "@216leads/scoring", "@216leads/shared", "@216leads/ingest", "@216leads/email"],
   serverExternalPackages: ["postgres", "exceljs"],
   poweredByHeader: false,
   typedRoutes: false,

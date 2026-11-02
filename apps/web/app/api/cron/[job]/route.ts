@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 /** Jobs short enough to run inside a request. */
-const LIGHT_JOBS = new Set(["ingest_watchdog", "signals", "score", "match"]);
+const LIGHT_JOBS = new Set(["ingest_watchdog", "signals", "score", "match", "digest", "lifecycle"]);
 
 function authorized(req: NextRequest): boolean {
   const secret = process.env.CRON_SECRET;

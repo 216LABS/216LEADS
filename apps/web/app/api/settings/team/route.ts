@@ -5,6 +5,7 @@ import { getDirectSql } from "@216leads/db";
 import { createInvite, listTeam } from "@216leads/ingest";
 import { planLimits } from "@216leads/shared";
 import { ApiError, apiOrg, body, handle, json } from "@/lib/api";
+import { sendInvite } from "@/lib/email";
 
 export const GET = handle(async () => {
   const { org } = await apiOrg();
@@ -23,5 +24,6 @@ export const POST = handle(async (req: Request) => {
     throw new ApiError(402, `Your plan includes ${seats} user${seats === 1 ? "" : "s"}. Upgrade to add more.`);
   }
   const inv = await createInvite(sql, org.id, email);
+  await sendInvite(org.id, org.name, inv.email, `/invite/${inv.token}`, inv.id, inv.token);
   return json({ invite: { email: inv.email, path: `/invite/${inv.token}` } }, 201);
 });

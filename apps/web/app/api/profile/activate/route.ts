@@ -10,6 +10,7 @@ import {
 import { answersSchema } from "@216leads/scoring";
 import { ApiError, apiUser, body, handle, json } from "@/lib/api";
 import { track } from "@/lib/events";
+import { sendWelcome } from "@/lib/email";
 import { draftRecipe } from "@/lib/profile";
 
 const Draft = z.object({
@@ -39,6 +40,7 @@ export const POST = handle(async (req: Request) => {
     await track("onboarding_done", { orgId, userId: user.id }, {
       path: input.answers.preset ? "preset" : "wizard", leads: stats.qualified, zips: input.answers.zips.length, customers: input.customers?.length ?? 0,
     });
+    await sendWelcome(orgId, input.answers.business_name, user.email, stats.qualified);
     return json({ org_id: orgId, leads: stats.qualified });
   }
 

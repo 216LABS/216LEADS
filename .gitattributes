@@ -1,0 +1,7 @@
+# Keep LF in the repo whatever the editor or OS writes (Windows tools write CRLF).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gz binary
+*.xlsx binary
+*.pdf binary
