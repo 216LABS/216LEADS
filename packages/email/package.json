@@ -15,8 +15,8 @@
     "@216leads/db": "workspace:*",
     "@216leads/shared": "workspace:*",
     "@react-email/components": "1.0.12",
-    "react": "19.1.10",
-    "react-dom": "19.1.10"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@types/react": "^19.1.0"
