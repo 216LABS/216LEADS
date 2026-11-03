@@ -3,17 +3,18 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { withBase } from "@216leads/shared";
+import { authErrorMessage, safeNext } from "@/lib/auth-links";
 import { supabaseBrowser } from "@/lib/supabase-browser";
 import { Button, Input, Label } from "./ui";
 
 export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; googleEnabled: boolean }) {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || (mode === "signup" ? "/onboarding" : "/leads");
+  const next = safeNext(params.get("next"), mode === "signup" ? "/onboarding" : "/leads");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(params.get("error"));
+  const [error, setError] = useState<string | null>(authErrorMessage(params.get("error")));
   const [sent, setSent] = useState(false);
   const [useLink, setUseLink] = useState(false);
 
@@ -45,7 +46,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; go
       router.replace(next);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not sign in");
+      setError(authErrorMessage(err instanceof Error ? err.message : "unknown"));
     } finally {
       setBusy(false);
     }

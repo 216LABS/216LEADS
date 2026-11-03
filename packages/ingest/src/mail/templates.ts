@@ -4,7 +4,7 @@
 // provider's "Current Resident" address block.
 import QRCode from "qrcode";
 import { optionalEnv } from "@216leads/db";
-import { basePath, BRAND, tradeInText } from "@216leads/shared";
+import { basePath, BRAND, tradeWord } from "@216leads/shared";
 
 /** Printed opt-out address (issue #1): APP_BASE_URL host + base path + /optout, e.g. 216labs.dev/homesignal/optout. */
 export function optoutDisplayUrl(): string {
@@ -35,7 +35,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 
 /** Default headline per design; {street} and {year_built} are filled per home. */
 export function defaultHeadline(design: Design, trade: string): string {
-  const t = tradeInText(trade);
+  const t = tradeWord(trade);
   switch (design) {
     case "neighbors":
       return `Your neighbors near {street} are getting ${t} work done.`;

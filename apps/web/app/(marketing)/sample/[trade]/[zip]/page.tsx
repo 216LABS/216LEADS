@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getSql } from "@216leads/db";
 import { publicSample } from "@216leads/ingest";
 import { hasTemplate } from "@216leads/scoring";
-import { tradeLabel } from "@216leads/shared";
+import { tradeLabel, tradeWord, withArticle } from "@216leads/shared";
 import { Card, LinkButton, MetricTile } from "@/components/ui";
 import { SampleRequest } from "./sample-request";
 
@@ -19,7 +19,6 @@ export default async function SamplePage({ params }: { params: Promise<{ trade: 
   const { trade, zip } = await params;
   if (!hasTemplate(trade) || !/^\d{5}$/.test(zip)) notFound();
   const s = await publicSample(getSql(), trade, zip);
-  const label = tradeLabel(trade).toLowerCase();
   return (
     <section className="mx-auto max-w-3xl px-4 py-12">
       <p className="text-sm"><Link href={`/sample?trade=${trade}`} className="text-slate underline">Try another ZIP</Link></p>
@@ -30,7 +29,7 @@ export default async function SamplePage({ params }: { params: Promise<{ trade: 
         </>
       ) : (
         <>
-          <h1 className="mt-2 text-title font-semibold leading-tight tracking-tight">{s.matching.toLocaleString("en-US")} homes in {s.zip} {s.town} need a {label} business</h1>
+          <h1 className="mt-2 text-title font-semibold leading-tight tracking-tight">{s.matching.toLocaleString("en-US")} homes in {s.zip} {s.town} need {withArticle(tradeWord(trade))} business</h1>
           <p className="mt-2 text-slate">Out of {s.homes.toLocaleString("en-US")} homes, scored from public records this week.</p>
           <div className="mt-6 grid grid-cols-3 gap-3">
             <MetricTile label="Homes" value={s.homes.toLocaleString("en-US")} />

@@ -34,9 +34,19 @@ export function tradeLabel(key: string): string {
   return TRADES.find((t) => t.key === key)?.label ?? key;
 }
 
-/** The trade inside a sentence: "HVAC", "roofing". Lower case except acronyms (issue #72). */
-export function tradeInText(key: string): string {
-  return tradeLabel(key).split(" ").map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
+/** A label for running text: acronyms keep their case ("HVAC"), words go lower case ("electrical"). */
+export function runningText(label: string): string {
+  return label.length > 1 && label === label.toUpperCase() ? label : label.toLowerCase();
+}
+
+/** Trade name for running text, e.g. "HVAC" or "lawn care". */
+export const tradeWord = (key: string) => runningText(tradeLabel(key));
+
+/** "a" or "an" by sound: a vowel, or an acronym whose first letter is said with a vowel ("an HVAC"). */
+export function withArticle(word: string): string {
+  const acronym = word.length > 1 && word === word.toUpperCase();
+  const an = acronym ? /^[AEFHILMNORSX]/.test(word) : /^[aeiou]/i.test(word);
+  return `${an ? "an" : "a"} ${word}`;
 }
 
 export type PlanKey = "trial" | "starter" | "pro" | "exclusive" | "canceled";

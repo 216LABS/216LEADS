@@ -16,10 +16,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /features\.spec/ },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /features\.spec/ },
-    // The feature walk signs in as the same QA user, so it runs after the smoke flows rather than
-    // beside them and sharing that user's 60-a-minute API limit (issue #72).
-    { name: "features", use: { ...devices["Desktop Chrome"] }, testMatch: /features\.spec/, dependencies: ["phone", "desktop"] },
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /(crawl|features)\.spec/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /(crawl|features)\.spec/ },
+    // The link crawl and the feature walk run after the smoke flows, one after the other: they share
+    // the QA login, and running alongside slowed clicks past the timeouts, spent the daily CSV
+    // export cap and hit the 60-a-minute API limit (issues #70, #72).
+    { name: "crawl", use: { ...devices["Desktop Chrome"] }, testMatch: /crawl\.spec/, dependencies: ["phone", "desktop"] },
+    { name: "features", use: { ...devices["Desktop Chrome"] }, testMatch: /features\.spec/, dependencies: ["crawl"] },
   ],
 });

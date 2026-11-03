@@ -1,11 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseServer } from "@/lib/supabase";
+import { appUrl } from "@/lib/urls";
 
 export async function POST(req: NextRequest) {
   const supabase = await supabaseServer();
   await supabase.auth.signOut();
-  const to = req.nextUrl.clone();
-  to.pathname = "/login";
-  to.search = "";
-  return NextResponse.redirect(to, { status: 303 });
+  return NextResponse.redirect(appUrl(req, "/login"), { status: 303 });
 }
