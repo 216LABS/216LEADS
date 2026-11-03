@@ -8,6 +8,7 @@ import {
 import { TRADE_CATEGORY } from "@216leads/scoring";
 import { addDays, titleCase, tradeLabel, TZ } from "@216leads/shared";
 import { withJobRun } from "./runtime";
+import { sendMonthlySummaries } from "./monthly";
 import { grantMonthlyCredits, refreshBillingStates } from "./billing";
 
 const TRIGGER_CHIPS: { label: string; match: RegExp; chip: string }[] = [
@@ -185,6 +186,8 @@ export async function runLifecycle(sql: Sql, o: { now?: Date } = {}) {
     // Staging/local email sink keeps 30 days (issue #40).
     ctx.meta.outbox_pruned = (await sql`delete from email_outbox where created_at < now() - interval '30 days'`).count;
     const day3 = await sendDay3(sql, o.now ?? new Date());
+    // The 1st of the month from 9:00 AM ET: last month's summary for paying orgs (issue #9).
+    ctx.meta.monthly_summaries = (await sendMonthlySummaries(sql, { now: o.now })).sent;
     ctx.meta.trial_day3 = day3.sent;
     if (day3.noHomes.length) ctx.meta.day3_no_homes = day3.noHomes;
     const ending = await sql<{ id: string; name: string; days: number }[]>`
