@@ -3,7 +3,16 @@
 // address and the required small print. The right half of the back is left clear for the
 // provider's "Current Resident" address block.
 import QRCode from "qrcode";
-import { BRAND, tradeLabel } from "@216leads/shared";
+import { optionalEnv } from "@216leads/db";
+import { basePath, BRAND, tradeLabel } from "@216leads/shared";
+
+/** Printed opt-out address (issue #1): APP_BASE_URL host + base path + /optout, e.g. 216labs.dev/homesignal/optout. */
+export function optoutDisplayUrl(): string {
+  const base = optionalEnv("APP_BASE_URL");
+  if (!base) return BRAND.optoutUrl;
+  const u = new URL(base);
+  return `${u.host}${basePath()}/optout`.replace(/^www\./, "");
+}
 
 export const DESIGNS = ["neighbors", "welcome", "checkup"] as const;
 export type Design = (typeof DESIGNS)[number];
@@ -101,7 +110,7 @@ export async function renderPostcard(design: Design, f: PostcardFields): Promise
         </div>
         <div style="font-size:6.5pt;line-height:1.3">
           <div>${esc(f.business)} · ${esc(f.returnAddress)}</div>
-          <div>Based on public records. To stop mail: ${BRAND.optoutUrl}</div>
+          <div>Based on public records. To stop mail: ${esc(optoutDisplayUrl())}</div>
         </div>
       </div>
       <div style="flex:1"></div>
