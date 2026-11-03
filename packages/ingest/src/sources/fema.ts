@@ -93,23 +93,35 @@ export async function runFemaFlood(sql: Sql, counties: string[] = ["cuyahoga"]) 
         ctx.rowsUpserted += res.count;
       }
     }
-    // Zone under each home's centroid; SFHA wins where zones overlap.
-    const upd = await sql`
-      update parcel p set flood_zone = z.label, in_sfha = z.sfha, updated_at = now()
-      from (
-        select distinct on (p2.parcel_key) p2.parcel_key, f.sfha,
-          f.fld_zone || case when f.zone_subty ilike '%0.2%' then ' 0.2%' else '' end as label
-        from parcel p2 join flood_zone f on st_intersects(f.geom, p2.geom)
-        where p2.geom is not null
-        order by p2.parcel_key, f.sfha desc
-      ) z
-      where p.parcel_key = z.parcel_key and (p.flood_zone, p.in_sfha) is distinct from (z.label, z.sfha)`;
-    ctx.meta.parcels_updated = upd.count;
-    // Homes in a loaded county that no longer sit in any zone lose their old value.
-    const cleared = await sql`
-      update parcel p set flood_zone = null, in_sfha = null, updated_at = now()
-      where p.county_code = any(${counties}) and p.flood_zone is not null and p.geom is not null
-        and not exists (select 1 from flood_zone f where st_intersects(f.geom, p.geom))`;
-    ctx.meta.parcels_cleared = cleared.count;
+    // One county at a time, each in its own transaction without the statement timeout: matching every
+    // home against the polygons in one statement ran past the timeout on the staging database.
+    let updated = 0, cleared = 0;
+    for (const county of counties) {
+      const [u, c] = await sql.begin(async (tx) => {
+        await tx`set local statement_timeout = 0`;
+        // Zone under each home's centroid; SFHA wins where zones overlap.
+        const upd = await tx`
+          update parcel p set flood_zone = z.label, in_sfha = z.sfha, updated_at = now()
+          from (
+            select distinct on (p2.parcel_key) p2.parcel_key, f.sfha,
+              f.fld_zone || case when f.zone_subty ilike '%0.2%' then ' 0.2%' else '' end as label
+            from parcel p2 join flood_zone f on st_intersects(f.geom, p2.geom)
+            where p2.county_code = ${county} and p2.geom is not null
+            order by p2.parcel_key, f.sfha desc
+          ) z
+          where p.parcel_key = z.parcel_key and (p.flood_zone, p.in_sfha) is distinct from (z.label, z.sfha)`;
+        // Homes that no longer sit in any zone lose their old value.
+        const clr = await tx`
+          update parcel p set flood_zone = null, in_sfha = null, updated_at = now()
+          where p.county_code = ${county} and p.flood_zone is not null and p.geom is not null
+            and not exists (select 1 from flood_zone f where st_intersects(f.geom, p.geom))`;
+        return [upd.count, clr.count];
+      });
+      updated += u;
+      cleared += c;
+      ctx.log(`${county}: ${u} homes set, ${c} cleared`);
+    }
+    ctx.meta.parcels_updated = updated;
+    ctx.meta.parcels_cleared = cleared;
   });
 }
