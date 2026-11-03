@@ -17,7 +17,7 @@ export default async function ImportsPage() {
       <ImportForm />
       {recent.length ? (
         <>
-          <h2 className="mb-2 mt-8 text-lg font-bold">Cities imported</h2>
+          <h2 className="mb-2 mt-8 text-lg font-semibold">Cities imported</h2>
           <Card className="divide-y divide-line text-sm">
             {recent.map((r) => (
               <div key={r.source} className="flex justify-between gap-3 px-4 py-3">

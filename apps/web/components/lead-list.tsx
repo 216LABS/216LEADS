@@ -1,13 +1,15 @@
 "use client";
-// Lead list (spec 9.2). Phones: cards with quick actions; swipe right = contacted, left = skip.
-// Desktop: a dense table with multi-select, bulk status and "Export CSV".
+// Lead list (spec 9.2, issue #59). Phones: cards with a full-width Mail button and Contacted / Skip
+// buttons; swipe right = contacted, left = skip, as a shortcut for the same buttons.
+// Desktop: a table with visible per-row actions, multi-select, bulk status and "Export CSV".
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
+import { Check } from "lucide-react";
 import { titleCase, withBase } from "@216leads/shared";
 import { ReasonList, ScoreChip, StatusPill, TriggerPill, type ReasonView } from "./lead-bits";
-import { Button } from "./ui";
+import { Button, buttonClass } from "./ui";
 
 export interface ListLead {
   id: string;
@@ -31,14 +33,15 @@ async function setStatus(ids: string[], status: string) {
 }
 
 const SWIPE_PX = 80;
+const money = (n: number | null) => (n ? `$${Math.round(n / 1000).toLocaleString("en-US")}K` : "");
 
 function LeadCard({ lead, onStatus }: { lead: ListLead; onStatus: (id: string, s: string) => void }) {
   const start = useRef<{ x: number; y: number } | null>(null);
   const [dx, setDx] = useState(0);
   return (
-    <li className="relative overflow-hidden rounded-[12px]">
-      <div aria-hidden className={clsx("absolute inset-0 flex items-center px-5 text-sm font-bold text-white",
-        dx > 0 ? "justify-start bg-[#1d4f91]" : "justify-end bg-slate")}>{dx > 0 ? "Contacted" : dx < 0 ? "Skip" : ""}</div>
+    <li className="relative overflow-hidden rounded-[10px]">
+      <div aria-hidden className={clsx("absolute inset-0 flex items-center px-6 text-sm font-semibold text-white",
+        dx > 0 ? "justify-start bg-contacted" : "justify-end bg-slate")}>{dx > 0 ? "Contacted" : dx < 0 ? "Skip" : ""}</div>
       <div
         className="card relative touch-pan-y"
         style={{ transform: `translateX(${dx}px)`, transition: start.current ? "none" : "transform 150ms" }}
@@ -56,24 +59,26 @@ function LeadCard({ lead, onStatus }: { lead: ListLead; onStatus: (id: string, s
           setDx(0);
         }}
       >
-        <Link href={`/leads/${lead.id}`} data-lead-link className="focus-ring flex gap-3 p-4 pb-2">
+        <Link href={`/leads/${lead.id}`} data-lead-link className="focus-ring flex gap-4 p-4">
           <ScoreChip score={lead.score} />
           <div className="min-w-0 flex-1">
-            <div className="num truncate text-base font-semibold">{titleCase(lead.addr_line)}</div>
+            <div className="truncate text-base font-semibold">{titleCase(lead.addr_line)}</div>
             <div className="text-sm text-slate">{titleCase(lead.city)} {lead.zip}</div>
-            <div className="mt-1.5 flex flex-wrap gap-2">
-              <TriggerPill label={lead.trigger_label} date={lead.trigger_date} />
-              <StatusPill status={lead.status} />
-            </div>
-            <div className="mt-2 text-slate"><ReasonList reasons={lead.reasons} limit={2} /></div>
+            <div className="mt-2 text-slate"><ReasonList reasons={lead.reasons} limit={1} /></div>
+            {lead.trigger_label || lead.status !== "new" ? (
+              <div className="mt-2 flex flex-wrap gap-2">
+                <TriggerPill label={lead.trigger_label} date={lead.trigger_date} />
+                {lead.status !== "new" ? <StatusPill status={lead.status} /> : null}
+              </div>
+            ) : null}
           </div>
         </Link>
-        <div className="flex gap-2 border-t border-line px-4 py-2">
-          <button type="button" className="focus-ring tap flex-1 rounded-[10px] text-sm font-semibold text-navy hover:bg-navy-50"
-            onClick={() => onStatus(lead.id, "contacted")} disabled={lead.status === "contacted"}>Contacted</button>
-          <Link href={`/mail/send?leads=${lead.id}`} className="focus-ring tap flex flex-1 items-center justify-center rounded-[10px] text-sm font-semibold text-signal-600 hover:bg-navy-50">Mail</Link>
-          <button type="button" className="focus-ring tap flex-1 rounded-[10px] text-sm font-semibold text-slate hover:bg-navy-50"
-            onClick={() => onStatus(lead.id, "skipped")} disabled={lead.status === "skipped"}>Skip</button>
+        <div className="space-y-2 px-4 pb-4">
+          <Link href={`/mail/send?leads=${lead.id}`} className={buttonClass("navy", "min-h-12 w-full")}>Mail</Link>
+          <div className="flex gap-2">
+            <Button variant="secondary" className="min-h-12 flex-1" onClick={() => onStatus(lead.id, "contacted")} disabled={lead.status === "contacted"}>Contacted</Button>
+            <Button variant="secondary" className="min-h-12 flex-1" onClick={() => onStatus(lead.id, "skipped")} disabled={lead.status === "skipped"}>Skip</Button>
+          </div>
         </div>
       </div>
     </li>
@@ -118,46 +123,47 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
 
   return (
     <>
-      {error ? <p role="alert" className="mb-3 text-sm text-lost">{error}</p> : null}
-      <ul className="space-y-3 md:hidden" aria-label="Leads">
+      {error ? <p role="alert" className="mb-4 text-sm text-lost">{error}</p> : null}
+      <ul className="space-y-4 md:hidden" aria-label="Leads">
         {rows.map((l) => <LeadCard key={l.id} lead={l} onStatus={(id, s) => void change([id], s)} />)}
       </ul>
 
       <div className="hidden md:block">
-        <div className="mb-2 flex min-h-[44px] flex-wrap items-center gap-2">
+        <div className="mb-2 flex min-h-12 flex-wrap items-center gap-2" aria-live="polite">
           {selected.size ? (
             <>
-              <span className="text-sm font-semibold">{selected.size} selected</span>
+              <span className="text-sm">{selected.size} selected</span>
+              <button type="button" className="focus-ring text-sm text-slate underline" onClick={() => setSelected(new Set())}>Clear</button>
+              <span className="mx-2 h-6 w-px bg-line" aria-hidden />
+              <Link className={buttonClass("secondary")} href={`/mail/send?leads=${[...selected].join(",")}`}>Mail selected</Link>
               <Button variant="secondary" onClick={() => void change([...selected], "contacted")}>Mark contacted</Button>
-              <Button variant="secondary" onClick={() => void change([...selected], "skipped")}>Skip</Button>
-              <Link className="focus-ring tap inline-flex items-center rounded-[10px] bg-signal-600 px-4 text-sm font-semibold text-white"
-                href={`/mail/send?leads=${[...selected].join(",")}`}>Mail selected</Link>
-              <a className="focus-ring tap inline-flex items-center rounded-[10px] border border-line bg-white px-4 text-sm font-semibold text-navy hover:border-navy"
-                href={exportHref([...selected])}>Export selected</a>
+              <Button variant="ghost" onClick={() => void change([...selected], "skipped")}>Skip</Button>
+              <a className={buttonClass("ghost")} href={exportHref([...selected])}>Export selected</a>
             </>
           ) : (
-            <a className="focus-ring tap ml-auto inline-flex items-center rounded-[10px] border border-line bg-white px-4 text-sm font-semibold text-navy hover:border-navy"
-              href={exportHref()}>Export CSV</a>
+            <a className={buttonClass("ghost", "ml-auto")} href={exportHref()}>Export CSV</a>
           )}
         </div>
-        <table className="card w-full overflow-hidden text-sm">
-          <thead className="bg-paper text-left text-xs uppercase tracking-wide text-slate">
+        <table className="w-full text-sm">
+          <thead className="border-b border-line text-left text-xs uppercase tracking-wide text-slate">
             <tr>
-              <th className="w-10 p-3">
+              <th className="w-10 py-2 pl-2 font-normal">
                 <input type="checkbox" aria-label="Select all on this page" checked={all}
                   onChange={() => setSelected(all ? new Set() : new Set(rows.map((l) => l.id)))} />
               </th>
-              <th className="p-3">Score</th>
-              <th className="p-3">Address</th>
-              <th className="p-3">Why</th>
-              <th className="p-3">Trigger</th>
-              <th className="p-3">Status</th>
+              <th className="px-2 py-2 font-normal">Score</th>
+              <th className="px-2 py-2 font-normal">Address</th>
+              <th className="px-2 py-2 font-normal">Why</th>
+              <th className="px-2 py-2 text-right font-normal">Built</th>
+              <th className="px-2 py-2 text-right font-normal">Value</th>
+              <th className="px-2 py-2 font-normal">Status</th>
+              <th className="px-2 py-2 text-right font-normal"><span className="sr-only">Actions</span></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
             {rows.map((l) => (
-              <tr key={l.id} className={clsx("hover:bg-paper", selected.has(l.id) && "bg-navy-50/60")}>
-                <td className="p-3">
+              <tr key={l.id} className={clsx("h-14 hover:bg-white", selected.has(l.id) && "bg-navy-50")}>
+                <td className="py-2 pl-2">
                   <input type="checkbox" aria-label={`Select ${titleCase(l.addr_line)}`} checked={selected.has(l.id)}
                     onChange={() => setSelected((s) => {
                       const n = new Set(s);
@@ -166,14 +172,25 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
                       return n;
                     })} />
                 </td>
-                <td className="p-3"><ScoreChip score={l.score} /></td>
-                <td className="p-3">
-                  <Link href={`/leads/${l.id}`} data-lead-link className="focus-ring num font-semibold hover:underline">{titleCase(l.addr_line)}</Link>
+                <td className="px-2 py-2"><ScoreChip score={l.score} /></td>
+                <td className="px-2 py-2">
+                  <Link href={`/leads/${l.id}`} data-lead-link className="focus-ring font-semibold hover:underline">{titleCase(l.addr_line)}</Link>
                   <div className="text-xs text-slate">{titleCase(l.city)} {l.zip}</div>
                 </td>
-                <td className="max-w-sm p-3 text-slate"><ReasonList reasons={l.reasons} limit={2} /></td>
-                <td className="p-3"><TriggerPill label={l.trigger_label} date={l.trigger_date} /></td>
-                <td className="p-3"><StatusPill status={l.status} /></td>
+                <td className="max-w-sm px-2 py-2 text-slate">
+                  <ReasonList reasons={l.reasons} limit={1} />
+                  {l.trigger_label ? <div className="mt-1"><TriggerPill label={l.trigger_label} date={l.trigger_date} /></div> : null}
+                </td>
+                <td className="num px-2 py-2 text-right">{l.year_built ?? ""}</td>
+                <td className="num px-2 py-2 text-right">{money(l.market_value)}</td>
+                <td className="px-2 py-2"><StatusPill status={l.status} /></td>
+                <td className="whitespace-nowrap px-2 py-2 text-right">
+                  <Link href={`/mail/send?leads=${l.id}`} className={buttonClass("secondary", "min-h-10")}>Mail</Link>
+                  <button type="button" aria-label={`Mark ${titleCase(l.addr_line)} contacted`} title="Mark contacted"
+                    className={buttonClass("ghost", "ml-1 min-h-10 px-2")} disabled={l.status === "contacted"} onClick={() => void change([l.id], "contacted")}>
+                    <Check className="h-4 w-4" aria-hidden />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

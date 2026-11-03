@@ -25,7 +25,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
     <div className="mx-auto max-w-md px-4 py-10">
       <Logo />
       <Card className="mt-6 p-5">
-        <h1 className="text-lg font-bold">We couldn&rsquo;t add you to the team</h1>
+        <h1 className="text-lg font-semibold">We couldn&rsquo;t add you to the team</h1>
         <p className="mt-2 text-sm text-slate">{MESSAGE[result]}</p>
         <div className="mt-4 flex gap-3">
           <LinkButton href="/login" variant="secondary">Sign in</LinkButton>

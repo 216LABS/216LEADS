@@ -11,7 +11,7 @@ export default function LoginPage() {
       <Link href="/" className="mb-8 self-center">
         <Logo />
       </Link>
-      <h1 className="mb-1 text-center text-2xl font-bold">Welcome back</h1>
+      <h1 className="mb-1 text-center text-2xl font-semibold">Welcome back</h1>
       <p className="mb-6 text-center text-sm text-slate">See which homes need you next.</p>
       <Suspense>
         <AuthForm mode="login" googleEnabled={process.env.GOOGLE_AUTH_ENABLED === "true"} />

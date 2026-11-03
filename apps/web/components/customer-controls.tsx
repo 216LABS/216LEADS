@@ -23,7 +23,7 @@ export function CustomerControlsCard<T extends Template>({ recipe, onChange, chi
 
   return (
     <Card className="space-y-5 p-5">
-      <h3 className="font-bold">Your perfect customer</h3>
+      <h3 className="font-semibold">The homes you want</h3>
       <div>
         <span className="mb-1.5 block text-sm font-semibold text-navy">Home age</span>
         <SegmentedControl label="Home age" value={c.age} options={[...HOME_AGES]} onChange={(age) => setC({ age })} />
@@ -34,12 +34,12 @@ export function CustomerControlsCard<T extends Template>({ recipe, onChange, chi
           <span className="num text-slate">{lo === 0 ? "Any" : k(PRICE_STOPS[lo]!)} to {hi === last ? "$1M+" : k(PRICE_STOPS[hi]!)}</span>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <input type="range" aria-label="Lowest home value" min={0} max={last} value={lo} className="accent-[#0F2A44]"
+          <input type="range" aria-label="Lowest home value" min={0} max={last} value={lo} className="accent-navy"
             onChange={(e) => {
               const i = Math.min(Number(e.target.value), hi - 1);
               setC({ price_min: i <= 0 ? null : PRICE_STOPS[i]! });
             }} />
-          <input type="range" aria-label="Highest home value" min={0} max={last} value={hi} className="accent-[#0F2A44]"
+          <input type="range" aria-label="Highest home value" min={0} max={last} value={hi} className="accent-navy"
             onChange={(e) => {
               const i = Math.max(Number(e.target.value), lo + 1);
               setC({ price_max: i >= last ? null : PRICE_STOPS[i]! });

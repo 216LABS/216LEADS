@@ -56,7 +56,7 @@ export function SendScreen({ leadIds: initialLeadIds, parcelKeys, templates, fro
   if (p?.batch_id) {
     return (
       <Card className="p-5" role="status">
-        <h2 className="text-lg font-bold">{p.queued} postcard{p.queued === 1 ? "" : "s"} queued</h2>
+        <h2 className="text-lg font-semibold">{p.queued} postcard{p.queued === 1 ? "" : "s"} queued</h2>
         <p className="mt-1 text-sm text-slate">You can cancel until {new Date(p.cancel_until!).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} on the <Link className="underline" href="/mail">Mail</Link> tab.{p.failed ? ` ${p.failed} failed and were not charged.` : ""}</p>
       </Card>
     );
@@ -76,7 +76,7 @@ export function SendScreen({ leadIds: initialLeadIds, parcelKeys, templates, fro
       <Card className="space-y-2 p-5" aria-live="polite">
         {p ? (
           <>
-            <p className="text-lg"><span className="num font-bold">{p.sending}</span> of {p.requested} homes will get a postcard</p>
+            <p className="text-lg"><span className="num font-semibold">{p.sending}</span> of {p.requested} homes will get a postcard</p>
             {removed.length ? <ul className="text-sm text-slate">{removed.map(([k, n]) => <li key={k}>{n} removed: {REMOVED_LABEL[k] ?? k}</li>)}</ul> : null}
             <p className="text-sm">Cost: <span className="font-semibold">{p.credits} credit{p.credits === 1 ? "" : "s"}{p.cost_cents ? ` + $${(p.cost_cents / 100).toFixed(2)}` : ""}</span></p>
             <p className="text-sm text-slate">Arrives {p.delivery}. You have 15 minutes to cancel after sending.</p>

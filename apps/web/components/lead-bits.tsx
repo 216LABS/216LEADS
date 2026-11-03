@@ -45,8 +45,8 @@ export const STATUS_LABEL: Record<string, string> = {
 export function StatusPill({ status }: { status: string }) {
   const tone: Record<string, string> = {
     new: "bg-navy-50 text-navy",
-    contacted: "bg-[#e8f0fb] text-[#1d4f91]",
-    quoted: "bg-[#f3ecfb] text-[#5b2a91]",
+    contacted: "bg-contacted-50 text-contacted",
+    quoted: "bg-quoted-50 text-quoted",
     won: "bg-won-50 text-won",
     lost: "bg-lost-50 text-lost",
     skipped: "bg-line/60 text-slate",

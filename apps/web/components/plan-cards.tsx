@@ -3,8 +3,8 @@
 // offer line shows only while spots remain (issue #5).
 import clsx from "clsx";
 import { useState } from "react";
-import { PLANS, withBase } from "@216leads/shared";
-import { Button, Card, SegmentedControl } from "./ui";
+import { FOUNDING_PRO_MONTHLY, FOUNDING_SPOTS, PLANS, withBase } from "@216leads/shared";
+import { Badge, Button, Card, SegmentedControl } from "./ui";
 
 export function PlanCards({ current, foundingLeft, canBuy, billingOn }: { current: string; foundingLeft: number; canBuy: boolean; billingOn: boolean }) {
   const [interval, setInterval] = useState<"month" | "year">("month");
@@ -28,8 +28,8 @@ export function PlanCards({ current, foundingLeft, canBuy, billingOn }: { curren
           options={[{ value: "month", label: "Monthly" }, { value: "year", label: "Yearly (2 months free)" }]} />
       </div>
       {foundingLeft > 0 && interval === "month" ? (
-        <p className="rounded-[10px] bg-signal-50 px-3 py-2 text-sm font-semibold text-signal-600">
-          Founding offer: Pro $149/mo for life, {foundingLeft} of 20 spots left.
+        <p className="rounded-[10px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
+          Founding offer: Pro ${FOUNDING_PRO_MONTHLY}/mo for life, {foundingLeft} of {FOUNDING_SPOTS} spots left.
         </p>
       ) : null}
       <div className="grid gap-3 sm:grid-cols-3">
@@ -39,13 +39,16 @@ export function PlanCards({ current, foundingLeft, canBuy, billingOn }: { curren
           const founding = p.key === "pro" && interval === "month" && foundingLeft > 0;
           return (
             <Card key={p.key} className={clsx("flex flex-col p-5", isCurrent && "border-navy")}>
-              <h3 className="font-bold">{p.label}</h3>
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-semibold">{p.label}</h3>
+                {isCurrent ? <Badge tone="navy">Current plan</Badge> : null}
+              </div>
               <p className="mt-1">
                 {founding ? <span className="num mr-1 text-slate line-through">${p.monthly}</span> : null}
-                <span className="num text-2xl font-bold">${founding ? 149 : price.toLocaleString("en-US")}</span>
+                <span className="num text-title font-semibold">${founding ? FOUNDING_PRO_MONTHLY : price.toLocaleString("en-US")}</span>
                 <span className="text-sm text-slate">/{interval === "month" ? "mo" : "yr"}</span>
               </p>
-              <ul className="mt-3 flex-1 space-y-1 text-sm text-slate">{p.features.map((f) => <li key={f}>• {f}</li>)}</ul>
+              <ul className="mt-4 flex-1 list-disc space-y-1 pl-4 text-sm text-slate marker:text-signal">{p.features.map((f) => <li key={f}>{f}</li>)}</ul>
               {canBuy ? (
                 <Button type="button" className="mt-4" variant={isCurrent ? "secondary" : "primary"} disabled={!billingOn || isCurrent || busy !== null}
                   onClick={() => void choose(p.key)}>

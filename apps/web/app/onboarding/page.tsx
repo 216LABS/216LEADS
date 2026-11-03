@@ -22,7 +22,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <Logo />
-      <h1 className="mt-6 text-2xl font-bold">Set up your account</h1>
+      <h1 className="mt-6 text-2xl font-semibold">Set up your account</h1>
       <p className="mb-6 mt-2 text-slate">Tell us about your business in plain words. We&rsquo;ll turn it into a ranked list of homes, each with the public records behind it.</p>
       <Wizard prefill={prefill} />
     </div>

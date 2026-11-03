@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { COLORS } from "@/lib/theme";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "navy";
 
@@ -115,10 +116,10 @@ export function EmptyState({ title, children, action }: { title: string; childre
   return (
     <div className="card flex flex-col items-center px-6 py-12 text-center">
       <svg aria-hidden viewBox="0 0 48 48" className="mb-4 h-12 w-12">
-        <path d="M8 24 24 11l16 13v15a2 2 0 0 1-2 2h-9V30h-10v11h-9a2 2 0 0 1-2-2z" fill="none" stroke="#0F2A44" strokeWidth="2.5" strokeLinejoin="round" />
-        <circle cx="24" cy="7" r="3.5" fill="#F26B1D" />
+        <path d="M8 24 24 11l16 13v15a2 2 0 0 1-2 2h-9V30h-10v11h-9a2 2 0 0 1-2-2z" fill="none" stroke={COLORS.navy} strokeWidth="2.5" strokeLinejoin="round" />
+        <circle cx="24" cy="7" r="3.5" fill={COLORS.signal} />
       </svg>
-      <h2 className="text-lg font-bold">{title}</h2>
+      <h2 className="text-lg font-semibold">{title}</h2>
       {children ? <div className="mt-2 max-w-md text-sm text-slate">{children}</div> : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>
@@ -129,7 +130,7 @@ export function MetricTile({ label, value, sub, tone }: { label: string; value: 
   return (
     <div className="card p-4">
       <div className="text-xs font-semibold uppercase tracking-wide text-slate">{label}</div>
-      <div className={clsx("num mt-1 text-2xl font-bold", tone === "won" && "text-won", tone === "signal" && "text-signal-600")}>{value}</div>
+      <div className={clsx("num mt-1 text-title font-semibold leading-tight", tone === "won" && "text-won", tone === "signal" && "text-signal-600")}>{value}</div>
       {sub ? <div className="mt-0.5 text-xs text-slate">{sub}</div> : null}
     </div>
   );
@@ -139,7 +140,7 @@ export function PageHeader({ title, sub, actions }: { title: string; sub?: React
   return (
     <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        <h1 className="text-title font-semibold leading-tight tracking-tight">{title}</h1>
         {sub ? <p className="mt-0.5 text-sm text-slate">{sub}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}

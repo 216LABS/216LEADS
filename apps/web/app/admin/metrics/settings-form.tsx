@@ -20,7 +20,7 @@ export function MetricsSettings({ monthlyCost, inactiveDays, unopenedWeeks }: { 
   }
   return (
     <Card className="mt-8 space-y-3 p-5">
-      <h2 className="font-bold">Settings</h2>
+      <h2 className="font-semibold">Settings</h2>
       <div className="grid gap-3 md:grid-cols-3">
         <div><Label htmlFor="m-cost" hint="Data + infra, dollars">Monthly cost</Label><Input id="m-cost" inputMode="decimal" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="e.g. 85" /></div>
         <div><Label htmlFor="m-days">Inactive after (days)</Label><Input id="m-days" type="number" min={1} max={120} value={days} onChange={(e) => setDays(Number(e.target.value) || 14)} /></div>

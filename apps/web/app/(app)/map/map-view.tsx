@@ -11,20 +11,21 @@ import type { EventPoint, HeatCell, LeadPoint, NeighborRing } from "@216leads/in
 import { Button, Card, LinkButton, Select } from "@/components/ui";
 import { ScoreChip } from "@/components/lead-bits";
 import { MAP_SELECTION_KEY } from "@/lib/map-selection";
+import { COLORS } from "@/lib/theme";
 
 type LayerKey = "leads" | "permit" | "sale" | "violation" | "flood" | "heat";
 type Bbox = [number, number, number, number];
 type FC<P> = { type: "FeatureCollection"; features: { type: "Feature"; geometry: { type: string; coordinates: Pt }; properties: P }[]; truncated?: boolean };
 
 const LAYERS: { key: LayerKey; label: string; swatch: string }[] = [
-  { key: "leads", label: "Leads", swatch: "#f26b1d" },
-  { key: "permit", label: "Permits", swatch: "#6d28d9" },
-  { key: "sale", label: "Sales", swatch: "#0e7490" },
-  { key: "violation", label: "Violations", swatch: "#b42318" },
-  { key: "flood", label: "Flood zones", swatch: "#2563eb" },
-  { key: "heat", label: "Heat", swatch: "#fdba74" },
+  { key: "leads", label: "Leads", swatch: COLORS.signal },
+  { key: "permit", label: "Permits", swatch: COLORS.permit },
+  { key: "sale", label: "Sales", swatch: COLORS.sale },
+  { key: "violation", label: "Violations", swatch: COLORS.lost },
+  { key: "flood", label: "Flood zones", swatch: COLORS.flood },
+  { key: "heat", label: "Heat", swatch: COLORS.heat },
 ];
-const EVENT_COLOR: Record<string, string> = { permit: "#6d28d9", sale: "#0e7490", violation: "#b42318" };
+const EVENT_COLOR: Record<string, string> = { permit: COLORS.permit, sale: COLORS.sale, violation: COLORS.lost };
 const KIND_LABEL: Record<string, string> = { permit: "Permit", sale: "Sale", violation: "City violation" };
 const LASSO_MAX = 500;
 const empty = { type: "FeatureCollection" as const, features: [] };
@@ -104,7 +105,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         map.on("error", () => {
           if (fellBack || !map || map.isStyleLoaded()) return;
           fellBack = true;
-          map.setStyle({ version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": "#f7f5f0" } }] });
+          map.setStyle({ version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": COLORS.paper } }] });
         });
         map.on("load", () => {
           if (!map) return;
@@ -318,7 +319,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
             onPointerUp={finishLasso}
           >
             <svg className="h-full w-full" aria-hidden>
-              <polygon points={path.map((p) => p.join(",")).join(" ")} fill="rgba(242,107,29,0.15)" stroke="#f26b1d" strokeWidth={2} strokeDasharray="6 4" />
+              <polygon points={path.map((p) => p.join(",")).join(" ")} fill="rgba(242,107,29,0.15)" stroke={COLORS.signal} strokeWidth={2} strokeDasharray="6 4" />
             </svg>
           </div>
         ) : null}
@@ -326,10 +327,10 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
       </div>
 
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate" aria-label="Legend">
-        <span><Dot c="#f26b1d" /> Score 80+</span>
-        <span><Dot c="#0f2a44" /> 65–79</span>
-        <span><Dot c="#8aa1b8" /> Under 65</span>
-        <span><Dot c="#2e7d4f" /> Won job (tap for the neighbor ring)</span>
+        <span><Dot c={COLORS.signal} /> Score 80+</span>
+        <span><Dot c={COLORS.navy} /> 65–79</span>
+        <span><Dot c={COLORS.mutedPin} /> Under 65</span>
+        <span><Dot c={COLORS.won} /> Won job (tap to mail the neighbors)</span>
         {leadCount ? <span className="ml-auto">{leadCount.n.toLocaleString()} homes{leadCount.truncated ? " (your top 5,000)" : ""}</span> : null}
       </div>
 
@@ -338,7 +339,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
       {lasso ? (
         <Card className="flex flex-wrap items-center justify-between gap-3 p-4" role="status">
           <div>
-            <div className="font-bold">{n ? `Mail these ${n} home${n === 1 ? "" : "s"}` : "No open leads inside that shape"}</div>
+            <div className="font-semibold">{n ? `Mail these ${n} home${n === 1 ? "" : "s"}` : "No open leads inside that shape"}</div>
             {n ? (
               <div className="text-sm text-slate">
                 About {creditPart} credit{creditPart === 1 ? "" : "s"}{meteredPart ? ` + ${money(meteredPart * POSTCARD_PRICE_CENTS)}` : ""} before checks
@@ -357,10 +358,10 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         <Card className="p-4" role="status">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-slate">Neighbor ring · {ring.radius_m} m</div>
-              <div className="font-mono font-bold">{titleCase(ring.center.address)}</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-slate">Neighbors within {ring.radius_m} m</div>
+              <div className="font-mono font-semibold">{titleCase(ring.center.address)}</div>
             </div>
-            <button type="button" className="focus-ring tap rounded-full p-2 text-slate" aria-label="Close neighbor ring" onClick={closeRing}><X className="h-5 w-5" /></button>
+            <button type="button" className="focus-ring tap rounded-full p-2 text-slate" aria-label="Close neighbors" onClick={closeRing}><X className="h-5 w-5" /></button>
           </div>
           <dl className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <Stat label="Homes around it" value={ring.counts.homes} />
@@ -381,12 +382,12 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         <Card className="flex flex-wrap items-center gap-3 p-4">
           <ScoreChip score={Number(selected.score)} />
           <div className="min-w-0 flex-1">
-            <div className="truncate font-mono font-bold">{titleCase(selected.address)}</div>
+            <div className="truncate font-mono font-semibold">{titleCase(selected.address)}</div>
             <div className="text-sm text-slate">{titleCase(selected.city)}{selected.trigger ? ` · ${selected.trigger}` : ""}{selected.status === "won" ? " · Won" : ""}</div>
           </div>
           <div className="flex flex-wrap gap-2">
             <LinkButton variant="secondary" href={`/leads/${selected.id}`}>Open</LinkButton>
-            <Button variant={selected.status === "won" ? "primary" : "secondary"} onClick={() => openRing(selected.parcel_key)}>Neighbor ring</Button>
+            <Button variant={selected.status === "won" ? "primary" : "secondary"} onClick={() => openRing(selected.parcel_key)}>Mail the neighbors</Button>
             {selected.status !== "won" ? <LinkButton href={`/mail/send?leads=${selected.id}`}>Mail</LinkButton> : null}
           </div>
         </Card>
@@ -415,7 +416,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-[10px] bg-navy-50 px-3 py-2">
       <dt className="text-xs text-slate">{label}</dt>
-      <dd className="num text-lg font-bold">{value}</dd>
+      <dd className="num text-lg font-semibold">{value}</dd>
     </div>
   );
 }
@@ -426,15 +427,15 @@ function addLayers(map: MlMap) {
     map.addSource(id, { type: "geojson", data: empty });
   }
   const hidden = { visibility: "none" as const };
-  map.addLayer({ id: "flood-fill", type: "fill", source: "flood", layout: hidden, paint: { "fill-color": "#2563eb", "fill-opacity": 0.16 } });
-  map.addLayer({ id: "flood-line", type: "line", source: "flood", layout: hidden, paint: { "line-color": "#2563eb", "line-width": 1 } });
+  map.addLayer({ id: "flood-fill", type: "fill", source: "flood", layout: hidden, paint: { "fill-color": COLORS.flood, "fill-opacity": 0.16 } });
+  map.addLayer({ id: "flood-line", type: "line", source: "flood", layout: hidden, paint: { "line-color": COLORS.flood, "line-width": 1 } });
   map.addLayer({
     id: "heat", type: "heatmap", source: "heat", layout: hidden,
     paint: {
       "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 11, 18, 15, 50],
       "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 11, 1, 15, 2],
       "heatmap-opacity": 0.75,
-      "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(253,238,228,0)", 0.3, "#fdba74", 0.6, "#f26b1d", 1, "#b42318"],
+      "heatmap-color": ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(253,238,228,0)", 0.3, COLORS.heat, 0.6, COLORS.signal, 1, COLORS.lost],
     },
   });
   for (const kind of ["permit", "sale", "violation"]) {
@@ -442,29 +443,29 @@ function addLayers(map: MlMap) {
       id: `ev-${kind}`, type: "circle", source: `ev-${kind}`, layout: hidden,
       paint: {
         "circle-color": EVENT_COLOR[kind]!, "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 2.5, 16, 6],
-        "circle-stroke-color": "#ffffff", "circle-stroke-width": 1, "circle-opacity": 0.85,
+        "circle-stroke-color": COLORS.white, "circle-stroke-width": 1, "circle-opacity": 0.85,
       },
     });
   }
-  map.addLayer({ id: "ring-area-fill", type: "fill", source: "ring-area", paint: { "fill-color": "#2e7d4f", "fill-opacity": 0.08 } });
-  map.addLayer({ id: "ring-area-line", type: "line", source: "ring-area", paint: { "line-color": "#2e7d4f", "line-width": 2, "line-dasharray": [2, 1] } });
+  map.addLayer({ id: "ring-area-fill", type: "fill", source: "ring-area", paint: { "fill-color": COLORS.won, "fill-opacity": 0.08 } });
+  map.addLayer({ id: "ring-area-line", type: "line", source: "ring-area", paint: { "line-color": COLORS.won, "line-width": 2, "line-dasharray": [2, 1] } });
   map.addLayer({
     id: "leads", type: "circle", source: "leads",
     paint: {
-      "circle-color": ["case", ["==", ["get", "status"], "won"], "#2e7d4f", [">=", ["get", "score"], 80], "#f26b1d", [">=", ["get", "score"], 65], "#0f2a44", "#8aa1b8"],
+      "circle-color": ["case", ["==", ["get", "status"], "won"], COLORS.won, [">=", ["get", "score"], 80], COLORS.signal, [">=", ["get", "score"], 65], COLORS.navy, COLORS.mutedPin],
       "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, ["case", ["==", ["get", "status"], "won"], 5, 3], 16, ["case", ["==", ["get", "status"], "won"], 10, 7]],
-      "circle-stroke-color": "#ffffff", "circle-stroke-width": 1,
+      "circle-stroke-color": COLORS.white, "circle-stroke-width": 1,
     },
   });
   map.addLayer({
     id: "leads-picked", type: "circle", source: "leads", filter: ["in", ["get", "id"], ["literal", []]],
-    paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 6, 16, 11], "circle-stroke-color": "#f26b1d", "circle-stroke-width": 2.5 },
+    paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": ["interpolate", ["linear"], ["zoom"], 11, 6, 16, 11], "circle-stroke-color": COLORS.signal, "circle-stroke-width": 2.5 },
   });
   map.addLayer({
     id: "ring-homes", type: "circle", source: "ring-homes",
     paint: {
-      "circle-color": ["case", ["get", "skip"], "#e3e0d8", "#ffffff"], "circle-radius": 5,
-      "circle-stroke-color": ["case", ["get", "lead"], "#f26b1d", "#2e7d4f"], "circle-stroke-width": 2,
+      "circle-color": ["case", ["get", "skip"], COLORS.line, COLORS.white], "circle-radius": 5,
+      "circle-stroke-color": ["case", ["get", "lead"], COLORS.signal, COLORS.won], "circle-stroke-width": 2,
     },
   });
 }

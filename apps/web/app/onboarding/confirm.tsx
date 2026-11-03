@@ -98,11 +98,11 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
   return (
     <div className="space-y-4">
       <Card className="p-5">
-        <h2 className="text-lg font-bold">Here&rsquo;s your list</h2>
+        <h2 className="text-lg font-semibold">Here&rsquo;s your list</h2>
         {draft.via === "preset" ? <Badge className="mt-1">Started from our {draft.recipe.label} preset</Badge> : null}
         <p className="mt-2 text-sm text-slate">{draft.summary}</p>
         <p className="mt-4" aria-live="polite">
-          <span className="num text-3xl font-bold text-signal-600">{draft.count.toLocaleString("en-US")}</span>{" "}
+          <span className="num text-3xl font-semibold text-signal-600">{draft.count.toLocaleString("en-US")}</span>{" "}
           <span className="text-sm text-slate">{counting ? "counting…" : `homes in your area match right now`}</span>
         </p>
         {draft.zips.length > 1 ? (
@@ -113,7 +113,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
       </Card>
 
       <Card className="p-5">
-        <h3 className="mb-3 font-bold">5 homes from your list</h3>
+        <h3 className="mb-3 font-semibold">5 homes from your list</h3>
         {draft.sample.length ? (
           <ul className="divide-y divide-line">
             {draft.sample.map((h) => (
@@ -151,7 +151,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
       </CustomerControlsCard>
 
       <Card className="p-5">
-        <h3 className="mb-3 font-bold">What matters most</h3>
+        <h3 className="mb-3 font-semibold">What matters most</h3>
         <ul className="space-y-4">
           {(allSliders ? signals : signals.slice(0, 3)).map(([key]) => {
             const i = STOPS.indexOf(m[key] ?? 1);
@@ -161,7 +161,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
                   <span className="font-semibold">{signalLabel(key)}</span>
                   <span className="text-slate">{STOP_LABEL[i]}</span>
                 </label>
-                <input id={`s-${key}`} type="range" min={0} max={4} step={1} value={i} className="mt-1 w-full accent-[#F26B1D]"
+                <input id={`s-${key}`} type="range" min={0} max={4} step={1} value={i} className="mt-1 w-full accent-signal"
                   onChange={(e) => setM((x) => ({ ...x, [key]: STOPS[Number(e.target.value)]! }))} />
               </li>
             );
@@ -176,7 +176,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
 
       <Card className="p-5">
         <form onSubmit={tweak}>
-          <label htmlFor="tweak" className="mb-1.5 block font-bold">Tweak it</label>
+          <label htmlFor="tweak" className="mb-1.5 block font-semibold">Tweak it</label>
           <div className="flex gap-2">
             <Input id="tweak" value={instruction} onChange={(e) => setInstruction(e.target.value)} placeholder="fewer cheap homes, more big lots" maxLength={300} />
             <Button type="submit" variant="navy" disabled={busy !== null}>{busy === "tweak" ? "Thinking…" : "Tweak"}</Button>

@@ -66,10 +66,10 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
             <li key={c.contractor_id}>
               <Card className="p-4">
                 <div className="flex items-start gap-3">
-                  <span className="num w-6 shrink-0 pt-0.5 text-right text-sm font-bold text-slate">{i + 1}</span>
+                  <span className="num w-6 shrink-0 pt-0.5 text-right text-sm font-semibold text-slate">{i + 1}</span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                      <h2 className="font-bold">{titleCase(c.name)}</h2>
+                      <h2 className="font-semibold">{titleCase(c.name)}</h2>
                       <span className="num text-sm text-slate"><b className="text-navy">{c.count}</b> permit{c.count === 1 ? "" : "s"} · last {c.last_date}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap gap-1.5">

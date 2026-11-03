@@ -1,5 +1,5 @@
 import { withBase } from "@216leads/shared";
-import { Card, MetricTile, PageHeader } from "@/components/ui";
+import { buttonClass, Card, MetricTile, PageHeader } from "@/components/ui";
 import { metricsPayload } from "@/lib/metrics";
 import { MetricsSettings } from "./settings-form";
 
@@ -31,7 +31,7 @@ export default async function MetricsPage() {
   return (
     <>
       <PageHeader title="Metrics" sub={`As of ${m.date}. Snapshots save daily for trends.`}
-        actions={<a className="focus-ring tap inline-flex items-center rounded-[10px] border border-line bg-white px-3 text-sm font-semibold" href={withBase("/api/admin/metrics/daily.csv")}>Daily CSV</a>} />
+        actions={<a className={buttonClass("secondary")} href={withBase("/api/admin/metrics/daily.csv")}>Daily CSV</a>} />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <MetricTile label="MRR" value={money(m.mrr)} sub="Active subscriptions, founding price applied" tone="won" />
         <MetricTile label="Paying orgs" value={m.payingOrgs} sub={`Starter ${m.plans.starter} · Pro ${m.plans.pro} · Exclusive ${m.plans.exclusive}`} />
@@ -48,7 +48,7 @@ export default async function MetricsPage() {
       </Card>
 
       <div className="mb-2 mt-8 flex items-baseline justify-between gap-3">
-        <h2 className="text-lg font-bold">At risk ({at_risk.length})</h2>
+        <h2 className="text-lg font-semibold">At risk ({at_risk.length})</h2>
         <a className="text-sm font-semibold underline" href={withBase("/api/admin/metrics/at-risk.csv")}>CSV</a>
       </div>
       <p className="mb-2 text-xs text-slate">

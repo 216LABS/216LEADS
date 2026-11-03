@@ -43,7 +43,7 @@ export default async function JobsPage() {
         <MetricTile label="Leads" value={h.leads.toLocaleString()} sub={`${h.orgs} orgs`} />
       </div>
 
-      <h2 className="mb-2 text-lg font-bold">Sources</h2>
+      <h2 className="mb-2 text-lg font-semibold">Sources</h2>
       <Card className="mb-8 overflow-x-auto">
         <table className="w-full min-w-[720px] text-sm">
           <thead className="text-left text-xs uppercase tracking-wide text-slate">
@@ -71,7 +71,7 @@ export default async function JobsPage() {
       </Card>
 
       <div className="mb-2 flex items-center justify-between">
-        <h2 className="text-lg font-bold">Recent runs</h2>
+        <h2 className="text-lg font-semibold">Recent runs</h2>
         <div className="flex gap-2">
           <RunJobButton job="match" />
           <RunJobButton job="signals" />

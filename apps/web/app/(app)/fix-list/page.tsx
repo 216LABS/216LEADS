@@ -6,7 +6,7 @@ import { titleCase, tradeLabel } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { Card, EmptyState, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Fix list" };
+export const metadata = { title: "Needs a fix" };
 export const dynamic = "force-dynamic";
 
 // Violations fix list: open city code citations in the area that call for the org's kind of work.
@@ -17,11 +17,11 @@ export default async function FixListPage() {
   return (
     <>
       <PageHeader
-        title="Fix list"
+        title="Needs a fix"
         sub={noun ? `Open city code violations in your area that need ${noun} work. The owner has been told to fix these.` : undefined}
       />
       {!category ? (
-        <EmptyState title={`No fix list for ${tradeLabel(org.trade).toLowerCase()}`}>
+        <EmptyState title={`Nothing to fix for ${tradeLabel(org.trade).toLowerCase()}`}>
           City code violations are written for building trades (roofing, siding, gutters, HVAC and so on), so there's nothing to match here.
         </EmptyState>
       ) : !rows.length ? (

@@ -43,7 +43,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
     setMsg(null);
     const res = await fetch(withBase("/api/profile/activate"), {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recipe, multipliers: m, source: "slider", parent_id: versionId, note: "Perfect customer settings" }),
+      body: JSON.stringify({ recipe, multipliers: m, source: "slider", parent_id: versionId, note: "Homes you want settings" }),
     });
     const data = await res.json().catch(() => ({}));
     setBusy(false);
@@ -59,7 +59,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
     <div className="space-y-4">
       <CustomerControlsCard recipe={recipe} onChange={setRecipe} />
       <Card className="p-5">
-        <h2 className="mb-3 font-bold">What matters most</h2>
+        <h2 className="mb-3 font-semibold">What matters most</h2>
         <ul className="space-y-4">
           {signals.map(([k]) => {
             const i = Math.max(0, STOPS.indexOf(m[k] ?? 1));
@@ -69,7 +69,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
                   <span className="font-semibold">{signalLabel(k)}</span>
                   <span className="text-slate">{STOP_LABEL[i]}</span>
                 </label>
-                <input id={`s-${k}`} type="range" min={0} max={4} step={1} value={i} className="mt-1 w-full accent-[#F26B1D]"
+                <input id={`s-${k}`} type="range" min={0} max={4} step={1} value={i} className="mt-1 w-full accent-signal"
                   onChange={(e) => setM((x) => ({ ...x, [k]: STOPS[Number(e.target.value)]! }))} />
               </li>
             );
@@ -78,7 +78,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
       </Card>
       <div className="sticky bottom-20 z-10 flex items-center gap-3 rounded-[12px] border border-line bg-white p-3 shadow md:bottom-4">
         <p className="flex-1 text-sm" aria-live="polite">
-          {count === null ? <span className="text-slate">Counting homes…</span> : <><span className="num font-bold">{count.toLocaleString("en-US")}</span> homes match</>}
+          {count === null ? <span className="text-slate">Counting homes…</span> : <><span className="num font-semibold">{count.toLocaleString("en-US")}</span> homes match</>}
           {msg ? <span className={msg.ok ? "ml-2 text-won" : "ml-2 text-lost"} role={msg.ok ? "status" : "alert"}>{msg.text}</span> : null}
         </p>
         <Button type="button" onClick={() => void save()} disabled={!dirty || busy}>{busy ? "Saving…" : "Save"}</Button>

@@ -86,7 +86,7 @@ test("the preset path: pick a trade, add a town, set the perfect customer, land 
   await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText("homes match", { timeout: 20_000 });
   await page.getByRole("button", { name: "Build my list" }).click();
 
-  await expect(page.getByRole("heading", { name: "Your perfect customer" })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("heading", { name: "The homes you want" })).toBeVisible({ timeout: 30_000 });
   await page.getByRole("radio", { name: "Pre-1950" }).click();
   await expect(page.getByText("counting…")).toBeHidden({ timeout: 20_000 });
   await page.getByRole("button", { name: "Looks good, show my leads" }).click();
@@ -163,7 +163,7 @@ test("CRM: filter, open a lead, add a note, mark it won, export CSV", async ({ p
 
   // Spec 15: onboarding -> lead list -> mark won -> ROI shows it.
   await page.goto("roi");
-  await expect(page.getByRole("heading", { name: "ROI" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Results" })).toBeVisible();
   const won = page.locator(".card", { has: page.getByText("Jobs won", { exact: true }) });
   await expect(won.locator(".num")).not.toHaveText("0");
   const revenue = page.locator(".card", { has: page.getByText("Revenue won", { exact: true }) });
@@ -219,8 +219,8 @@ test("map: pins load, a lead opens its neighbor ring, competitors list", async (
   await expect(page.getByText(/\d[\d,]* homes/)).toBeVisible();
   await page.goto("leads");
   await page.locator("main [data-lead-link]:visible").first().click();
-  await page.locator("main").getByRole("link", { name: "Neighbor ring" }).click();
-  await expect(page.getByText(/Neighbor ring · \d+ m/)).toBeVisible({ timeout: 30_000 });
+  await page.locator("main").getByRole("link", { name: "Mail the neighbors" }).click();
+  await expect(page.getByText(/Neighbors within \d+ m/)).toBeVisible({ timeout: 30_000 });
   await expect(page.getByText("Homes around it")).toBeVisible();
   await page.getByRole("link", { name: "Competitors" }).click();
   await expect(page.getByRole("heading", { name: "Competitors" })).toBeVisible();

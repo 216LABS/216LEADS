@@ -94,7 +94,7 @@ export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
           </li>
         ))}
       </ol>
-      <h2 className="mb-4 text-lg font-bold">{STEPS[step]}</h2>
+      <h2 className="mb-4 text-lg font-semibold">{STEPS[step]}</h2>
 
       <div className="card space-y-5 p-5">
         {mode === "preset" && step === 0 ? (
