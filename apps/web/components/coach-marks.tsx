@@ -6,7 +6,7 @@ import { withBase } from "@216leads/shared";
 import { Button } from "./ui";
 
 const TIPS = [
-  { title: "The score", body: "0 to 100: how well a home fits the homes you want right now. Orange chips (80+) are the best bets." },
+  { title: "The score", body: "0 to 100: how well a home fits the homes you want right now. An orange bar means 80 or more: the best bets." },
   { title: "Why this home", body: "Every lead lists the public records behind it: permits, sales, city notices. Open a lead to see each source." },
   { title: "Status", body: "Track each home from New to Contacted, Quoted, Won or Lost. Swipe a card right for contacted, left to skip." },
 ];
@@ -25,9 +25,9 @@ export function CoachMarks() {
 
   const tip = TIPS[i]!;
   return (
-    <aside className="mb-4 flex flex-col gap-2 rounded-[10px] md:flex-row md:items-center md:gap-4 border border-signal/30 bg-signal-50 px-4 py-2" aria-label="Getting started" aria-live="polite">
+    <aside className="mb-4 flex flex-col gap-2 rounded-[6px] border border-line border-l-[3px] border-l-navy bg-white px-4 py-2 md:flex-row md:items-center md:gap-4" aria-label="Getting started" aria-live="polite">
       <p className="min-w-0 flex-1 text-sm">
-        <span className="text-xs text-signal-600">Tip {i + 1} of {TIPS.length} · </span>
+        <span className="text-xs text-slate">Tip {i + 1} of {TIPS.length} · </span>
         <span className="font-semibold">{tip.title}:</span> <span className="text-slate">{tip.body}</span>
       </p>
       <div className="flex gap-2">

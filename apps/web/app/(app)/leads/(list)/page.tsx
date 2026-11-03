@@ -5,7 +5,7 @@ import { leadCounts, leadQueryFromParams, listLeads, PAGE_SIZE } from "@/lib/lea
 import { FilterBar } from "@/components/filter-bar";
 import { LeadList, type ListLead } from "@/components/lead-list";
 import { CoachMarks } from "@/components/coach-marks";
-import { ScoreChip } from "@/components/lead-bits";
+import { ScoreChip, shortReason } from "@/components/lead-bits";
 import { EmptyState, LinkButton, PageHeader } from "@/components/ui";
 
 export const metadata = { title: "Leads" };
@@ -26,7 +26,7 @@ function TopFive({ leads }: { leads: ListLead[] }) {
               <ScoreChip score={l.score} />
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold">{titleCase(l.addr_line)}</span>
-                <span className="line-clamp-2 text-xs text-slate">{l.reasons[0]?.label ?? `${titleCase(l.city)} ${l.zip}`}</span>
+                <span className="line-clamp-2 text-xs text-slate">{l.reasons[0] ? shortReason(l.reasons[0].label) : `${titleCase(l.city)} ${l.zip}`}</span>
               </span>
             </Link>
           </li>

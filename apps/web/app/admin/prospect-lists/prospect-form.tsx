@@ -47,7 +47,7 @@ export function ProspectListForm({ trades }: { trades: { key: string; label: str
       <Button type="button" onClick={() => void make()} disabled={busy || business.trim().length < 2 || !zipList.length}>{busy ? "Building…" : "Build the list"}</Button>
       {error ? <p role="alert" className="text-sm text-lost">{error}</p> : null}
       {out ? (
-        <div role="status" className="space-y-2 rounded-[10px] bg-won-50 p-4 text-sm">
+        <div role="status" className="space-y-2 rounded-[6px] bg-won-50 p-4 text-sm">
           <p className="font-semibold">{countOf(out.homes, "home")}. Share link (expires in 14 days):</p>
           <Input readOnly value={absolute(out.link)} onFocus={(e) => e.currentTarget.select()} aria-label="Share link" />
           <a className="font-semibold text-navy underline" href={withBase(out.csv)}>Download CSV</a>

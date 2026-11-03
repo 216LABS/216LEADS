@@ -12,7 +12,7 @@ export default async function DataPage() {
     select code, name, url, schedule_cron, last_success_at from source where code not like 'rr_%' order by name`;
   return (
     <LegalView page="data">
-      <div className="mt-6 overflow-x-auto rounded-[12px] border border-line bg-white">
+      <div className="mt-6 overflow-x-auto rounded-[8px] border border-line bg-white">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-line"><th className="px-4 py-2">Source</th><th className="px-4 py-2">Refresh</th><th className="px-4 py-2">Last updated</th></tr></thead>
           <tbody>

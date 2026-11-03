@@ -49,7 +49,7 @@ export function AreaEditor({ zips: initial, exclusive: initialExclusive, exclusi
               return (
                 <li key={z}>
                   <button type="button" aria-pressed={on} disabled={!canEdit || (!on && held.length >= exclusiveMax)} onClick={() => toggle(z)}
-                    className={`focus-ring rounded-full border px-3 py-1 text-sm ${on ? "border-navy bg-navy text-white" : "border-line text-navy"} ${taken.includes(z) ? "border-lost text-lost" : ""} disabled:opacity-50`}>
+                    className={`focus-ring rounded-[4px] border px-3 py-1 text-sm ${on ? "border-navy bg-navy text-white" : "border-line text-navy"} ${taken.includes(z) ? "border-lost text-lost" : ""} disabled:opacity-50`}>
                     <span className="num">{z}</span> {on ? "Exclusive" : taken.includes(z) ? "Taken" : "Make exclusive"}
                   </button>
                 </li>

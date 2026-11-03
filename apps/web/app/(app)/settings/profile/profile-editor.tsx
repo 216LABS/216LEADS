@@ -76,7 +76,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
           })}
         </ul>
       </Card>
-      <div className="sticky bottom-20 z-10 flex items-center gap-3 rounded-[12px] border border-line bg-white p-3 shadow md:bottom-4">
+      <div className="sticky bottom-20 z-10 flex items-center gap-3 rounded-[8px] border border-line bg-white p-3 shadow md:bottom-4">
         <p className="flex-1 text-sm" aria-live="polite">
           {count === null ? <span className="text-slate">Counting homes…</span> : <><span className="num font-semibold">{count.toLocaleString("en-US")}</span> {count === 1 ? "home matches" : "homes match"}</>}
           {msg ? <span className={msg.ok ? "ml-2 text-won" : "ml-2 text-lost"} role={msg.ok ? "status" : "alert"}>{msg.text}</span> : null}

@@ -38,8 +38,8 @@ export default async function OutboxPage({ searchParams }: { searchParams: Promi
             </div>
             {open.html ? (
               // Rendered with no scripts and no same-origin access.
-              <iframe title={open.subject} srcDoc={open.html} sandbox="" className="h-[640px] w-full rounded-[10px] border border-line bg-white" />
-            ) : <pre className="whitespace-pre-wrap rounded-[10px] bg-paper p-3">{open.text}</pre>}
+              <iframe title={open.subject} srcDoc={open.html} sandbox="" className="h-[640px] w-full rounded-[6px] border border-line bg-white" />
+            ) : <pre className="whitespace-pre-wrap rounded-[6px] bg-paper p-3">{open.text}</pre>}
           </Card>
         ) : null}
       </div>

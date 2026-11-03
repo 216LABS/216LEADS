@@ -110,7 +110,7 @@ export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
                   const on = a.preset === t.key;
                   return (
                     <button key={t.key} type="button" aria-pressed={on} onClick={() => set({ preset: t.key, sells: t.label })}
-                      className={clsx("focus-ring min-h-[56px] rounded-[12px] border px-3 text-left text-sm font-semibold",
+                      className={clsx("focus-ring min-h-[56px] rounded-[8px] border px-3 text-left text-sm font-semibold",
                         on ? "border-navy bg-navy text-white" : "border-line bg-white text-navy hover:border-navy")}>
                       {t.label}
                     </button>
@@ -134,7 +134,7 @@ export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
             <div>
               <Label htmlFor="job_value">What&rsquo;s a typical job or customer worth?</Label>
               <select id="job_value" value={a.job_value} onChange={(e) => set({ job_value: e.target.value as WizardAnswers["job_value"] })}
-                className="tap focus-ring w-full rounded-[10px] border border-line bg-white px-3 text-base text-navy">
+                className="tap focus-ring w-full rounded-[6px] border border-line bg-white px-3 text-base text-navy">
                 {JOB_VALUES.map((j) => <option key={j.value} value={j.value}>{j.label}</option>)}
               </select>
             </div>
@@ -193,7 +193,7 @@ export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
                         setAdjacentTouched(true);
                         set({ adjacent: on ? a.adjacent.filter((x) => x !== c) : [...a.adjacent, c] });
                       }}
-                      className={clsx("focus-ring min-h-[40px] rounded-full border px-3 text-sm font-semibold",
+                      className={clsx("focus-ring min-h-[40px] rounded-[4px] border px-3 text-sm font-semibold",
                         on ? "border-navy bg-navy text-white" : "border-line bg-white text-slate hover:text-navy")}>
                       {capital(CATEGORY_NOUN[c] ?? c)}
                     </button>

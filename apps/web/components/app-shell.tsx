@@ -51,8 +51,8 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
               key={t.href}
               href={t.href}
               className={clsx(
-                "focus-ring tap flex items-center gap-3 rounded-[10px] border-l-2 px-3 text-sm",
-                active(t.href) ? "border-signal bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50 hover:text-navy",
+                "focus-ring tap flex items-center gap-3 rounded-[6px] border-l-2 px-3 text-sm",
+                active(t.href) ? "border-navy bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50 hover:text-navy",
               )}
             >
               <t.icon className="h-5 w-5" aria-hidden />
@@ -60,7 +60,7 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
             </Link>
           ))}
           {isAdmin ? (
-            <Link href="/admin/metrics" className={clsx("focus-ring tap flex items-center gap-3 rounded-[10px] border-l-2 px-3 text-sm", active("/admin") ? "border-signal bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50")}>
+            <Link href="/admin/metrics" className={clsx("focus-ring tap flex items-center gap-3 rounded-[6px] border-l-2 px-3 text-sm", active("/admin") ? "border-navy bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50")}>
               Admin
             </Link>
           ) : null}
@@ -69,10 +69,10 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
           <div className="font-semibold text-navy">{orgName}</div>
           <div>{tradeLabel(trade)}</div>
           <div className="mt-3 flex flex-col items-start gap-2">
-            <Link href="/help" className="focus-ring underline underline-offset-2 hover:text-navy">Help</Link>
-            <ReportProblem />
+            <Link href="/help" className="focus-ring hover:text-navy hover:underline">Help</Link>
+            <ReportProblem className="focus-ring hover:text-navy hover:underline" />
             <form action={withBase("/auth/signout")} method="post">
-              <button className="focus-ring underline underline-offset-2 hover:text-navy">Sign out</button>
+              <button className="focus-ring hover:text-navy hover:underline">Sign out</button>
             </form>
           </div>
         </div>

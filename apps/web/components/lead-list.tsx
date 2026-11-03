@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { titleCase, withBase } from "@216leads/shared";
-import { ReasonList, ScoreChip, StatusPill, TriggerPill, type ReasonView } from "./lead-bits";
+import { ReasonList, ScoreChip, StatusPill, TriggerPill, townsWithoutPermits, type ReasonView } from "./lead-bits";
 import { DownloadButton } from "./download-button";
 import { Button, buttonClass } from "./ui";
 
@@ -40,7 +40,7 @@ function LeadCard({ lead, onStatus }: { lead: ListLead; onStatus: (id: string, s
   const start = useRef<{ x: number; y: number } | null>(null);
   const [dx, setDx] = useState(0);
   return (
-    <li className="relative overflow-hidden rounded-[10px]">
+    <li className="relative overflow-hidden rounded-[6px]">
       <div aria-hidden className={clsx("absolute inset-0 flex items-center px-6 text-sm font-semibold text-white",
         dx > 0 ? "justify-start bg-contacted" : "justify-end bg-slate")}>{dx > 0 ? "Contacted" : dx < 0 ? "Skip" : ""}</div>
       <div
@@ -65,7 +65,7 @@ function LeadCard({ lead, onStatus }: { lead: ListLead; onStatus: (id: string, s
           <div className="min-w-0 flex-1">
             <div className="truncate text-base font-semibold">{titleCase(lead.addr_line)}</div>
             <div className="text-sm text-slate">{titleCase(lead.city)} {lead.zip}</div>
-            <div className="mt-2 text-slate"><ReasonList reasons={lead.reasons} limit={1} /></div>
+            <div className="mt-2 text-slate"><ReasonList reasons={lead.reasons} limit={1} compact /></div>
             {lead.trigger_label || lead.status !== "new" ? (
               <div className="mt-2 flex flex-wrap gap-2">
                 <TriggerPill label={lead.trigger_label} date={lead.trigger_date} />
@@ -114,6 +114,7 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
     }
   }
 
+  const noPermits = townsWithoutPermits(rows.map((l) => l.reasons));
   const all = rows.length > 0 && rows.every((l) => selected.has(l.id));
   const exportHref = (ids?: string[]) => {
     const p = new URLSearchParams(sp.toString());
@@ -179,7 +180,7 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
                   <div className="text-xs text-slate">{titleCase(l.city)} {l.zip}</div>
                 </td>
                 <td className="max-w-sm px-2 py-2 text-slate">
-                  <ReasonList reasons={l.reasons} limit={1} />
+                  <ReasonList reasons={l.reasons} limit={1} compact />
                   {l.trigger_label ? <div className="mt-1"><TriggerPill label={l.trigger_label} date={l.trigger_date} /></div> : null}
                 </td>
                 <td className="num px-2 py-2 text-right">{l.year_built ?? ""}</td>
@@ -197,6 +198,11 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
           </tbody>
         </table>
       </div>
+      {noPermits.length ? (
+        <p className="mt-3 text-xs text-slate">
+          {noPermits.join(", ")} {noPermits.length === 1 ? "doesn't" : "don't"} publish permits online, so system ages there are estimated from the year built.
+        </p>
+      ) : null}
     </>
   );
 }

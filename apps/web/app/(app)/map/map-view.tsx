@@ -255,7 +255,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
             aria-pressed={on[l.key]}
             onClick={() => setOn((s) => ({ ...s, [l.key]: !s[l.key] }))}
             className={clsx(
-              "focus-ring tap inline-flex items-center gap-2 rounded-full border px-3 text-sm font-semibold",
+              "focus-ring tap inline-flex items-center gap-2 rounded-[4px] border px-3 text-sm font-semibold",
               on[l.key] ? "border-navy bg-navy text-white" : "border-line bg-white text-slate hover:text-navy",
             )}
           >
@@ -414,7 +414,7 @@ function Dot({ c }: { c: string }) {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-[10px] bg-navy-50 px-3 py-2">
+    <div className="rounded-[6px] bg-navy-50 px-3 py-2">
       <dt className="text-xs text-slate">{label}</dt>
       <dd className="num text-lg font-semibold">{value}</dd>
     </div>

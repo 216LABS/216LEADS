@@ -45,7 +45,7 @@ export function PostcardFrames({ merge }: { merge: Record<string, unknown> }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2" aria-label="Postcard preview">
       {(["front", "back"] as const).map((side) => (
-        <div key={side} className="overflow-hidden rounded-[10px] border border-line bg-white" style={{ aspectRatio: "6.25 / 4.25" }}>
+        <div key={side} className="overflow-hidden rounded-[6px] border border-line bg-white" style={{ aspectRatio: "6.25 / 4.25" }}>
           {html ? <iframe title={`Postcard ${side}`} srcDoc={html[side]} className="pointer-events-none origin-top-left" style={{ width: 600, height: 408, transform: "scale(var(--s))", border: 0 }}
             ref={(el) => { if (el?.parentElement) el.style.setProperty("--s", String(el.parentElement.clientWidth / 600)); }} />
             : failed ? (

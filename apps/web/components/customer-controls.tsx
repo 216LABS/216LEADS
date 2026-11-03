@@ -74,7 +74,7 @@ export function CustomerControlsCard<T extends Template>({ recipe, onChange, chi
           {c.streets.length ? (
             <ul className="mt-2 flex flex-wrap gap-2" aria-label="Streets left out">
               {c.streets.map((st) => (
-                <li key={st} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
+                <li key={st} className="inline-flex items-center gap-1 rounded-[4px] bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
                   {st}
                   <button type="button" aria-label={`Put back ${st}`} onClick={() => setC({ streets: c.streets.filter((x) => x !== st) })}
                     className="focus-ring grid h-7 w-7 place-items-center rounded-full text-slate hover:bg-white">×</button>

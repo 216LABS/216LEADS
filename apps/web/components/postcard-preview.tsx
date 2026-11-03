@@ -8,7 +8,7 @@ export function PostcardPreview({ business, headline, offer, phone, website, log
   const site = website?.replace(/^https?:\/\//, "").replace(/\/$/, "");
   return (
     <div className="grid gap-3 sm:grid-cols-2" aria-label="Postcard preview">
-      <div className="flex aspect-[3/2] flex-col justify-between rounded-[12px] bg-navy p-4 text-white shadow">
+      <div className="flex aspect-[3/2] flex-col justify-between overflow-hidden rounded-[4px] bg-navy p-4 text-white shadow-sm">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element -- the org's own uploaded logo, served from our API */}
           {logoUrl ? <img src={logoUrl} alt="" className="h-8 w-8 rounded bg-white object-contain p-0.5" /> : null}
@@ -16,7 +16,7 @@ export function PostcardPreview({ business, headline, offer, phone, website, log
         </div>
         <p className="text-xl font-bold leading-tight">{headline}</p>
       </div>
-      <div className="flex aspect-[3/2] flex-col justify-between rounded-[12px] border border-line bg-white p-4 text-navy shadow">
+      <div className="flex aspect-[3/2] flex-col justify-between overflow-hidden rounded-[4px] border border-line bg-white p-4 text-navy shadow-sm">
         <div>
           {/* Issue #72: empty fields read as placeholders, not as a real offer or phone number. */}
           {offer ? <p className="font-bold">{offer}</p> : <p className="font-bold italic text-slate">[Your offer]</p>}
@@ -24,8 +24,9 @@ export function PostcardPreview({ business, headline, offer, phone, website, log
           {site ? <p className="text-sm text-slate">{site}</p> : null}
         </div>
         <div className="flex items-end justify-between gap-3 text-[10px] leading-snug text-slate">
-          <span>Based on public records. To stop mail: {BRAND.optoutUrl}</span>
-          <span className="shrink-0 rounded border border-line px-2 py-1 text-right">Current Resident<br />1234 Example St<br />Lakewood, OH 44107</span>
+          {/* The address box used to refuse to shrink and spill out of the card (homepage, narrow columns). */}
+          <span className="min-w-0 break-words">Based on public records. To stop mail: {BRAND.optoutUrl}</span>
+          <span className="max-w-[48%] shrink-0 break-words rounded-[2px] border border-line px-2 py-1 text-right">Current Resident<br />1234 Example St<br />Lakewood, OH 44107</span>
         </div>
       </div>
     </div>

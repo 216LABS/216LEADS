@@ -34,7 +34,7 @@ export function InviteForm() {
       </form>
       {error ? <p role="alert" className="mt-2 text-sm text-lost">{error}</p> : null}
       {link ? (
-        <div className="mt-3 rounded-[10px] bg-navy-50 p-3 text-sm" role="status">
+        <div className="mt-3 rounded-[6px] bg-navy-50 p-3 text-sm" role="status">
           <p className="font-semibold">Send them this link (good for 14 days):</p>
           <p className="num mt-1 break-all">{link}</p>
         </div>

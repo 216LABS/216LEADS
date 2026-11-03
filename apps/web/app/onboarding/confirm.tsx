@@ -183,7 +183,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
           </div>
         </form>
         {proposal ? (
-          <div className="mt-4 rounded-[10px] bg-navy-50 p-4 text-sm">
+          <div className="mt-4 rounded-[6px] bg-navy-50 p-4 text-sm">
             {proposal.diff.length ? (
               <>
                 <p className="font-semibold">Proposed changes ({countOf(proposal.count, "home")}):</p>

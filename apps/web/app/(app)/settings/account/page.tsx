@@ -32,7 +32,7 @@ export default async function AccountPage() {
         <Card className="flex items-center justify-between gap-3 p-5">
           <span className="text-sm">Sign out on this device.</span>
           <form action={withBase("/auth/signout")} method="post">
-            <button className="focus-ring tap rounded-[10px] border border-line px-4 text-sm font-semibold hover:bg-paper">Sign out</button>
+            <button className="focus-ring tap rounded-[6px] border border-line px-4 text-sm font-semibold hover:bg-paper">Sign out</button>
           </form>
         </Card>
       </div>

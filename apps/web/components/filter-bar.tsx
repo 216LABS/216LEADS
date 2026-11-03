@@ -78,12 +78,12 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
           <span className="sr-only">Search address or town</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate" aria-hidden />
           <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search address or town"
-            className="focus-ring tap w-full rounded-[10px] border border-line bg-white pl-8 pr-2 text-base" />
+            className="focus-ring tap w-full rounded-[6px] border border-line bg-white pl-8 pr-2 text-base" />
         </label>
         <label>
           <span className="sr-only">Sort by</span>
           <select value={cur.get("sort") ?? "score"} onChange={(e) => go({ sort: e.target.value === "score" ? null : e.target.value })}
-            className="focus-ring tap rounded-[10px] border border-line bg-white px-2 text-sm text-navy">
+            className="focus-ring tap rounded-[6px] border border-line bg-white px-2 text-sm text-navy">
             {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
         </label>
@@ -108,7 +108,7 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
                   else next.add(c.key);
                   go({ chips: [...next].join(",") || null });
                 }}
-                className={clsx("focus-ring min-h-10 shrink-0 rounded-full border px-4 text-sm",
+                className={clsx("focus-ring min-h-10 shrink-0 rounded-[4px] border px-3 text-sm",
                   on ? "border-navy bg-navy text-white" : "border-line bg-white text-slate hover:text-navy")}>
                 {c.label}
               </button>

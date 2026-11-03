@@ -36,7 +36,7 @@ export function ReportProblem({ className, label = "Report a problem" }: { class
       >
         {label}
       </button>
-      <dialog ref={dialog} className="m-auto w-[min(92vw,28rem)] rounded-[12px] border border-line p-0 backdrop:bg-navy/40">
+      <dialog ref={dialog} className="m-auto w-[min(92vw,28rem)] rounded-[8px] border border-line p-0 backdrop:bg-navy/40">
         <form onSubmit={send} className="space-y-3 p-5">
           <h2 className="text-lg font-semibold text-navy">Report a problem</h2>
           {state === "sent" ? (
