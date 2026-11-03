@@ -190,7 +190,7 @@ test("mail: send a test-mode postcard from a lead, see it on the Mail tab, cance
   await expect(page.getByRole("heading", { name: "Why this home" })).toBeVisible({ timeout: 15_000 });
   await page.locator("main").getByRole("link", { name: "Mail", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Send postcards" })).toBeVisible();
-  await expect(page.getByText(/of 1 homes will get a postcard/)).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText(/of 1 home gets a postcard/)).toBeVisible({ timeout: 20_000 });
   // On a long-lived local DB this home may already have a card from an earlier run (30-day rule).
   if (await page.getByText("0 of 1 homes will get a postcard").isVisible()) {
     await expect(page.getByText("mailed in the last 30 days")).toBeVisible();
