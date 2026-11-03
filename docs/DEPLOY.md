@@ -31,11 +31,11 @@ Pick one:
 
 `apps/web/vercel.json` turns off Git deployments from `main` (`git.deploymentEnabled.main: false`), so a merge does not reach production. PR branches still get previews. To ship, open the Vercel project → Deployments → Create Deployment, pick `main` at the commit to release, and deploy it to Production. The Ignored Build Step (`scripts/ci/vercel-ignore.sh`) skips preview builds when a push only changes docs or tests.
 
-Migrations are not gated the same way: `migrate.yml` still applies them on merge (below), so they reach the production database before the code that uses them is promoted. Keep migrations backward compatible with the deployed code, or hold the merge until you promote.
+Production migrations are manual too: run `migrate.yml` with `target: production` before promoting code that needs the new schema (section 3).
 
 ## 3. Database
 
-`migrate.yml` applies new migrations on merge to `main`: staging first (`STAGING_DATABASE_URL`), then production (`PRODUCTION_DATABASE_URL`, behind the `production` environment) once those secrets exist. It runs the same append-only runner as `pnpm db:migrate`. Take a backup first for risky migrations (`docs/ROLLBACK.md`). The first data load runs on the worker: `pnpm ingest pipeline cleveland` then `pnpm ingest pipeline counties`.
+`migrate.yml` applies new migrations to staging (`STAGING_DATABASE_URL`) on merge to `main`. Production is migrated by hand, in step with promoting the code in Vercel: Actions → Migrate databases → Run workflow, `target: production`. That run migrates staging first, then production (`PRODUCTION_DATABASE_URL`, behind the `production` environment). Run it before promoting code that needs the new schema; migrations should stay backward compatible with the code already in production. Each job skips until its secret exists. It runs the same append-only runner as `pnpm db:migrate`. Take a backup first for risky migrations (`docs/ROLLBACK.md`). The first data load runs on the worker: `pnpm ingest pipeline cleveland` then `pnpm ingest pipeline counties`.
 
 ## 4. Webhooks and schedules
 
