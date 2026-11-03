@@ -1,6 +1,6 @@
 // Digest unsubscribe (spec 12 List-Unsubscribe). The link is signed for one org + address, so it
 // works without signing in. GET (a click) and POST (one-click from the mail app) both remove it.
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { readUnsubscribeToken } from "@216leads/email";
 import { BRAND } from "@216leads/shared";
 import { rateLimit } from "@/lib/ratelimit";
@@ -13,7 +13,7 @@ async function unsubscribe(req: Request): Promise<boolean> {
   const t = new URL(req.url).searchParams.get("t") ?? "";
   const v = readUnsubscribeToken(t.slice(0, 600));
   if (!v) return false;
-  const sql = getDirectSql();
+  const sql = getSql();
   if (v.stream === "lifecycle") {
     await sql`insert into email_optout (email, stream) values (${v.email}, 'lifecycle') on conflict do nothing`;
     return true;

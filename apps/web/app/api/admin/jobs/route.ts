@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { JOBS, runJob } from "@216leads/ingest";
 import { ApiError, body, handle, json } from "@/lib/api";
 import { requireAdminApi } from "@/lib/imports";
@@ -11,6 +11,6 @@ export const POST = handle(async (req: Request) => {
   await requireAdminApi();
   const { job } = await body(req, Body);
   if (!JOBS[job]) throw new ApiError(400, `Unknown job ${job}`);
-  void runJob(getDirectSql(), job, {}).catch((e) => console.error(`admin job ${job} failed`, e));
+  void runJob(getSql(), job, {}).catch((e) => console.error(`admin job ${job} failed`, e));
   return json({ started: job }, 202);
 });

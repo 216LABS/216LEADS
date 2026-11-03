@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { acceptInvite, type AcceptResult } from "@216leads/ingest";
 import { getUser } from "@/lib/session";
 import { Logo } from "@/components/logo";
@@ -19,7 +19,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   const { token } = await params;
   const user = await getUser();
   if (!user) redirect(`/signup?next=${encodeURIComponent(`/invite/${token}`)}`);
-  const { result } = await acceptInvite(getDirectSql(), token, user);
+  const { result } = await acceptInvite(getSql(), token, user);
   if (result === "joined" || result === "already_member") redirect("/leads");
   return (
     <div className="mx-auto max-w-md px-4 py-10">

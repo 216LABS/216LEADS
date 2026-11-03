@@ -1,4 +1,4 @@
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { PageHeader, Card } from "@/components/ui";
 import { ImportForm } from "./import-form";
 
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 // Records-request importer (spec 5.12): permit lists suburbs send in reply to ORC 149.43 requests.
 export default async function ImportsPage() {
-  const recent = await getDirectSql()<{ source: string; municipality: string; county_code: string; updated_at: string; n: number }[]>`
+  const recent = await getSql()<{ source: string; municipality: string; county_code: string; updated_at: string; n: number }[]>`
     select m.source, m.municipality, m.county_code, m.updated_at::text,
       (select count(*) from parcel_event e where e.source = m.source)::int as n
     from import_mapping m order by m.updated_at desc limit 20`;

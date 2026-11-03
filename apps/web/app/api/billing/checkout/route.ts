@@ -2,7 +2,7 @@
 // adds the metered postcard price, and applies the founding coupon to Pro monthly while spots
 // remain (issue #5). Owner only.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { priceFor } from "@216leads/ingest";
 import { ApiError, apiOrg, body, handle, json } from "@/lib/api";
 import { track } from "@/lib/events";
@@ -22,7 +22,7 @@ export const POST = handle(async (req: Request) => {
   let customer = org.stripe_customer_id;
   if (!customer) {
     customer = (await s.customers.create({ email: user.email, name: org.name, metadata: { org_id: org.id } })).id;
-    await getDirectSql()`update org set stripe_customer_id = ${customer} where id = ${org.id}`;
+    await getSql()`update org set stripe_customer_id = ${customer} where id = ${org.id}`;
   }
   const founding = plan === "pro" && interval === "month" && process.env.STRIPE_FOUNDING_COUPON_ID && (await foundingSpotsLeft()) > 0;
   const trialEnd = org.trial_ends_at ? Math.floor(Date.parse(org.trial_ends_at) / 1000) : 0;

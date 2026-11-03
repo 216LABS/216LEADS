@@ -30,7 +30,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 60000,
         },
         "key": "price_band",
-        "label": "Valued at $60,000, in your range",
+        "label": "County value $60,000, in your range",
         "points": 13,
       },
       {
@@ -89,7 +89,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 94000,
         },
         "key": "price_band",
-        "label": "Valued at $94,000, in your range",
+        "label": "County value $94,000, in your range",
         "points": 11,
       },
     ],
@@ -124,7 +124,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 111000,
         },
         "key": "price_band",
-        "label": "Valued at $111,000, in your range",
+        "label": "County value $111,000, in your range",
         "points": 13,
       },
       {
@@ -185,7 +185,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 128000,
         },
         "key": "price_band",
-        "label": "Valued at $128,000, in your range",
+        "label": "County value $128,000, in your range",
         "points": 11,
       },
       {
@@ -238,7 +238,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 145000,
         },
         "key": "price_band",
-        "label": "Valued at $145,000, in your range",
+        "label": "County value $145,000, in your range",
         "points": 11,
       },
     ],
@@ -268,7 +268,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 179000,
         },
         "key": "price_band",
-        "label": "Valued at $179,000, in your range",
+        "label": "County value $179,000, in your range",
         "points": 11,
       },
       {
@@ -332,7 +332,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 196000,
         },
         "key": "price_band",
-        "label": "Valued at $196,000, in your range",
+        "label": "County value $196,000, in your range",
         "points": 11,
       },
       {
@@ -367,7 +367,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 213000,
         },
         "key": "price_band",
-        "label": "Valued at $213,000, in your range",
+        "label": "County value $213,000, in your range",
         "points": 13,
       },
       {
@@ -420,7 +420,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 230000,
         },
         "key": "price_band",
-        "label": "Valued at $230,000, in your range",
+        "label": "County value $230,000, in your range",
         "points": 11,
       },
       {
@@ -476,7 +476,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 264000,
         },
         "key": "price_band",
-        "label": "Valued at $264,000, in your range",
+        "label": "County value $264,000, in your range",
         "points": 13,
       },
       {
@@ -533,7 +533,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 298000,
         },
         "key": "price_band",
-        "label": "Valued at $298,000, in your range",
+        "label": "County value $298,000, in your range",
         "points": 11,
       },
       {
@@ -568,7 +568,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 315000,
         },
         "key": "price_band",
-        "label": "Valued at $315,000, in your range",
+        "label": "County value $315,000, in your range",
         "points": 13,
       },
       {
@@ -625,7 +625,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 349000,
         },
         "key": "price_band",
-        "label": "Valued at $349,000, in your range",
+        "label": "County value $349,000, in your range",
         "points": 11,
       },
       {
@@ -660,7 +660,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
           "value": 366000,
         },
         "key": "price_band",
-        "label": "Valued at $366,000, in your range",
+        "label": "County value $366,000, in your range",
         "points": 13,
       },
       {
@@ -1423,7 +1423,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 94000,
         },
         "key": "price_band",
-        "label": "Valued at $94,000, in your range",
+        "label": "County value $94,000, in your range",
         "points": 15,
       },
       {
@@ -1469,7 +1469,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 111000,
         },
         "key": "price_band",
-        "label": "Valued at $111,000, in your range",
+        "label": "County value $111,000, in your range",
         "points": 15,
       },
       {
@@ -1520,7 +1520,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 128000,
         },
         "key": "price_band",
-        "label": "Valued at $128,000, in your range",
+        "label": "County value $128,000, in your range",
         "points": 15,
       },
       {
@@ -1565,7 +1565,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
   },
   {
     "home": "cuyahoga:snap0007",
-    "pitch": "Valued at $179,000, in your range. First mow free for new neighbors is an easy yes.",
+    "pitch": "County value $179,000, in your range. First mow free for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -1574,7 +1574,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 179000,
         },
         "key": "price_band",
-        "label": "Valued at $179,000, in your range",
+        "label": "County value $179,000, in your range",
         "points": 15,
       },
       {
@@ -1639,7 +1639,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 196000,
         },
         "key": "price_band",
-        "label": "Valued at $196,000, in your range",
+        "label": "County value $196,000, in your range",
         "points": 15,
       },
       {
@@ -1685,7 +1685,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 213000,
         },
         "key": "price_band",
-        "label": "Valued at $213,000, in your range",
+        "label": "County value $213,000, in your range",
         "points": 15,
       },
       {
@@ -1719,7 +1719,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
   },
   {
     "home": "cuyahoga:snap0012",
-    "pitch": "Valued at $264,000, in your range. First mow free for new neighbors is an easy yes.",
+    "pitch": "County value $264,000, in your range. First mow free for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -1728,7 +1728,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 264000,
         },
         "key": "price_band",
-        "label": "Valued at $264,000, in your range",
+        "label": "County value $264,000, in your range",
         "points": 15,
       },
       {
@@ -1797,7 +1797,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 298000,
         },
         "key": "price_band",
-        "label": "Valued at $298,000, in your range",
+        "label": "County value $298,000, in your range",
         "points": 15,
       },
       {
@@ -1860,7 +1860,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 349000,
         },
         "key": "price_band",
-        "label": "Valued at $349,000, in your range",
+        "label": "County value $349,000, in your range",
         "points": 15,
       },
       {
@@ -1877,7 +1877,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
   },
   {
     "home": "cuyahoga:snap0018",
-    "pitch": "Valued at $366,000, in your range. First mow free for new neighbors is an easy yes.",
+    "pitch": "County value $366,000, in your range. First mow free for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -1886,7 +1886,7 @@ exports[`scoring determinism snapshot (spec 15) > lawn_care 1`] = `
           "value": 366000,
         },
         "key": "price_band",
-        "label": "Valued at $366,000, in your range",
+        "label": "County value $366,000, in your range",
         "points": 15,
       },
       {
@@ -1948,7 +1948,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 60000,
         },
         "key": "price_band",
-        "label": "Valued at $60,000, in your range",
+        "label": "County value $60,000, in your range",
         "points": 18,
       },
       {
@@ -1968,7 +1968,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
   },
   {
     "home": "cuyahoga:snap0001",
-    "pitch": "Valued at $77,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "pitch": "County value $77,000, in your range. A welcome offer for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -1977,7 +1977,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 77000,
         },
         "key": "price_band",
-        "label": "Valued at $77,000, in your range",
+        "label": "County value $77,000, in your range",
         "points": 18,
       },
       {
@@ -2012,7 +2012,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 94000,
         },
         "key": "price_band",
-        "label": "Valued at $94,000, in your range",
+        "label": "County value $94,000, in your range",
         "points": 18,
       },
       {
@@ -2047,7 +2047,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 111000,
         },
         "key": "price_band",
-        "label": "Valued at $111,000, in your range",
+        "label": "County value $111,000, in your range",
         "points": 18,
       },
       {
@@ -2099,7 +2099,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 128000,
         },
         "key": "price_band",
-        "label": "Valued at $128,000, in your range",
+        "label": "County value $128,000, in your range",
         "points": 18,
       },
       {
@@ -2134,7 +2134,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 145000,
         },
         "key": "price_band",
-        "label": "Valued at $145,000, in your range",
+        "label": "County value $145,000, in your range",
         "points": 18,
       },
       {
@@ -2152,7 +2152,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
   },
   {
     "home": "cuyahoga:snap0006",
-    "pitch": "Valued at $162,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "pitch": "County value $162,000, in your range. A welcome offer for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -2161,7 +2161,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 162000,
         },
         "key": "price_band",
-        "label": "Valued at $162,000, in your range",
+        "label": "County value $162,000, in your range",
         "points": 18,
       },
       {
@@ -2196,7 +2196,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 179000,
         },
         "key": "price_band",
-        "label": "Valued at $179,000, in your range",
+        "label": "County value $179,000, in your range",
         "points": 18,
       },
       {
@@ -2242,7 +2242,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 196000,
         },
         "key": "price_band",
-        "label": "Valued at $196,000, in your range",
+        "label": "County value $196,000, in your range",
         "points": 18,
       },
       {
@@ -2277,7 +2277,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 213000,
         },
         "key": "price_band",
-        "label": "Valued at $213,000, in your range",
+        "label": "County value $213,000, in your range",
         "points": 18,
       },
       {
@@ -2312,7 +2312,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 230000,
         },
         "key": "price_band",
-        "label": "Valued at $230,000, in your range",
+        "label": "County value $230,000, in your range",
         "points": 18,
       },
       {
@@ -2330,7 +2330,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
   },
   {
     "home": "cuyahoga:snap0011",
-    "pitch": "Valued at $247,000, in your range. A welcome offer for new neighbors is an easy yes.",
+    "pitch": "County value $247,000, in your range. A welcome offer for new neighbors is an easy yes.",
     "qualifies": false,
     "reasons": [
       {
@@ -2339,7 +2339,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 247000,
         },
         "key": "price_band",
-        "label": "Valued at $247,000, in your range",
+        "label": "County value $247,000, in your range",
         "points": 18,
       },
       {
@@ -2385,7 +2385,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 264000,
         },
         "key": "price_band",
-        "label": "Valued at $264,000, in your range",
+        "label": "County value $264,000, in your range",
         "points": 18,
       },
       {
@@ -2420,7 +2420,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 281000,
         },
         "key": "price_band",
-        "label": "Valued at $281,000, in your range",
+        "label": "County value $281,000, in your range",
         "points": 18,
       },
       {
@@ -2455,7 +2455,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 298000,
         },
         "key": "price_band",
-        "label": "Valued at $298,000, in your range",
+        "label": "County value $298,000, in your range",
         "points": 18,
       },
       {
@@ -2490,7 +2490,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 315000,
         },
         "key": "price_band",
-        "label": "Valued at $315,000, in your range",
+        "label": "County value $315,000, in your range",
         "points": 18,
       },
       {
@@ -2528,7 +2528,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 332000,
         },
         "key": "price_band",
-        "label": "Valued at $332,000, in your range",
+        "label": "County value $332,000, in your range",
         "points": 18,
       },
       {
@@ -2563,7 +2563,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 349000,
         },
         "key": "price_band",
-        "label": "Valued at $349,000, in your range",
+        "label": "County value $349,000, in your range",
         "points": 18,
       },
       {
@@ -2598,7 +2598,7 @@ exports[`scoring determinism snapshot (spec 15) > new_movers 1`] = `
           "value": 366000,
         },
         "key": "price_band",
-        "label": "Valued at $366,000, in your range",
+        "label": "County value $366,000, in your range",
         "points": 18,
       },
       {

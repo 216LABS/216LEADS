@@ -2,7 +2,7 @@
 // Zip count is capped by the plan (spec 11). On the Exclusive plan, `exclusive` ZIPs are locked
 // for the org's trade (spec 13); one another business already holds returns 409 "Taken".
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { orgExclusiveZips, orgZips, scoreOrg, setZipTerritories, TakenError } from "@216leads/ingest";
 import { planLimits } from "@216leads/shared";
 import { ApiError, apiOrg, body, handle, json } from "@/lib/api";
@@ -10,7 +10,7 @@ import { Zips } from "@/lib/profile";
 
 export const GET = handle(async () => {
   const { org } = await apiOrg();
-  const sql = getDirectSql();
+  const sql = getSql();
   return json({ zips: await orgZips(sql, org.id), exclusive: await orgExclusiveZips(sql, org.id) });
 });
 
@@ -23,7 +23,7 @@ export const PUT = handle(async (req: Request) => {
   const lock = [...new Set(exclusive ?? [])];
   if (lock.length && org.plan !== "exclusive") throw new ApiError(402, "Exclusive ZIP codes come with the Exclusive plan. Upgrade in Settings → Billing.");
   if (lock.length > limits.exclusiveZips) throw new ApiError(402, `Your plan holds up to ${limits.exclusiveZips} ZIP codes exclusively.`);
-  const sql = getDirectSql();
+  const sql = getSql();
   let saved: string[];
   try {
     saved = await setZipTerritories(sql, org.id, zips,

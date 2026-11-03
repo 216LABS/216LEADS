@@ -3,7 +3,7 @@
 // A signed-in user with no org yet is finishing the onboarding wizard: the org is created from
 // their answers first.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import {
   activateRecipeVersion, attachProspectToken, createOrgFromWizard, CUSTOMER_LINES_MAX, importCustomers, RecipeInvalidError, saveOrgAnswers, saveRecipeVersion, scoreOrg,
 } from "@216leads/ingest";
@@ -32,7 +32,7 @@ const Body = z.union([z.object({ version_id: z.string().uuid() }), Draft]);
 export const POST = handle(async (req: Request) => {
   const { user, ctx } = await apiUser();
   const input = await body(req, Body);
-  const sql = getDirectSql();
+  const sql = getSql();
 
   if (!ctx) {
     if ("version_id" in input || !input.answers) throw new ApiError(403, "Finish onboarding first");

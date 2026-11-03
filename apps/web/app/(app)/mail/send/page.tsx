@@ -1,4 +1,4 @@
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { templatesFor } from "@216leads/ingest";
 import { requireOrg } from "@/lib/session";
 import { PageHeader } from "@/components/ui";
@@ -13,7 +13,7 @@ export default async function SendPage({ searchParams }: { searchParams: Promise
   const sp = await searchParams;
   const leadIds = (sp.leads ?? "").split(",").filter((x) => /^[0-9a-f-]{36}$/i.test(x)).slice(0, 500);
   const parcelKeys = (sp.parcels ?? "").split(",").filter(Boolean).slice(0, 500);
-  const templates = await templatesFor(getDirectSql(), org.id, org.trade);
+  const templates = await templatesFor(getSql(), org.id, org.trade);
   return (
     <>
       <PageHeader title="Send postcards" />

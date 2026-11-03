@@ -1,6 +1,6 @@
 // POST /api/admin/imports/commit (multipart file, city, county, mapping): import the mapped rows.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { IMPORT_FIELDS, mappingErrors, runRecordsImport, type ImportMapping } from "@216leads/ingest";
 import { ApiError, handle, json } from "@/lib/api";
 import { readUpload, requireAdminApi } from "@/lib/imports";
@@ -16,5 +16,5 @@ export const POST = handle(async (req: Request) => {
   const mapping = Object.fromEntries(Object.entries(parsed.data).filter(([, v]) => v)) as ImportMapping;
   const errs = mappingErrors(mapping, table.headers);
   if (errs.length) throw new ApiError(422, errs.join(". "));
-  return json(await runRecordsImport(getDirectSql(), { county, city, table, mapping }));
+  return json(await runRecordsImport(getSql(), { county, city, table, mapping }));
 });

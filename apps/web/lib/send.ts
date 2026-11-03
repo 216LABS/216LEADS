@@ -1,6 +1,6 @@
 import "server-only";
 import { createElement } from "react";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { appUrl, MailBatch, sendEmail } from "@216leads/email";
 import { commitSend, mailFromEnv, planSend, SendBlockedError } from "@216leads/ingest";
 import { ApiError, json } from "./api";
@@ -19,7 +19,7 @@ export async function sendHomes(
   { org, user }: OrgContext,
   b: { leadIds: string[]; parcelKeys: string[]; templateId: string; merge?: Merge; confirm: boolean },
 ) {
-  const sql = getDirectSql();
+  const sql = getSql();
   // Another org's template or leads are a 404, like every cross-org id (issue #38).
   const [tpl] = await sql`select 1 from postcard_template where id = ${b.templateId} and (org_id is null or org_id = ${org.id})`;
   if (!tpl) throw new ApiError(404, "Template not found");

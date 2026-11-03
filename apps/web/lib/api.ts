@@ -2,6 +2,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrgContext, getUser, type OrgContext, type SessionUser } from "./session";
+import { providerFailure } from "./provider-errors";
 import { rateLimit } from "./ratelimit";
 import { canUseApp, planLimits } from "@216leads/shared";
 
@@ -54,6 +55,11 @@ export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response
     } catch (e) {
       if (e instanceof ApiError) return json({ error: e.message }, e.status);
       if (e instanceof z.ZodError) return json({ error: "Invalid request", issues: e.issues }, 400);
+      const provider = providerFailure(e);
+      if (provider) {
+        console.error(provider.log);
+        return json({ error: provider.message }, provider.status);
+      }
       console.error(e);
       return json({ error: "Something went wrong" }, 500);
     }

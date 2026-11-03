@@ -2,7 +2,7 @@
 // Lead list controls (spec 9.2): search, filter chips, sort and the status view, all kept in the URL.
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { Search } from "lucide-react";
 
 const CHIPS = [
@@ -24,17 +24,42 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
   const sp = useSearchParams();
   const [q, setQ] = useState(sp.get("q") ?? "");
   const [pending, start] = useTransition();
-  const chips = new Set((sp.get("chips") ?? "").split(",").filter(Boolean));
-  const view = sp.get("view") ?? "active";
+  // The filters as last tapped (issue #79). The page re-renders in a transition, so reading `sp` alone
+  // made a second tap before that render undo the first. And two overlapping navigations can finish
+  // out of order (the unfiltered page is cached, a filtered one is fetched), leaving the address bar
+  // on the older filters. So only one navigation runs at a time: a tap while one is loading updates
+  // the buttons at once, and `wanted` (the newest filters) is sent when the load finishes. The lead
+  // list has no loading.tsx: under that boundary Next sometimes rendered new filters but left the
+  // address bar on the old ones.
+  const href = (query: string) => (query ? `${path}?${query}` : path);
+  const [params, setParams] = useState(() => sp.toString());
+  const wanted = useRef<string | null>(null);
+  useEffect(() => {
+    if (pending) return;
+    const now = sp.toString();
+    if (wanted.current === null || wanted.current === now) {
+      wanted.current = null;
+      setParams(now);
+    } else {
+      const want = wanted.current;
+      start(() => router.replace(href(want), { scroll: false }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sp, pending]);
+  const cur = new URLSearchParams(params);
+  const chips = new Set((cur.get("chips") ?? "").split(",").filter(Boolean));
+  const view = cur.get("view") ?? "active";
 
   function go(patch: Record<string, string | null>) {
-    const next = new URLSearchParams(sp.toString());
+    const next = new URLSearchParams(params);
     for (const [k, v] of Object.entries(patch)) {
       if (v === null || v === "") next.delete(k);
       else next.set(k, v);
     }
     next.delete("page");
-    start(() => router.replace(`${path}?${next.toString()}`, { scroll: false }));
+    wanted.current = next.toString();
+    setParams(next.toString());
+    if (!pending) start(() => router.replace(href(next.toString()), { scroll: false }));
   }
 
   // Search as you type (debounced).
@@ -57,7 +82,7 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
         </label>
         <label>
           <span className="sr-only">Sort by</span>
-          <select value={sp.get("sort") ?? "score"} onChange={(e) => go({ sort: e.target.value === "score" ? null : e.target.value })}
+          <select value={cur.get("sort") ?? "score"} onChange={(e) => go({ sort: e.target.value === "score" ? null : e.target.value })}
             className="focus-ring tap rounded-[10px] border border-line bg-white px-2 text-sm text-navy">
             {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
@@ -90,6 +115,8 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
             );
           })}
           {extra ? <span className="ml-2 shrink-0">{extra}</span> : null}
+          {/* Replaces the (list)/loading.tsx skeleton, which made Next drop URL updates (issue #79). */}
+          {pending ? <span role="status" className="shrink-0 text-sm text-slate">Updating…</span> : null}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 // GET/PUT /api/settings/org (spec 8): digest settings and the postcard return address.
 // Branding (phone, website, offer, logo) goes through /api/org/brand and /api/org/logo.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { apiOrg, body, handle, json } from "@/lib/api";
 
 const Body = z.object({
@@ -23,9 +23,9 @@ export const PUT = handle(async (req: Request) => {
   const { org, role } = await apiOrg();
   const b = await body(req, Body);
   if (role !== "owner") return json({ error: "Only the account owner can change these" }, 403);
-  await getDirectSql()`
+  await getSql()`
     update org set digest_enabled = ${b.digest_enabled}, digest_day = ${b.digest_day}, digest_emails = ${[...new Set(b.digest_emails)]}::citext[],
-      return_address = ${b.return_address ? getDirectSql().json(b.return_address) : null}
+      return_address = ${b.return_address ? getSql().json(b.return_address) : null}
     where id = ${org.id}`;
   return json({ ok: true });
 });

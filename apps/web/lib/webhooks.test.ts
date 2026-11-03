@@ -5,7 +5,7 @@ import Stripe from "stripe";
 
 vi.mock("server-only", () => ({}));
 const applied: unknown[] = [];
-vi.mock("@216leads/db", () => ({ getDirectSql: () => ({}) }));
+vi.mock("@216leads/db", () => ({ getSql: () => ({}) }));
 vi.mock("@216leads/ingest", () => ({ applyStripeEvent: async (_sql: unknown, ev: unknown) => { applied.push(ev); return "checkout"; } }));
 vi.mock("@/lib/events", () => ({ track: async () => undefined }));
 

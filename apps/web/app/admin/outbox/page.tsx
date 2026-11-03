@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { appEnv } from "@216leads/shared";
 import { Card, PageHeader } from "@/components/ui";
 
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 // Issue #40: outside production every email lands in email_outbox; QA reads them here.
 export default async function OutboxPage({ searchParams }: { searchParams: Promise<{ id?: string }> }) {
-  const sql = getDirectSql();
+  const sql = getSql();
   const rows = await sql<{ id: string; created_at: string; to_emails: string[]; subject: string; tag: string }[]>`
     select id::text, created_at::text, to_emails, subject, tag from email_outbox order by id desc limit 100`;
   const id = (await searchParams).id;

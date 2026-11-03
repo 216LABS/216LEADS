@@ -2,7 +2,7 @@
 // Heavy ingest pulls run on the worker; this route covers short jobs such as the watchdog.
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "node:crypto";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { runJob } from "@216leads/ingest";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +25,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ job
   const { job } = await params;
   if (!LIGHT_JOBS.has(job)) return NextResponse.json({ error: `Unknown or heavy job: ${job}` }, { status: 404 });
   const started = Date.now();
-  await runJob(getDirectSql(), job, {});
+  await runJob(getSql(), job, {});
   return NextResponse.json({ ok: true, job, ms: Date.now() - started });
 }

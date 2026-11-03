@@ -26,6 +26,7 @@ const GROUPS = [
   {
     title: "Account",
     rows: [
+      { href: "/settings/account", title: "Your account", sub: "Your email, password, and signing out." },
       { href: "/settings/team", title: "Team", sub: "Invite people by email." },
       { href: "/settings/billing", title: "Billing", sub: "Your plan, postcard credits, card and invoices." },
     ],

@@ -3,7 +3,7 @@
 // store errors, the request is allowed (fail open) and a warning goes to Sentry, so a database
 // hiccup can't lock everyone out.
 import type { Sql } from "@216leads/db";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 
 /** Old windows are deleted on roughly 1 call in this many. */
 const PRUNE_EVERY = 200;
@@ -28,5 +28,5 @@ export async function rateLimitWith(sql: Sql, key: string, limit: number, window
 
 /** True when this request is within `limit` per `windowMs` for `key`. */
 export function rateLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
-  return rateLimitWith(getDirectSql(), key, limit, windowMs);
+  return rateLimitWith(getSql(), key, limit, windowMs);
 }

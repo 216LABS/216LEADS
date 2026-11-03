@@ -1,4 +1,4 @@
-import { getDirectSql, getSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { activeRecipe, ensurePresetVersion, orgZips } from "@216leads/ingest";
 import { notFound } from "next/navigation";
 import { requireOrg } from "@/lib/session";
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 // recipe. Saving makes a new recipe version (source "slider") and re-scores.
 export default async function ProfilePage() {
   const { org } = await requireOrg();
-  await ensurePresetVersion(getDirectSql(), org.id, org.trade);
+  await ensurePresetVersion(getSql(), org.id, org.trade);
   const sql = getSql();
   const [active, zips] = await Promise.all([activeRecipe(sql, org.id), orgZips(sql, org.id)]);
   if (!active) notFound();

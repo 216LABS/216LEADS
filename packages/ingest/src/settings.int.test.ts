@@ -34,7 +34,9 @@ describe("settings", () => {
     expect((await acceptInvite(sql, "nope", { id: users[1]!, email: email(1) })).result).toBe("invalid");
     expect((await acceptInvite(sql, inv.token, { id: users[2]!, email: email(2) })).result).toBe("wrong_email");
     expect((await acceptInvite(sql, inv.token, { id: users[1]!, email: email(1) })).result).toBe("joined");
-    expect((await acceptInvite(sql, inv.token, { id: users[1]!, email: email(1) })).result).toBe("invalid"); // used up
+    // Reopening the used link (the page loads twice after sign-up) is not an error for the person who joined.
+    expect((await acceptInvite(sql, inv.token, { id: users[1]!, email: email(1) })).result).toBe("already_member");
+    expect((await acceptInvite(sql, inv.token, { id: users[2]!, email: email(2) })).result).toBe("invalid"); // used up
     const team = await listTeam(sql, orgA);
     expect(team.members.map((m) => m.role).sort()).toEqual(["member", "owner"]);
     expect(team.invites).toEqual([]);

@@ -1,6 +1,6 @@
 // GET/PUT /api/mail/rules (spec 8, 9.5): the org's auto-mail rule (one per org for now).
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { ApiError, apiOrg, body, handle, json } from "@/lib/api";
 import { templateOf } from "@/lib/mail";
 
@@ -16,7 +16,7 @@ const Body = z.object({
 
 export const GET = handle(async () => {
   const { org } = await apiOrg();
-  const [rule] = await getDirectSql()`
+  const [rule] = await getSql()`
     select id, enabled, template_id, min_score, trigger_kinds::text[] as trigger_kinds, max_per_week, monthly_cap_cents, followup_days
     from mail_rule where org_id = ${org.id} order by created_at limit 1`;
   return json({ rule: rule ?? null });
@@ -26,7 +26,7 @@ export const PUT = handle(async (req: Request) => {
   const { org, role } = await apiOrg();
   if (role !== "owner") throw new ApiError(403, "Only the account owner can change auto-mail");
   const b = await body(req, Body);
-  const sql = getDirectSql();
+  const sql = getSql();
   if (!(await templateOf(sql, org.id, b.template_id))) throw new ApiError(422, "Pick a postcard template");
   if (b.enabled && !org.return_address?.line1) throw new ApiError(422, "Add a return address in Settings first.");
   const [existing] = await sql<{ id: string }[]>`select id from mail_rule where org_id = ${org.id} order by created_at limit 1`;

@@ -16,10 +16,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /crawl\.spec/ },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /crawl\.spec/ },
-    // The link crawl runs after the smoke flows: it shares their QA login, and running alongside
-    // them slowed their clicks past the timeouts and spent the daily CSV export cap first.
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /(crawl|features)\.spec/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /(crawl|features)\.spec/ },
+    // The link crawl and the feature walk run after the smoke flows, one after the other: they share
+    // the QA login, and running alongside slowed clicks past the timeouts, spent the daily CSV
+    // export cap and hit the 60-a-minute API limit (issues #70, #72).
     { name: "crawl", use: { ...devices["Desktop Chrome"] }, testMatch: /crawl\.spec/, dependencies: ["phone", "desktop"] },
+    { name: "features", use: { ...devices["Desktop Chrome"] }, testMatch: /features\.spec/, dependencies: ["crawl"] },
   ],
 });

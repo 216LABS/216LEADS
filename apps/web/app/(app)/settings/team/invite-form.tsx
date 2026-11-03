@@ -42,3 +42,30 @@ export function InviteForm() {
     </Card>
   );
 }
+
+/**
+ * Issue #79: cancel an open invite (it holds a seat) or take someone off the team.
+ * `query` is "invite=<id>" or "member=<user id>".
+ */
+export function TeamRemove({ query, label, children }: { query: string; label: string; children: React.ReactNode }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <>
+      <button type="button" disabled={busy} aria-label={label} className="focus-ring text-navy underline underline-offset-2"
+        onClick={async () => {
+          if (query.startsWith("member=") && !window.confirm(`${label}? They lose access right away.`)) return;
+          setBusy(true);
+          setError(null);
+          const res = await fetch(withBase(`/api/settings/team?${query}`), { method: "DELETE" });
+          setBusy(false);
+          if (!res.ok) return setError(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "Could not change the team");
+          router.refresh();
+        }}>
+        {children}
+      </button>
+      {error ? <span role="alert" className="text-lost">{error}</span> : null}
+    </>
+  );
+}

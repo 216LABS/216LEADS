@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { monthlySeries, proofRows, roiMetrics, type MonthPoint } from "@216leads/ingest";
-import { planLimits, titleCase, withBase } from "@216leads/shared";
+import { planLimits, titleCase } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { monthRange, shiftMonth } from "@/lib/roi";
-import { buttonClass, Card, EmptyState, LinkButton, MetricTile, PageHeader } from "@/components/ui";
+import { Card, EmptyState, LinkButton, MetricTile, PageHeader } from "@/components/ui";
+import { DownloadButton } from "@/components/download-button";
 
 export const metadata = { title: "Results" };
 export const dynamic = "force-dynamic";
@@ -55,7 +56,7 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
     );
   }
   const r = monthRange((await searchParams).month);
-  const sql = getDirectSql();
+  const sql = getSql();
   const [m, proof, series] = await Promise.all([roiMetrics(sql, org.id, r.from, r.to), proofRows(sql, org.id, r.from, r.to), monthlySeries(sql, org.id)]);
   const current = r.month === monthRange().month;
 
@@ -68,7 +69,7 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
           <>
             <LinkButton variant="secondary" href={`/roi?month=${shiftMonth(r.month, -1)}`} aria-label="Previous month">←</LinkButton>
             {!current ? <LinkButton variant="secondary" href={`/roi?month=${shiftMonth(r.month, 1)}`} aria-label="Next month">→</LinkButton> : null}
-            <a href={withBase(`/api/roi/pdf?month=${r.month}`)} className={buttonClass("secondary")}>Download PDF</a>
+            <DownloadButton href={`/api/roi/pdf?month=${r.month}`}>Download PDF</DownloadButton>
           </>
         }
       />
