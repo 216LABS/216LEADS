@@ -23,7 +23,7 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 ## 3. Where things stand
 
-**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (#44), M9 (#46), M10 (#48), M11 (#49), M12 (see the latest PR).
+**Merged to `main`:** M1, M2, D1, D2, D3, D4, D8, D5, D6+D7, A1 (#31), A2 (#32), M3 (#33), M4 (#34), M5 (#35), M6 (#36), M7 (#37), M8 (#44), M9 (#46), M10 (#48), M11 (#49), M12 (#51), addenda audit (#52), rename to 216 HomeSignal (#53, #42), API isolation tests (#54, #38), shared rate limiter (#55, #39), staging email sink (#56, #40), point-of-sale signal (#58, #41/#11), free lists (#60, #6), monthly summary (#61, #9), business metrics (#62, #10), rebrand leftovers (#63, #1), UI/UX redesign (#64, #65, #59).
 
 - A1: 15 presets (13 spec trades + `fence` + `new_movers`), recipe versions with Settings revert, category regex checked on labeled real Cleveland and Lake permits (`categories.cle.json`, `categories.lake.json`).
 - A2: onboarding wizard -> `POST /api/profile/build` (LLM or closest preset) -> confirm screen (count, 5 samples, sliders, tweak with diff) -> `activate` creates the org. No `ANTHROPIC_API_KEY` locally or in CI, so the preset path is what runs there; the LLM path is covered with fake providers.
@@ -48,12 +48,15 @@ Written 2026-11-02 at the end of a long session, so a new chat can pick up clean
 
 - M12: RLS/webhook/rate-limit tests, ROI in the Playwright smoke, `docs/DEPLOY.md` + `scripts/dev/check-deploy.mjs`, lazy Sentry (Lighthouse 96), README; acceptance table in PLAN.md.
 
-**Next:** addenda leftovers (unchecked items in `ADDENDUM_PROFILE_WIZARD.md` / `ADDENDUM_DEVOPS.md`, issues #6/#10 admin tools, #9, #11), then launch tasks that need Sam's accounts. GitHub issues #1-#12 are mapped to milestones under "Stubs and gaps" in `PLAN.md`.
+- After M12 (decisions 93-101): A6 feedback recipe versions + OpenAI provider; product renamed **216 HomeSignal** at `/homesignal` (308 from `/leads/*`); cross-org API suite (`apps/web/lib/isolation.int.test.ts`); Postgres rate limiter; `email_outbox` sink + `/admin/outbox`; `pos_city_sale` signal + `concrete` preset; `/admin/prospect-lists` + `/l/{token}`; monthly summary email; `/admin/metrics` + Resend open webhook; UI redesign (tokens, two weights, type scale, top-5 strip, landing with product shot). Screenshots for #59 live on the unmerged `assets/issue-59` branch.
+
+**Next:** every `ready` issue is done. Open: #12 Stripe Tax (blocked on the accountant) and Dependabot PRs (#28-#30 majors wait for launch; #20-#24, #26, #57 for Sam). Launch work needs Sam's accounts (Vercel, Supabase, Stripe, Lob, Resend, Sentry; see `docs/DEPLOY.md`), attorney-reviewed legal text, and branch protection. The Summit permit walk stopped partway on this machine (Docker restarted); rerun `pnpm ingest run summit_permits` to finish it.
 
 ## 4. Local environment (Windows 11, Git Bash + PowerShell)
 
 - `pnpm local` = Docker + local Supabase + `.env` + migrations + fixtures + dev server. Supabase containers are `supabase_*_216-leads`; DB at `postgresql://postgres:postgres@127.0.0.1:54322/postgres`; auth mail at http://127.0.0.1:54324.
 - **The local DB has the full real load**: all 572,828 Cuyahoga parcels; all Cleveland layers; canopy, centroids, FEMA; plus (M10) all Lake parcels and permit reports, all Stark sales, and the current Medina list. Don't wipe it. For a fresh-machine test use a scratch database (see the CI stub below).
+- Scratch DB for integration tests: `ci_test` (create, apply `scripts/ci/auth-stub.sql`, migrate, seed, test, drop). Migrations now go to 0021.
 - Logins (local only): `demo@216leads.test` / `demo-roofing-216` (Demo Roofing, also admin via `ADMIN_EMAILS`); QA `qa@216leads.test` / `qa-216-leads-local` (QA HVAC/Roofing/Fence; created by `pnpm seed:staging`).
 - Dev server: `pnpm dev` on :3000 (restart it after `.env` changes; `next.config.ts` reads the root `.env`).
 - Records importer PDFs need `pip install --user pdfplumber` (installed on this machine). The script runs as `python -E -P` (not `-I`, which hides user site-packages).
