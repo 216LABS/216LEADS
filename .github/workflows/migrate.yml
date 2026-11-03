@@ -1,12 +1,20 @@
 name: Migrate databases
 
-# On merge to main: apply new migrations to staging first, then production only after staging
-# succeeds (DevOps addendum D4). Schema changes only ever happen through these files.
+# On merge to main: apply new migrations to staging. Production is migrated only by hand
+# (Run workflow, target: production), because production code is promoted by hand in Vercel;
+# that run migrates staging first and production only after staging succeeds (DevOps addendum
+# D4). Schema changes only ever happen through these files.
 on:
   push:
     branches: [main]
     paths: ["packages/db/migrations/**"]
   workflow_dispatch:
+    inputs:
+      target:
+        description: "staging only, or staging then production"
+        type: choice
+        options: [staging, production]
+        default: staging
 
 concurrency:
   group: migrate
@@ -36,6 +44,7 @@ jobs:
 
   production:
     needs: staging
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: production

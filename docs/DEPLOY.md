@@ -35,7 +35,7 @@ Migrations are not gated the same way: `migrate.yml` still applies them on merge
 
 ## 3. Database
 
-`migrate.yml` applies new migrations on merge to `main`: staging first (`STAGING_DATABASE_URL`), then production (`PRODUCTION_DATABASE_URL`, behind the `production` environment) once those secrets exist. It runs the same append-only runner as `pnpm db:migrate`. Take a backup first for risky migrations (`docs/ROLLBACK.md`). The first data load runs on the worker: `pnpm ingest pipeline cleveland` then `pnpm ingest pipeline counties`.
+`migrate.yml` applies new migrations to staging (`STAGING_DATABASE_URL`) on merge to `main`. Production is migrated by hand, in step with promoting the code in Vercel: Actions → Migrate databases → Run workflow, `target: production`. That run migrates staging first, then production (`PRODUCTION_DATABASE_URL`, behind the `production` environment). Run it before promoting code that needs the new schema; migrations should stay backward compatible with the code already in production. Each job skips until its secret exists. It runs the same append-only runner as `pnpm db:migrate`. Take a backup first for risky migrations (`docs/ROLLBACK.md`). The first data load runs on the worker: `pnpm ingest pipeline cleveland` then `pnpm ingest pipeline counties`.
 
 ## 4. Webhooks and schedules
 
