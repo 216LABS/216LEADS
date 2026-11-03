@@ -5,7 +5,7 @@ The app is one Next.js project served under the base path `/homesignal`. Every r
 ## 1. Vercel project
 
 - Root directory `apps/web`, framework Next.js, install `pnpm install --frozen-lockfile`, build `next build`.
-- Production env: everything in `.env.example` with production values, plus `APP_ENV=production`, `NEXT_PUBLIC_BASE_PATH=/homesignal`, `APP_BASE_URL=https://216labs.dev`.
+- Production env: everything in `.env.example` with production values, plus `APP_ENV=production`, `NEXT_PUBLIC_BASE_PATH=/homesignal`, `APP_BASE_URL=https://www.216labs.dev` (the apex 307s to www). Production and Preview both use it: server redirects (sign-in return, sign-out, the signed-out bounce to login) and Stripe return URLs are built from it plus the base path, because behind the 216labs.dev rewrite the request host is the vercel.app project, not the public domain. Outside `APP_ENV=local` the app refuses to fall back to the request host.
 - Preview env: staging values, `APP_ENV=staging`, `NEXT_PUBLIC_BASE_PATH=/homesignal`. Never production keys (Stripe and Lob refuse live keys outside production anyway).
 
 ## 2. Put it at 216labs.dev/homesignal

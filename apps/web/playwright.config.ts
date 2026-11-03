@@ -16,7 +16,10 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /crawl\.spec/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /crawl\.spec/ },
+    // The link crawl runs after the smoke flows: it shares their QA login, and running alongside
+    // them slowed their clicks past the timeouts and spent the daily CSV export cap first.
+    { name: "crawl", use: { ...devices["Desktop Chrome"] }, testMatch: /crawl\.spec/, dependencies: ["phone", "desktop"] },
   ],
 });

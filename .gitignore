@@ -3,6 +3,8 @@ node_modules/
 .turbo/
 dist/
 coverage/
+# ...but not app routes named coverage (/coverage, /settings/coverage; issue #70)
+!apps/web/app/**/coverage/
 *.tsbuildinfo
 next-env.d.ts
 
