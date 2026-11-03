@@ -24,7 +24,7 @@ export function PostcardPreview({ business, headline, offer, phone, website, log
         </div>
         <div className="flex items-end justify-between gap-3 text-[10px] leading-snug text-slate">
           <span>Based on public records. To stop mail: {BRAND.optoutUrl}</span>
-          <span className="shrink-0 rounded border border-line px-2 py-1 text-right">Current Resident<br />address</span>
+          <span className="shrink-0 rounded border border-line px-2 py-1 text-right">Current Resident<br />1234 Example St<br />Lakewood, OH 44107</span>
         </div>
       </div>
     </div>

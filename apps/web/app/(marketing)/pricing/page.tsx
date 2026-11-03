@@ -1,11 +1,15 @@
 import Link from "next/link";
-import { PLANS, TRIAL } from "@216leads/shared";
+import { FOUNDING_PRO_MONTHLY, FOUNDING_SPOTS, PLANS, TRIAL } from "@216leads/shared";
 import { Card, LinkButton } from "@/components/ui";
+import { foundingSpotsLeft } from "@/lib/stripe";
 
 export const metadata = { title: "Pricing" };
 
 export default async function PricingPage({ searchParams }: { searchParams: Promise<{ annual?: string }> }) {
   const annual = (await searchParams).annual === "1";
+  // Issue #70 QA: the founding offer was only shown in onboarding and billing. Same rule as checkout:
+  // Pro monthly, while coupon redemptions are left (0 when Stripe isn't configured).
+  const foundingLeft = await foundingSpotsLeft();
   const toggle = (on: boolean, label: string) => (
     <Link href={on ? "/pricing?annual=1" : "/pricing"} aria-current={annual === on ? "page" : undefined}
       className={`focus-ring tap inline-flex items-center rounded-[8px] px-4 text-sm font-semibold ${annual === on ? "bg-navy text-white" : "text-slate"}`}>{label}</Link>
@@ -14,12 +18,22 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
     <section className="mx-auto max-w-5xl px-4 py-12">
       <h1 className="text-title font-semibold leading-tight tracking-tight">Pricing</h1>
       <p className="mt-2 text-slate">{TRIAL.days}-day free trial, no card needed. Postcards beyond your monthly credits are $0.99 each.</p>
+      {foundingLeft > 0 && !annual ? (
+        <p className="mt-4 rounded-[10px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
+          <span className="font-semibold">Founding offer:</span> Pro ${FOUNDING_PRO_MONTHLY}/mo for life, {foundingLeft} of {FOUNDING_SPOTS} spots left.
+          Applied when you pick Pro monthly after your trial.
+        </p>
+      ) : null}
       <div className="mt-6 inline-flex rounded-[10px] border border-line bg-white p-1">{toggle(false, "Monthly")}{toggle(true, "Yearly (2 months free)")}</div>
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         {Object.values(PLANS).map((p) => (
           <Card key={p.key} className={`flex flex-col p-6 ${p.key === "pro" ? "border-2 border-signal" : ""}`}>
             <h2 className="text-lg font-semibold">{p.label}</h2>
-            <div className="mt-2"><span className="num text-title font-semibold">${(annual ? p.annual : p.monthly).toLocaleString("en-US")}</span><span className="text-slate">/{annual ? "year" : "month"}</span></div>
+            <div className="mt-2">
+              {p.key === "pro" && !annual && foundingLeft > 0 ? <span className="num mr-1 text-slate line-through">${p.monthly}</span> : null}
+              <span className="num text-title font-semibold">${(p.key === "pro" && !annual && foundingLeft > 0 ? FOUNDING_PRO_MONTHLY : annual ? p.annual : p.monthly).toLocaleString("en-US")}</span>
+              <span className="text-slate">/{annual ? "year" : "month"}</span>
+            </div>
             <ul className="mt-4 flex-1 space-y-1.5 text-sm">
               {p.features.map((f) => <li key={f} className="flex gap-2"><span aria-hidden className="text-won">✓</span>{f}</li>)}
             </ul>
