@@ -131,6 +131,16 @@ export interface OrgSender { name: string; trade: string; phone: string | null; 
 
 export class SendBlockedError extends Error {}
 
+/**
+ * Production jobs outside the web app (the daily pipeline's automail) build print and email links
+ * from APP_BASE_URL and sign them with EMAIL_LINK_SECRET. Without them the links point at
+ * localhost with the wrong signature, so refuse instead of mailing broken postcards.
+ */
+export function missingLinkConfig(env: Record<string, string | undefined> = process.env): string[] {
+  if (env.APP_ENV !== "production") return [];
+  return ["APP_BASE_URL", "NEXT_PUBLIC_BASE_PATH", "EMAIL_LINK_SECRET"].filter((k) => !env[k]);
+}
+
 /** Public, signed logo URL for print (the in-app one needs a session). */
 export function printLogoUrl(orgId: string) {
   return appUrl(`/api/public/logo/${orgId}?s=${linkSecretSign(`logo:${orgId}`)}`);

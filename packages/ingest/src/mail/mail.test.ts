@@ -2,6 +2,7 @@ import { createHmac } from "node:crypto";
 import { beforeEach, describe, expect, it } from "vitest";
 import { loadEnv } from "@216leads/db";
 import { LiveMailRefusedError, lobProvider } from "./provider";
+import { missingLinkConfig } from "./send";
 import { optoutDisplayUrl, personalize, renderPostcard, utmUrl } from "./templates";
 
 describe("postcards", () => {
@@ -68,5 +69,17 @@ describe("printed opt-out address (issue #1)", () => {
     expect(optoutDisplayUrl()).toBe("homesignal-pr-12.vercel.app/homesignal/optout");
     if (saved.a === undefined) delete process.env.APP_BASE_URL; else process.env.APP_BASE_URL = saved.a;
     if (saved.b === undefined) delete process.env.NEXT_PUBLIC_BASE_PATH; else process.env.NEXT_PUBLIC_BASE_PATH = saved.b;
+  });
+});
+
+describe("missingLinkConfig (auto-mail from the daily pipeline)", () => {
+  it("names what production needs to build print and email links", () => {
+    expect(missingLinkConfig({ APP_ENV: "production" })).toEqual(["APP_BASE_URL", "NEXT_PUBLIC_BASE_PATH", "EMAIL_LINK_SECRET"]);
+    expect(missingLinkConfig({ APP_ENV: "production", APP_BASE_URL: "https://www.216labs.dev", NEXT_PUBLIC_BASE_PATH: "/homesignal", EMAIL_LINK_SECRET: "x".repeat(32) })).toEqual([]);
+  });
+
+  it("doesn't block local or staging runs", () => {
+    expect(missingLinkConfig({ APP_ENV: "staging" })).toEqual([]);
+    expect(missingLinkConfig({})).toEqual([]);
   });
 });
