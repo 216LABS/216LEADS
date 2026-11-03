@@ -21,16 +21,16 @@ export default async function TeamPage() {
         <Card className="divide-y divide-line">
           {members.map((m) => (
             <div key={m.user_id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
-              <span className="font-semibold">{m.email}</span>
-              <span className="flex items-center gap-3 capitalize text-slate">{m.role}
+              <span className="min-w-0 break-all font-semibold">{m.email}</span>
+              <span className="flex shrink-0 items-center gap-3 capitalize text-slate">{m.role}
                 {role === "owner" && m.role !== "owner" ? <TeamRemove query={`member=${m.user_id}`} label={`Remove ${m.email}`}>Remove</TeamRemove> : null}
               </span>
             </div>
           ))}
           {invites.map((i) => (
             <div key={i.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
-              <span>{i.email}</span>
-              <span className="flex items-center gap-3 text-slate">Invited
+              <span className="min-w-0 break-all">{i.email}</span>
+              <span className="flex shrink-0 items-center gap-3 text-slate">Invited
                 {role === "owner" ? <TeamRemove query={`invite=${i.id}`} label={`Cancel invite for ${i.email}`}>Cancel</TeamRemove> : null}
               </span>
             </div>

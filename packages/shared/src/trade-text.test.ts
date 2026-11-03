@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TRADES, tradeWord, withArticle } from "./constants";
+import { runningText, TRADES, tradeWord, withArticle } from "./constants";
 
 describe("trade text (issue #70: \"need a hvac business\")", () => {
   it("keeps acronyms and lower-cases words", () => {
@@ -17,5 +17,13 @@ describe("trade text (issue #70: \"need a hvac business\")", () => {
 
   it("gives every trade a lower-case word or an acronym", () => {
     for (const t of TRADES) expect(tradeWord(t.key)).toMatch(/^([a-z ]+|[A-Z]{2,})$/);
+  });
+});
+
+describe("runningText in a phrase", () => {
+  it("lowers words but keeps acronyms", () => {
+    expect(runningText("Age of last HVAC work")).toBe("age of last HVAC work");
+    expect(runningText("HVAC")).toBe("HVAC");
+    expect(runningText("Lawn care")).toBe("lawn care");
   });
 });

@@ -16,7 +16,7 @@ export const GET = handle(async () => {
 export const POST = handle(async (req: Request) => {
   const { org, role } = await apiOrg();
   if (role !== "owner") throw new ApiError(403, "Only the account owner can invite people");
-  const { email } = await body(req, z.object({ email: z.string().trim().toLowerCase().email() }));
+  const { email } = await body(req, z.object({ email: z.string().trim().toLowerCase().max(254, "That email address is too long").email() }));
   const sql = getSql();
   const team = await listTeam(sql, org.id);
   if (team.members.some((m) => m.email.toLowerCase() === email)) throw new ApiError(409, "They're already on your team");
