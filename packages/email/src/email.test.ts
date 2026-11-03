@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import {
-  Digest, digestSubject, MailBatch, outbox, readUnsubscribeToken, renderEmail, TrialDay3, trialDay3Subject, unsubscribeToken, Welcome, type DigestProps,
+  Digest, digestSubject, MailBatch, MonthlySummary, monthlySummarySubject, outbox, readUnsubscribeToken, renderEmail, TrialDay3, trialDay3Subject, unsubscribeToken, Welcome, type DigestProps,
 } from "./index";
 
 const digest: DigestProps = {
@@ -74,5 +74,25 @@ describe("outbox provider", () => {
     const files = readdirSync(dir);
     expect(files.some((f) => f.endsWith(".html"))).toBe(true);
     expect(readFileSync(join(dir, files.find((f) => f.endsWith(".txt"))!), "utf8")).toContain("List-Unsubscribe: <x>");
+  });
+});
+
+describe("monthly summary (issue #9)", () => {
+  const base = { month: "October", orgName: "Test Roofing", top: [], leadsUrl: "https://example.test/leads", unsubscribeUrl: "https://example.test/u" };
+
+  it("subject, footer and unsubscribe; no em dashes", async () => {
+    expect(monthlySummarySubject({ month: "October" })).toBe("your October with 216 HomeSignal");
+    const { html, text } = await renderEmail(MonthlySummary({ ...base, newHomes: 42, mailed: 10, delivered: 7, won: 2, revenue: 18500, creditsLeft: 15 }));
+    expect(text).toContain("42 new homes matched your area");
+    expect(text).toContain("10 postcards mailed, 7 delivered so far");
+    expect(text).toContain("2 jobs marked won, $18,500 in work");
+    expect(html).toContain("1474 Rosewood Ave");
+    expect(html).toContain("https://example.test/u");
+    expect(`${html}${text}`).not.toContain("—");
+  });
+
+  it("leaves out lines for features not used", async () => {
+    const { text } = await renderEmail(MonthlySummary({ ...base, newHomes: 3 }));
+    expect(text).not.toMatch(/postcards? mailed|marked won|credits? left|reached out/i);
   });
 });

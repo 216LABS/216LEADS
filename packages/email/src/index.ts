@@ -10,6 +10,7 @@ export { dbOutbox, emailFromEnv, outbox, type EmailMessage, type EmailProvider, 
 export { Digest, digestSubject, type DigestLead, type DigestProps } from "./templates/digest";
 export { AutoMailSummary, Invite, MailBatch, PaymentFailed, TrialEnding, Welcome } from "./templates/transactional";
 export { TrialDay3, trialDay3Subject, type TrialDay3Props } from "./templates/day3";
+export { MonthlySummary, monthlySummarySubject, type MonthlySummaryProps } from "./templates/monthly";
 
 export { appUrl } from "./url";
 

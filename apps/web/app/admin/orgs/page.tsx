@@ -1,5 +1,5 @@
 import { getSql } from "@216leads/db";
-import { tradeLabel } from "@216leads/shared";
+import { tradeLabel, withBase } from "@216leads/shared";
 import { Badge, Card, PageHeader } from "@/components/ui";
 
 export const metadata = { title: "Admin · Orgs" };
@@ -31,7 +31,8 @@ export default async function OrgsPage() {
           <tbody>
             {orgs.map((o) => (
               <tr key={o.id} className="border-b border-line last:border-0">
-                <td className="px-4 py-2"><div className="font-semibold">{o.name}</div><div className="text-xs text-slate">{tradeLabel(o.trade)} · since {o.created_at.slice(0, 10)}{o.from_list ? ` · from free list "${o.from_list}"` : ""}</div></td>
+                <td className="px-4 py-2"><div className="font-semibold">{o.name}</div><div className="text-xs text-slate">{tradeLabel(o.trade)} · since {o.created_at.slice(0, 10)}{o.from_list ? ` · from free list "${o.from_list}"` : ""}</div>
+                  <a className="text-xs underline" href={withBase(`/api/admin/monthly-summary?org=${o.id}`)} target="_blank" rel="noreferrer">Monthly email preview</a></td>
                 <td className="px-4 py-2"><Badge tone={o.plan === "canceled" ? "lost" : o.plan === "trial" ? "slate" : "won"}>{o.plan}</Badge></td>
                 <td className="num px-4 py-2 text-xs">{o.zips.join(", ")}</td>
                 <td className="num px-4 py-2 text-right">{o.leads.toLocaleString()}</td>
