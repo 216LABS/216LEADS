@@ -6,6 +6,7 @@ import { Badge, Card, PageHeader } from "@/components/ui";
 import { requireOrg } from "@/lib/session";
 import { UseVersionButton } from "./use-version";
 import { ResetLearnedButton } from "./reset-learned";
+import { countOf } from "@216leads/shared";
 
 export const metadata = { title: "How we score" };
 export const dynamic = "force-dynamic";
@@ -97,7 +98,7 @@ export default async function RecipePage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-3 text-xs text-slate">Based on {outcomes} homes you marked won, lost or skipped. Updated every night.</p>
+            <p className="mt-3 text-xs text-slate">Based on {countOf(outcomes, "home")} you marked won, lost or skipped. Updated every night.</p>
           </>
         ) : (
           <p className="text-sm text-slate">

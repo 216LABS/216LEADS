@@ -17,6 +17,7 @@ import { writeEvents, type EventInput } from "./events";
 import { runSignals } from "./signals";
 import { scoreOrg } from "./score";
 import { ensurePresetVersion } from "./recipes";
+import { supabaseProjectMismatch } from "./supabase-project";
 
 const FIXTURE_DIR = () => join(repoRoot(), "packages", "ingest", "fixtures");
 export const FIXTURE_ZIPS = ["44107", "44111"];
@@ -253,6 +254,8 @@ export async function seedStaging(sql: Sql) {
   const email = optionalEnv("QA_EMAIL") ?? "qa@216leads.test";
   const password = optionalEnv("QA_PASSWORD") ?? (env === "local" ? "qa-216-leads-local" : null);
   if (!password) throw new Error("Set QA_PASSWORD for the staging QA login");
+  const mismatch = supabaseProjectMismatch(optionalEnv("DATABASE_URL"), optionalEnv("NEXT_PUBLIC_SUPABASE_URL"));
+  if (mismatch) throw new Error(`seed:staging: ${mismatch}. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY for the same project.`);
   const [row] = await sql<{ n: number }[]>`select count(*)::int as n from parcel`;
   if ((row?.n ?? 0) === 0) {
     await loadFixtures(sql);
@@ -263,6 +266,12 @@ export async function seedStaging(sql: Sql) {
     const orgId = await ensureOrg(sql, { ...q, zips: FIXTURE_ZIPS, email, userId });
     const s = await scoreOrg(sql, orgId);
     console.log(`seed:staging: ${q.name} has ${s.qualified} scored leads`);
+  }
+  if (!userId) {
+    // The orgs exist but nobody can sign in to them; say so instead of printing a login (issue #78).
+    console.error(`seed:staging: QA login ${email} was NOT set up; the QA orgs have no member. See the message above.`);
+    process.exitCode = 1;
+    return;
   }
   console.log(`seed:staging: QA login ${email}${env === "local" ? ` / ${password}` : " (password from QA_PASSWORD)"}`);
 }

@@ -43,3 +43,29 @@ export function agoPhrase(isoDate: string, now = todayEt()): string {
   if (d < 730) return `${Math.round(d / 30)} months ago`;
   return `${Math.round(d / 365)} yrs ago`;
 }
+
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const ordinal = (n: number) => `${n}${n % 100 >= 11 && n % 100 <= 13 ? "th" : (["th", "st", "nd", "rd"][n % 10] ?? "th")}`;
+const list = (xs: string[]) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
+
+/** A source's refresh schedule (cron in ET, as in the source table) in words: "Daily at 5:15 AM ET". */
+export function cronText(cron: string): string {
+  if (cron === "@once") return "One-time load";
+  if (cron === "manual") return "When new records arrive";
+  const [min, hour, dom, mon, dow] = cron.trim().split(/\s+/);
+  if (!min || !hour || !dom || !mon || !dow || !/^\d+$/.test(min) || !/^\d+$/.test(hour)) return cron;
+  const h = Number(hour);
+  const at = `at ${h % 12 || 12}:${min.padStart(2, "0")} ${h < 12 ? "AM" : "PM"} ET`;
+  const days = dom === "*" ? [] : dom.split(",").map(Number);
+  if (dom === "*" && mon === "*" && dow === "*") return `Daily ${at}`;
+  if (dom === "*" && mon === "*" && /^\d$/.test(dow)) return `Weekly on ${DAYS[Number(dow) % 7]} ${at}`;
+  if (mon === "*" && dow === "*" && days.every(Number.isInteger)) return `Monthly on the ${list(days.map(ordinal))} ${at}`;
+  if (/^\d+$/.test(mon) && dow === "*" && days.length === 1) return `Yearly on ${MONTHS[Number(mon) - 1]} ${days[0]} ${at}`;
+  return cron;
+}
+
+/** A timestamp as an ET date and time, labeled: "Nov 2, 2026, 10:40 PM ET". */
+export function etDateTime(iso: string): string {
+  return `${new Date(iso).toLocaleString("en-US", { timeZone: TZ, month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })} ET`;
+}

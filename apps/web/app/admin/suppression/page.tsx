@@ -1,5 +1,6 @@
 import { getSql } from "@216leads/db";
 import { Card, PageHeader } from "@/components/ui";
+import { countOf } from "@216leads/shared";
 
 export const metadata = { title: "Admin · Suppression" };
 export const dynamic = "force-dynamic";
@@ -13,7 +14,7 @@ export default async function SuppressionPage() {
     select addr_norm, reason, created_at::text from suppression order by created_at desc limit 50`;
   return (
     <>
-      <PageHeader title="Suppression" sub={`${c?.n ?? 0} addresses (${c?.returned ?? 0} from returned mail)`} />
+      <PageHeader title="Suppression" sub={`${countOf(c?.n ?? 0, "address")} (${c?.returned ?? 0} from returned mail)`} />
       <Card className="divide-y divide-line">
         {rows.map((r) => (
           <div key={r.addr_norm} className="flex justify-between gap-3 px-4 py-2 text-sm">

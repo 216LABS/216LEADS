@@ -1,4 +1,6 @@
-// Skeleton rows while the lead list loads (issue #59), instead of a blank page.
+// Skeleton rows while the lead list loads (issue #59), instead of a blank page. It lives in the
+// (list) group so it doesn't wrap /leads/[id]: under this boundary router.refresh() fetched the
+// new lead detail but never showed it, so saved statuses and notes looked lost (issue #75).
 export default function LeadsLoading() {
   return (
     <div aria-busy="true" aria-label="Loading your leads">

@@ -3,6 +3,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
 import type { Map as MlMap } from "maplibre-gl";
 import { COLORS } from "@/lib/theme";
+import { countOf } from "@216leads/shared";
 
 /** Pins for a shared prospect list (issue #6): score-colored dots, no popups with extra data. */
 export function ListMap({ points, styleUrl }: { points: { lon: number; lat: number; score: number }[]; styleUrl: string }) {
@@ -42,5 +43,5 @@ export function ListMap({ points, styleUrl }: { points: { lon: number; lat: numb
     };
   }, [points, styleUrl]);
   if (!points.length) return null;
-  return <div ref={box} className="h-72 w-full overflow-hidden rounded-[12px] border border-line" role="img" aria-label={`Map of ${points.length} homes`} />;
+  return <div ref={box} className="h-72 w-full overflow-hidden rounded-[12px] border border-line" role="img" aria-label={`Map of ${countOf(points.length, "home")}`} />;
 }
