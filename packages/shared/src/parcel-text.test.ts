@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { floodZoneText, homeStyle } from "./parcel-text";
+import { countOf, floodZoneText, homeStyle } from "./parcel-text";
 
 describe("homeStyle (issue #74: lead detail showed \"Col\")", () => {
   it.each([
@@ -23,4 +23,16 @@ describe("floodZoneText (issue #74: lead detail showed \"X\")", () => {
     ["D", false, "Not yet studied (zone D)"],
     [null, false, null],
   ] as const)("%s (sfha %s) -> %s", (zone, sfha, text) => expect(floodZoneText(zone, sfha)).toBe(text));
+});
+
+describe("countOf", () => {
+  it("uses the singular for exactly one", () => {
+    expect(countOf(1, "home")).toBe("1 home");
+    expect(countOf(1, "address")).toBe("1 address");
+  });
+  it("pluralizes and formats other counts", () => {
+    expect(countOf(0, "home")).toBe("0 homes");
+    expect(countOf(2000, "home")).toBe("2,000 homes");
+    expect(countOf(3, "address")).toBe("3 addresses");
+  });
 });

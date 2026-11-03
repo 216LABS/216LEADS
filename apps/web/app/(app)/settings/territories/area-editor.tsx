@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { withBase } from "@216leads/shared";
+import { countOf, withBase } from "@216leads/shared";
 import { Button, Card } from "@/components/ui";
 import { TerritoryPicker } from "@/components/territory-picker";
 
@@ -31,7 +31,7 @@ export function AreaEditor({ zips: initial, exclusive: initialExclusive, exclusi
     if (res.status === 409) setTaken(data.taken ?? []);
     if (!res.ok) return setMsg({ ok: false, text: data.error ?? "Could not save" });
     setTaken([]);
-    setMsg({ ok: true, text: `Saved. ${Number(data.leads ?? 0).toLocaleString("en-US")} homes on your list.` });
+    setMsg({ ok: true, text: `Saved. ${countOf(Number(data.leads ?? 0), "home")} on your list.` });
     router.refresh();
   }
 

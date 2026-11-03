@@ -1,6 +1,6 @@
 import { getDirectSql } from "@216leads/db";
 import { openProspectList } from "@216leads/ingest";
-import { BRAND, tradeLabel } from "@216leads/shared";
+import { BRAND, countOf, tradeLabel } from "@216leads/shared";
 import { getTemplate, hasTemplate } from "@216leads/scoring";
 import { Card, LinkButton } from "@/components/ui";
 import { ListMap } from "./list-map";
@@ -43,7 +43,7 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
   return (
     <section className="mx-auto max-w-4xl px-4 py-10">
       <p className="text-sm font-semibold uppercase tracking-wide text-signal-600">{label} · {list.zips.join(", ")}</p>
-      <h1 className="mt-1 text-title font-semibold leading-tight tracking-tight">{list.rows.length} homes{list.business ? ` for ${list.business}` : ""}</h1>
+      <h1 className="mt-1 text-title font-semibold leading-tight tracking-tight">{countOf(list.rows.length, "home")}{list.business ? ` for ${list.business}` : ""}</h1>
       <p className="mt-2 text-slate">Ranked from this week&apos;s public records, with the reasons behind each one. Link good until {list.expires_at.slice(0, 10)}.</p>
       <div className="mt-6"><ListMap points={points} styleUrl={process.env.NEXT_PUBLIC_MAP_STYLE_URL || DEFAULT_STYLE} /></div>
       <Card className="mt-6 divide-y divide-line">

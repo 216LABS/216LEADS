@@ -22,3 +22,8 @@ export function floodZoneText(zone: string | null | undefined, inSfha: boolean |
   if (z === "D") return "Not yet studied (zone D)";
   return `Zone ${z}`;
 }
+
+/** "1 home", "2,000 homes", "1 address" (issue #77: counts read "1 homes"). */
+export function countOf(n: number, singular: string, plural = /(s|x|ch|sh)$/.test(singular) ? `${singular}es` : `${singular}s`): string {
+  return `${n.toLocaleString("en-US")} ${n === 1 ? singular : plural}`;
+}
