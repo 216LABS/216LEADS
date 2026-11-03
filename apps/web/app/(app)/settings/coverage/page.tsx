@@ -49,7 +49,7 @@ export default async function DataCoveragePage() {
                 <p className="text-sm text-slate">{TIER[t.tier] ?? TIER.county_only}{t.since ? `, since ${t.since}` : ""}</p>
               </div>
               <p className="num text-sm text-slate">
-                {t.homes.toLocaleString("en-US")} homes{t.updated ? ` · permits updated ${t.updated.slice(0, 10)}` : ""}
+                {t.homes.toLocaleString("en-US")} {t.homes === 1 ? "home" : "homes"}{t.updated ? ` · permits updated ${t.updated.slice(0, 10)}` : ""}
               </p>
             </div>
           ))}
