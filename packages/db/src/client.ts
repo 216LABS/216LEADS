@@ -1,15 +1,45 @@
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { requireEnv } from "./env";
+import { optionalEnv, requireEnv } from "./env";
 import * as schema from "./schema";
 
 export type Sql = postgres.Sql<Record<string, never>>;
 
 const g = globalThis as unknown as { __216leads_sql?: Sql; __216leads_sql_direct?: Sql };
 
-function make(url: string, max: number): Sql {
+export interface MakeOptions {
+  /** Env var the URL came from; named in errors instead of the URL, which holds the password. */
+  envName: string;
+  max: number;
+  /** Supabase's transaction pooler (port 6543) does not support prepared statements. */
+  prepare: boolean;
+}
+
+/**
+ * postgres.js decodes the URL password with decodeURIComponent, so a password with symbols
+ * must be percent-encoded once (encodeURIComponent). A raw @ / # ? or % breaks parsing, and
+ * Node's "Invalid URL" error carries the whole URL, so rethrow without it. Encoding twice
+ * parses fine but sends the wrong password ("%40" instead of "@"), so warn about that.
+ */
+export function make(url: string, { envName, max, prepare }: MakeOptions): Sql {
+  let sql: Sql;
+  try {
+    sql = create(url, max, prepare);
+  } catch {
+    throw new Error(
+      `${envName} is not a valid connection URL. Percent-encode symbols in the password (encodeURIComponent) and check the host and port.`,
+    );
+  }
+  if (/%[0-9a-f]{2}/i.test((sql as unknown as { options: { pass: string } }).options.pass)) {
+    console.warn(`${envName}: the password still has percent-escapes after decoding; it may be encoded twice.`);
+  }
+  return sql;
+}
+
+function create(url: string, max: number, prepare: boolean): Sql {
   return postgres(url, {
     max,
+    prepare,
     idle_timeout: 30,
     connect_timeout: 15,
     onnotice: () => {},
@@ -29,16 +59,21 @@ function make(url: string, max: number): Sql {
   }) as unknown as Sql;
 }
 
-/** Pooled connection for the web app. Reused across hot reloads. */
+/** Pooled connection for the web app (transaction pooler, no prepared statements). Reused across hot reloads. */
 export function getSql(): Sql {
-  if (!g.__216leads_sql) g.__216leads_sql = make(requireEnv("DATABASE_URL"), 10);
+  if (!g.__216leads_sql) {
+    g.__216leads_sql = make(requireEnv("DATABASE_URL"), { envName: "DATABASE_URL", max: 10, prepare: false });
+  }
   return g.__216leads_sql;
 }
 
-/** Direct connection for migrations and ingest jobs. */
+/** Direct connection for migrations and ingest jobs (session pooler, prepared statements allowed). */
 export function getDirectSql(): Sql {
   if (!g.__216leads_sql_direct) {
-    g.__216leads_sql_direct = make(process.env.DATABASE_URL_DIRECT || requireEnv("DATABASE_URL"), 5);
+    const direct = optionalEnv("DATABASE_URL_DIRECT");
+    g.__216leads_sql_direct = direct
+      ? make(direct, { envName: "DATABASE_URL_DIRECT", max: 5, prepare: true })
+      : make(requireEnv("DATABASE_URL"), { envName: "DATABASE_URL", max: 5, prepare: false });
   }
   return g.__216leads_sql_direct;
 }

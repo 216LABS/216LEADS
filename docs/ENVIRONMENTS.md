@@ -1,6 +1,6 @@
 # Environments
 
-216 HomeSignal runs in three environments. `main` is production; every change reaches it through a pull request, and every PR gets a Vercel preview that runs against **staging**.
+216 HomeSignal runs in three environments. Every change reaches `main` through a pull request, and every PR gets a Vercel preview that runs against **staging**. Merging to `main` does not deploy production; production is promoted by hand in Vercel (see `docs/DEPLOY.md`).
 
 | | production | staging | local |
 |---|---|---|---|
@@ -21,7 +21,7 @@ These need the 216LABS accounts and are not done by the code:
 
 1. **Supabase**
    - Create `216homesignal-prod` on the paid org (Pro) and `216homesignal-staging` on a separate free org (Supabase does not mix plans in one org). Staging may pause after a week idle; that is fine.
-   - In each project: Authentication → URL configuration. Site URL: `https://216labs.dev/homesignal` (prod) or the staging preview domain. Add redirect URLs `https://216labs.dev/homesignal/**` (prod) and `https://*-216labs.vercel.app/leads/**` (staging previews).
+   - In each project: Authentication → URL configuration. Site URL: `https://216labs.dev/homesignal` (prod) or `https://www.216labs.dev/homesignal` (staging). Add redirect URLs `https://216labs.dev/homesignal/**` (prod) and `https://www.216labs.dev/homesignal/**` (staging).
    - Copy the API URL, anon key, service role key and the direct database URL for each into the Vercel and GitHub secrets below.
 2. **Vercel**
    - Import `216LABS/216LEADS`, Root Directory `apps/web` (pnpm workspace is detected; `apps/web/vercel.json` sets the build).

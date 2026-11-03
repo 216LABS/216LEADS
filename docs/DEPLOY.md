@@ -27,6 +27,12 @@ Pick one:
 
 **B. This project owns 216labs.dev.** Add the domain to this project. `/` then answers 404 (the app lives under `/homesignal`); add a redirect from `/` to `/homesignal` in Vercel if wanted.
 
+## Production deploys are manual
+
+`apps/web/vercel.json` turns off Git deployments from `main` (`git.deploymentEnabled.main: false`), so a merge does not reach production. PR branches still get previews. To ship, open the Vercel project → Deployments → Create Deployment, pick `main` at the commit to release, and deploy it to Production. The Ignored Build Step (`scripts/ci/vercel-ignore.sh`) skips preview builds when a push only changes docs or tests.
+
+Migrations are not gated the same way: `migrate.yml` still applies them on merge (below), so they reach the production database before the code that uses them is promoted. Keep migrations backward compatible with the deployed code, or hold the merge until you promote.
+
 ## 3. Database
 
 `migrate.yml` applies new migrations on merge to `main`: staging first (`STAGING_DATABASE_URL`), then production (`PRODUCTION_DATABASE_URL`, behind the `production` environment) once those secrets exist. It runs the same append-only runner as `pnpm db:migrate`. Take a backup first for risky migrations (`docs/ROLLBACK.md`). The first data load runs on the worker: `pnpm ingest pipeline cleveland` then `pnpm ingest pipeline counties`.
