@@ -20,11 +20,11 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
     ? { trade: sp.trade, zips, ref: sp.ref && /^[A-Za-z0-9_-]{16,40}$/.test(sp.ref) ? sp.ref : null }
     : null;
   return (
-    <div className="mx-auto max-w-xl px-4 py-10">
+    <main className="mx-auto max-w-xl px-4 py-10">
       <Logo />
       <h1 className="mt-6 text-title font-semibold">Set up your account</h1>
       <p className="mb-6 mt-2 text-slate">Tell us about your business in plain words. We&rsquo;ll turn it into a ranked list of homes, each with the public records behind it.</p>
       <Wizard prefill={prefill} />
-    </div>
+    </main>
   );
 }

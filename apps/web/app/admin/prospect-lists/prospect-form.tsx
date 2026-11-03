@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { withBase } from "@216leads/shared";
+import { countOf, withBase } from "@216leads/shared";
 import { Button, Card, Input, Label, Select } from "@/components/ui";
 
 export function ProspectListForm({ trades }: { trades: { key: string; label: string }[] }) {
@@ -48,7 +48,7 @@ export function ProspectListForm({ trades }: { trades: { key: string; label: str
       {error ? <p role="alert" className="text-sm text-lost">{error}</p> : null}
       {out ? (
         <div role="status" className="space-y-2 rounded-[10px] bg-won-50 p-4 text-sm">
-          <p className="font-semibold">{out.homes} homes. Share link (expires in 14 days):</p>
+          <p className="font-semibold">{countOf(out.homes, "home")}. Share link (expires in 14 days):</p>
           <Input readOnly value={absolute(out.link)} onFocus={(e) => e.currentTarget.select()} aria-label="Share link" />
           <a className="font-semibold text-navy underline" href={withBase(out.csv)}>Download CSV</a>
         </div>

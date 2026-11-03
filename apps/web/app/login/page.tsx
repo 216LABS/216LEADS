@@ -7,7 +7,7 @@ export const metadata = { title: "Sign in" };
 
 export default function LoginPage() {
   return (
-    <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4 py-10">
+    <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4 py-10">
       <Link href="/" className="mb-8 self-center">
         <Logo />
       </Link>
@@ -16,6 +16,6 @@ export default function LoginPage() {
       <Suspense>
         <AuthForm mode="login" googleEnabled={process.env.GOOGLE_AUTH_ENABLED === "true"} />
       </Suspense>
-    </div>
+    </main>
   );
 }

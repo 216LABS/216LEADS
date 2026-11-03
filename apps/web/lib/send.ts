@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { getSql } from "@216leads/db";
 import { appUrl, MailBatch, sendEmail } from "@216leads/email";
 import { commitSend, mailFromEnv, planSend, SendBlockedError } from "@216leads/ingest";
+import { countOf } from "@216leads/shared";
 import { ApiError, json } from "./api";
 import { track } from "./events";
 import type { Merge } from "./mail";
@@ -43,7 +44,7 @@ export async function sendHomes(
     orgId: org.id, kind: "mail_batch", dedupeKey: `mail_batch:${res.batchId}`, to: [user.email],
     subject: `${res.queued} postcard${res.queued === 1 ? "" : "s"} queued`,
     element: createElement(MailBatch, {
-      count: res.queued, removed, costText: plan.costCents ? `${plan.credits} credits + ${money(plan.costCents)}` : `${plan.credits} credits`,
+      count: res.queued, removed, costText: plan.costCents ? `${countOf(plan.credits, "credit")} + ${money(plan.costCents)}` : countOf(plan.credits, "credit"),
       cancelBy: res.sendAfter.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" }), mailUrl: appUrl("/mail"),
     }),
   }).catch((e) => console.error("batch email failed", e));

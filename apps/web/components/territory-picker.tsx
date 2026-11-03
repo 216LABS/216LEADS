@@ -2,7 +2,7 @@
 // Area picker (spec 9.1 step 2): type a ZIP or a town, each chip shows a live count for the
 // trade ("44107 Lakewood: 214 homes match") and "Taken" when another org holds the zip exclusively.
 import { useEffect, useRef, useState } from "react";
-import { withBase } from "@216leads/shared";
+import { countOf, withBase } from "@216leads/shared";
 import { Button, Input, Label } from "./ui";
 
 interface Match { kind: "zip" | "town"; label: string; zips: string[]; homes: number }
@@ -104,7 +104,7 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25, s
             return (
               <li key={z} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
                 <span><span className="num font-semibold">{z}</span>{c?.town ? ` ${c.town}` : ""}{c ? ":" : ""}</span>
-                {c ? <span className="text-slate">{c.matching.toLocaleString("en-US")} homes match</span> : null}
+                {c ? <span className="text-slate">{countOf(c.matching, "home")} {c.matching === 1 ? "matches" : "match"}</span> : null}
                 {c?.taken ? <span className="ml-1 rounded-full bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span>
                   : c && showAvailable ? <span className="ml-1 rounded-full bg-won/10 px-2 text-xs font-semibold text-won">Available</span> : null}
                 <button type="button" aria-label={`Remove ${z}`} onClick={() => onChange(zips.filter((x) => x !== z))}
