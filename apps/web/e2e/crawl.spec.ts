@@ -52,10 +52,6 @@ async function crawl(page: Page, start: string, baseURL: string) {
   return { broken, visited };
 }
 
-test.beforeEach(({}, info) => {
-  test.skip(info.project.name !== "desktop", "one crawl is enough; the phone project runs the smoke flows");
-});
-
 test("signed out: every link from the public site answers", async ({ page, baseURL }) => {
   const { broken, visited } = await crawl(page, "./", baseURL!);
   expect(visited).toBeGreaterThan(5);
