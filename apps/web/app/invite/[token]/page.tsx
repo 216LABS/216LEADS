@@ -22,7 +22,7 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
   const { result } = await acceptInvite(getSql(), token, user);
   if (result === "joined" || result === "already_member") redirect("/leads");
   return (
-    <div className="mx-auto max-w-md px-4 py-10">
+    <main className="mx-auto max-w-md px-4 py-10">
       <Logo />
       <Card className="mt-6 p-5">
         <h1 className="text-lg font-semibold">We couldn&rsquo;t add you to the team</h1>
@@ -32,6 +32,6 @@ export default async function InvitePage({ params }: { params: Promise<{ token: 
           <Link href="/" className="focus-ring self-center text-sm font-semibold text-navy underline">Home</Link>
         </div>
       </Card>
-    </div>
+    </main>
   );
 }

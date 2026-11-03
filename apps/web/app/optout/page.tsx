@@ -9,7 +9,7 @@ export const metadata = { title: "Stop mail to your home" };
 export default function OptoutPage() {
   const site = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   return (
-    <div className="mx-auto max-w-md px-4 py-10">
+    <main className="mx-auto max-w-md px-4 py-10">
       {site ? <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer /> : null}
       <Logo />
       <h1 className="mt-6 text-title font-semibold">Stop mail to your home</h1>
@@ -18,6 +18,6 @@ export default function OptoutPage() {
       </p>
       <OptoutForm siteKey={site ?? null} />
       <p className="mt-6 text-xs text-slate">{BRAND.footerAddress}</p>
-    </div>
+    </main>
   );
 }

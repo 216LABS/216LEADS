@@ -59,8 +59,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
       <PageHeader
         title="Leads"
         sub={counts.new_week
-          ? `${counts.new_week.toLocaleString("en-US")} new ${trade} homes this week in your area`
-          : `${counts.active.toLocaleString("en-US")} ${trade} homes in your area`}
+          ? `${counts.new_week.toLocaleString("en-US")} new ${trade} ${counts.new_week === 1 ? "home" : "homes"} this week in your area`
+          : `${counts.active.toLocaleString("en-US")} ${trade} ${counts.active === 1 ? "home" : "homes"} in your area`}
       />
       {top.length >= 3 ? <TopFive leads={top} /> : null}
       <FilterBar

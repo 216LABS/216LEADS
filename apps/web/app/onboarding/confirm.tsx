@@ -4,7 +4,7 @@
 // spec 9.1 step 3 "perfect customer" controls, which edit the draft's filters and exclusions.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { customerLinesFromCsv, withBase } from "@216leads/shared";
+import { countOf, customerLinesFromCsv, withBase } from "@216leads/shared";
 import { signalLabel, type Template, type WizardAnswers } from "@216leads/scoring";
 import { Badge, Button, Card, Input } from "@/components/ui";
 import { CustomerControlsCard } from "@/components/customer-controls";
@@ -143,7 +143,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
           {customers ? (
             <p className="mt-1 text-sm text-slate" role="status">
               {customers.lines.length
-                ? `${customers.lines.length.toLocaleString("en-US")} addresses read from ${customers.file}. They'll be hidden once you confirm.`
+                ? `${countOf(customers.lines.length, "address")} read from ${customers.file}. They'll be hidden once you confirm.`
                 : `No street addresses with ZIP codes found in ${customers.file}.`}
             </p>
           ) : null}
@@ -186,7 +186,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
           <div className="mt-4 rounded-[10px] bg-navy-50 p-4 text-sm">
             {proposal.diff.length ? (
               <>
-                <p className="font-semibold">Proposed changes ({proposal.count.toLocaleString("en-US")} homes):</p>
+                <p className="font-semibold">Proposed changes ({countOf(proposal.count, "home")}):</p>
                 <ul className="mt-1 list-disc pl-5">{proposal.diff.map((d, i) => <li key={i}>{d}</li>)}</ul>
                 <div className="mt-3 flex gap-2">
                   <Button type="button" onClick={() => { setDraft(proposal); setProposal(null); setInstruction(""); }}>Use this</Button>

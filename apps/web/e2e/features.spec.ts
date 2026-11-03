@@ -165,9 +165,9 @@ test("your area: counts use the same scoring as the leads list", async () => {
   await page.goto("leads");
   const active = Number((await page.getByRole("button", { name: /^Active/ }).innerText()).replace(/\D/g, ""));
   await page.goto("settings/territories");
-  const chips = page.getByText(/homes match/);
+  const chips = page.getByText(/homes? match/);
   await expect(chips.first()).toBeVisible({ timeout: 30_000 });
-  const sum = (await chips.allInnerTexts()).reduce((n, t) => n + Number(/([\d,]+) homes match/.exec(t)![1]!.replace(/,/g, "")), 0);
+  const sum = (await chips.allInnerTexts()).reduce((n, t) => n + Number(/([\d,]+) homes? match/.exec(t)![1]!.replace(/,/g, "")), 0);
   // Worked leads (won, skipped) drop off Active, so the area count can only be a little higher.
   expect(sum).toBeGreaterThanOrEqual(active);
   expect(sum - active).toBeLessThan(Math.max(50, active * 0.05));

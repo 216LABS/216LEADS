@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { withBase } from "@216leads/shared";
+import { countOf, withBase } from "@216leads/shared";
 import { Button, Card, Input, Label, Select } from "@/components/ui";
 
 const FIELDS: { key: string; label: string; required?: boolean }[] = [
@@ -61,7 +61,7 @@ export function ImportForm() {
     const d = await res.json().catch(() => ({}));
     setBusy(false);
     if (!res.ok) return setMsg({ ok: false, text: d.error ?? "Import failed" });
-    setMsg({ ok: true, text: `Imported ${d.rows} permits: ${d.matched} matched to a home, ${d.unmatched} unmatched (see Unmatched), ${d.skippedNoDate} without a date skipped.` });
+    setMsg({ ok: true, text: `Imported ${countOf(d.rows, "permit")}: ${d.matched} matched to a home, ${d.unmatched} unmatched (see Unmatched), ${d.skippedNoDate} without a date skipped.` });
     router.refresh();
   }
 
@@ -87,7 +87,7 @@ export function ImportForm() {
 
       {preview ? (
         <>
-          <p className="text-sm text-slate">{preview.rows.toLocaleString("en-US")} rows · source <code>{preview.source}</code></p>
+          <p className="text-sm text-slate">{countOf(preview.rows, "row")} · source <code>{preview.source}</code></p>
           <div className="grid gap-3 md:grid-cols-3">
             {FIELDS.map((f) => (
               <div key={f.key}>

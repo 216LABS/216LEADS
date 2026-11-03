@@ -24,7 +24,7 @@ export function CustomerUpload({ saved, matched }: { saved: number; matched: num
 
   return (
     <Card className="space-y-3 p-5">
-      <p className="text-sm"><span className="num font-semibold">{saved.toLocaleString("en-US")}</span> addresses on your list ({matched.toLocaleString("en-US")} matched to a home).</p>
+      <p className="text-sm"><span className="num font-semibold">{countOf(saved, "address")}</span> on your list ({matched.toLocaleString("en-US")} matched to a home).</p>
       <label htmlFor="csv" className="block text-sm text-slate">
         Upload a CSV with an address column and a ZIP column (any other columns are ignored). Only street and ZIP leave your device.
       </label>

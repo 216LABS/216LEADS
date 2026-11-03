@@ -83,7 +83,7 @@ test("the preset path: pick a trade, add a town, set the perfect customer, land 
   await page.getByLabel("Where do you work?").fill("Lakew");
   await page.getByRole("option").filter({ hasText: "Lakewood" }).click();
   await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText("44107");
-  await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText("homes match", { timeout: 20_000 });
+  await expect(page.getByRole("list", { name: "Your ZIP codes" })).toContainText(/homes? match/, { timeout: 20_000 });
   await page.getByRole("button", { name: "Build my list" }).click();
 
   await expect(page.getByRole("heading", { name: "The homes you want" })).toBeVisible({ timeout: 30_000 });

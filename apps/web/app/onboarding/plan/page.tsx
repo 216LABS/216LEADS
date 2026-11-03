@@ -17,7 +17,7 @@ export default async function PlanPage() {
   const billingOn = !!stripe();
   const foundingLeft = billingOn ? await foundingSpotsLeft() : 0;
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
+    <main className="mx-auto max-w-3xl px-4 py-10">
       <Logo />
       <h1 className="mt-6 text-title font-semibold">Your plan</h1>
       <p className="mb-6 mt-2 text-slate">
@@ -26,6 +26,6 @@ export default async function PlanPage() {
       </p>
       <PlanCards current="" foundingLeft={foundingLeft} canBuy={ctx.role === "owner"} billingOn={billingOn} />
       <LinkButton href="/leads" variant="secondary" className="mt-6 w-full">Start my free trial</LinkButton>
-    </div>
+    </main>
   );
 }

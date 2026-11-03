@@ -9,7 +9,7 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
   // Issue #79: someone opening a team invite is joining an account, not starting a trial.
   const joining = ((await searchParams).next ?? "").startsWith("/invite/");
   return (
-    <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4 py-10">
+    <main className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4 py-10">
       <Link href="/" className="mb-8 self-center">
         <Logo />
       </Link>
@@ -20,6 +20,6 @@ export default async function SignupPage({ searchParams }: { searchParams: Promi
       <Suspense>
         <AuthForm mode="signup" googleEnabled={process.env.GOOGLE_AUTH_ENABLED === "true"} />
       </Suspense>
-    </div>
+    </main>
   );
 }
