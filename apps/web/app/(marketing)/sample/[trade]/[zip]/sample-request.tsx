@@ -15,7 +15,7 @@ export function SampleRequest({ trade, zip, siteKey }: { trade: string; zip: str
   return (
     <Card className="mt-8 p-5">
       {siteKey ? <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer /> : null}
-      <h2 className="font-bold">Not ready to sign up? Get this sample by email.</h2>
+      <h2 className="font-semibold">Not ready to sign up? Get this sample by email.</h2>
       <form className="mt-3 grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-end" onSubmit={async (e) => {
         e.preventDefault();
         setBusy(true);

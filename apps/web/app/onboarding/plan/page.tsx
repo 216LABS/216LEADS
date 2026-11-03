@@ -19,7 +19,7 @@ export default async function PlanPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <Logo />
-      <h1 className="mt-6 text-2xl font-semibold">Your plan</h1>
+      <h1 className="mt-6 text-title font-semibold">Your plan</h1>
       <p className="mb-6 mt-2 text-slate">
         Your {TRIAL.days}-day free trial has started, with no card needed. Add a plan now to keep your trial days and get {TRIAL.cardCredits} free postcards,
         or decide later.

@@ -23,7 +23,7 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
   if (list.status === "missing") {
     return (
       <section className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">This list isn&apos;t available</h1>
+        <h1 className="text-title font-semibold">This list isn&apos;t available</h1>
         <LinkButton href="/signup" className="mt-6">Start your 14-day free trial</LinkButton>
       </section>
     );
@@ -33,7 +33,7 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
   if (list.status === "expired") {
     return (
       <section className="mx-auto max-w-2xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">This list expired</h1>
+        <h1 className="text-title font-semibold">This list expired</h1>
         <p className="mt-2 text-slate">Sample lists last 14 days. Start a free trial to see today&apos;s homes for {list.zips.join(", ")}.</p>
         <LinkButton href={cta} className="mt-6">Start your 14-day free trial</LinkButton>
       </section>
@@ -43,7 +43,7 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
   return (
     <section className="mx-auto max-w-4xl px-4 py-10">
       <p className="text-sm font-semibold uppercase tracking-wide text-signal-600">{label} · {list.zips.join(", ")}</p>
-      <h1 className="mt-1 text-3xl font-extrabold tracking-tight">{list.rows.length} homes{list.business ? ` for ${list.business}` : ""}</h1>
+      <h1 className="mt-1 text-title font-semibold leading-tight tracking-tight">{list.rows.length} homes{list.business ? ` for ${list.business}` : ""}</h1>
       <p className="mt-2 text-slate">Ranked from this week&apos;s public records, with the reasons behind each one. Link good until {list.expires_at.slice(0, 10)}.</p>
       <div className="mt-6"><ListMap points={points} styleUrl={process.env.NEXT_PUBLIC_MAP_STYLE_URL || DEFAULT_STYLE} /></div>
       <Card className="mt-6 divide-y divide-line">
@@ -56,12 +56,12 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
                 {r.year_built ? `Built ${r.year_built}` : ""}{r.year_built && r.last_sale_date ? " · " : ""}{r.last_sale_date ? `Last sold ${r.last_sale_date}` : ""}
               </div>
             </div>
-            <span className="num shrink-0 rounded-full bg-signal-50 px-2 text-sm font-bold text-signal-600">{r.score}</span>
+            <span className="num shrink-0 rounded-full bg-signal-50 px-2 text-sm font-semibold text-signal-600">{r.score}</span>
           </div>
         ))}
       </Card>
       <div className="mt-8 rounded-[12px] border border-line bg-white p-6 text-center">
-        <h2 className="text-xl font-bold">Want the whole list, updated every week?</h2>
+        <h2 className="text-lg font-semibold">Want the whole list, updated every week?</h2>
         <LinkButton href={cta} className="mt-4">Start your 14-day free trial</LinkButton>
       </div>
       <p className="mt-6 text-xs text-slate">{BRAND.disclaimer}</p>
