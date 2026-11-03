@@ -27,3 +27,9 @@ describe("violationItems (Fix list)", () => {
     expect(violationItems("18 [3105.26]: A LATE FEE WILL BE CHARGED WHEN APPLYING FOR A PERMIT AFTER STARTING WORK.")).toEqual([]);
   });
 });
+
+describe("violationItems keeps acronyms and place names", () => {
+  it("writes HVAC and Ohio in their usual case", () => {
+    expect(violationItems("[369.12]: THE HVAC SYSTEM IS NOT INSPECTED BY AN OHIO LICENSED CONTRACTOR.")).toEqual(["The HVAC system is not inspected by an Ohio licensed contractor."]);
+  });
+});

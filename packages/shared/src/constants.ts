@@ -34,9 +34,10 @@ export function tradeLabel(key: string): string {
   return TRADES.find((t) => t.key === key)?.label ?? key;
 }
 
-/** A label for running text: acronyms keep their case ("HVAC"), words go lower case ("electrical"). */
+/** A label for running text: acronyms keep their case ("HVAC"), words go lower case ("electrical",
+ *  "age of last HVAC work"). */
 export function runningText(label: string): string {
-  return label.length > 1 && label === label.toUpperCase() ? label : label.toLowerCase();
+  return label.split(" ").map((w) => (w.length > 1 && /[A-Z]/.test(w) && w === w.toUpperCase() ? w : w.toLowerCase())).join(" ");
 }
 
 /** Trade name for running text, e.g. "HVAC" or "lawn care". */

@@ -166,13 +166,16 @@ export function applyAnswers<T extends Template>(recipe: T, answers: WizardAnswe
   return checked.ok ? (checked.recipe as T) : recipe;
 }
 
+/** Lower case for a sentence, keeping acronyms ("age of last HVAC work"). */
+const lowerWords = (s: string) => s.split(" ").map((w) => (w.length > 1 && /[A-Z]/.test(w) && w === w.toUpperCase() ? w : w.toLowerCase())).join(" ");
+
 const money = (n: number) => (n >= 1000 ? `$${Math.round(n / 1000)}K` : `$${n}`);
 
 /** One-paragraph plain-English summary for the confirm screen (A4). */
 export function describeRecipe(t: Template): string {
   const top = Object.entries(t.signals).filter(([, v]) => v.weight > 0).sort((a, b) => b[1].weight - a[1].weight).slice(0, 4);
-  const parts = [`We'll put these homes first: ${top.map(([k]) => signalLabel(k).toLowerCase()).join(", ")}.`];
-  const trig = t.triggers.slice(0, 3).map((x) => triggerSentence(x).toLowerCase());
+  const parts = [`We'll put these homes first: ${top.map(([k]) => lowerWords(signalLabel(k))).join(", ")}.`];
+  const trig = t.triggers.slice(0, 3).map((x) => lowerWords(triggerSentence(x)));
   if (trig.length) parts.push(`A home moves up right away when: ${trig.join("; ")}.`);
   const f = t.default_filters;
   if (f.price_min || f.price_max) {
