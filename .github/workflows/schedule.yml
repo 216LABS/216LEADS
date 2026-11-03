@@ -40,7 +40,7 @@ jobs:
           fi
       - uses: actions/checkout@v4
         if: steps.check.outputs.skip != 'true'
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         if: steps.check.outputs.skip != 'true'
       - uses: actions/setup-node@v4
         if: steps.check.outputs.skip != 'true'
