@@ -4,7 +4,7 @@
 // provider's "Current Resident" address block.
 import QRCode from "qrcode";
 import { optionalEnv } from "@216leads/db";
-import { basePath, BRAND, tradeLabel } from "@216leads/shared";
+import { basePath, BRAND, tradeInText } from "@216leads/shared";
 
 /** Printed opt-out address (issue #1): APP_BASE_URL host + base path + /optout, e.g. 216labs.dev/homesignal/optout. */
 export function optoutDisplayUrl(): string {
@@ -32,11 +32,6 @@ const NAVY = "#0F2A44";
 const ORANGE = "#F26B1D";
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-
-/** The trade inside a sentence: "HVAC", "roofing". Lower case except acronyms (issue #72). */
-export function tradeInText(trade: string): string {
-  return tradeLabel(trade).split(" ").map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
-}
 
 /** Default headline per design; {street} and {year_built} are filled per home. */
 export function defaultHeadline(design: Design, trade: string): string {

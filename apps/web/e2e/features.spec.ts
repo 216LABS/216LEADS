@@ -53,6 +53,8 @@ async function noErrorAlert() {
 
 test("leads: every filter, search and sort answers; CSV export downloads", async () => {
   await page.goto("leads");
+  // The trade is a display name in sentences ("HVAC homes"), never the raw key (issue #72).
+  await expect(page.locator("main")).toContainText(/ HVAC homes /);
   for (const name of ["Score 70+", "Just sold", "Neighbors", "Citation", "New this week", "Won", "Skipped", "All", "Active"]) {
     await page.getByRole("button", { name: new RegExp(`^${name}`) }).first().click();
     await page.waitForLoadState("networkidle");

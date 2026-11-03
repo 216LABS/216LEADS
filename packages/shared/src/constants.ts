@@ -34,6 +34,11 @@ export function tradeLabel(key: string): string {
   return TRADES.find((t) => t.key === key)?.label ?? key;
 }
 
+/** The trade inside a sentence: "HVAC", "roofing". Lower case except acronyms (issue #72). */
+export function tradeInText(key: string): string {
+  return tradeLabel(key).split(" ").map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
+}
+
 export type PlanKey = "trial" | "starter" | "pro" | "exclusive" | "canceled";
 
 export const PLANS = {

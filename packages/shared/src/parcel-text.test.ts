@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { countOf, floodZoneText, homeStyle } from "./parcel-text";
+import { tradeInText } from "./constants";
 
 describe("homeStyle (issue #74: lead detail showed \"Col\")", () => {
   it.each([
@@ -34,5 +35,12 @@ describe("countOf", () => {
     expect(countOf(0, "home")).toBe("0 homes");
     expect(countOf(2000, "home")).toBe("2,000 homes");
     expect(countOf(3, "address")).toBe("3 addresses");
+  });
+});
+
+describe("tradeInText (issue #72)", () => {
+  it("keeps acronyms and lowers words", () => {
+    expect(tradeInText("hvac")).toBe("HVAC");
+    expect(tradeInText("roofing")).toBe("roofing");
   });
 });

@@ -2,9 +2,9 @@
 // cost preview (credits first, then $0.99 metered), commit with a 15-minute undo, cancel.
 import type { Sql } from "@216leads/db";
 import { appUrl } from "@216leads/email";
-import { MAIL_UNDO_MINUTES, NO_REPEAT_DAYS, POSTCARD_PRICE_CENTS, titleCase, TRADES } from "@216leads/shared";
+import { MAIL_UNDO_MINUTES, NO_REPEAT_DAYS, POSTCARD_PRICE_CENTS, titleCase, tradeInText, TRADES } from "@216leads/shared";
 import { linkSecretSign } from "./sign";
-import { DESIGNS, defaultHeadline, designLabel, personalize, renderPostcard, tradeInText, type Design, type TemplateMerge } from "./templates";
+import { DESIGNS, defaultHeadline, designLabel, personalize, renderPostcard, type Design, type TemplateMerge } from "./templates";
 import type { Address, MailProvider } from "./provider";
 
 export const REMOVAL_KEYS = ["territory", "suppression", "your_list", "mailed_recently", "no_funds", "bad_address"] as const;

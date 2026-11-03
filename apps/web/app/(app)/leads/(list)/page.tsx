@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { titleCase, tradeLabel } from "@216leads/shared";
+import { titleCase, tradeInText } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { leadCounts, leadQueryFromParams, listLeads, PAGE_SIZE } from "@/lib/leads";
 import { FilterBar } from "@/components/filter-bar";
@@ -52,7 +52,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
     p.set("page", String(n));
     return `/leads?${p.toString()}`;
   };
-  const trade = tradeLabel(org.trade).toLowerCase();
+  const trade = tradeInText(org.trade);
 
   return (
     <>
