@@ -4,7 +4,7 @@
 // questions pick a trade tile instead (spec 9.1 step 1) and go straight to the area step.
 import clsx from "clsx";
 import { useState } from "react";
-import { TRIAL, withBase } from "@216leads/shared";
+import { runningText, TRIAL, withBase } from "@216leads/shared";
 import { ADJACENT_CHOICES, CATEGORY_NOUN, closestPreset, FOCUS, JOB_VALUES, suggestAdjacent, TEMPLATES, type WizardAnswers } from "@216leads/scoring";
 import { Button, Input, Label, SegmentedControl, Textarea, Toggle } from "@/components/ui";
 import { TerritoryPicker } from "@/components/territory-picker";
@@ -156,7 +156,7 @@ export function Wizard({ prefill }: { prefill?: WizardPrefill | null }) {
         ) : null}
 
         {step === zipStep ? (
-          <TerritoryPicker zips={a.zips} onChange={(zips) => set({ zips })} trade={trade} tradeLabel={TEMPLATES[trade]?.label.toLowerCase()} max={TRIAL.maxZips} />
+          <TerritoryPicker zips={a.zips} onChange={(zips) => set({ zips })} trade={trade} tradeLabel={TEMPLATES[trade] && runningText(TEMPLATES[trade].label)} max={TRIAL.maxZips} />
         ) : null}
 
         {mode === "ai" && step === 3 ? (

@@ -49,7 +49,7 @@ function ProductShot() {
 }
 
 const FAQ = [
-  ["Where does the data come from?", "Free public records: county parcels and sales, city permits and code violations, the rental registry, FEMA flood zones and county tree canopy. The coverage page lists every source and how fresh it is."],
+  ["Where does the data come from?", "Free public records: county parcels and sales, city permits and code violations, the rental registry, FEMA flood zones and county tree canopy. The data page lists every source and how fresh it is."],
   ["Do you sell homeowner names or phone numbers?", "No. We never store homeowner names, and there's no calling, texting or contact lists. Postcards go to \"Current Resident\", and any homeowner can opt out."],
   ["Which areas do you cover?", "Cuyahoga, Lake, Stark and Medina counties, with Summit permits where available. Cleveland has the richest data (daily permits and violations)."],
   ["How much does it cost?", "Plans start at $99 a month after a 14-day free trial, no card needed to start. Postcards are $0.99 each beyond your plan's monthly credits."],

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getDirectSql } from "@216leads/db";
 import { fixList } from "@216leads/ingest";
 import { CATEGORY_NOUN } from "@216leads/scoring";
-import { titleCase, tradeLabel } from "@216leads/shared";
+import { titleCase, tradeWord } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { Card, EmptyState, PageHeader } from "@/components/ui";
 
@@ -21,7 +21,7 @@ export default async function FixListPage() {
         sub={noun ? `Open city code violations in your area that need ${noun} work. The owner has been told to fix these.` : undefined}
       />
       {!category ? (
-        <EmptyState title={`Nothing to fix for ${tradeLabel(org.trade).toLowerCase()}`}>
+        <EmptyState title={`Nothing to fix for ${tradeWord(org.trade)}`}>
           City code violations are written for building trades (roofing, siding, gutters, HVAC and so on), so there's nothing to match here.
         </EmptyState>
       ) : !rows.length ? (

@@ -6,7 +6,7 @@ import {
   appUrl, Digest, digestSubject, sendEmail, TrialDay3, trialDay3Subject, TrialEnding, unsubscribeToken, type DigestProps,
 } from "@216leads/email";
 import { TRADE_CATEGORY } from "@216leads/scoring";
-import { addDays, titleCase, tradeLabel, TZ } from "@216leads/shared";
+import { addDays, titleCase, tradeWord, TZ } from "@216leads/shared";
 import { withJobRun } from "./runtime";
 import { sendMonthlySummaries } from "./monthly";
 import { snapshotMetrics } from "./metrics";
@@ -158,8 +158,7 @@ async function sendDay3(sql: Sql, now: Date) {
       select m.user_id, u.email::text from org_member m join auth.users u on u.id = m.user_id
       where m.org_id = ${org.id} and m.role = 'owner'
         and not exists (select 1 from email_optout x where x.email = u.email and x.stream = 'lifecycle')`;
-    const label = tradeLabel(org.trade);
-    const trade = label === label.toUpperCase() ? label : label.toLowerCase();
+    const trade = tradeWord(org.trade);
     const town = titleCase(top[0]!.city);
     for (const o of owners) {
       const res = await sendEmail(sql, {

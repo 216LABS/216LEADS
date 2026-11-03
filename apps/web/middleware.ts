@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { appUrl } from "@/lib/urls";
 
 const APP_PREFIXES = ["/leads", "/map", "/mail", "/roi", "/settings", "/onboarding", "/admin", "/fix-list", "/help"];
 
@@ -22,10 +23,8 @@ export async function middleware(req: NextRequest) {
   const { data } = await supabase.auth.getUser();
   const path = req.nextUrl.pathname;
   if (!data.user && APP_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`))) {
-    const to = req.nextUrl.clone();
-    to.pathname = "/login";
-    to.search = `?next=${encodeURIComponent(path + req.nextUrl.search)}`;
-    return NextResponse.redirect(to);
+    // nextUrl.pathname has the base path stripped; appUrl adds it back on the public origin.
+    return NextResponse.redirect(appUrl(req, `/login?next=${encodeURIComponent(path + req.nextUrl.search)}`));
   }
   return res;
 }

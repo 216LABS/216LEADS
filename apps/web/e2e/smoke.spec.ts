@@ -122,6 +122,17 @@ test("old /leads links 308 to the same page under /homesignal (#42)", async ({ p
   await expect(page.getByRole("heading", { name: "Pricing" })).toBeVisible();
 });
 
+test("public marketing pages answer 200, coverage included (#70)", async ({ page }) => {
+  for (const path of ["", "pricing", "sample", "coverage", "data", "terms", "privacy", "refunds", "optout"]) {
+    const res = await page.request.get(path || "./", { maxRedirects: 0 });
+    expect(res.status(), `/${path}`).toBe(200);
+  }
+  await page.goto("coverage");
+  await expect(page.getByRole("heading", { name: "Coverage", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Cuyahoga County" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Start free trial" }).last()).toBeVisible();
+});
+
 test("signed-out visitors are sent to sign in", async ({ page }) => {
   await page.goto("leads");
   await expect(page).toHaveURL(/\/login\?next=/);

@@ -11,7 +11,7 @@
 | Stripe | live keys | test keys (`sk_test_`) | test keys or none |
 | Lob | live key | test key (`test_`) | test key or none (dry run) |
 | Resend | live domain | sandbox or test domain | none (emails go to the `email_outbox` table, shown at `/admin/outbox`; `EMAIL_OUTBOX=file` writes `.data/outbox` files) |
-| Data | real public records + customers | real public records + 3 QA orgs from `pnpm seed:staging` | fixtures or a local full ingest |
+| Data | real public records + customers | a slice of real public records (Cuyahoga parcels for ZIPs 44107 and 44111 only, to stay under the free plan's 500 MB; record layers and the other counties load in full) + 3 QA orgs from `pnpm seed:staging` | fixtures or a local full ingest |
 
 Outside production the app shows a STAGING or LOCAL banner and **refuses live Stripe and Lob keys in code** (`assertKeyAllowed` in `packages/shared/src/app-env.ts`), so a misconfigured preview cannot charge a card or mail a postcard.
 
@@ -29,7 +29,7 @@ These need the 216LABS accounts and are not done by the code:
    - **Preview** environment variables: staging values, `APP_ENV=staging`, `NEXT_PUBLIC_BASE_PATH=/homesignal`. Previews must never get production keys.
    - Point `216labs.dev` at the project with a `/homesignal` rewrite, or serve the project on `216labs.dev` directly with the base path.
 3. **GitHub secrets** (Settings → Secrets → Actions), used by the migration and backup workflows (milestones D2/D4): `STAGING_DATABASE_URL`, `PRODUCTION_DATABASE_URL`, `BACKUP_ENCRYPTION_KEY`. The scheduler (`schedule.yml`, M6) also needs `PRODUCTION_DATABASE_URL_DIRECT` (daily ingest), `PRODUCTION_APP_URL` + `CRON_SECRET` (hourly digest/lifecycle calls), and optionally `SENTRY_DSN`, `RESEND_API_KEY`, `ALERT_EMAILS`.
-4. **Email (M6):** set `APP_BASE_URL=https://216labs.dev`, `EMAIL_LINK_SECRET` (random, 32+ chars) and `RESEND_API_KEY` in production. Resend sends only when `APP_ENV=production`; staging and local write every email to `.data/outbox`. Verify `mail.216labs.dev` in Resend with SPF, DKIM and DMARC (`p=none` first, `p=quarantine` after two clean weeks).
+4. **Email (M6):** set `APP_BASE_URL=https://www.216labs.dev`, `EMAIL_LINK_SECRET` (random, 32+ chars) and `RESEND_API_KEY` in production. Resend sends only when `APP_ENV=production`; staging and local write every email to `.data/outbox`. Verify `mail.216labs.dev` in Resend with SPF, DKIM and DMARC (`p=none` first, `p=quarantine` after two clean weeks).
 4. **Staging data**: with the staging env loaded, run `pnpm db:migrate` then `pnpm seed:staging` (set `QA_PASSWORD` first; the QA login is `qa@216leads.test`).
 
 ## Local
