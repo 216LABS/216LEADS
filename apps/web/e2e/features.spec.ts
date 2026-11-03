@@ -58,14 +58,23 @@ test("leads: every filter, search and sort answers; CSV export downloads", async
   // Search for a street that is on the list, so the step works on any seed.
   const street = /\d+\s+(.+)/.exec(await page.locator("main [data-lead-link]:visible").first().innerText())?.[1]?.split("\n")[0]?.trim() ?? "";
   // Chips stack (Score 70+ AND Just sold ...), so turn each one on, check the list answers, and off again.
+  // Filtered loads are slowed as on a phone or in CI: that is when a chip turned off used to come back
+  // in the URL (issue #79). The chip and the URL must both say off.
+  const slow = /leads\?.*chips=/;
+  await page.route(slow, async (r) => { await new Promise((ok) => setTimeout(ok, 1500)); await r.continue(); });
   for (const name of ["Score 70+", "Just sold", "Neighbors", "Citation", "New this week"]) {
     const chip = page.getByRole("button", { name: new RegExp(`^${name}`) }).first();
     await chip.click();
     await expect(page).toHaveURL(/chips=/);
     await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
     await chip.click();
+    // The URL used to flip back after looking right, so check once the list has settled.
+    await expect(page.getByText("Updating…")).toHaveCount(0, { timeout: 10_000 });
+    await page.waitForTimeout(500);
+    await expect(chip).toHaveAttribute("aria-pressed", "false");
     await expect(page).not.toHaveURL(/chips=/);
   }
+  await page.unroute(slow);
   for (const name of ["Won", "Skipped", "All", "Active"]) {
     await page.getByRole("button", { name: new RegExp(`^${name}`) }).first().click();
     await page.waitForLoadState("networkidle");
