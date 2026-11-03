@@ -55,6 +55,11 @@ jobs:
           APP_ENV: production
           DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
           DATABASE_URL_DIRECT: ${{ secrets.PRODUCTION_DATABASE_URL_DIRECT }}
+          # automail prints a signed logo link on postcards and emails the owner a summary: both are
+          # built from these, and the signature must match the web app's EMAIL_LINK_SECRET.
+          APP_BASE_URL: https://www.216labs.dev
+          NEXT_PUBLIC_BASE_PATH: /homesignal
+          EMAIL_LINK_SECRET: ${{ secrets.EMAIL_LINK_SECRET }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           ALERT_EMAILS: ${{ secrets.ALERT_EMAILS }}

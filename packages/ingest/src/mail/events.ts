@@ -7,7 +7,7 @@ import { appUrl, AutoMailSummary, sendEmail } from "@216leads/email";
 import { assertKeyAllowed, normalizeAddress, POSTCARD_PRICE_CENTS, zip5 } from "@216leads/shared";
 import { withJobRun } from "../runtime";
 import type { MailEvent, MailProvider } from "./provider";
-import { commitSend, planSend } from "./send";
+import { commitSend, missingLinkConfig, planSend } from "./send";
 
 /** Apply one verified provider event. Returned mail suppresses the address for everyone. */
 export async function applyMailEvent(sql: Sql, provider: string, ev: MailEvent): Promise<string> {
@@ -97,6 +97,8 @@ interface Rule { id: string; org_id: string; template_id: string; min_score: num
  */
 export async function runAutomail(sql: Sql, provider: MailProvider, o: { now?: Date } = {}) {
   return withJobRun(sql, { job: "automail" }, async (ctx) => {
+    const missing = missingLinkConfig();
+    if (missing.length) throw new Error(`automail needs ${missing.join(", ")}: postcard logo links and the owner summary would point at localhost`);
     const rules = await sql<Rule[]>`
       select r.id, r.org_id, r.template_id, r.min_score, r.trigger_kinds::text[] as trigger_kinds, r.max_per_week, r.monthly_cap_cents, r.followup_days
       from mail_rule r join org o on o.id = r.org_id
