@@ -150,6 +150,7 @@ export async function applyStripeEvent(sql: Sql, ev: StripeEventLike): Promise<s
         update org set
           plan = coalesce(${plan}, plan),
           plan_status = ${status},
+          canceled_at = case when ${status} = 'canceled' then coalesce(canceled_at, now()) when ${status} in ('active', 'trialing') then null else canceled_at end,
           plan_interval = coalesce(${paid?.interval ?? null}, plan_interval),
           stripe_subscription_id = ${str(obj.id)},
           stripe_customer_id = coalesce(${idOf(obj.customer)}, stripe_customer_id),

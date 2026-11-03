@@ -65,6 +65,8 @@ export const getOrgContext = cache(async (): Promise<OrgContext | null> => {
     where m.user_id = ${user.id}
     order by o.created_at limit 1`;
   if (!row) return null;
+  // Last time anyone from the org used the app (issue #10 at-risk list), at most one write an hour.
+  void sql`update org set last_seen_at = now() where id = ${row.id} and (last_seen_at is null or last_seen_at < now() - interval '1 hour')`.catch(() => undefined);
   const { role, ...rest } = row;
   const org = { ...rest, billing_state: deriveBillingState(rest) };
   return { user, org, role };

@@ -96,3 +96,21 @@ describe("monthly summary (issue #9)", () => {
     expect(text).not.toMatch(/postcards? mailed|marked won|credits? left|reached out/i);
   });
 });
+
+describe("Resend webhook signature (issue #10 open tracking)", () => {
+  const secret = `whsec_${Buffer.from("unit fixture key").toString("base64")}`;
+  const body = JSON.stringify({ type: "email.opened", data: { email_id: "abc" } });
+  const now = 1_790_000_000_000;
+  const ts = Math.floor(now / 1000);
+
+  it("accepts a correct signature and refuses tampered, stale or foreign ones", async () => {
+    const { signResendPayload, verifyResendWebhook } = await import("./index");
+    const signature = signResendPayload(secret, "msg_1", ts, body);
+    expect(verifyResendWebhook(body, { id: "msg_1", timestamp: String(ts), signature }, secret, now)).toBe(true);
+    expect(verifyResendWebhook(body.replace("abc", "xyz"), { id: "msg_1", timestamp: String(ts), signature }, secret, now)).toBe(false);
+    expect(verifyResendWebhook(body, { id: "msg_1", timestamp: String(ts - 600), signature }, secret, now)).toBe(false);
+    const other = signResendPayload(`whsec_${Buffer.from("someone else").toString("base64")}`, "msg_1", ts, body);
+    expect(verifyResendWebhook(body, { id: "msg_1", timestamp: String(ts), signature: other }, secret, now)).toBe(false);
+    expect(verifyResendWebhook(body, { id: null, timestamp: String(ts), signature }, secret, now)).toBe(false);
+  });
+});

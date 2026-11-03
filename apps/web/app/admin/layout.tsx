@@ -6,6 +6,7 @@ import { isAdmin, requireOrg } from "@/lib/session";
 import { LEGAL_PAGES, legalDoc } from "@/lib/content";
 
 const TABS = [
+  { href: "/admin/metrics", label: "Metrics" },
   { href: "/admin/jobs", label: "Jobs" },
   { href: "/admin/unmatched", label: "Unmatched" },
   { href: "/admin/imports", label: "Imports" },
