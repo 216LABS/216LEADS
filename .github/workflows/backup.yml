@@ -47,7 +47,7 @@ jobs:
           openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:KEY -in "$name" -out "$name.enc"
           rm "$name"
           echo "FILE=$name.enc" >> "$GITHUB_ENV"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.check.outputs.skip != 'true'
         with:
           name: db-backup
