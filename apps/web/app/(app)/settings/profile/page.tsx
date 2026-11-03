@@ -18,7 +18,7 @@ export default async function ProfilePage() {
   if (!active) notFound();
   return (
     <>
-      <SettingsHeader title="Homes you want" sub="Changes show a new count before you save. Every save is kept; revert any time under Scoring recipe." />
+      <SettingsHeader title="Homes you want" sub="Changes show a new count before you save. Every save is kept; revert any time under How we score." />
       <ProfileEditor recipe={active.recipe} multipliers={active.multipliers} versionId={active.id} zips={zips} />
     </>
   );

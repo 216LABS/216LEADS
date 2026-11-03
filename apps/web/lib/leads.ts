@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getSql } from "@216leads/db";
 import { csvCell } from "@216leads/shared";
 import type { ReasonView } from "@/components/lead-bits";
+import { eventTitle } from "./event-title";
 
 export type LeadView = "active" | "won" | "lost" | "skipped" | "all";
 export type LeadChip = "score70" | "sold" | "neighbors" | "citation" | "new_week";
@@ -134,12 +135,6 @@ export interface TimelineItem {
   url?: string | null;
 }
 
-const EVENT_TITLE: Record<string, string> = {
-  permit: "Permit", sale: "Sold", violation: "City violation", condemnation: "Condemnation", demolition: "Demolition",
-  boardup: "Board-up", rental_reg: "Rental registration", coo: "Certificate of occupancy", lead_safe: "Lead-safe certificate",
-  disclosure: "Rental disclosure",
-};
-
 const money = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 /** Spec 9.4 / GET /api/leads/:id. Null when the lead is not this org's (the caller answers 404). */
@@ -172,7 +167,7 @@ export async function getLead(orgId: string, id: string): Promise<LeadDetail | n
     ...events.map((e): TimelineItem => ({
       at: e.event_date,
       kind: e.kind === "permit" || e.kind === "sale" || e.kind === "violation" ? e.kind : "public",
-      title: e.kind === "sale" ? `Sold${e.amount ? ` for ${money(e.amount)}` : ""}` : `${EVENT_TITLE[e.kind] ?? e.kind}${e.raw_type ? `: ${e.raw_type}` : ""}`,
+      title: e.kind === "sale" ? `Sold${e.amount ? ` for ${money(e.amount)}` : ""}` : eventTitle(e.kind, e.raw_type),
       detail: [e.description?.slice(0, 240), e.contractor].filter(Boolean).join(" · ") || null,
       url: e.source_url,
     })),

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Home, Mail, Map, Settings } from "lucide-react";
 import type { ReactNode } from "react";
-import { BRAND, withBase } from "@216leads/shared";
+import { BRAND, tradeLabel, withBase } from "@216leads/shared";
 import { Logo } from "./logo";
 import { ReportProblem } from "./report-problem";
 import { SiteFooter } from "./site-footer";
@@ -67,7 +67,7 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
         </nav>
         <div className="mt-auto px-3 text-xs text-slate">
           <div className="font-semibold text-navy">{orgName}</div>
-          <div className="capitalize">{trade.replace("_", " ")}</div>
+          <div>{tradeLabel(trade)}</div>
           <div className="mt-3 flex flex-col items-start gap-2">
             <Link href="/help" className="focus-ring underline underline-offset-2 hover:text-navy">Help</Link>
             <ReportProblem />

@@ -103,8 +103,8 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25, s
             const c = counts[z];
             return (
               <li key={z} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
-                <span><span className="num font-semibold">{z}</span>{c?.town ? ` ${c.town}` : ""}</span>
-                {c ? <span className="text-slate">: {c.matching.toLocaleString("en-US")} homes match</span> : null}
+                <span><span className="num font-semibold">{z}</span>{c?.town ? ` ${c.town}` : ""}{c ? ":" : ""}</span>
+                {c ? <span className="text-slate">{c.matching.toLocaleString("en-US")} homes match</span> : null}
                 {c?.taken ? <span className="ml-1 rounded-full bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span>
                   : c && showAvailable ? <span className="ml-1 rounded-full bg-won/10 px-2 text-xs font-semibold text-won">Available</span> : null}
                 <button type="button" aria-label={`Remove ${z}`} onClick={() => onChange(zips.filter((x) => x !== z))}

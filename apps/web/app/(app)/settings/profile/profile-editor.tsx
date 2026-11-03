@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { withBase } from "@216leads/shared";
+import { countOf, withBase } from "@216leads/shared";
 import { signalLabel, type Template } from "@216leads/scoring";
 import { Button, Card } from "@/components/ui";
 import { CustomerControlsCard } from "@/components/customer-controls";
@@ -49,7 +49,7 @@ export function ProfileEditor({ recipe: initial, multipliers, versionId, zips }:
     setBusy(false);
     if (!res.ok) return setMsg({ ok: false, text: data.error ?? "Could not save" });
     saved.current = key;
-    setMsg({ ok: true, text: `Saved. ${Number(data.leads ?? 0).toLocaleString("en-US")} homes on your list.` });
+    setMsg({ ok: true, text: `Saved. ${countOf(Number(data.leads ?? 0), "home")} on your list.` });
     router.refresh();
   }
 

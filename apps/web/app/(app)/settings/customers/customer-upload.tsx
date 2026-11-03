@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { customerLinesFromCsv, withBase } from "@216leads/shared";
+import { countOf, customerLinesFromCsv, withBase } from "@216leads/shared";
 import { Card } from "@/components/ui";
 
 export function CustomerUpload({ saved, matched }: { saved: number; matched: number }) {
@@ -18,7 +18,7 @@ export function CustomerUpload({ saved, matched }: { saved: number; matched: num
     const data = await res.json().catch(() => ({}));
     setBusy(false);
     if (!res.ok) return setMsg({ ok: false, text: data.error ?? "Could not upload" });
-    setMsg({ ok: true, text: `${Number(data.saved).toLocaleString("en-US")} addresses saved, ${Number(data.matched).toLocaleString("en-US")} matched to a home we know.` });
+    setMsg({ ok: true, text: `${countOf(Number(data.saved), "address")} saved, ${Number(data.matched).toLocaleString("en-US")} matched to a home we know.` });
     router.refresh();
   }
 

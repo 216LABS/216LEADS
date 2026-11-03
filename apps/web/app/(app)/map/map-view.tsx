@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
 import { Lasso, X } from "lucide-react";
-import { circlePolygon, pointInPolygon, POSTCARD_PRICE_CENTS, titleCase, withBase, type Pt } from "@216leads/shared";
+import { circlePolygon, countOf, pointInPolygon, POSTCARD_PRICE_CENTS, titleCase, type Pt, withBase } from "@216leads/shared";
 import type { EventPoint, HeatCell, LeadPoint, NeighborRing } from "@216leads/ingest";
 import { Button, Card, LinkButton, Select } from "@/components/ui";
 import { ScoreChip } from "@/components/lead-bits";
@@ -331,7 +331,7 @@ export function MapView({ styleUrl, extent, categories, tradeCategory, credits, 
         <span><Dot c={COLORS.navy} /> 65–79</span>
         <span><Dot c={COLORS.mutedPin} /> Under 65</span>
         <span><Dot c={COLORS.won} /> Won job (tap to mail the neighbors)</span>
-        {leadCount ? <span className="ml-auto">{leadCount.n.toLocaleString()} homes{leadCount.truncated ? " (your top 5,000)" : ""}</span> : null}
+        {leadCount ? <span className="ml-auto">{countOf(leadCount.n, "home")}{leadCount.truncated ? " (your top 5,000)" : ""}</span> : null}
       </div>
 
       {error ? <p role="alert" className="text-sm text-lost">{error}</p> : null}
