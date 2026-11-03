@@ -66,7 +66,7 @@ export function Builder({ templates, defaults }: { templates: TplView[]; default
 
   return (
     <section>
-      <h2 className="mb-2 font-bold">Postcards</h2>
+      <h2 className="mb-2 font-semibold">Postcards</h2>
       <Card className="space-y-4 p-5">
         <div>
           <Label htmlFor="tpl">Template</Label>
@@ -118,7 +118,7 @@ export function AutoMailCard({ templates, rule, canEdit }: { templates: TplView[
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   return (
     <section>
-      <h2 className="mb-2 font-bold">Auto-mail</h2>
+      <h2 className="mb-2 font-semibold">Auto-mail</h2>
       <Card className="space-y-4 p-5">
         <fieldset disabled={!canEdit} className="space-y-4">
           <Toggle label={`Mail every new home scoring ${r.min_score}+ that just sold`} description="Runs every morning after the new data lands. Never mails a home twice in 30 days."

@@ -40,7 +40,7 @@ export function DigestForm({ initial, canEdit }: { initial: DigestSettings; canE
     <form onSubmit={save} className="space-y-4">
       <fieldset disabled={!canEdit} className="space-y-4">
         <Card className="space-y-4 p-5">
-          <h2 className="font-bold">Weekly digest</h2>
+          <h2 className="font-semibold">Weekly digest</h2>
           <Toggle label="Send the weekly digest" description="New leads, triggers and what changed, once a week." checked={enabled} onChange={setEnabled} />
           <div>
             <Label htmlFor="day">Day</Label>
@@ -54,7 +54,7 @@ export function DigestForm({ initial, canEdit }: { initial: DigestSettings; canE
           </div>
         </Card>
         <Card className="space-y-3 p-5">
-          <h2 className="font-bold">Return address for postcards</h2>
+          <h2 className="font-semibold">Return address for postcards</h2>
           <p className="text-sm text-slate">Printed on every postcard; undeliverable mail comes back here.</p>
           <div><Label htmlFor="ra-name">Business name</Label><Input id="ra-name" value={addr.name} onChange={set("name")} maxLength={80} /></div>
           <div><Label htmlFor="ra-1">Street address</Label><Input id="ra-1" value={addr.line1} onChange={set("line1")} maxLength={80} autoComplete="address-line1" /></div>

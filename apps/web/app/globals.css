@@ -11,12 +11,27 @@
   --color-signal-700: #9a3412;
   --color-signal-50: #fdeee4;
   --color-paper: #f7f5f0;
-  --color-slate: #4a5563;
+  /* Body-copy gray: 8:1 on paper and white (issue #59 asks for 7:1+; #4a5563 was 6.96:1 on paper). */
+  --color-slate: #434b59;
   --color-line: #e3e0d8;
   --color-won: #2e7d4f;
   --color-won-50: #e6f2eb;
   --color-lost: #b42318;
   --color-lost-50: #fbe9e7;
+  /* Lead status colors (issue #59: theme tokens only, no hex in components). */
+  --color-contacted: #1d4f91;
+  --color-contacted-50: #e8f0fb;
+  --color-quoted: #5b2a91;
+  --color-quoted-50: #f3ecfb;
+  --color-warn: #7a5600;
+  --color-warn-50: #fff4d6;
+  /* Type scale (issue #59): 12 / 14 / 16 / 20 / 28 / 40 px. Two weights: 400 body, 600 headings, scores, primary button. */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-title: 28px;
+  --text-hero: 40px;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --radius-card: 12px;
@@ -33,10 +48,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* 44 px minimum tap targets on interactive controls. */
-.tap {
-  min-height: 44px;
-  min-width: 44px;
+/* 44 px minimum tap targets on interactive controls. In the components layer so a utility
+   (e.g. min-h-12 for 48 px phone actions) can raise it. */
+@layer components {
+  .tap {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 .num {

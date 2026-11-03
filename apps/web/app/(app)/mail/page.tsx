@@ -31,7 +31,7 @@ export default async function MailPage() {
       <PageHeader title="Mail" sub={`${org.postcard_credits} postcard credits left · then $0.99 each`} />
       <div className="space-y-6">
         <section>
-          <h2 className="mb-2 font-bold">Recent batches</h2>
+          <h2 className="mb-2 font-semibold">Recent batches</h2>
           {batches.length ? (
             <Card className="divide-y divide-line">
               {batches.map((b) => (

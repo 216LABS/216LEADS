@@ -18,7 +18,7 @@ export default async function ProspectListsPage() {
     <>
       <PageHeader title="Free lists" sub="A branded sample for a prospect who replied. Links are public, not indexed, and expire after 14 days." />
       <ProspectListForm trades={trades} />
-      <h2 className="mb-2 mt-8 text-lg font-bold">Past lists</h2>
+      <h2 className="mb-2 mt-8 text-lg font-semibold">Past lists</h2>
       <Card className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead><tr className="border-b border-line text-xs uppercase text-slate">

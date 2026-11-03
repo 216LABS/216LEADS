@@ -5,7 +5,7 @@ import { requireOrg } from "@/lib/session";
 import { SettingsHeader } from "@/components/settings-bits";
 import { ProfileEditor } from "./profile-editor";
 
-export const metadata = { title: "Perfect customer" };
+export const metadata = { title: "Homes you want" };
 export const dynamic = "force-dynamic";
 
 // Spec 9.7 Profile: the perfect-customer controls and "what matters most" sliders on the active
@@ -18,7 +18,7 @@ export default async function ProfilePage() {
   if (!active) notFound();
   return (
     <>
-      <SettingsHeader title="Perfect customer" sub="Changes show a new count before you save. Every save is kept; revert any time under Scoring recipe." />
+      <SettingsHeader title="Homes you want" sub="Changes show a new count before you save. Every save is kept; revert any time under Scoring recipe." />
       <ProfileEditor recipe={active.recipe} multipliers={active.multipliers} versionId={active.id} zips={zips} />
     </>
   );

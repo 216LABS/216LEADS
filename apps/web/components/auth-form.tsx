@@ -58,7 +58,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; go
   if (sent) {
     return (
       <div className="card p-6 text-center">
-        <h2 className="text-lg font-bold">Check your email</h2>
+        <h2 className="text-lg font-semibold">Check your email</h2>
         <p className="mt-2 text-sm text-slate">
           We sent a sign-in link to <span className="font-semibold text-navy">{email}</span>.
         </p>

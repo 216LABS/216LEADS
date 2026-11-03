@@ -4,9 +4,9 @@ import { monthlySeries, proofRows, roiMetrics, type MonthPoint } from "@216leads
 import { planLimits, titleCase, withBase } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { monthRange, shiftMonth } from "@/lib/roi";
-import { Card, EmptyState, LinkButton, MetricTile, PageHeader } from "@/components/ui";
+import { buttonClass, Card, EmptyState, LinkButton, MetricTile, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "ROI" };
+export const metadata = { title: "Results" };
 export const dynamic = "force-dynamic";
 
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -47,8 +47,8 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
   if (!planLimits(org.plan).marketTools) {
     return (
       <>
-        <PageHeader title="ROI" />
-        <EmptyState title="The ROI report comes with Pro" action={<LinkButton href="/settings/billing">See plans</LinkButton>}>
+        <PageHeader title="Results" />
+        <EmptyState title="Results come with Pro" action={<LinkButton href="/settings/billing">See plans</LinkButton>}>
           See what you mailed, what you won, and which of your homes later pulled a permit, with the business that got the job.
         </EmptyState>
       </>
@@ -62,13 +62,13 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
   return (
     <>
       <PageHeader
-        title="ROI"
+        title="Results"
         sub={monthLabel(r.month)}
         actions={
           <>
             <LinkButton variant="secondary" href={`/roi?month=${shiftMonth(r.month, -1)}`} aria-label="Previous month">←</LinkButton>
             {!current ? <LinkButton variant="secondary" href={`/roi?month=${shiftMonth(r.month, 1)}`} aria-label="Next month">→</LinkButton> : null}
-            <a href={withBase(`/api/roi/pdf?month=${r.month}`)} className="focus-ring tap inline-flex items-center rounded-[10px] bg-navy px-4 text-sm font-semibold text-white">Download PDF</a>
+            <a href={withBase(`/api/roi/pdf?month=${r.month}`)} className={buttonClass("secondary")}>Download PDF</a>
           </>
         }
       />
@@ -80,10 +80,10 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
         <MetricTile label="Jobs won" value={m.won.toLocaleString("en-US")} tone="won" />
         <MetricTile label="Revenue won" value={money(m.revenue)} tone="won" />
         <MetricTile label="Cost" value={money(m.costSubscription + m.costPostcards)} sub={`Plan ${money(m.costSubscription)} + postcards ${money(m.costPostcards)}`} />
-        <MetricTile label="ROI" value={m.roi === null ? "–" : `${m.roi}×`} sub={m.roi === null ? "No cost yet" : "Revenue ÷ cost"} tone="signal" />
+        <MetricTile label="Return on cost" value={m.roi === null ? "–" : `${m.roi}×`} sub={m.roi === null ? "No cost yet" : "Revenue ÷ cost"} tone="signal" />
       </div>
 
-      <h2 className="mb-2 mt-8 text-lg font-bold">Proof from public records</h2>
+      <h2 className="mb-2 mt-8 text-lg font-semibold">Proof from public records</h2>
       <p className="mb-3 text-sm text-slate">Homes you mailed or reached out to that later pulled a permit for your kind of work, or sold.</p>
       {proof.length ? (
         <Card className="divide-y divide-line">
@@ -109,7 +109,7 @@ export default async function RoiPage({ searchParams }: { searchParams: Promise<
         <Card className="p-5 text-sm text-slate">Nothing yet for {monthLabel(r.month)}. Cities post permits days to weeks after the work, so matches show up later.</Card>
       )}
 
-      <h2 className="mb-3 mt-8 text-lg font-bold">Mailed vs won, last 12 months</h2>
+      <h2 className="mb-3 mt-8 text-lg font-semibold">Mailed vs won, last 12 months</h2>
       <Card className="p-5"><Chart series={series} /></Card>
     </>
   );

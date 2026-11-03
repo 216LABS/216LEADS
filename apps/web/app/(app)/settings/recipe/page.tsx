@@ -7,7 +7,7 @@ import { requireOrg } from "@/lib/session";
 import { UseVersionButton } from "./use-version";
 import { ResetLearnedButton } from "./reset-learned";
 
-export const metadata = { title: "Scoring recipe" };
+export const metadata = { title: "How we score" };
 export const dynamic = "force-dynamic";
 
 const SOURCE_LABEL: Record<string, string> = {
@@ -40,11 +40,11 @@ export default async function RecipePage() {
   return (
     <>
       <p className="mb-2 text-sm"><Link href="/settings" className="text-slate underline underline-offset-2">Settings</Link></p>
-      <PageHeader title="Scoring recipe" sub={`${template.label} · a home becomes a lead at ${template.threshold}+ or when something just happened.`} />
+      <PageHeader title="How we score" sub={`${template.label} · a home becomes a lead at ${template.threshold}+ or when something just happened.`} />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
-          <h2 className="mb-3 font-bold">What we look for</h2>
+          <h2 className="mb-3 font-semibold">What we look for</h2>
           <ul className="space-y-2.5">
             {weights.map(([key, v]) => {
               const m = profile.weights[key] ?? 1;
@@ -63,7 +63,7 @@ export default async function RecipePage() {
           </ul>
         </Card>
         <Card className="p-5">
-          <h2 className="mb-3 font-bold">What moves a home up right away</h2>
+          <h2 className="mb-3 font-semibold">What moves a home up right away</h2>
           <ul className="space-y-2 text-sm">
             {template.triggers.map((t, i) => {
               const c = t.kind === "permit" && t.category ? counts[t.category] : undefined;
@@ -85,7 +85,7 @@ export default async function RecipePage() {
         </Card>
       </div>
 
-      <h2 className="mb-2 mt-8 text-lg font-bold">Learned from your results</h2>
+      <h2 className="mb-2 mt-8 text-lg font-semibold">Learned from your results</h2>
       <Card className="p-5">
         {nudges.length ? (
           <>
@@ -109,7 +109,7 @@ export default async function RecipePage() {
         {nudges.length || learned.learned_since ? <div className="mt-4"><ResetLearnedButton /></div> : null}
       </Card>
 
-      <h2 className="mb-2 mt-8 text-lg font-bold">History</h2>
+      <h2 className="mb-2 mt-8 text-lg font-semibold">History</h2>
       <Card className="divide-y divide-line">
         {versions.map((v) => (
           <div key={v.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">

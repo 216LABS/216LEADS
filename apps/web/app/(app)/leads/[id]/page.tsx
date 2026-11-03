@@ -32,7 +32,7 @@ function facts(f: LeadFacts): [string, string | null][] {
 }
 
 const DOT: Record<TimelineItem["kind"], string> = {
-  permit: "bg-navy", sale: "bg-signal", violation: "bg-lost", public: "bg-slate", note: "bg-won", mail: "bg-[#5b2a91]", status: "bg-line",
+  permit: "bg-navy", sale: "bg-signal", violation: "bg-lost", public: "bg-slate", note: "bg-won", mail: "bg-quoted", status: "bg-line",
 };
 
 export default async function LeadPage({ params }: { params: Promise<{ id: string }> }) {
@@ -50,13 +50,13 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
       <div className="flex flex-wrap items-start gap-4">
         <ScoreChip score={lead.score} size="lg" />
         <div className="min-w-0 flex-1">
-          <h1 className="num text-2xl font-bold">{titleCase(lead.addr_line)}</h1>
+          <h1 className="num text-2xl font-semibold">{titleCase(lead.addr_line)}</h1>
           <p className="text-slate">{titleCase(lead.city)}, OH {lead.zip}</p>
           <div className="mt-2"><TriggerPill label={lead.trigger_label} date={lead.trigger_date} /></div>
         </div>
         <div className="flex items-end gap-2">
           <LeadStatus id={lead.id} status={lead.status} wonAmount={lead.won_amount} lostReason={lead.lost_reason} />
-          {showRing ? <LinkButton variant={lead.status === "won" ? "primary" : "secondary"} href={`/map?ring=${lead.parcel_key}`}>Neighbor ring</LinkButton> : null}
+          {showRing ? <LinkButton variant={lead.status === "won" ? "primary" : "secondary"} href={`/map?ring=${lead.parcel_key}`}>Mail the neighbors</LinkButton> : null}
           <LinkButton href={`/mail/send?leads=${lead.id}`}>Mail</LinkButton>
         </div>
       </div>
@@ -64,20 +64,20 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
       <div className="grid gap-4 lg:grid-cols-[3fr_2fr]">
         <div className="space-y-4">
           <Card className="p-5">
-            <h2 className="mb-3 font-bold">Why this home</h2>
+            <h2 className="mb-3 font-semibold">Why this home</h2>
             <ReasonList reasons={lead.reasons} links />
           </Card>
           {lead.pitch ? (
             <Card className="p-5">
               <div className="mb-2 flex items-center justify-between gap-3">
-                <h2 className="font-bold">Suggested pitch</h2>
+                <h2 className="font-semibold">Suggested pitch</h2>
                 <CopyButton text={lead.pitch} />
               </div>
               <p className="text-slate">{lead.pitch}</p>
             </Card>
           ) : null}
           <Card className="p-5">
-            <h2 className="mb-3 font-bold">Timeline</h2>
+            <h2 className="mb-3 font-semibold">Timeline</h2>
             <NoteBox id={lead.id} />
             {lead.timeline.length ? (
               <ol className="mt-4 space-y-3">
@@ -98,7 +98,7 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
           </Card>
         </div>
         <Card className="h-fit p-5">
-          <h2 className="mb-3 font-bold">Home facts</h2>
+          <h2 className="mb-3 font-semibold">Home facts</h2>
           <dl className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
             {facts(lead.facts).filter(([, v]) => v).map(([k, v]) => (
               <div key={k}>

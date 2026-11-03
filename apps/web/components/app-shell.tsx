@@ -8,12 +8,12 @@ import { BRAND, withBase } from "@216leads/shared";
 import { Logo } from "./logo";
 import { ReportProblem } from "./report-problem";
 import { SiteFooter } from "./site-footer";
-import { LinkButton } from "./ui";
+import { buttonClass, LinkButton } from "./ui";
 
 function LockPanel({ kind }: { kind: "locked" | "canceled" }) {
   return (
     <div className="card mx-auto max-w-lg p-6 text-center" role="alert">
-      <h1 className="text-xl font-bold">{kind === "canceled" ? "Your plan ended" : "Your trial ended"}</h1>
+      <h1 className="text-xl font-semibold">{kind === "canceled" ? "Your plan ended" : "Your trial ended"}</h1>
       <p className="mt-2 text-slate">
         Pick a plan to keep getting homes. Your leads, notes and history are all still here.
       </p>
@@ -27,7 +27,7 @@ const TABS = [
   { href: "/leads", label: "Leads", icon: Home },
   { href: "/map", label: "Map", icon: Map },
   { href: "/mail", label: "Mail", icon: Mail },
-  { href: "/roi", label: "ROI", icon: BarChart3 },
+  { href: "/roi", label: "Results", icon: BarChart3 },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -39,7 +39,8 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
   const path = usePathname();
   const active = (href: string) => path === href || path.startsWith(`${href}/`);
   return (
-    <div className="min-h-dvh md:flex">
+    // --app-header-h: the phone header's height, so sticky bars below it line up (issue #59).
+    <div className="min-h-dvh [--app-header-h:56px] md:flex md:[--app-header-h:0px]">
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-line bg-white px-3 py-5 md:flex">
         <Link href="/leads" className="focus-ring mb-6 px-2">
           <Logo />
@@ -50,8 +51,8 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
               key={t.href}
               href={t.href}
               className={clsx(
-                "focus-ring tap flex items-center gap-3 rounded-[10px] px-3 text-sm font-semibold",
-                active(t.href) ? "bg-navy text-white" : "text-slate hover:bg-navy-50 hover:text-navy",
+                "focus-ring tap flex items-center gap-3 rounded-[10px] border-l-2 px-3 text-sm",
+                active(t.href) ? "border-signal bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50 hover:text-navy",
               )}
             >
               <t.icon className="h-5 w-5" aria-hidden />
@@ -59,7 +60,7 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
             </Link>
           ))}
           {isAdmin ? (
-            <Link href="/admin/jobs" className={clsx("focus-ring tap flex items-center gap-3 rounded-[10px] px-3 text-sm font-semibold", active("/admin") ? "bg-navy text-white" : "text-slate hover:bg-navy-50")}>
+            <Link href="/admin/metrics" className={clsx("focus-ring tap flex items-center gap-3 rounded-[10px] border-l-2 px-3 text-sm", active("/admin") ? "border-signal bg-navy-50 font-semibold text-navy" : "border-transparent text-slate hover:bg-navy-50")}>
               Admin
             </Link>
           ) : null}
@@ -78,13 +79,13 @@ export function AppShell({ children, orgName, trade, banner, isAdmin, locked }: 
       </aside>
 
       <div className="min-w-0 flex-1 pb-24 md:pb-8">
-        <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-paper/95 px-4 py-2 backdrop-blur md:hidden">
+        <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-line bg-paper/95 px-4 backdrop-blur md:hidden">
           <Link href="/leads" className="focus-ring">
             <Logo />
           </Link>
-          <span className="flex max-w-[55%] items-center gap-3 text-xs font-semibold text-slate">
+          <span className="flex max-w-[55%] items-center gap-2 text-xs text-slate">
             <span className="truncate">{orgName}</span>
-            <Link href="/help" className="focus-ring tap inline-flex shrink-0 items-center rounded-full border border-line px-3 text-xs font-semibold text-navy">Help</Link>
+            <Link href="/help" className={buttonClass("ghost", "shrink-0 px-2 text-xs")}>Help</Link>
           </span>
         </header>
         {banner}
