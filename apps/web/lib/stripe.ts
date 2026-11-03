@@ -1,7 +1,7 @@
 import "server-only";
 // Stripe client (spec 11, decision 11): test keys only outside production; no key = billing off.
 import Stripe from "stripe";
-import { assertKeyAllowed } from "@216leads/shared";
+import { assertKeyAllowed, FOUNDING_SPOTS } from "@216leads/shared";
 
 let client: Stripe | null | undefined;
 
@@ -13,7 +13,7 @@ export function stripe(): Stripe | null {
   return (client = new Stripe(key, { maxNetworkRetries: 2, timeout: 20_000 }));
 }
 
-export const FOUNDING_SPOTS = 20;
+export { FOUNDING_SPOTS } from "@216leads/shared";
 let founding: { at: number; left: number } | null = null;
 
 /**

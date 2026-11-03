@@ -19,6 +19,7 @@ import { mailFromEnv } from "./mail/provider";
 import { runAttribution } from "./attribution";
 import { runLearned } from "./learned";
 import { runMonthlySummary } from "./monthly";
+import { runMetricsSnapshot } from "./metrics";
 
 export interface JobOpts extends ScopeOpts {
   since?: string;
@@ -49,6 +50,7 @@ export const JOBS: Record<string, { fn: JobFn; describe: string }> = {
   attribution: { fn: (sql, o) => runAttribution(sql, o.org), describe: "Attribute later permits/sales at touched homes (won / lost to a competitor)" },
   digest: { fn: (sql, o) => runDigest(sql, { org: o.org, force: o.full }), describe: "Weekly digest for orgs whose day is today, 06:00 ET+ (--full sends now)" },
   lifecycle: { fn: (sql) => runLifecycle(sql), describe: "Lifecycle email: day-3 check-in, trial ending (day 11), monthly summary on the 1st" },
+  metrics: { fn: (sql) => runMetricsSnapshot(sql), describe: "Business metrics snapshot into metrics_daily (also runs with lifecycle)" },
   monthly_summary: { fn: (sql, o) => runMonthlySummary(sql, { force: o.full, org: o.org }), describe: "Monthly summary for paying orgs (the 1st, 9 AM ET; --full sends last month's now; --org one org)" },
   automail: { fn: (sql) => runAutomail(sql, mailFromEnv()), describe: "Auto-mail rules, follow-ups, metered postcard reporting" },
 };

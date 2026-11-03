@@ -56,6 +56,10 @@ export function planLimits(plan: string) {
 }
 
 export const POSTCARD_PRICE_CENTS = 99;
+
+/** Founding offer (issue #5): Pro monthly at this price for the first FOUNDING_SPOTS customers. */
+export const FOUNDING_PRO_MONTHLY = 149;
+export const FOUNDING_SPOTS = 20;
 export const MAIL_UNDO_MINUTES = 15;
 export const NO_REPEAT_DAYS = 30;
 export const CSV_DAILY_ROW_CAP = 2000;

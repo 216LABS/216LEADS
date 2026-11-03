@@ -63,7 +63,7 @@ export async function roiMetrics(sql: Sql, orgId: string, from: string, to: stri
       (select count(distinct lead_id) from moves where to_status = 'won')::int as won,
       (select coalesce(sum(l.won_amount), 0) from lead l where l.org_id = ${orgId} and l.id in (select lead_id from moves where to_status = 'won'))::int as revenue,
       (select count(*) from mail_piece p, r where p.org_id = ${orgId} and p.status <> 'canceled' and (p.created_at at time zone ${ET})::date between r.f and r.t)::int as mailed,
-      (select coalesce(sum(p.cost_cents), 0) from mail_piece p, r where p.org_id = ${orgId} and p.status <> 'canceled' and (p.created_at at time zone ${ET})::date between r.f and r.t)::int as postcard_cents`;
+      (select coalesce(sum(p.price_cents), 0) from mail_piece p, r where p.org_id = ${orgId} and p.status <> 'canceled' and (p.created_at at time zone ${ET})::date between r.f and r.t)::int as postcard_cents`;
   const [o] = await sql<{ plan: string; plan_interval: string | null }[]>`select plan, plan_interval from org where id = ${orgId}`;
   const costSubscription = subscriptionCost(o?.plan ?? "trial", o?.plan_interval ?? null, from, to);
   const costPostcards = Math.round(m!.postcard_cents / 100);

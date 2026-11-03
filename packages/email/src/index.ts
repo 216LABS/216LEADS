@@ -13,6 +13,7 @@ export { TrialDay3, trialDay3Subject, type TrialDay3Props } from "./templates/da
 export { MonthlySummary, monthlySummarySubject, type MonthlySummaryProps } from "./templates/monthly";
 
 export { appUrl } from "./url";
+export { signResendPayload, verifyResendWebhook } from "./webhook";
 
 export async function renderEmail(el: ReactElement): Promise<{ html: string; text: string }> {
   const [html, text] = await Promise.all([render(el), render(el, { plainText: true })]);
