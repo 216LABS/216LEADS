@@ -11,7 +11,7 @@ export default function SignupPage() {
       <Link href="/" className="mb-8 self-center">
         <Logo />
       </Link>
-      <h1 className="mb-1 text-center text-2xl font-semibold">Start your 14-day trial</h1>
+      <h1 className="mb-1 text-center text-title font-semibold">Start your 14-day trial</h1>
       <p className="mb-6 text-center text-sm text-slate">No card needed. Takes about 3 minutes.</p>
       <Suspense>
         <AuthForm mode="signup" googleEnabled={process.env.GOOGLE_AUTH_ENABLED === "true"} />

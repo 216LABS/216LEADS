@@ -12,7 +12,7 @@ export default function OptoutPage() {
     <div className="mx-auto max-w-md px-4 py-10">
       {site ? <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer /> : null}
       <Logo />
-      <h1 className="mt-6 text-2xl font-semibold">Stop mail to your home</h1>
+      <h1 className="mt-6 text-title font-semibold">Stop mail to your home</h1>
       <p className="mt-2 text-slate">
         Enter your street address and ZIP. No business using {BRAND.name} will mail this address again. We only keep the address, nothing else.
       </p>

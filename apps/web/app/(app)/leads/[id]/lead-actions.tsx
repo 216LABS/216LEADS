@@ -42,7 +42,7 @@ export function LeadStatus({ id, status, wonAmount, lostReason }: { id: string; 
   return (
     <div className="w-full sm:w-auto">
       <label className="block">
-        <span className="mb-1 block text-xs font-semibold text-slate">Status</span>
+        <span className="sr-only mb-1 text-xs text-slate md:not-sr-only md:block">Status</span>
         <Select value={pending ?? status} disabled={busy} aria-label="Status"
           onChange={(e) => {
             const v = e.target.value;
@@ -59,7 +59,7 @@ export function LeadStatus({ id, status, wonAmount, lostReason }: { id: string; 
           void save({ status: "won", won_amount: Number.isFinite(n) && amount.trim() ? n : null });
         }}>
           <Input aria-label="Job amount in dollars" inputMode="numeric" placeholder="Job amount ($)" value={amount} onChange={(e) => setAmount(e.target.value)} autoFocus />
-          <Button type="submit" disabled={busy}>Save</Button>
+          <Button type="submit" variant="navy" disabled={busy}>Save</Button>
         </form>
       ) : null}
       {pending === "lost" ? (
@@ -70,7 +70,7 @@ export function LeadStatus({ id, status, wonAmount, lostReason }: { id: string; 
           <Select aria-label="Why was it lost?" value={reason} onChange={(e) => setReason(e.target.value)}>
             {LOST.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
           </Select>
-          <Button type="submit" disabled={busy}>Save</Button>
+          <Button type="submit" variant="navy" disabled={busy}>Save</Button>
         </form>
       ) : null}
       {pending ? <button type="button" className="mt-1 text-xs text-slate underline" onClick={() => setPending(null)}>Cancel</button> : null}

@@ -102,7 +102,7 @@ export function Confirm({ answers, initial, onBack, refToken }: { answers: Wizar
         {draft.via === "preset" ? <Badge className="mt-1">Started from our {draft.recipe.label} preset</Badge> : null}
         <p className="mt-2 text-sm text-slate">{draft.summary}</p>
         <p className="mt-4" aria-live="polite">
-          <span className="num text-3xl font-semibold text-signal-600">{draft.count.toLocaleString("en-US")}</span>{" "}
+          <span className="num text-title font-semibold text-signal-600">{draft.count.toLocaleString("en-US")}</span>{" "}
           <span className="text-sm text-slate">{counting ? "counting…" : `homes in your area match right now`}</span>
         </p>
         {draft.zips.length > 1 ? (

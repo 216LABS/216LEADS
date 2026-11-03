@@ -10,7 +10,7 @@ export default async function SampleIndex({ searchParams }: { searchParams: Prom
   if (sp.zip && /^\d{5}$/.test(sp.zip.trim())) redirect(`/sample/${trade}/${sp.zip.trim()}`);
   return (
     <section className="mx-auto max-w-xl px-4 py-12">
-      <h1 className="text-3xl font-extrabold tracking-tight">See your sample</h1>
+      <h1 className="text-title font-semibold leading-tight tracking-tight">See your sample</h1>
       <p className="mt-2 text-slate">Real counts from this week&apos;s public records for your trade in one ZIP code. House numbers are hidden.</p>
       <Card className="mt-6 p-5">
         <form action={withBase("/sample")} method="get" className="space-y-4">

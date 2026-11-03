@@ -25,25 +25,25 @@ export default async function SamplePage({ params }: { params: Promise<{ trade: 
       <p className="text-sm"><Link href={`/sample?trade=${trade}`} className="text-slate underline">Try another ZIP</Link></p>
       {!s ? (
         <>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight">We don&apos;t cover {zip} yet</h1>
+          <h1 className="mt-2 text-title font-semibold leading-tight tracking-tight">We don&apos;t cover {zip} yet</h1>
           <p className="mt-2 text-slate">We cover Cuyahoga, Lake, Stark and Medina counties. <Link href="/coverage" className="underline">See coverage</Link>.</p>
         </>
       ) : (
         <>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight">{s.matching.toLocaleString("en-US")} homes in {s.zip} {s.town} need a {label} business</h1>
+          <h1 className="mt-2 text-title font-semibold leading-tight tracking-tight">{s.matching.toLocaleString("en-US")} homes in {s.zip} {s.town} need a {label} business</h1>
           <p className="mt-2 text-slate">Out of {s.homes.toLocaleString("en-US")} homes, scored from public records this week.</p>
           <div className="mt-6 grid grid-cols-3 gap-3">
             <MetricTile label="Homes" value={s.homes.toLocaleString("en-US")} />
             <MetricTile label="Good leads" value={s.matching.toLocaleString("en-US")} tone="signal" />
             <MetricTile label="New this week" value={s.newThisWeek.toLocaleString("en-US")} tone="won" />
           </div>
-          <h2 className="mb-2 mt-8 text-lg font-bold">A few of them</h2>
+          <h2 className="mb-2 mt-8 text-lg font-semibold">A few of them</h2>
           <Card className="divide-y divide-line">
             {s.examples.map((e) => (
               <div key={`${e.addr}-${e.score}`} className="p-4">
                 <div className="flex justify-between gap-3">
                   <span className="font-semibold">{e.addr}, {e.city}</span>
-                  <span className="num rounded-full bg-signal-50 px-2 text-sm font-bold text-signal-600">{e.score}</span>
+                  <span className="num rounded-full bg-signal-50 px-2 text-sm font-semibold text-signal-600">{e.score}</span>
                 </div>
                 {e.trigger ? <div className="mt-1 text-sm font-semibold text-won">{e.trigger}</div> : null}
                 <ul className="mt-1 text-sm text-slate">{e.reasons.map((r) => <li key={r}>{r}</li>)}</ul>

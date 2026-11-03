@@ -13,7 +13,7 @@ import { buttonClass, LinkButton } from "./ui";
 function LockPanel({ kind }: { kind: "locked" | "canceled" }) {
   return (
     <div className="card mx-auto max-w-lg p-6 text-center" role="alert">
-      <h1 className="text-xl font-semibold">{kind === "canceled" ? "Your plan ended" : "Your trial ended"}</h1>
+      <h1 className="text-lg font-semibold">{kind === "canceled" ? "Your plan ended" : "Your trial ended"}</h1>
       <p className="mt-2 text-slate">
         Pick a plan to keep getting homes. Your leads, notes and history are all still here.
       </p>
