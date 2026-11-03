@@ -1,9 +1,16 @@
 import { createHmac } from "node:crypto";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
+import { loadEnv } from "@216leads/db";
 import { LiveMailRefusedError, lobProvider } from "./provider";
-import { personalize, renderPostcard, utmUrl } from "./templates";
+import { optoutDisplayUrl, personalize, renderPostcard, utmUrl } from "./templates";
 
 describe("postcards", () => {
+  // The printed opt-out address follows APP_BASE_URL (tested below); these use the brand default.
+  beforeEach(() => {
+    loadEnv(); // the root .env loads lazily; load it first so the delete sticks
+    delete process.env.APP_BASE_URL;
+  });
+
   it("render the opt-out line, the offer and a QR code; never a person's name", async () => {
     const { front, back } = await renderPostcard("neighbors", {
       business: "Acme Roofing", headline: "Your neighbors are re-roofing.", offer: "$150 off", expiry: "Dec 31", phone: "(216) 555-0100",
@@ -45,5 +52,21 @@ describe("Lob provider", () => {
     const sig = createHmac("sha256", "whsec_test").update(`${ts}.${raw}`).digest("hex");
     expect(p.verifyWebhook(raw, new Headers({ "lob-signature": sig, "lob-signature-timestamp": ts }))).toMatchObject({ providerId: "psc_1", status: "returned" });
     expect(p.verifyWebhook(raw, new Headers({ "lob-signature": "0".repeat(64), "lob-signature-timestamp": ts }))).toBeNull();
+  });
+});
+
+describe("printed opt-out address (issue #1)", () => {
+  it("comes from APP_BASE_URL and the base path, falling back to the brand domain", () => {
+    loadEnv();
+    const saved = { a: process.env.APP_BASE_URL, b: process.env.NEXT_PUBLIC_BASE_PATH };
+    delete process.env.APP_BASE_URL;
+    expect(optoutDisplayUrl()).toBe("216labs.dev/homesignal/optout");
+    process.env.APP_BASE_URL = "https://216labs.dev";
+    process.env.NEXT_PUBLIC_BASE_PATH = "/homesignal";
+    expect(optoutDisplayUrl()).toBe("216labs.dev/homesignal/optout");
+    process.env.APP_BASE_URL = "https://homesignal-pr-12.vercel.app/";
+    expect(optoutDisplayUrl()).toBe("homesignal-pr-12.vercel.app/homesignal/optout");
+    if (saved.a === undefined) delete process.env.APP_BASE_URL; else process.env.APP_BASE_URL = saved.a;
+    if (saved.b === undefined) delete process.env.NEXT_PUBLIC_BASE_PATH; else process.env.NEXT_PUBLIC_BASE_PATH = saved.b;
   });
 });
