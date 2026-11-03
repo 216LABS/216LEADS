@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { agoPhrase, BRAND, daysBetween, planLimits, titleCase, todayEt } from "@216leads/shared";
+import { agoPhrase, BRAND, daysBetween, floodZoneText, homeStyle, planLimits, titleCase, todayEt } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { getLead, type LeadFacts, type TimelineItem } from "@/lib/leads";
 import { track } from "@/lib/events";
@@ -27,7 +27,7 @@ function facts(f: LeadFacts): [string, string | null, boolean][] {
   return [
     ["Year built", f.year_built ? String(f.year_built) : null, true],
     ["Living area", f.living_sqft ? `${f.living_sqft.toLocaleString("en-US")} sq ft` : null, true],
-    ["Style", f.style ? titleCase(f.style) : null, false],
+    ["Style", homeStyle(f.style), false],
     ["Lot", f.lot_acres ? `${f.lot_acres.toFixed(2)} acres` : null, true],
     ["Value", money(f.market_value), true],
     ["Last sale", f.last_sale_date ? `${humanDate(f.last_sale_date)}${f.last_sale_price ? ` · ${money(f.last_sale_price)}` : ""}` : null, false],
@@ -35,7 +35,7 @@ function facts(f: LeadFacts): [string, string | null, boolean][] {
     ["Water / sewer", [f.water_source ? WATER[f.water_source] ?? f.water_source : null, f.sewer_type ? SEWER[f.sewer_type] ?? f.sewer_type : null].filter(Boolean).join(" · ") || null, false],
     ["Garage", f.garage_type ? titleCase(f.garage_type) : null, false],
     ["Tree canopy", f.canopy_pct === null ? null : `${Math.round(f.canopy_pct)}%`, true],
-    ["Flood zone", f.flood_zone ? `${f.flood_zone}${f.in_sfha ? " (high risk)" : ""}` : null, false],
+    ["Flood zone", floodZoneText(f.flood_zone, f.in_sfha), false],
   ];
 }
 

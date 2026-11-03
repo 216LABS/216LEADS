@@ -7,3 +7,4 @@ export * from "./app-env";
 export * from "./customers-csv";
 export * from "./billing";
 export * from "./geo";
+export * from "./parcel-text";
