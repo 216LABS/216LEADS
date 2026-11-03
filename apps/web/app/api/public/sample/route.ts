@@ -1,7 +1,7 @@
 // POST /api/public/sample (spec 8): a prospect asks for their trade + ZIP sample. No login;
 // Turnstile when configured; 5 per IP per hour.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { saveProspect } from "@216leads/ingest";
 import { ApiError, body, handle, json } from "@/lib/api";
 import { rateLimit } from "@/lib/ratelimit";
@@ -20,6 +20,6 @@ export const POST = handle(async (req: Request) => {
   if (!(await rateLimit(`sample:${ip}`, 5, 60 * 60_000))) throw new ApiError(429, "Too many requests. Try again in an hour.");
   const b = await body(req, Body);
   if (!(await turnstileOk(b.token, ip))) throw new ApiError(400, "Please complete the check and try again.");
-  await saveProspect(getDirectSql(), b);
+  await saveProspect(getSql(), b);
   return json({ ok: true, message: "Thanks. We'll email your sample within one business day." });
 });

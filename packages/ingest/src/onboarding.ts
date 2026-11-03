@@ -3,7 +3,7 @@
 // and any other columns are dropped in the browser before upload.
 import type { Sql } from "@216leads/db";
 import { normalizeAddress, titleCase, zip5 } from "@216leads/shared";
-import { previewTerritory } from "./score";
+import { loadOrgProfile, previewTerritory } from "./score";
 
 export const CUSTOMER_LINES_MAX = 5000;
 
@@ -72,9 +72,14 @@ export interface AreaCount {
   taken: boolean;
 }
 
-/** Live chip counts for the area step: "44107 Lakewood: 214 homes match". */
+/** Live chip counts for the area step: "44107 Lakewood: 214 homes match". Same scoring as the leads list. */
 export async function areaCounts(sql: Sql, trade: string, zips: string[], orgId: string | null): Promise<AreaCount[]> {
-  const p = await previewTerritory(sql, { trade, zips, orgId });
+  // Issue #72: count with the org's own recipe and "Homes you want" settings once it has them, so the
+  // chips agree with the leads list. The trade preset is only for a trade the org isn't on (sign-up).
+  const own = orgId ? await loadOrgProfile(sql, orgId).catch(() => null) : null;
+  const p = own && own.trade === trade
+    ? await previewTerritory(sql, { template: own.template, profile: own.profile, zips, orgId })
+    : await previewTerritory(sql, { trade, zips, orgId });
   const locks = await sql<{ zip: string }[]>`
     select zip from exclusivity_lock where trade = ${trade} and zip = any(${zips}) and org_id is distinct from ${orgId}`;
   const taken = new Set(locks.map((l) => l.zip));

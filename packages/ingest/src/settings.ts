@@ -75,6 +75,12 @@ export async function createInvite(sql: Sql, orgId: string, email: string): Prom
   return inv!;
 }
 
+/** Cancel an open invite; its link stops working and the seat frees up. False when there was none. */
+export async function revokeInvite(sql: Sql, orgId: string, inviteId: string): Promise<boolean> {
+  const rows = await sql`delete from org_invite where id = ${inviteId} and org_id = ${orgId} and accepted_at is null returning 1`;
+  return rows.length > 0;
+}
+
 export async function listTeam(sql: Sql, orgId: string) {
   const members = await sql<{ user_id: string; email: string; role: string }[]>`
     select m.user_id, u.email::text, m.role from org_member m join auth.users u on u.id = m.user_id

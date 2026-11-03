@@ -42,3 +42,26 @@ export function InviteForm() {
     </Card>
   );
 }
+
+/** Issue #72: open invites hold a seat, so the owner needs a way to take one back. */
+export function CancelInvite({ id, email }: { id: string; email: string }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <>
+      <button type="button" disabled={busy} aria-label={`Cancel invite for ${email}`} className="focus-ring text-navy underline underline-offset-2"
+        onClick={async () => {
+          setBusy(true);
+          setError(null);
+          const res = await fetch(withBase(`/api/settings/team?invite=${id}`), { method: "DELETE" });
+          setBusy(false);
+          if (!res.ok) return setError(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "Could not cancel");
+          router.refresh();
+        }}>
+        Cancel
+      </button>
+      {error ? <span role="alert" className="text-lost">{error}</span> : null}
+    </>
+  );
+}

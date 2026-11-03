@@ -33,9 +33,14 @@ const ORANGE = "#F26B1D";
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
+/** The trade inside a sentence: "HVAC", "roofing". Lower case except acronyms (issue #72). */
+export function tradeInText(trade: string): string {
+  return tradeLabel(trade).split(" ").map((w) => (/^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ");
+}
+
 /** Default headline per design; {street} and {year_built} are filled per home. */
 export function defaultHeadline(design: Design, trade: string): string {
-  const t = tradeLabel(trade).toLowerCase();
+  const t = tradeInText(trade);
   switch (design) {
     case "neighbors":
       return `Your neighbors near {street} are getting ${t} work done.`;

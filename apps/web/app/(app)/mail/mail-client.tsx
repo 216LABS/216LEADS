@@ -31,20 +31,29 @@ export function CancelBatch({ batchId, until }: { batchId: string; until: string
 /** Live front/back preview of a template with the org's details (spec 9.5). */
 export function PostcardFrames({ merge }: { merge: Record<string, unknown> }) {
   const [html, setHtml] = useState<{ front: string; back: string } | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const key = JSON.stringify(merge);
   useEffect(() => {
     const t = setTimeout(() => {
-      post<{ front: string; back: string }>("/api/mail/preview", { merge }).then(setHtml).catch(() => undefined);
+      setFailed(false);
+      post<{ front: string; back: string }>("/api/mail/preview", { merge }).then(setHtml).catch(() => setFailed(true));
     }, 300);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key, attempt]);
   return (
     <div className="grid gap-3 sm:grid-cols-2" aria-label="Postcard preview">
       {(["front", "back"] as const).map((side) => (
         <div key={side} className="overflow-hidden rounded-[10px] border border-line bg-white" style={{ aspectRatio: "6.25 / 4.25" }}>
           {html ? <iframe title={`Postcard ${side}`} srcDoc={html[side]} className="pointer-events-none origin-top-left" style={{ width: 600, height: 408, transform: "scale(var(--s))", border: 0 }}
-            ref={(el) => { if (el?.parentElement) el.style.setProperty("--s", String(el.parentElement.clientWidth / 600)); }} /> : null}
+            ref={(el) => { if (el?.parentElement) el.style.setProperty("--s", String(el.parentElement.clientWidth / 600)); }} />
+            : failed ? (
+              // Issue #72: a failed preview left two blank boxes.
+              <p className="flex h-full items-center justify-center p-4 text-center text-sm text-slate">
+                Preview didn&apos;t load.&nbsp;<button type="button" className="focus-ring text-navy underline" onClick={() => setAttempt((n) => n + 1)}>Try again</button>
+              </p>
+            ) : null}
         </div>
       ))}
     </div>

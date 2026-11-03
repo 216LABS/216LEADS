@@ -3,7 +3,7 @@
 // production: the `email_outbox` table (issue #40), or .data/outbox files with EMAIL_OUTBOX=file.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { getDirectSql, optionalEnv, repoRoot } from "@216leads/db";
+import { getSql, optionalEnv, repoRoot } from "@216leads/db";
 import { appEnv, liveSendsAllowed } from "@216leads/shared";
 
 export interface OpsMessage {
@@ -35,7 +35,7 @@ export async function sendOpsEmail(msg: OpsMessage): Promise<{ via: "resend" | "
     return { via: "resend", ref: ((await res.json()) as { id: string }).id };
   }
   if (optionalEnv("EMAIL_OUTBOX") !== "file") {
-    const [row] = await getDirectSql()<{ id: string }[]>`
+    const [row] = await getSql()<{ id: string }[]>`
       insert into email_outbox (to_emails, subject, html, text, tag)
       values (${to.length ? to : ["(no ALERT_EMAILS set)"]}, ${subject}, '', ${msg.text}, 'ops') returning id::text`;
     return { via: "outbox", ref: `email_outbox:${row!.id}` };

@@ -1,6 +1,6 @@
 // POST /api/admin/prospect-lists (issue #6): build a free list for a named prospect.
 import { z } from "zod";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { createProspectList, PER_ZIP_MAX } from "@216leads/ingest";
 import { hasTemplate } from "@216leads/scoring";
 import { ApiError, body, handle, json } from "@/lib/api";
@@ -17,7 +17,7 @@ const Body = z.object({
 export const POST = handle(async (req: Request) => {
   const user = await requireAdminApi();
   const b = await body(req, Body);
-  const r = await createProspectList(getDirectSql(), { business: b.business, trade: b.trade, zips: b.zips, perZip: b.per_zip, note: b.note ?? null, createdBy: user.id });
+  const r = await createProspectList(getSql(), { business: b.business, trade: b.trade, zips: b.zips, perZip: b.per_zip, note: b.note ?? null, createdBy: user.id });
   if (!r.rows.length) throw new ApiError(422, "No homes qualified in those ZIP codes. Try another trade or ZIP.");
   return json({ id: r.id, homes: r.rows.length, link: `/l/${r.token}`, csv: `/api/admin/prospect-lists/${r.id}/csv` }, 201);
 });

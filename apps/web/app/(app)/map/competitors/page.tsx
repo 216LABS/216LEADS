@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { competitors } from "@216leads/ingest";
 import { CATEGORY_NOUN, TRADE_CATEGORY } from "@216leads/scoring";
 import { planLimits, titleCase, tradeLabel } from "@216leads/shared";
@@ -28,7 +28,7 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
   const days = WINDOWS.find((d) => String(d) === sp.days) ?? 90;
   const tradeCat = TRADE_CATEGORY[org.trade] ?? null;
   const all = sp.all === "1" || !tradeCat;
-  const r = await competitors(getDirectSql(), org.id, { days, category: all ? null : tradeCat });
+  const r = await competitors(getSql(), org.id, { days, category: all ? null : tradeCat });
   const noun = (c: string) => CATEGORY_NOUN[c] ?? c.replace("_", " ");
   const href = (o: { days?: number; all?: boolean }) => {
     const q = new URLSearchParams();

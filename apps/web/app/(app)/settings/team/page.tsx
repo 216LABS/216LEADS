@@ -1,17 +1,17 @@
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { listTeam } from "@216leads/ingest";
 import { planLimits } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { SettingsHeader } from "@/components/settings-bits";
 import { Card } from "@/components/ui";
-import { InviteForm } from "./invite-form";
+import { CancelInvite, InviteForm } from "./invite-form";
 
 export const metadata = { title: "Team" };
 export const dynamic = "force-dynamic";
 
 export default async function TeamPage() {
   const { org, role } = await requireOrg();
-  const { members, invites } = await listTeam(getDirectSql(), org.id);
+  const { members, invites } = await listTeam(getSql(), org.id);
   const seats = planLimits(org.plan).users;
   return (
     <>
@@ -27,7 +27,7 @@ export default async function TeamPage() {
           {invites.map((i) => (
             <div key={i.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
               <span>{i.email}</span>
-              <span className="text-slate">Invited</span>
+              <span className="flex items-center gap-3 text-slate">Invited{role === "owner" ? <CancelInvite id={i.id} email={i.email} /> : null}</span>
             </div>
           ))}
         </Card>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { listProspectLists } from "@216leads/ingest";
 import { appEnv } from "@216leads/shared";
 import { TEMPLATES } from "@216leads/scoring";
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 // Issue #6: "send me the list" in under a minute.
 export default async function ProspectListsPage() {
-  const lists = await listProspectLists(getDirectSql());
+  const lists = await listProspectLists(getSql());
   const trades = Object.values(TEMPLATES).map((t) => ({ key: t.key, label: t.label })).sort((a, b) => a.label.localeCompare(b.label));
   const debug = appEnv() !== "production";
   return (

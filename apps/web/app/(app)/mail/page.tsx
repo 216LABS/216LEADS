@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDirectSql, getSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { templatesFor } from "@216leads/ingest";
 import { titleCase } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
@@ -14,7 +14,7 @@ export default async function MailPage() {
   const { org, role } = await requireOrg();
   const sql = getSql();
   const [templates, batches, [rule]] = await Promise.all([
-    templatesFor(getDirectSql(), org.id, org.trade),
+    templatesFor(getSql(), org.id, org.trade),
     sql<{ batch_id: string; n: number; created_at: string; send_after: string; statuses: string[]; sample: string; open: number }[]>`
       select m.batch_id, count(*)::int as n, min(m.created_at)::text as created_at, min(m.send_after)::text as send_after,
         array_agg(distinct m.status) as statuses, min(p.addr_line) as sample,

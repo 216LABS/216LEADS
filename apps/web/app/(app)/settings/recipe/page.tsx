@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDirectSql, getSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { categoryMatchCounts, ensurePresetVersion, learnedFor, listRecipeVersions, loadOrgProfile } from "@216leads/ingest";
 import { MIN_OUTCOMES, nudgeSentence, signalLabel, triggerSentence } from "@216leads/scoring";
 import { Badge, Card, PageHeader } from "@/components/ui";
@@ -20,7 +20,7 @@ const when = (iso: string) =>
 
 export default async function RecipePage() {
   const { org } = await requireOrg();
-  await ensurePresetVersion(getDirectSql(), org.id, org.trade);
+  await ensurePresetVersion(getSql(), org.id, org.trade);
   const sql = getSql();
   const [{ template, profile }, versions, counts, learned] = await Promise.all([
     loadOrgProfile(sql, org.id),

@@ -3,7 +3,7 @@
 // so nothing reaches a real inbox (D1). `EMAIL_OUTBOX=file` writes .data/outbox files instead (local only).
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { getDirectSql, optionalEnv, repoRoot, type Sql } from "@216leads/db";
+import { getSql, optionalEnv, repoRoot, type Sql } from "@216leads/db";
 import { appEnv, liveSendsAllowed } from "@216leads/shared";
 
 export interface EmailMessage {
@@ -59,7 +59,7 @@ export function outbox(dir = join(repoRoot(), ".data", "outbox")): EmailProvider
 }
 
 /** The database sink: works on read-only serverless filesystems (staging previews). */
-export function dbOutbox(sql: () => Sql = getDirectSql): EmailProvider {
+export function dbOutbox(sql: () => Sql = getSql): EmailProvider {
   return {
     name: "email_outbox",
     async send(msg) {

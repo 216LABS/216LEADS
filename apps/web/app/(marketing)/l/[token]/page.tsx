@@ -1,4 +1,4 @@
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { openProspectList } from "@216leads/ingest";
 import { BRAND, countOf, tradeLabel } from "@216leads/shared";
 import { getTemplate, hasTemplate } from "@216leads/scoring";
@@ -19,7 +19,7 @@ function trialHref(trade: string, zips: string[], token: string) {
 // Issue #6: the free list a prospect gets after replying to outreach.
 export default async function ProspectListPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
-  const list = await openProspectList(getDirectSql(), token, { countView: true });
+  const list = await openProspectList(getSql(), token, { countView: true });
   if (list.status === "missing") {
     return (
       <section className="mx-auto max-w-2xl px-4 py-16 text-center">

@@ -18,8 +18,9 @@ export function PostcardPreview({ business, headline, offer, phone, website, log
       </div>
       <div className="flex aspect-[3/2] flex-col justify-between rounded-[12px] border border-line bg-white p-4 text-navy shadow">
         <div>
-          <p className="font-bold">{offer || "Your offer goes here"}</p>
-          <p className="num mt-1 text-sm">{phone || "(216) 555-0100"}</p>
+          {/* Issue #72: empty fields read as placeholders, not as a real offer or phone number. */}
+          {offer ? <p className="font-bold">{offer}</p> : <p className="font-bold italic text-slate">[Your offer]</p>}
+          {phone ? <p className="num mt-1 text-sm">{phone}</p> : <p className="mt-1 text-sm italic text-slate">[Your phone]</p>}
           {site ? <p className="text-sm text-slate">{site}</p> : null}
         </div>
         <div className="flex items-end justify-between gap-3 text-[10px] leading-snug text-slate">

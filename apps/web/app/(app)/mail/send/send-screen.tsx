@@ -81,6 +81,12 @@ export function SendScreen({ leadIds: initialLeadIds, parcelKeys, templates, fro
             <p className="text-sm">Cost: <span className="font-semibold">{p.credits} credit{p.credits === 1 ? "" : "s"}{p.cost_cents ? ` + $${(p.cost_cents / 100).toFixed(2)}` : ""}</span></p>
             <p className="text-sm text-slate">Arrives {p.delivery}. You have 15 minutes to cancel after sending.</p>
           </>
+        ) : error ? (
+          // The check failed (rate limit, network): say so here instead of "Checking" forever.
+          <p className="text-sm">
+            Couldn&apos;t check these homes.{" "}
+            <button type="button" className="focus-ring text-navy underline underline-offset-2" onClick={() => call(false).then(setP).catch((e) => setError(e.message))}>Try again</button>
+          </p>
         ) : <p className="text-sm text-slate">Checking these homes…</p>}
       </Card>
       {error ? <p role="alert" className="text-sm text-lost">{error}</p> : null}

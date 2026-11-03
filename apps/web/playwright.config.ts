@@ -16,7 +16,10 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   projects: [
-    { name: "phone", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    { name: "phone", use: { ...devices["Pixel 7"] }, testIgnore: /features\.spec/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: /features\.spec/ },
+    // The feature walk signs in as the same QA user, so it runs after the smoke flows rather than
+    // beside them and sharing that user's 60-a-minute API limit (issue #72).
+    { name: "features", use: { ...devices["Desktop Chrome"] }, testMatch: /features\.spec/, dependencies: ["phone", "desktop"] },
   ],
 });

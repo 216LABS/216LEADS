@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { titleCase, withBase } from "@216leads/shared";
 import { ReasonList, ScoreChip, StatusPill, TriggerPill, type ReasonView } from "./lead-bits";
+import { DownloadButton } from "./download-button";
 import { Button, buttonClass } from "./ui";
 
 export interface ListLead {
@@ -118,7 +119,7 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
     const p = new URLSearchParams(sp.toString());
     p.delete("page");
     if (ids?.length) p.set("ids", ids.join(","));
-    return withBase(`/api/leads/export.csv?${p.toString()}`);
+    return `/api/leads/export.csv?${p.toString()}`;
   };
 
   return (
@@ -138,10 +139,10 @@ export function LeadList({ leads }: { leads: ListLead[] }) {
               <Link className={buttonClass("secondary")} href={`/mail/send?leads=${[...selected].join(",")}`}>Mail selected</Link>
               <Button variant="secondary" onClick={() => void change([...selected], "contacted")}>Mark contacted</Button>
               <Button variant="ghost" onClick={() => void change([...selected], "skipped")}>Skip</Button>
-              <a className={buttonClass("ghost")} href={exportHref([...selected])}>Export selected</a>
+              <DownloadButton variant="ghost" href={exportHref([...selected])}>Export selected</DownloadButton>
             </>
           ) : (
-            <a className={buttonClass("ghost", "ml-auto")} href={exportHref()}>Export CSV</a>
+            <DownloadButton variant="ghost" className="ml-auto" href={exportHref()}>Export CSV</DownloadButton>
           )}
         </div>
         <table className="w-full text-sm">

@@ -2,9 +2,9 @@
 // cost preview (credits first, then $0.99 metered), commit with a 15-minute undo, cancel.
 import type { Sql } from "@216leads/db";
 import { appUrl } from "@216leads/email";
-import { MAIL_UNDO_MINUTES, NO_REPEAT_DAYS, POSTCARD_PRICE_CENTS, titleCase, tradeLabel, TRADES } from "@216leads/shared";
+import { MAIL_UNDO_MINUTES, NO_REPEAT_DAYS, POSTCARD_PRICE_CENTS, titleCase, TRADES } from "@216leads/shared";
 import { linkSecretSign } from "./sign";
-import { DESIGNS, defaultHeadline, designLabel, personalize, renderPostcard, type Design, type TemplateMerge } from "./templates";
+import { DESIGNS, defaultHeadline, designLabel, personalize, renderPostcard, tradeInText, type Design, type TemplateMerge } from "./templates";
 import type { Address, MailProvider } from "./provider";
 
 export const REMOVAL_KEYS = ["territory", "suppression", "your_list", "mailed_recently", "no_funds", "bad_address"] as const;
@@ -152,7 +152,7 @@ export async function commitSend(sql: Sql, r: SendRequest, plan: SendPlan, provi
   const sendAfter = new Date(Date.now() + MAIL_UNDO_MINUTES * 60_000);
   const batchId = crypto.randomUUID();
   const headline = m.headline ?? defaultHeadline(design, org!.trade);
-  const offer = m.offer ?? org!.default_offer ?? `Call for a free ${tradeLabel(org!.trade).toLowerCase()} estimate.`;
+  const offer = m.offer ?? org!.default_offer ?? `Call for a free ${tradeInText(org!.trade)} estimate.`;
   let queued = 0;
   let failed = 0;
   for (const p of plan.pieces) {

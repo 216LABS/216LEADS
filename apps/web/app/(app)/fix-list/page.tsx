@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { fixList } from "@216leads/ingest";
 import { CATEGORY_NOUN } from "@216leads/scoring";
-import { titleCase, tradeLabel } from "@216leads/shared";
+import { titleCase, tradeLabel, violationItems } from "@216leads/shared";
 import { requireOrg } from "@/lib/session";
 import { Card, EmptyState, PageHeader } from "@/components/ui";
 
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 // Violations fix list: open city code citations in the area that call for the org's kind of work.
 export default async function FixListPage() {
   const { org } = await requireOrg();
-  const { category, rows } = await fixList(getDirectSql(), org.id, org.trade);
+  const { category, rows } = await fixList(getSql(), org.id, org.trade);
   const noun = category ? CATEGORY_NOUN[category] ?? category : null;
   return (
     <>
@@ -37,7 +37,7 @@ export default async function FixListPage() {
                   {r.lead_id ? <Link href={`/leads/${r.lead_id}`} className="focus-ring hover:underline">{titleCase(r.addr_line)}</Link> : titleCase(r.addr_line)}
                   <span className="font-normal text-slate">, {titleCase(r.city)} {r.zip}</span>
                 </div>
-                <div className="text-slate">{r.description ?? r.raw_type ?? "Code violation"}</div>
+                <Findings items={violationItems(r.description)} fallback={r.raw_type ?? "Code violation"} />
               </div>
               <div className="text-right text-xs text-slate">
                 Cited {r.event_date}
@@ -48,5 +48,22 @@ export default async function FixListPage() {
         </Card>
       )}
     </>
+  );
+}
+
+/** The city's citation text is a long form in capitals; show the first two findings and fold the rest. */
+function Findings({ items, fallback }: { items: string[]; fallback: string }) {
+  if (!items.length) return <div className="text-slate">{fallback}</div>;
+  const [first, rest] = [items.slice(0, 2), items.slice(2)];
+  return (
+    <div className="text-slate">
+      <ul className="list-disc space-y-0.5 pl-5">{first.map((t) => <li key={t} className="line-clamp-2">{t}</li>)}</ul>
+      {rest.length ? (
+        <details className="mt-1">
+          <summary className="cursor-pointer text-navy underline underline-offset-2">{rest.length} more</summary>
+          <ul className="mt-1 list-disc space-y-0.5 pl-5">{rest.map((t) => <li key={t}>{t}</li>)}</ul>
+        </details>
+      ) : null}
+    </div>
   );
 }

@@ -176,7 +176,11 @@ export function resolveSignal(key: string, ts: TemplateSignal, input: ScoreInput
       const hi = profile.filters.price_max ?? null;
       const inside = (lo === null || value >= lo) && (hi === null || value <= hi);
       const near = (lo === null || value >= lo * 0.8) && (hi === null || value <= hi * 1.2);
-      return { v: inside ? 1 : near ? 0.5 : 0, label: `Valued at ${money(value)}, in your range`, evidence: { value, ...rec } };
+      // Issue #72: say where the number comes from (the county's value, not a sale), and only claim
+      // "in your range" when it is.
+      const what = p.market_value ? `County value ${money(value)}` : `Last sold for ${money(value)}`;
+      const label = inside ? `${what}, in your range` : near ? `${what}, just outside your range` : what;
+      return { v: inside ? 1 : near ? 0.5 : 0, label, evidence: { value, ...rec } };
     }
     case "no_gas": {
       if (p.gas_service === null) return null;

@@ -1,6 +1,6 @@
 // POST /api/org/logo: upload the org's logo (PNG, JPEG or WebP, 512 KB max; spec 9.1 step 4).
 // GET returns it for the signed-in org's postcard previews. SVG is refused (it can carry script).
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { ApiError, apiOrg, handle, json } from "@/lib/api";
 
 const MAX = 512 * 1024;
@@ -21,7 +21,7 @@ export const POST = handle(async (req: Request) => {
   const bytes = new Uint8Array(await file.arrayBuffer());
   const type = sniff(bytes);
   if (!type) throw new ApiError(415, "Use a PNG, JPEG or WebP image");
-  const sql = getDirectSql();
+  const sql = getSql();
   await sql`
     insert into org_logo (org_id, content_type, data) values (${org.id}, ${type}, ${Buffer.from(bytes)})
     on conflict (org_id) do update set content_type = excluded.content_type, data = excluded.data, updated_at = now()`;
@@ -31,7 +31,7 @@ export const POST = handle(async (req: Request) => {
 
 export const GET = handle(async () => {
   const { org } = await apiOrg();
-  const [row] = await getDirectSql()<{ content_type: string; data: Buffer }[]>`
+  const [row] = await getSql()<{ content_type: string; data: Buffer }[]>`
     select content_type, data from org_logo where org_id = ${org.id}`;
   if (!row) throw new ApiError(404, "No logo yet");
   return new Response(new Uint8Array(row.data), {

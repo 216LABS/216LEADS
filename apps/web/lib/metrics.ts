@@ -1,6 +1,6 @@
 // Access and data for /admin/metrics (issue #10): admin session, or a read-only bearer token.
 import { createHash, timingSafeEqual } from "node:crypto";
-import { getDirectSql } from "@216leads/db";
+import { getSql } from "@216leads/db";
 import { adminSetting, AT_RISK_DEFAULTS, atRiskOrgs, businessMetrics, metricsSeries, type AtRiskConfig } from "@216leads/ingest";
 import { ApiError } from "@/lib/api";
 import { requireAdminApi } from "@/lib/imports";
@@ -23,7 +23,7 @@ export async function requireMetricsAccess(req: Request): Promise<void> {
 }
 
 export async function metricsPayload() {
-  const sql = getDirectSql();
+  const sql = getSql();
   const cfg = await adminSetting<AtRiskConfig>(sql, "at_risk", AT_RISK_DEFAULTS);
   const [metrics, atRisk, series] = await Promise.all([
     businessMetrics(sql),
