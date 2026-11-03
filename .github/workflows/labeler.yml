@@ -14,6 +14,6 @@ jobs:
     timeout-minutes: 5
     steps:
       # Reads only the changed-file list; never checks out or runs PR code.
-      - uses: actions/labeler@v5
+      - uses: actions/labeler@v7
         with:
           sync-labels: false
