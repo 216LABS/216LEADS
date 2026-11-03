@@ -8,6 +8,7 @@ export function ReportProblem({ className, label = "Report a problem" }: { class
   const dialog = useRef<HTMLDialogElement>(null);
   const [message, setMessage] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [reason, setReason] = useState<string | null>(null);
 
   async function send(e: React.FormEvent) {
     e.preventDefault();
@@ -17,6 +18,8 @@ export function ReportProblem({ className, label = "Report a problem" }: { class
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, page: window.location.href }),
     });
+    // Show the server's reason (for example the hourly limit) rather than a bare "try again".
+    if (!res.ok) setReason(((await res.json().catch(() => ({}))) as { error?: string }).error ?? null);
     setState(res.ok ? "sent" : "error");
     if (res.ok) setMessage("");
   }
@@ -42,7 +45,7 @@ export function ReportProblem({ className, label = "Report a problem" }: { class
             <>
               <p className="text-sm text-slate">What went wrong? We include this page&apos;s address so we can find it.</p>
               <Textarea aria-label="What went wrong" rows={5} required minLength={3} value={message} onChange={(e) => setMessage(e.target.value)} />
-              {state === "error" ? <p role="alert" className="text-sm text-lost">Could not send. Please try again.</p> : null}
+              {state === "error" ? <p role="alert" className="text-sm text-lost">{reason ?? "Could not send. Please try again."}</p> : null}
             </>
           )}
           <div className="flex justify-end gap-2">

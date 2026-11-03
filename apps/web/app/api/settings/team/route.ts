@@ -1,9 +1,9 @@
 // GET /api/settings/team (members + open invites), POST (invite by email, owner only) and
-// DELETE ?invite=<id> (cancel an open invite, owner only; issue #72).
+// DELETE ?invite=<id> (cancel an open invite) or ?member=<user id> (remove someone), owner only (issue #79).
 // The invite link is shown to the owner to share; invite emails come with the email provider (M6).
 import { z } from "zod";
 import { getSql } from "@216leads/db";
-import { createInvite, listTeam, revokeInvite } from "@216leads/ingest";
+import { createInvite, listTeam, removeMember, revokeInvite } from "@216leads/ingest";
 import { planLimits } from "@216leads/shared";
 import { ApiError, apiOrg, body, handle, json } from "@/lib/api";
 import { sendInvite } from "@/lib/email";
@@ -30,9 +30,16 @@ export const POST = handle(async (req: Request) => {
 });
 
 export const DELETE = handle(async (req: Request) => {
-  const { org, role } = await apiOrg();
-  if (role !== "owner") throw new ApiError(403, "Only the account owner can cancel invites");
-  const id = z.string().uuid().parse(new URL(req.url).searchParams.get("invite"));
+  const { org, role, user } = await apiOrg();
+  if (role !== "owner") throw new ApiError(403, "Only the account owner can change the team");
+  const q = new URL(req.url).searchParams;
+  if (q.has("member")) {
+    const id = z.string().uuid().parse(q.get("member"));
+    if (id === user.id) throw new ApiError(422, "You can't remove yourself");
+    if (!(await removeMember(getSql(), org.id, id))) throw new ApiError(404, "They're not on your team, or they're an owner");
+    return json({ ok: true });
+  }
+  const id = z.string().uuid().parse(q.get("invite"));
   if (!(await revokeInvite(getSql(), org.id, id))) throw new ApiError(404, "That invite was already used or canceled");
   return json({ ok: true });
 });

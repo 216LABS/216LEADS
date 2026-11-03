@@ -81,6 +81,12 @@ export async function revokeInvite(sql: Sql, orgId: string, inviteId: string): P
   return rows.length > 0;
 }
 
+/** Take someone off the team (they lose access; their notes and outcomes stay). Owners can't be removed here. */
+export async function removeMember(sql: Sql, orgId: string, userId: string): Promise<boolean> {
+  const rows = await sql`delete from org_member where org_id = ${orgId} and user_id = ${userId} and role <> 'owner' returning 1`;
+  return rows.length > 0;
+}
+
 export async function listTeam(sql: Sql, orgId: string) {
   const members = await sql<{ user_id: string; email: string; role: string }[]>`
     select m.user_id, u.email::text, m.role from org_member m join auth.users u on u.id = m.user_id
@@ -100,10 +106,16 @@ export type AcceptResult = "joined" | "already_member" | "has_other_org" | "inva
 export async function acceptInvite(sql: Sql, token: string, user: { id: string; email: string }): Promise<{ result: AcceptResult; orgId?: string }> {
   if (!/^[0-9a-f]{36}$/.test(token)) return { result: "invalid" };
   return sql.begin(async (tx) => {
-    const [inv] = await tx<{ id: string; org_id: string; email: string }[]>`
-      select id, org_id, email::text from org_invite
-      where token = ${token} and accepted_at is null and created_at > now() - interval '14 days' for update`;
+    const [inv] = await tx<{ id: string; org_id: string; email: string; used: boolean }[]>`
+      select id, org_id, email::text, accepted_at is not null as used from org_invite
+      where token = ${token} and created_at > now() - interval '14 days' for update`;
     if (!inv) return { result: "invalid" as const };
+    if (inv.used) {
+      // The page loads again right after sign-up (issue #79): the person who just joined is sent
+      // on to the team, not told the link was used. Anyone else still gets "invalid".
+      const [m] = await tx`select 1 from org_member where org_id = ${inv.org_id} and user_id = ${user.id}`;
+      return m ? { result: "already_member" as const, orgId: inv.org_id } : { result: "invalid" as const };
+    }
     if (inv.email.toLowerCase() !== user.email.toLowerCase()) return { result: "wrong_email" as const };
     const mine = await tx<{ org_id: string }[]>`select org_id from org_member where user_id = ${user.id}`;
     if (mine.some((m) => m.org_id === inv.org_id)) return { result: "already_member" as const, orgId: inv.org_id };

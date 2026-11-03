@@ -55,14 +55,25 @@ test("leads: every filter, search and sort answers; CSV export downloads", async
   await page.goto("leads");
   // The trade is a display name in sentences ("HVAC homes"), never the raw key (issue #72).
   await expect(page.locator("main")).toContainText(/ HVAC homes /);
-  for (const name of ["Score 70+", "Just sold", "Neighbors", "Citation", "New this week", "Won", "Skipped", "All", "Active"]) {
+  // Search for a street that is on the list, so the step works on any seed.
+  const street = /\d+\s+(.+)/.exec(await page.locator("main [data-lead-link]:visible").first().innerText())?.[1]?.split("\n")[0]?.trim() ?? "";
+  // Chips stack (Score 70+ AND Just sold ...), so turn each one on, check the list answers, and off again.
+  for (const name of ["Score 70+", "Just sold", "Neighbors", "Citation", "New this week"]) {
+    const chip = page.getByRole("button", { name: new RegExp(`^${name}`) }).first();
+    await chip.click();
+    await expect(page).toHaveURL(/chips=/);
+    await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
+    await chip.click();
+    await expect(page).not.toHaveURL(/chips=/);
+  }
+  for (const name of ["Won", "Skipped", "All", "Active"]) {
     await page.getByRole("button", { name: new RegExp(`^${name}`) }).first().click();
     await page.waitForLoadState("networkidle");
     await expect(page.getByRole("heading", { name: "Leads" })).toBeVisible();
   }
   await page.getByRole("combobox", { name: "Sort by" }).selectOption({ index: 1 });
   await page.waitForLoadState("networkidle");
-  await page.getByRole("searchbox", { name: "Search address or town" }).fill("Ave");
+  await page.getByRole("searchbox", { name: "Search address or town" }).fill(street);
   await page.keyboard.press("Enter");
   await page.waitForLoadState("networkidle");
   await expect(page.locator("main [data-lead-link]:visible").first()).toBeVisible();
@@ -169,19 +180,47 @@ test("brand, digest and current customers save", async () => {
   await noErrorAlert();
 });
 
-test("team: an invite gives a link and can be canceled, freeing the seat", async () => {
+test("team: invite, cancel, and a new person joining from the link, then removed", async ({ browser }) => {
+  page.on("dialog", (d) => void d.accept());
   await page.goto("settings/team");
-  // Open invites hold seats; clear any on the QA account so the plan has room.
-  for (let b = page.getByRole("button", { name: /^Cancel invite for / }).first(); await b.isVisible(); ) {
+  // Open invites and earlier walk members hold seats; clear them so the plan has room.
+  for (let b = page.getByRole("button", { name: /^(Cancel invite for |Remove walk-)/ }).first(); await b.isVisible(); ) {
     await saves(() => b.click(), /\/api\/settings\/team/);
     await page.waitForLoadState("networkidle");
   }
-  const who = `walk-${Date.now()}@example.com`;
-  await page.getByRole("textbox", { name: "Invite by email" }).fill(who);
-  await saves(() => page.getByRole("button", { name: "Invite", exact: true }).click(), /\/api\/settings\/team/);
-  await expect(page.getByText(/Send them this link/)).toBeVisible();
-  await saves(() => page.getByRole("button", { name: `Cancel invite for ${who}` }).click(), /\/api\/settings\/team/);
-  await expect(page.getByText(who)).toHaveCount(0);
+  const invite = async (who: string) => {
+    await page.getByRole("textbox", { name: "Invite by email" }).fill(who);
+    await saves(() => page.getByRole("button", { name: "Invite", exact: true }).click(), /\/api\/settings\/team/);
+    await expect(page.getByText(/Send them this link/)).toBeVisible();
+    return (await page.locator("main p.num").innerText()).trim();
+  };
+  const canceled = `walk-${Date.now()}@example.com`;
+  await invite(canceled);
+  await saves(() => page.getByRole("button", { name: `Cancel invite for ${canceled}` }).click(), /\/api\/settings\/team/);
+  await expect(page.getByText(canceled)).toHaveCount(0);
+
+  // A teammate opens the link signed out, creates a login and lands on the team's leads (issue #79:
+  // the page loaded twice after sign-up and said the link was already used).
+  const mate = `walk-${Date.now()}-mate@example.com`;
+  const link = await invite(mate);
+  const ctx = await browser.newContext();
+  const theirs = await ctx.newPage();
+  await theirs.goto(link);
+  await expect(theirs.getByRole("heading", { name: "Join your team" })).toBeVisible();
+  await theirs.getByLabel("Work email").fill(mate);
+  await theirs.getByLabel("Password").fill("walk-mate-password");
+  await theirs.getByRole("checkbox").check();
+  await theirs.getByRole("button", { name: "Create account" }).click();
+  await expect(theirs.getByRole("heading", { name: "Leads" })).toBeVisible({ timeout: 20_000 });
+  await expect(theirs.getByText("couldn’t add you")).toHaveCount(0);
+  await ctx.close();
+
+  // The owner takes them off again, which frees the seat for the next run.
+  await page.goto("settings/team");
+  await expect(page.getByText(mate)).toBeVisible();
+  await saves(() => page.getByRole("button", { name: `Remove ${mate}` }).click(), /\/api\/settings\/team/);
+  await page.waitForLoadState("networkidle");
+  await expect(page.getByText(mate)).toHaveCount(0);
 });
 
 test("your account: password change works and checks the two match", async () => {

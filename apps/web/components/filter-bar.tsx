@@ -24,16 +24,23 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
   const sp = useSearchParams();
   const [q, setQ] = useState(sp.get("q") ?? "");
   const [pending, start] = useTransition();
-  const chips = new Set((sp.get("chips") ?? "").split(",").filter(Boolean));
-  const view = sp.get("view") ?? "active";
+  // The filters as last tapped. The URL changes at once but the page re-renders in a transition, so
+  // reading `sp` alone made a second tap before that render undo the first (a chip toggled off came
+  // back on). Follow the URL whenever it settles.
+  const [params, setParams] = useState(() => sp.toString());
+  useEffect(() => setParams(sp.toString()), [sp]);
+  const cur = new URLSearchParams(params);
+  const chips = new Set((cur.get("chips") ?? "").split(",").filter(Boolean));
+  const view = cur.get("view") ?? "active";
 
   function go(patch: Record<string, string | null>) {
-    const next = new URLSearchParams(sp.toString());
+    const next = new URLSearchParams(params);
     for (const [k, v] of Object.entries(patch)) {
       if (v === null || v === "") next.delete(k);
       else next.set(k, v);
     }
     next.delete("page");
+    setParams(next.toString());
     start(() => router.replace(`${path}?${next.toString()}`, { scroll: false }));
   }
 
@@ -57,7 +64,7 @@ export function FilterBar({ counts, extra }: { counts?: Partial<Record<string, n
         </label>
         <label>
           <span className="sr-only">Sort by</span>
-          <select value={sp.get("sort") ?? "score"} onChange={(e) => go({ sort: e.target.value === "score" ? null : e.target.value })}
+          <select value={cur.get("sort") ?? "score"} onChange={(e) => go({ sort: e.target.value === "score" ? null : e.target.value })}
             className="focus-ring tap rounded-[10px] border border-line bg-white px-2 text-sm text-navy">
             {SORTS.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
           </select>
