@@ -9,8 +9,10 @@ signals:
   home_age: { weight: 15 }
   new_owner: { weight: 20 }
   neighbor_job:gutters: { weight: 15 }
+  active_violation:gutters: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: violation, category: gutters, within_days: 90, boost: 12, label: "City gutter citation" }
   - { kind: permit, category: roofing, within_days: 60, boost: 12, label: "New roof permit (gutters next)" }
   - { kind: permit, category: siding, within_days: 60, boost: 8, label: "New siding permit" }
   - { kind: neighbor_job, category: gutters, within_days: 60, boost: 6, label: "Neighbors replacing gutters" }

@@ -150,7 +150,7 @@ export function scoreHomes(
       filtered.suppressed = (filtered.suppressed ?? 0) + 1;
       continue;
     }
-    const f = passesFilters(home.input, profile);
+    const f = passesFilters(home.input, profile, t);
     if (!f.ok) {
       filtered[f.reason] = (filtered[f.reason] ?? 0) + 1;
       continue;
@@ -176,6 +176,23 @@ export async function loadSuppression(sql: Sql, orgId: string | null) {
   return { keys, norms };
 }
 
+/**
+ * A saved recipe is a copy taken when the account set up (or last changed) its scoring, so later
+ * additions to the trade preset (city citations, for example) never reached it. Add any signal or
+ * trigger the current preset has and the recipe lacks. Nothing saved is changed: the account's
+ * filters, weights (including ones set to 0) and its own triggers stay as they are.
+ */
+export function withNewPresetParts<T extends Template & { preset_base?: string | null }>(recipe: T): T {
+  const base = [recipe.preset_base, recipe.key].find((k): k is string => !!k && hasTemplate(k));
+  if (!base) return recipe;
+  const preset = getTemplate(base);
+  const signals = { ...recipe.signals };
+  for (const [k, s] of Object.entries(preset.signals)) if (!(k in signals)) signals[k] = s;
+  const has = new Set(recipe.triggers.map((t) => `${t.kind}:${"category" in t ? t.category ?? "" : ""}`));
+  const triggers = [...recipe.triggers, ...preset.triggers.filter((t) => !has.has(`${t.kind}:${"category" in t ? t.category ?? "" : ""}`))];
+  return { ...recipe, signals, triggers };
+}
+
 export async function loadOrgProfile(sql: Sql, orgId: string): Promise<{ template: Template; profile: Profile; trade: string }> {
   const [row] = await sql<{ trade: string; template_key: string | null; weights: Profile["weights"] | null; filters: Profile["filters"] | null;
     exclusions: Profile["exclusions"] | null; learned_weights: Profile["learned_weights"] | null }[]>`
@@ -187,7 +204,7 @@ export async function loadOrgProfile(sql: Sql, orgId: string): Promise<{ templat
   const parsed = active ? parseRecipe(active.recipe) : null;
   if (parsed && !parsed.ok) console.error(`org ${orgId}: active recipe ${active!.id} is invalid; using the preset`, parsed.errors);
   const key = row.template_key && hasTemplate(row.template_key) ? row.template_key : row.trade;
-  const template = parsed?.ok ? parsed.recipe : getTemplate(hasTemplate(key) ? key : "roofing");
+  const template = parsed?.ok ? withNewPresetParts(parsed.recipe) : getTemplate(hasTemplate(key) ? key : "roofing");
   const profile = effectiveProfile(template, {
     weights: row.weights ?? {}, filters: row.filters ?? {}, exclusions: row.exclusions ?? {}, learned_weights: row.learned_weights ?? {},
   });

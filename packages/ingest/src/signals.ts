@@ -2,11 +2,21 @@
 // Attribute signals (home age, canopy, gas, ...) are computed by the scoring engine from
 // the parcel row, so only signals that need event history live here:
 //   last_permit:{cat}      latest permit per category (engine turns it into last_permit_age / no_recent_permit)
-//   active_violation:{cat} open city citation in the last 365 days
+//   active_violation:{cat} open city citation in the last 2 years (the city leaves many open that long)
 //   neighbor_job:{cat}     >= 2 permits in the category within 150 m in the last 60 days
 //   excl:condemned / excl:demolished / excl:boarded   exclusion flags
 import type { Sql } from "@216leads/db";
+import { categorize } from "@216leads/scoring";
+import { violationItems } from "@216leads/shared";
 import { withJobRun } from "./runtime";
+
+/** The finding in a citation that concerns this trade, short enough for a reason line; null if none reads cleanly. */
+export function violationFinding(description: string | null, category: string, max = 140): string | null {
+  const items = violationItems(description);
+  const item = items.find((t) => categorize(null, t) === category) ?? items[0];
+  if (!item) return null;
+  return item.length > max ? `${item.slice(0, max - 1).replace(/\s+\S*$/, "")}…` : item;
+}
 
 const TODAY = `(now() at time zone 'America/New_York')::date`;
 
@@ -35,9 +45,24 @@ export async function runSignals(sql: Sql) {
           jsonb_strip_nulls(jsonb_build_object('event_id', e.id, 'date', e.event_date, 'url', e.source_url, 'source', e.source))
         from parcel_event e
         where e.kind = 'violation' and e.is_active and e.parcel_key is not null and e.category is not null
-          and e.event_date >= ${TODAY} - 365
+          and e.event_date >= ${TODAY} - 730
         order by e.parcel_key, e.category, e.event_date desc, e.id desc`);
       ctx.meta.active_violation = b.count;
+      // The finding itself ("Gas valve inoperable; needs heat certification"), so the lead's reason says
+      // what the city found instead of a generic "open citation" (the separate Fix list is gone).
+      const cited = await tx<{ parcel_key: string; key: string; description: string | null }[]>`
+        select s.parcel_key, s.key, e.description from parcel_signal s
+        join parcel_event e on e.id = (s.evidence->>'event_id')::bigint
+        where s.key like 'active_violation:%'`;
+      const findings = cited
+        .map((r) => ({ parcel_key: r.parcel_key, key: r.key, finding: violationFinding(r.description, r.key.slice("active_violation:".length)) }))
+        .filter((r) => r.finding);
+      for (let i = 0; i < findings.length; i += 5000) {
+        await tx`
+          update parcel_signal s set evidence = s.evidence || jsonb_build_object('finding', x.finding)
+          from jsonb_to_recordset(${tx.json(findings.slice(i, i + 5000) as never)}) as x(parcel_key text, key text, finding text)
+          where s.parcel_key = x.parcel_key and s.key = x.key`;
+      }
 
       await tx`delete from parcel_signal where key like 'neighbor_job:%'`;
       const c = await tx.unsafe(`

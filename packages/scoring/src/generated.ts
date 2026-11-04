@@ -88,7 +88,7 @@ export const CATEGORY_PATTERNS: [string, string][] = [
   ],
   [
     "hvac",
-    "\\b(furnaces?|hvac|a/?c|air condition\\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical)\\b"
+    "\\b(furnaces?|hvac|a/?c|air condition\\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical|heating (systems?|units?|equipment|devices?|appliances?|contractor|plant)|heat certification|gas valve)\\b"
   ],
   [
     "plumbing",
@@ -271,6 +271,13 @@ export const TEMPLATES: Record<string, Template> = {
         "label": "Just sold"
       },
       {
+        "kind": "violation",
+        "category": "electrical",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City electrical citation"
+      },
+      {
         "kind": "permit",
         "category": "pool",
         "within_days": 60,
@@ -347,6 +354,9 @@ export const TEMPLATES: Record<string, Template> = {
       },
       "home_age": {
         "weight": 10
+      },
+      "active_violation:fence_deck": {
+        "weight": 10
       }
     },
     "triggers": [
@@ -355,6 +365,13 @@ export const TEMPLATES: Record<string, Template> = {
         "within_days": 30,
         "boost": 10,
         "label": "Just sold"
+      },
+      {
+        "kind": "violation",
+        "category": "fence_deck",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City fence or deck citation"
       },
       {
         "kind": "permit",
@@ -425,6 +442,9 @@ export const TEMPLATES: Record<string, Template> = {
       },
       "neighbor_job:gutters": {
         "weight": 15
+      },
+      "active_violation:gutters": {
+        "weight": 10
       }
     },
     "triggers": [
@@ -433,6 +453,13 @@ export const TEMPLATES: Record<string, Template> = {
         "within_days": 30,
         "boost": 10,
         "label": "Just sold"
+      },
+      {
+        "kind": "violation",
+        "category": "gutters",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City gutter citation"
       },
       {
         "kind": "permit",
@@ -504,6 +531,9 @@ export const TEMPLATES: Record<string, Template> = {
       },
       "owner_occupied": {
         "weight": 10
+      },
+      "active_violation:hvac": {
+        "weight": 10
       }
     },
     "triggers": [
@@ -519,6 +549,13 @@ export const TEMPLATES: Record<string, Template> = {
         "within_days": 60,
         "boost": 8,
         "label": "Neighbors replacing HVAC"
+      },
+      {
+        "kind": "violation",
+        "category": "hvac",
+        "within_days": 90,
+        "boost": 12,
+        "label": "City heating citation"
       }
     ],
     "sliders": [

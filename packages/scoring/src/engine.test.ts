@@ -70,6 +70,16 @@ describe("scoring engine", () => {
     expect(r.score).toBeGreaterThan(0);
   });
 
+  it("lets an open citation in the trade through the owner-occupied filter", () => {
+    const hvac = effectiveProfile(TEMPLATES.hvac!);
+    const cited = { "active_violation:hvac": { value: 1, evidence: { date: "2026-03-13", finding: "Gas valve inoperable" } } };
+    expect(passesFilters(input({}, { owner_occupied_guess: false }), hvac, TEMPLATES.hvac)).toEqual({ ok: false, reason: "not_owner_occupied" });
+    expect(passesFilters(input({ signals: cited }, { owner_occupied_guess: false }), hvac, TEMPLATES.hvac)).toEqual({ ok: true });
+    // A citation for another trade doesn't count.
+    const roofCited = { "active_violation:roofing": { value: 1, evidence: {} } };
+    expect(passesFilters(input({ signals: roofCited }, { owner_occupied_guess: false }), hvac, TEMPLATES.hvac)).toEqual({ ok: false, reason: "not_owner_occupied" });
+  });
+
   it("applies hard filters before scoring", () => {
     const t = TEMPLATES.septic!;
     const p = effectiveProfile(t);

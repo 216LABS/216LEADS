@@ -51,7 +51,7 @@
 
 # Spec categories, spec order
 - [roofing,          '\b(roof|roofs|roofing|re-?roof\w*|shingle[sd]?|tear ?offs?)\b']
-- [hvac,             '\b(furnaces?|hvac|a/?c|air condition\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical)\b']
+- [hvac,             '\b(furnaces?|hvac|a/?c|air condition\w*|heat pumps?|boilers?|mini.?splits?|ductwork|mechanical|heating (systems?|units?|equipment|devices?|appliances?|contractor|plant)|heat certification|gas valve)\b']
 - [plumbing,         '\b(plumb\w*|water heaters?|sewer lines?|drains?|backflow|fixtures?)\b']
 - [electrical,       '\b(electric\w*|service upgrades?|panels?|amp service|ev chargers?|generators?|wiring)\b']
 - [waterproof,       '\b(waterproof\w*|basement walls?|sump\w*|drain tile|foundation repairs?|foundation (wall|structural)( \w+)?|helical piers?|(intelli|wall) ?braces?)\b']
