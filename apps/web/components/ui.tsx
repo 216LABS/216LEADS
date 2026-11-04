@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { COLORS } from "@/lib/theme";
+import { LogoMark } from "./logo";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "navy";
 
@@ -15,7 +15,7 @@ const variants: Record<Variant, string> = {
 
 export function buttonClass(variant: Variant = "primary", extra?: string) {
   return clsx(
-    "tap focus-ring inline-flex items-center justify-center gap-2 rounded-[10px] px-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed",
+    "tap focus-ring inline-flex items-center justify-center gap-2 rounded-[6px] px-4 text-sm font-semibold transition-colors disabled:cursor-not-allowed",
     variants[variant],
     extra,
   );
@@ -41,7 +41,7 @@ export function Badge({ tone = "slate", className, children }: { tone?: "slate" 
     lost: "bg-lost-50 text-lost",
     navy: "bg-navy text-white",
   };
-  return <span className={clsx("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold", tones[tone], className)}>{children}</span>;
+  return <span className={clsx("inline-flex items-center gap-1 rounded-[4px] px-2 py-0.5 text-xs font-semibold", tones[tone], className)}>{children}</span>;
 }
 
 export function Label({ children, hint, htmlFor }: { children: ReactNode; hint?: ReactNode; htmlFor?: string }) {
@@ -54,7 +54,7 @@ export function Label({ children, hint, htmlFor }: { children: ReactNode; hint?:
 }
 
 export const inputClass =
-  "tap focus-ring w-full rounded-[10px] border border-line bg-white px-3 text-base text-navy placeholder:text-slate/60 focus:border-navy";
+  "tap focus-ring w-full rounded-[6px] border border-line bg-white px-3 text-base text-navy placeholder:text-slate/60 focus:border-navy";
 
 export function Input(props: ComponentProps<"input">) {
   return <input {...props} className={clsx(inputClass, props.className)} />;
@@ -72,7 +72,7 @@ export function SegmentedControl<T extends string>({
   value, options, onChange, label,
 }: { value: T; options: { value: T; label: string }[]; onChange: (v: T) => void; label: string }) {
   return (
-    <div role="radiogroup" aria-label={label} className="flex w-full rounded-[10px] border border-line bg-white p-1">
+    <div role="radiogroup" aria-label={label} className="flex w-full rounded-[6px] border border-line bg-white p-1">
       {options.map((o) => (
         <button
           key={o.value}
@@ -81,7 +81,7 @@ export function SegmentedControl<T extends string>({
           aria-checked={value === o.value}
           onClick={() => onChange(o.value)}
           className={clsx(
-            "focus-ring min-h-[40px] flex-1 rounded-[8px] px-2 text-sm font-semibold transition-colors",
+            "focus-ring min-h-[40px] flex-1 rounded-[4px] px-2 text-sm font-semibold transition-colors",
             value === o.value ? "bg-navy text-white" : "text-slate hover:text-navy",
           )}
         >
@@ -99,7 +99,7 @@ export function Toggle({ checked, onChange, label, description }: { checked: boo
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="focus-ring tap flex w-full items-center justify-between gap-4 rounded-[10px] text-left"
+      className="focus-ring tap flex w-full items-center justify-between gap-4 rounded-[6px] text-left"
     >
       <span>
         <span className="block text-sm font-semibold text-navy">{label}</span>
@@ -115,10 +115,7 @@ export function Toggle({ checked, onChange, label, description }: { checked: boo
 export function EmptyState({ title, children, action }: { title: string; children?: ReactNode; action?: ReactNode }) {
   return (
     <div className="card flex flex-col items-center px-6 py-12 text-center">
-      <svg aria-hidden viewBox="0 0 48 48" className="mb-4 h-12 w-12">
-        <path d="M8 24 24 11l16 13v15a2 2 0 0 1-2 2h-9V30h-10v11h-9a2 2 0 0 1-2-2z" fill="none" stroke={COLORS.navy} strokeWidth="2.5" strokeLinejoin="round" />
-        <circle cx="24" cy="7" r="3.5" fill={COLORS.signal} />
-      </svg>
+      <LogoMark className="mb-4 h-10 w-10 opacity-80" />
       <h2 className="text-lg font-semibold">{title}</h2>
       {children ? <div className="mt-2 max-w-md text-sm text-slate">{children}</div> : null}
       {action ? <div className="mt-5">{action}</div> : null}

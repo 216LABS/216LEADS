@@ -93,7 +93,7 @@ export function AuthForm({ mode, googleEnabled }: { mode: "login" | "signup"; go
           <span>By starting your trial you agree to the <Link href="/terms" className="font-semibold text-navy underline">terms</Link> and <Link href="/privacy" className="font-semibold text-navy underline">privacy policy</Link>.</span>
         </label>
       ) : null}
-      {error ? <p role="alert" className="rounded-[10px] bg-lost-50 px-3 py-2 text-sm text-lost">{error}</p> : null}
+      {error ? <p role="alert" className="rounded-[6px] bg-lost-50 px-3 py-2 text-sm text-lost">{error}</p> : null}
       <Button type="submit" className="w-full" disabled={busy}>
         {busy ? "One moment…" : useLink ? "Email me a sign-in link" : mode === "signup" ? "Create account" : "Sign in"}
       </Button>

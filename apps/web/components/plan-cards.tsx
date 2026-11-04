@@ -28,7 +28,7 @@ export function PlanCards({ current, foundingLeft, canBuy, billingOn }: { curren
           options={[{ value: "month", label: "Monthly" }, { value: "year", label: "Yearly (2 months free)" }]} />
       </div>
       {foundingLeft > 0 && interval === "month" ? (
-        <p className="rounded-[10px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
+        <p className="rounded-[6px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
           Founding offer: Pro ${FOUNDING_PRO_MONTHLY}/mo for life, {foundingLeft} of {FOUNDING_SPOTS} spots left.
         </p>
       ) : null}

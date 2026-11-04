@@ -1,18 +1,21 @@
 import clsx from "clsx";
 import { agoPhrase } from "@216leads/shared";
 
+/**
+ * The score as a figure with a thin bar showing how far it is to 100. Orange is kept for 80+, so in
+ * a list of fifty the hot ones still stand out (a solid orange tile on every row made none of them).
+ */
 export function ScoreChip({ score, size = "md" }: { score: number; size?: "md" | "lg" }) {
-  const tone = score >= 80 ? "bg-signal-600 text-white" : score >= 65 ? "bg-navy text-white" : "bg-navy-50 text-navy";
+  const tier = score >= 80 ? "hot" : score >= 65 ? "good" : "fair";
+  // The figure stays navy; the bar carries the tier, so a page of 80+ homes is not a page of orange.
+  const text = tier === "fair" ? "text-slate" : "text-navy";
+  const bar = { hot: "bg-signal", good: "bg-navy", fair: "bg-slate/50" }[tier];
   return (
-    <span
-      aria-label={`Score ${score} out of 100`}
-      className={clsx(
-        "num inline-flex shrink-0 items-center justify-center rounded-[10px] font-bold",
-        size === "lg" ? "h-14 w-14 text-2xl" : "h-10 w-10 text-base",
-        tone,
-      )}
-    >
-      {score}
+    <span aria-label={`Score ${score} out of 100`} className={clsx("inline-flex shrink-0 flex-col items-start", size === "lg" ? "w-16 gap-1.5" : "w-10 gap-1")}>
+      <span className={clsx("num font-semibold leading-none", size === "lg" ? "text-[34px]" : "text-[17px]", text)}>{score}</span>
+      <span aria-hidden className="block h-[3px] w-full bg-line">
+        <span className={clsx("block h-full", bar)} style={{ width: `${Math.max(4, Math.min(100, score))}%` }} />
+      </span>
     </span>
   );
 }
@@ -31,8 +34,8 @@ export function TriggerPill({ label, date }: { label: string | null; date: strin
   const text = triggerText(label, date);
   if (!text) return null;
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-signal-50 px-2.5 py-1 text-xs font-semibold text-signal-600">
-      <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
+    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-signal-600">
+      <span className="h-1.5 w-1.5 bg-signal" aria-hidden />
       {text}
     </span>
   );
@@ -43,15 +46,22 @@ export const STATUS_LABEL: Record<string, string> = {
 };
 
 export function StatusPill({ status }: { status: string }) {
-  const tone: Record<string, string> = {
-    new: "bg-navy-50 text-navy",
-    contacted: "bg-contacted-50 text-contacted",
-    quoted: "bg-quoted-50 text-quoted",
-    won: "bg-won-50 text-won",
-    lost: "bg-lost-50 text-lost",
-    skipped: "bg-line/60 text-slate",
+  // A dot and the word, not a filled pill per row.
+  const tone: Record<string, [string, string]> = {
+    new: ["bg-slate/40", "text-slate"],
+    contacted: ["bg-contacted", "text-contacted"],
+    quoted: ["bg-quoted", "text-quoted"],
+    won: ["bg-won", "text-won"],
+    lost: ["bg-lost", "text-lost"],
+    skipped: ["bg-line", "text-slate"],
   };
-  return <span className={clsx("inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold", tone[status] ?? tone.new)}>{STATUS_LABEL[status] ?? status}</span>;
+  const [dot, text] = tone[status] ?? tone.new!;
+  return (
+    <span className={clsx("inline-flex items-center gap-1.5 text-xs font-semibold", text)}>
+      <span aria-hidden className={clsx("h-2 w-2 rounded-full", dot)} />
+      {STATUS_LABEL[status] ?? status}
+    </span>
+  );
 }
 
 export interface ReasonView {
@@ -61,13 +71,25 @@ export interface ReasonView {
   evidence?: { url?: string; date?: string; contractor?: string | null };
 }
 
-export function ReasonList({ reasons, limit, links = false }: { reasons: ReasonView[]; limit?: number; links?: boolean }) {
-  const list = limit ? reasons.slice(0, limit) : reasons;
+/** "(no Lakewood permit records online)" at the end of an age reason, and the town it names. */
+const NO_PERMITS = /\s*\(no (.+?) permit records online\)$/i;
+
+/** A reason without the no-permits note, for lists and cards. */
+export const shortReason = (label: string) => label.replace(NO_PERMITS, "");
+
+/** Towns whose rows had the no-permits note removed, for one line under a list instead. */
+export function townsWithoutPermits(reasons: ReasonView[][]): string[] {
+  return [...new Set(reasons.flatMap((rs) => rs.map((r) => NO_PERMITS.exec(r.label)?.[1]).filter((t): t is string => !!t)))];
+}
+
+export function ReasonList({ reasons, limit, links = false, compact = false }: { reasons: ReasonView[]; limit?: number; links?: boolean; compact?: boolean }) {
+  // In lists the no-permits note repeated on half the rows; it is said once under the list instead.
+  const list = (limit ? reasons.slice(0, limit) : reasons).map((r) => (compact ? { ...r, label: shortReason(r.label) } : r));
   return (
     <ul className="space-y-1.5">
       {list.map((r) => (
         <li key={r.key} className="flex items-start gap-2 text-sm">
-          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-signal" aria-hidden />
+          <span className="mt-[9px] h-px w-2.5 shrink-0 bg-slate/60" aria-hidden />
           <span className="min-w-0">
             {links && r.evidence?.url ? (
               <a href={r.evidence.url} target="_blank" rel="noreferrer" className="underline decoration-line underline-offset-2 hover:decoration-signal">

@@ -38,7 +38,7 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
     return `/map/competitors${s ? `?${s}` : ""}`;
   };
   const chip = (active: boolean) =>
-    clsx("focus-ring tap inline-flex items-center rounded-full border px-3 text-sm font-semibold", active ? "border-navy bg-navy text-white" : "border-line bg-white text-slate hover:text-navy");
+    clsx("focus-ring tap inline-flex items-center rounded-[4px] border px-3 text-sm font-semibold", active ? "border-navy bg-navy text-white" : "border-line bg-white text-slate hover:text-navy");
 
   return (
     <>
@@ -74,7 +74,7 @@ export default async function CompetitorsPage({ searchParams }: { searchParams: 
                     </div>
                     <div className="mt-1 flex flex-wrap gap-1.5">
                       {c.categories.map((k) => (
-                        <span key={k.category} className="rounded-full bg-navy-50 px-2 py-0.5 text-xs font-semibold text-navy">{noun(k.category)} {k.count}</span>
+                        <span key={k.category} className="rounded-[4px] bg-navy-50 px-2 py-0.5 text-xs font-semibold text-navy">{noun(k.category)} {k.count}</span>
                       ))}
                     </div>
                     <ul className="mt-2 space-y-0.5 text-sm text-slate">

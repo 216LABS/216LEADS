@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Public_Sans } from "next/font/google";
 import { EnvBanner } from "@/components/env-banner";
 import { COLORS } from "@/lib/theme";
 import { siteOrigin } from "@/lib/site";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+// Public Sans: the US government's open typeface, for a product built from public records. Its tabular
+// figures carry the numbers; JetBrains Mono is only for code.
+const sans = Public_Sans({ subsets: ["latin"], variable: "--font-public", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 
 const description = "Know which homes need you next. Built from public records by 216LABS.";
@@ -32,7 +34,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
       <body className="min-h-dvh">
         <EnvBanner />
         {children}

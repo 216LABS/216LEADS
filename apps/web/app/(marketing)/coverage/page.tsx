@@ -37,7 +37,7 @@ export default async function CoveragePage() {
       <h2 className="mb-3 mt-8 text-lg font-semibold">Trades</h2>
       <ul className="flex flex-wrap gap-2">
         {trades.map((t) => (
-          <li key={t.key}><Link href={`/sample?trade=${t.key}`} className="focus-ring tap inline-flex items-center rounded-full border border-line bg-white px-4 text-sm hover:border-navy/30">{t.label}</Link></li>
+          <li key={t.key}><Link href={`/sample?trade=${t.key}`} className="focus-ring tap inline-flex items-center rounded-[4px] border border-line bg-white px-4 text-sm hover:border-navy/30">{t.label}</Link></li>
         ))}
       </ul>
       <p className="mt-3 text-sm text-slate">Tap a trade to see real counts for your ZIP.</p>

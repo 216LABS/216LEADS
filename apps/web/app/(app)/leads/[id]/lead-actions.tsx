@@ -109,7 +109,7 @@ export function NoteBox({ id }: { id: string }) {
 export function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
-    <button type="button" className="focus-ring rounded-[8px] border border-line px-3 py-1 text-sm font-semibold text-navy hover:border-navy"
+    <button type="button" className="focus-ring rounded-[4px] border border-line px-3 py-1 text-sm font-semibold text-navy hover:border-navy"
       onClick={async () => {
         await navigator.clipboard.writeText(text).catch(() => undefined);
         setCopied(true);

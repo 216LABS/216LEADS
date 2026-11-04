@@ -42,7 +42,7 @@ export default async function SamplePage({ params }: { params: Promise<{ trade: 
               <div key={`${e.addr}-${e.score}`} className="p-4">
                 <div className="flex justify-between gap-3">
                   <span className="font-semibold">{e.addr}, {e.city}</span>
-                  <span className="num rounded-full bg-signal-50 px-2 text-sm font-semibold text-signal-600">{e.score}</span>
+                  <span className="num text-sm font-semibold text-navy">{e.score}</span>
                 </div>
                 {e.trigger ? <div className="mt-1 text-sm font-semibold text-won">{e.trigger}</div> : null}
                 <ul className="mt-1 text-sm text-slate">{e.reasons.map((r) => <li key={r}>{r}</li>)}</ul>

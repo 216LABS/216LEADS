@@ -43,5 +43,5 @@ export function ListMap({ points, styleUrl }: { points: { lon: number; lat: numb
     };
   }, [points, styleUrl]);
   if (!points.length) return null;
-  return <div ref={box} className="h-72 w-full overflow-hidden rounded-[12px] border border-line" role="img" aria-label={`Map of ${countOf(points.length, "home")}`} />;
+  return <div ref={box} className="h-72 w-full overflow-hidden rounded-[8px] border border-line" role="img" aria-label={`Map of ${countOf(points.length, "home")}`} />;
 }

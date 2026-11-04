@@ -25,14 +25,14 @@ const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString
 /** A static render of the real lead list, framed like a phone or desktop window. */
 function ProductShot() {
   return (
-    <div className="rounded-[10px] border border-line bg-paper p-4 shadow-sm" aria-label="216 HomeSignal lead list with example homes">
+    <div className="rounded-[6px] border border-line bg-paper p-4 shadow-sm" aria-label="216 HomeSignal lead list with example homes">
       <div className="mb-2 flex items-baseline justify-between">
         <span className="font-semibold">Your top homes this week</span>
         <span className="text-xs text-slate">Roofing · 3 ZIP codes</span>
       </div>
       <ul className="space-y-2">
         {EXAMPLE.map((r) => (
-          <li key={r.address} className="flex gap-4 rounded-[10px] bg-white p-2">
+          <li key={r.address} className="flex gap-4 rounded-[6px] bg-white p-2">
             <ScoreChip score={r.score} />
             <div className="min-w-0">
               <div className="truncate text-sm font-semibold">{r.address}</div>
@@ -43,7 +43,7 @@ function ProductShot() {
           </li>
         ))}
       </ul>
-      <div className="mt-4 flex min-h-11 items-center justify-center rounded-[10px] bg-navy text-sm font-semibold text-white" aria-hidden>Mail these 4</div>
+      <div className="mt-4 flex min-h-11 items-center justify-center rounded-[6px] bg-navy text-sm font-semibold text-white" aria-hidden>Mail these 4</div>
     </div>
   );
 }
@@ -72,8 +72,8 @@ export default async function Landing() {
     <>
       <section className="mx-auto grid max-w-5xl items-center gap-8 px-4 pb-12 pt-12 md:grid-cols-[1.1fr_1fr] md:pt-16">
         <div>
-          <p className="text-sm text-signal-600">Lead lists for Northeast Ohio home-service businesses</p>
-          <h1 className="mt-2 text-title font-extrabold leading-tight tracking-tight md:text-hero">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate">Lead lists for Northeast Ohio home-service businesses</p>
+          <h1 className="mt-2 text-title font-semibold leading-[1.1] tracking-tight md:text-hero">
             The homes in your ZIP codes most likely to need a new roof or furnace, ranked every week.
           </h1>
           <p className="mt-4 text-lg text-slate">Built from public records, with the reason behind every home. Mail the best ones a postcard in two taps.</p>
@@ -94,19 +94,19 @@ export default async function Landing() {
 
       <section className="mx-auto grid max-w-5xl items-center gap-8 px-4 py-12 md:grid-cols-2">
         <div>
-          <h2 className="text-lg font-semibold">Every home comes with its reasons</h2>
+          <h2 className="text-[24px] font-semibold leading-tight">Every home comes with its reasons</h2>
           <p className="mt-2 text-slate">Age, recent sales, permits that are overdue, code violations, neighbors pulling permits. Each reason links to the public record, so you know what to say at the door.</p>
         </div>
-        <div className="rounded-[10px] border border-line bg-white p-6">
+        <div className="rounded-[6px] border border-line bg-white p-6">
           <div className="mb-4 flex items-center gap-4"><ScoreChip score={94} size="lg" /><div><div className="font-semibold">24xx Elmwood Ave</div><div className="text-sm text-slate">Lakewood, OH 44107</div></div></div>
           <h3 className="mb-2 text-sm font-semibold">Why this home</h3>
-          <ul className="space-y-1 text-sm">{REASONS.map((r) => <li key={r} className="flex gap-2"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-signal" aria-hidden />{r}</li>)}</ul>
+          <ul className="space-y-1 text-sm">{REASONS.map((r) => <li key={r} className="flex gap-2"><span className="mt-[9px] h-px w-2.5 shrink-0 bg-slate/60" aria-hidden />{r}</li>)}</ul>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl items-center gap-8 px-4 py-12 md:grid-cols-2">
+      <section className="mx-auto grid max-w-5xl items-center gap-8 px-4 py-12 md:grid-cols-[1.4fr_1fr]">
         <div className="md:order-2">
-          <h2 className="text-lg font-semibold">Mail them a postcard without leaving the list</h2>
+          <h2 className="text-[24px] font-semibold leading-tight">Mail them a postcard without leaving the list</h2>
           <p className="mt-2 text-slate">Your logo, your offer, addressed to "Current Resident". Credits are included with Pro, and anything you send can be canceled for 15 minutes.</p>
         </div>
         <div className="md:order-1">
@@ -115,16 +115,17 @@ export default async function Landing() {
       </section>
 
       <section className="mx-auto max-w-5xl px-4 pb-12">
-        <h2 className="mb-4 text-lg font-semibold">Built for home-service trades</h2>
-        <ul className="flex flex-wrap gap-2">
+        <h2 className="mb-4 text-[24px] font-semibold leading-tight">Built for home-service trades</h2>
+        {/* A plain list of links, not a wall of pills. */}
+        <ul className="grid grid-cols-2 gap-x-6 border-t border-line sm:grid-cols-3 md:grid-cols-4">
           {TRADES.map((t) => (
-            <li key={t.key}><Link href={`/sample?trade=${t.key}`} className="focus-ring tap inline-flex items-center rounded-full border border-line bg-white px-4 text-sm hover:border-navy/30">{t.label}</Link></li>
+            <li key={t.key} className="border-b border-line"><Link href={`/sample?trade=${t.key}`} className="focus-ring tap flex items-center justify-between text-sm hover:text-signal-600">{t.label}<span aria-hidden className="text-slate">&rarr;</span></Link></li>
           ))}
         </ul>
       </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-16">
-        <h2 className="mb-4 text-lg font-semibold">Questions</h2>
+        <h2 className="mb-4 text-[24px] font-semibold leading-tight">Questions</h2>
         <div className="divide-y divide-line border-y border-line">
           {FAQ.map(([q, a]) => (
             <details key={q} className="py-4">

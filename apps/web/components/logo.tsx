@@ -1,12 +1,16 @@
 import clsx from "clsx";
 
-/** House outline with an orange pulse dot at the roof peak. */
-export function LogoMark({ className }: { className?: string }) {
+/**
+ * The mark: a roofline, one lit window (the signal) and the ground line. Drawn, not boxed in an
+ * app tile, so it sits on paper, white or navy. Same geometry as public/icon.svg.
+ */
+export function LogoMark({ className, light }: { className?: string; light?: boolean }) {
+  const ink = light ? "#F7F5F0" : "#0F2A44";
   return (
-    <svg viewBox="0 0 32 32" aria-hidden className={clsx("h-8 w-8", className)}>
-      <rect width="32" height="32" rx="7" fill="#0F2A44" />
-      <path d="M7 16.5 16 9l9 7.5V25a1 1 0 0 1-1 1h-5v-6h-6v6H8a1 1 0 0 1-1-1z" fill="none" stroke="#F7F5F0" strokeWidth="2" strokeLinejoin="round" />
-      <circle cx="16" cy="7.2" r="2.6" fill="#F26B1D" />
+    <svg viewBox="0 0 32 32" aria-hidden className={clsx("h-7 w-7", className)}>
+      <path d="M4 16 16 5.5 28 16" fill="none" stroke={ink} strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" />
+      <rect x="12.5" y="14" width="7" height="7" fill="#F26B1D" />
+      <path d="M7 26.5h18" stroke={ink} strokeWidth="3" strokeLinecap="square" />
     </svg>
   );
 }
@@ -14,9 +18,10 @@ export function LogoMark({ className }: { className?: string }) {
 export function Logo({ className, light }: { className?: string; light?: boolean }) {
   return (
     <span className={clsx("inline-flex items-center gap-2", className)}>
-      <LogoMark />
-      <span className={clsx("text-lg font-extrabold tracking-tight", light ? "text-white" : "text-navy")}>
-        216 <span className="text-signal">HomeSignal</span>
+      <LogoMark light={light} />
+      <span className={clsx("text-[17px] leading-none tracking-tight", light ? "text-white" : "text-navy")}>
+        <span className={clsx("font-medium", light ? "text-white/70" : "text-slate")}>216</span>{" "}
+        <span className="font-semibold">HomeSignal</span>
       </span>
     </span>
   );

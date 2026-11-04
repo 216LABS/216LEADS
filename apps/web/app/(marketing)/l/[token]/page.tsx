@@ -56,11 +56,11 @@ export default async function ProspectListPage({ params }: { params: Promise<{ t
                 {r.year_built ? `Built ${r.year_built}` : ""}{r.year_built && r.last_sale_date ? " · " : ""}{r.last_sale_date ? `Last sold ${r.last_sale_date}` : ""}
               </div>
             </div>
-            <span className="num shrink-0 rounded-full bg-signal-50 px-2 text-sm font-semibold text-signal-600">{r.score}</span>
+            <span className="num shrink-0 text-sm font-semibold text-navy">{r.score}</span>
           </div>
         ))}
       </Card>
-      <div className="mt-8 rounded-[12px] border border-line bg-white p-6 text-center">
+      <div className="mt-8 rounded-[8px] border border-line bg-white p-6 text-center">
         <h2 className="text-lg font-semibold">Want the whole list, updated every week?</h2>
         <LinkButton href={cta} className="mt-4">Start your 14-day free trial</LinkButton>
       </div>

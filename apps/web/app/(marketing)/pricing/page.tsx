@@ -12,19 +12,19 @@ export default async function PricingPage({ searchParams }: { searchParams: Prom
   const foundingLeft = await foundingSpotsLeft();
   const toggle = (on: boolean, label: string) => (
     <Link href={on ? "/pricing?annual=1" : "/pricing"} aria-current={annual === on ? "page" : undefined}
-      className={`focus-ring tap inline-flex items-center rounded-[8px] px-4 text-sm font-semibold ${annual === on ? "bg-navy text-white" : "text-slate"}`}>{label}</Link>
+      className={`focus-ring tap inline-flex items-center rounded-[4px] px-4 text-sm font-semibold ${annual === on ? "bg-navy text-white" : "text-slate"}`}>{label}</Link>
   );
   return (
     <section className="mx-auto max-w-5xl px-4 py-12">
       <h1 className="text-title font-semibold leading-tight tracking-tight">Pricing</h1>
       <p className="mt-2 text-slate">{TRIAL.days}-day free trial, no card needed. Postcards beyond your monthly credits are $0.99 each.</p>
       {foundingLeft > 0 && !annual ? (
-        <p className="mt-4 rounded-[10px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
+        <p className="mt-4 rounded-[6px] bg-signal-50 px-4 py-2 text-sm text-signal-600">
           <span className="font-semibold">Founding offer:</span> Pro ${FOUNDING_PRO_MONTHLY}/mo for life, {foundingLeft} of {FOUNDING_SPOTS} spots left.
           Applied when you pick Pro monthly after your trial.
         </p>
       ) : null}
-      <div className="mt-6 inline-flex rounded-[10px] border border-line bg-white p-1">{toggle(false, "Monthly")}{toggle(true, "Yearly (2 months free)")}</div>
+      <div className="mt-6 inline-flex rounded-[6px] border border-line bg-white p-1">{toggle(false, "Monthly")}{toggle(true, "Yearly (2 months free)")}</div>
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         {Object.values(PLANS).map((p) => (
           <Card key={p.key} className={`flex flex-col p-6 ${p.key === "pro" ? "border-2 border-signal" : ""}`}>

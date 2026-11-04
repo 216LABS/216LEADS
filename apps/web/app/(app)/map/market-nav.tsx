@@ -9,7 +9,7 @@ export function MarketNav({ active }: { active: "map" | "competitors" }) {
       href={href}
       aria-current={active === key ? "page" : undefined}
       className={clsx(
-        "focus-ring tap flex flex-1 items-center justify-center rounded-[8px] px-3 text-sm font-semibold md:flex-none",
+        "focus-ring tap flex flex-1 items-center justify-center rounded-[4px] px-3 text-sm font-semibold md:flex-none",
         active === key ? "bg-navy text-white" : "text-slate hover:text-navy",
       )}
     >
@@ -17,7 +17,7 @@ export function MarketNav({ active }: { active: "map" | "competitors" }) {
     </Link>
   );
   return (
-    <nav aria-label="Market tools" className="mb-4 flex rounded-[10px] border border-line bg-white p-1 md:inline-flex">
+    <nav aria-label="Market tools" className="mb-4 flex rounded-[6px] border border-line bg-white p-1 md:inline-flex">
       {tab("map", "/map", "Map")}
       {tab("competitors", "/map/competitors", "Competitors")}
     </nav>

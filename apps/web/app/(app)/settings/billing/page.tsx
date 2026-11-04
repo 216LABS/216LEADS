@@ -27,7 +27,7 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
   return (
     <>
       <SettingsHeader title="Billing" />
-      {done ? <p role="status" className="mb-4 rounded-[10px] bg-won-50 px-3 py-2 text-sm font-semibold text-won">Thanks! Your plan updates in a few seconds.</p> : null}
+      {done ? <p role="status" className="mb-4 rounded-[6px] bg-won-50 px-3 py-2 text-sm font-semibold text-won">Thanks! Your plan updates in a few seconds.</p> : null}
       <Card className="mb-4 grid gap-3 p-5 text-sm sm:grid-cols-4">
         <div><div className="text-xs text-slate">Plan</div><div className="font-semibold">{limits.label}{org.plan_interval === "year" ? " (yearly)" : ""}{org.founding_member ? " · founding member" : ""}</div></div>
         <div><div className="text-xs text-slate">Status</div><div className="font-semibold">{STATE_TEXT[org.billing_state]}</div></div>

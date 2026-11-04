@@ -82,7 +82,7 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25, s
           <Button type="button" variant="navy" onClick={add}>Add</Button>
         </div>
         {matches.length ? (
-          <ul id="area-matches" role="listbox" className="absolute z-10 mt-1 w-full overflow-hidden rounded-[10px] border border-line bg-white shadow-lg">
+          <ul id="area-matches" role="listbox" className="absolute z-10 mt-1 w-full overflow-hidden rounded-[6px] border border-line bg-white shadow-lg">
             {matches.map((m) => (
               <li key={`${m.kind}-${m.label}`} role="option" aria-selected={false}>
                 <button type="button" onClick={() => addZips(m.zips)} className="focus-ring flex w-full justify-between gap-3 px-3 py-2.5 text-left text-sm hover:bg-navy-50">
@@ -102,11 +102,11 @@ export function TerritoryPicker({ zips, onChange, trade, tradeLabel, max = 25, s
           {zips.map((z) => {
             const c = counts[z];
             return (
-              <li key={z} className="inline-flex items-center gap-1 rounded-full bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
+              <li key={z} className="inline-flex items-center gap-1 rounded-[4px] bg-navy-50 py-1 pl-3 pr-1 text-sm text-navy">
                 <span><span className="num font-semibold">{z}</span>{c?.town ? ` ${c.town}` : ""}{c ? ":" : ""}</span>
                 {c ? <span className="text-slate">{countOf(c.matching, "home")} {c.matching === 1 ? "matches" : "match"}</span> : null}
-                {c?.taken ? <span className="ml-1 rounded-full bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span>
-                  : c && showAvailable ? <span className="ml-1 rounded-full bg-won/10 px-2 text-xs font-semibold text-won">Available</span> : null}
+                {c?.taken ? <span className="ml-1 rounded-[4px] bg-lost/10 px-2 text-xs font-semibold text-lost">Taken for {tradeLabel ?? "your trade"}</span>
+                  : c && showAvailable ? <span className="ml-1 rounded-[4px] bg-won/10 px-2 text-xs font-semibold text-won">Available</span> : null}
                 <button type="button" aria-label={`Remove ${z}`} onClick={() => onChange(zips.filter((x) => x !== z))}
                   className="focus-ring grid h-7 w-7 place-items-center rounded-full text-slate hover:bg-white hover:text-navy">×</button>
               </li>

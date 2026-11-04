@@ -32,9 +32,11 @@
   --text-lg: 20px;
   --text-title: 28px;
   --text-hero: 40px;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-public), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
-  --radius-card: 12px;
+  /* Squarer than the default SaaS look: 8 px cards, 6 px controls. */
+  --radius-card: 8px;
+  --radius-control: 6px;
 }
 
 html,
@@ -57,9 +59,18 @@ body {
   }
 }
 
+/* Figures line up in tables and tiles: the text face with tabular, lining numerals (not a code font). */
 .num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+code, .mono {
   font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.01em;
 }
 
 .card {
