@@ -63,10 +63,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           : `${counts.active.toLocaleString("en-US")} ${trade} ${counts.active === 1 ? "home" : "homes"} in your area`}
       />
       {top.length >= 3 ? <TopFive leads={top} /> : null}
-      <FilterBar
-        counts={{ active: counts.active, won: counts.won, lost: counts.lost, skipped: counts.skipped }}
-        extra={<Link href="/fix-list" className="focus-ring shrink-0 text-sm text-slate underline underline-offset-2 hover:text-navy">Needs a fix</Link>}
-      />
+      {/* City citations are part of the score and the reasons now; the Citation chip lists the homes that have one. */}
+      <FilterBar counts={{ active: counts.active, won: counts.won, lost: counts.lost, skipped: counts.skipped }} />
       {rows.length === 0 ? (
         filtered ? (
           <EmptyState title="No homes match these filters" action={<LinkButton href="/leads" variant="secondary">Clear filters</LinkButton>}>

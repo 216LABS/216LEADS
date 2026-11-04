@@ -9,8 +9,10 @@ signals:
   owner_occupied: { weight: 10 }
   price_band: { weight: 10 }
   home_age: { weight: 10 }
+  active_violation:fence_deck: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: violation, category: fence_deck, within_days: 90, boost: 12, label: "City fence or deck citation" }
   - { kind: permit, category: pool, within_days: 90, boost: 14, label: "New pool permit (fence required)" }
   - { kind: permit, category: new_build, within_days: 90, boost: 12, label: "New home built" }
   - { kind: neighbor_job, category: fence_deck, within_days: 60, boost: 8, label: "Neighbors adding fences" }

@@ -57,6 +57,13 @@ describe("category regex (spec 7.3) on real Lake County permits", () => {
     });
   }
 
+  it("doesn't read the violation form's \"boiler plate\" text as HVAC", () => {
+    const form = "Use this guidesheet for violations not contained in the boiler plate guide sheets.  Enter ordinance number within brackets followed by violation description.";
+    expect(categorize("Lead Violation", `${form} [365.04] (b) FAILURE TO GET A LEAD SAFE CERTIFICATE PER 365.4`)).not.toBe("hvac");
+    expect(categorize("Interior Maintenance", `${form} [369.12]: Needs a heat certification. Gas valve inoperable. The furnace is not maintained.`)).toBe("hvac");
+    expect(categorize(null, "The boiler is leaking and does not heat the dwelling")).toBe("hvac");
+  });
+
   it("lets the permit type decide when the description names the whole project", () => {
     expect(categorize("HEATING/AIR CONDITIONING / Residential", "NEW DWELLING W/ATTACHED GARAGE")).toBe("hvac");
     expect(categorize("FUEL GAS PIPING PERMIT / Residential", "GENERATOR")).toBe("plumbing");

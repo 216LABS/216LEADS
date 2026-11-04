@@ -12,6 +12,7 @@ signals:
   active_violation:electrical: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
+  - { kind: violation, category: electrical, within_days: 90, boost: 12, label: "City electrical citation" }
   - { kind: permit, category: pool, within_days: 60, boost: 10, label: "New pool needs wiring" }
   - { kind: permit, category: hvac, within_days: 60, boost: 8, label: "New HVAC (heat pump circuit)" }
   - { kind: permit, category: garage, within_days: 60, boost: 8, label: "New garage needs power" }

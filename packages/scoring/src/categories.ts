@@ -11,8 +11,12 @@ const SEPARATE_CLAUSE = /\b(separate|seperate|sep)\b\.?[^.]*(\.|$)|[^.]*\bpermit
  * Patterns see "raw_type | description": `^` anchors on the source's own category and
  * `\|` on the start of the description.
  */
+// Cleveland's violation form starts "Use this guidesheet for violations not contained in the boiler
+// plate guide sheets..."; "boiler" filed every such citation (most of them lead-safe) under HVAC.
+const FORM_TEXT = /use this guide ?sheet[^.]*\.(\s*enter ordinance number[^.]*\.)?|\bboiler ?plate\b/gi;
+
 export function categorize(rawType: string | null | undefined, description: string | null | undefined): string | null {
-  const desc = (description ?? "").replace(/\breq['’]?d\./gi, "reqd").replace(SEPARATE_CLAUSE, " ");
+  const desc = (description ?? "").replace(FORM_TEXT, " ").replace(/\breq['’]?d\./gi, "reqd").replace(SEPARATE_CLAUSE, " ");
   const text = `${rawType ?? ""} | ${desc}`;
   for (const [key, re] of COMPILED) if (re.test(text)) return key;
   return null;

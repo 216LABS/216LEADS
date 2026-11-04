@@ -216,7 +216,10 @@ export function resolveSignal(key: string, ts: TemplateSignal, input: ScoreInput
       const s = input.signals[key];
       if (!s) return { v: 0, label: "", evidence: {} };
       const noun = CATEGORY_NOUN[arg ?? ""] ?? arg;
-      return { v: clamp01(s.value), label: `Open city ${noun} citation (${s.evidence.date ?? "this year"})`, evidence: s.evidence };
+      // Say what the city found when we have it; the separate Fix list screen is gone, so this is where it shows.
+      const when = s.evidence.date ? `cited ${s.evidence.date}` : "cited this year";
+      const label = s.evidence.finding ? `City ${noun} citation, ${when}: ${s.evidence.finding}` : `Open city ${noun} citation (${s.evidence.date ?? "this year"})`;
+      return { v: clamp01(s.value), label, evidence: s.evidence };
     }
     case "neighbor_job": {
       if (!input.coverage.permits) return null;

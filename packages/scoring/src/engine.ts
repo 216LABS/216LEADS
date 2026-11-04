@@ -30,7 +30,8 @@ export function effectiveProfile(t: Template, saved?: Partial<Profile> | null): 
 }
 
 /** Hard filters and exclusions, applied before scoring. */
-export function passesFilters(input: ScoreInput, profile: Profile): FilterResult {
+/** `t`, when given, lets a citation the trade scores override "owner-occupied only" (see below). */
+export function passesFilters(input: ScoreInput, profile: Profile, t?: Template): FilterResult {
   const p = input.parcel;
   const f = profile.filters;
   const x = profile.exclusions;
@@ -57,7 +58,10 @@ export function passesFilters(input: ScoreInput, profile: Profile): FilterResult
   if (f.canopy_min && (p.canopy_pct === null || p.canopy_pct < f.canopy_min)) return { ok: false, reason: "canopy" };
   if (f.gas === "gas" && p.gas_service === false) return { ok: false, reason: "gas" };
   if (f.gas === "no_gas" && p.gas_service !== false) return { ok: false, reason: "gas" };
-  if (f.owner_occupied && p.owner_occupied_guess === false) return { ok: false, reason: "not_owner_occupied" };
+  // An open city citation in this trade overrides "owner-occupied only": a landlord told to fix the
+  // heat (or wiring, gutters...) has to hire someone, which makes the home a better lead, not a worse one.
+  const citedForTrade = Object.keys(input.signals).some((k) => k.startsWith("active_violation:") && (profile.weights[k] ?? t?.signals[k]?.weight ?? 0) > 0);
+  if (f.owner_occupied && p.owner_occupied_guess === false && !citedForTrade) return { ok: false, reason: "not_owner_occupied" };
   if (f.sewer_in?.length && (!p.sewer_type || !f.sewer_in.includes(p.sewer_type))) return { ok: false, reason: "sewer" };
   return { ok: true };
 }

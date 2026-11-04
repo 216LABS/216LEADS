@@ -94,6 +94,8 @@ export interface Evidence {
   count?: number;
   contractor?: string | null;
   source?: string;
+  /** What a city citation found, cleaned up ("Gas valve inoperable"); set by the signals job. */
+  finding?: string;
 }
 
 /** A row of parcel_signal. */

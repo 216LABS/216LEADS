@@ -9,9 +9,11 @@ signals:
   no_gas: { weight: 10 }
   living_area: { weight: 10 }
   owner_occupied: { weight: 10 }
+  active_violation:hvac: { weight: 10 }
 triggers:
   - { kind: sale, within_days: 30, boost: 10, label: "Just sold" }
   - { kind: neighbor_job, category: hvac, within_days: 60, boost: 8, label: "Neighbors replacing HVAC" }
+  - { kind: violation, category: hvac, within_days: 90, boost: 12, label: "City heating citation" }
 sliders:
   - { key: last_permit_age:hvac, label: "Furnace/AC age" }
   - { key: new_owner, label: "Just moved in" }

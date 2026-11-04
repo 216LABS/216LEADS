@@ -64,7 +64,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.20 acre lot (top 26% in your area)",
-        "points": 16,
+        "points": 14,
       },
       {
         "evidence": {
@@ -73,7 +73,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1902 (124 yrs old)",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -81,7 +81,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -90,10 +90,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $94,000, in your range",
-        "points": 11,
+        "points": 10,
       },
     ],
-    "score": 47,
+    "score": 43,
     "trigger": null,
   },
   {
@@ -149,7 +149,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
   {
     "home": "cuyahoga:snap0004",
     "pitch": "Sold 6 months ago for $116,000. A free fence quote while they settle in is an easy yes.",
-    "qualifies": true,
+    "qualifies": false,
     "reasons": [
       {
         "evidence": {
@@ -160,7 +160,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "new_owner",
         "label": "Sold 6 months ago for $116,000",
-        "points": 18,
+        "points": 17,
       },
       {
         "evidence": {
@@ -169,7 +169,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1914 (112 yrs old)",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -177,7 +177,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -186,7 +186,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $128,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -195,10 +195,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.32 acre lot (top 58% in your area)",
-        "points": 9,
+        "points": 8,
       },
     ],
-    "score": 59,
+    "score": 53,
     "trigger": null,
   },
   {
@@ -213,7 +213,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.08 acre lot (top 21% in your area)",
-        "points": 17,
+        "points": 15,
       },
       {
         "evidence": {
@@ -222,7 +222,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1920 (106 yrs old)",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -230,7 +230,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -239,10 +239,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $145,000, in your range",
-        "points": 11,
+        "points": 10,
       },
     ],
-    "score": 48,
+    "score": 44,
     "trigger": null,
   },
   {
@@ -260,7 +260,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -269,7 +269,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $179,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -278,7 +278,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.20 acre lot (top 53% in your area)",
-        "points": 10,
+        "points": 9,
       },
       {
         "evidence": {
@@ -287,10 +287,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1932 (94 yrs old)",
-        "points": 10,
+        "points": 9,
       },
     ],
-    "score": 41,
+    "score": 37,
     "trigger": null,
   },
   {
@@ -307,7 +307,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "new_owner",
         "label": "Sold 7 weeks ago for $152,000",
-        "points": 30,
+        "points": 27,
       },
       {
         "evidence": {
@@ -316,7 +316,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.26 acre lot (top 16% in your area)",
-        "points": 18,
+        "points": 16,
       },
       {
         "evidence": {
@@ -324,7 +324,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -333,7 +333,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $196,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -342,10 +342,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1938 (88 yrs old)",
-        "points": 9,
+        "points": 8,
       },
     ],
-    "score": 78,
+    "score": 71,
     "trigger": null,
   },
   {
@@ -404,7 +404,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.08 acre lot (top 47% in your area)",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -412,7 +412,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -421,7 +421,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $230,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -430,10 +430,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1950 (76 yrs old)",
-        "points": 8,
+        "points": 7,
       },
     ],
-    "score": 54,
+    "score": 50,
     "trigger": {
       "boost": 14,
       "date": "2026-10-01",
@@ -517,7 +517,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.32 acre lot (top 5% in your area)",
-        "points": 20,
+        "points": 18,
       },
       {
         "evidence": {
@@ -525,7 +525,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -534,7 +534,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $298,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -546,7 +546,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         "points": 5,
       },
     ],
-    "score": 46,
+    "score": 42,
     "trigger": null,
   },
   {
@@ -609,7 +609,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "lot_size",
         "label": "0.20 acre lot (top 1% in your area)",
-        "points": 21,
+        "points": 19,
       },
       {
         "evidence": {
@@ -617,7 +617,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -626,7 +626,7 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "price_band",
         "label": "County value $349,000, in your range",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -635,10 +635,10 @@ exports[`scoring determinism snapshot (spec 15) > fence 1`] = `
         },
         "key": "home_age",
         "label": "Built 1992 (34 yrs old)",
-        "points": 4,
+        "points": 3,
       },
     ],
-    "score": 46,
+    "score": 41,
     "trigger": null,
   },
   {
@@ -755,7 +755,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
   {
     "home": "cuyahoga:snap0002",
     "pitch": "Built 1902. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
-    "qualifies": true,
+    "qualifies": false,
     "reasons": [
       {
         "evidence": {
@@ -764,7 +764,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -773,7 +773,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1902 (124 yrs old)",
-        "points": 16,
+        "points": 14,
       },
       {
         "evidence": {
@@ -781,7 +781,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -793,7 +793,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 1,
       },
     ],
-    "score": 59,
+    "score": 53,
     "trigger": null,
   },
   {
@@ -852,7 +852,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -861,7 +861,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1914 (112 yrs old)",
-        "points": 16,
+        "points": 14,
       },
       {
         "evidence": {
@@ -872,7 +872,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "new_owner",
         "label": "Sold 6 months ago for $116,000",
-        "points": 12,
+        "points": 11,
       },
       {
         "evidence": {
@@ -880,7 +880,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -892,7 +892,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 2,
       },
     ],
-    "score": 72,
+    "score": 65,
     "trigger": null,
   },
   {
@@ -907,7 +907,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -916,7 +916,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1920 (106 yrs old)",
-        "points": 16,
+        "points": 14,
       },
       {
         "evidence": {
@@ -924,7 +924,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -936,7 +936,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 3,
       },
     ],
-    "score": 61,
+    "score": 55,
     "trigger": null,
   },
   {
@@ -955,7 +955,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -964,7 +964,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1932 (94 yrs old)",
-        "points": 15,
+        "points": 13,
       },
       {
         "evidence": {
@@ -972,7 +972,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -984,7 +984,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 4,
       },
     ],
-    "score": 61,
+    "score": 55,
     "trigger": null,
   },
   {
@@ -999,7 +999,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -1010,7 +1010,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "new_owner",
         "label": "Sold 7 weeks ago for $152,000",
-        "points": 20,
+        "points": 18,
       },
       {
         "evidence": {
@@ -1019,7 +1019,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1938 (88 yrs old)",
-        "points": 14,
+        "points": 13,
       },
       {
         "evidence": {
@@ -1027,7 +1027,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -1039,7 +1039,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 4,
       },
     ],
-    "score": 80,
+    "score": 73,
     "trigger": null,
   },
   {
@@ -1089,7 +1089,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
   {
     "home": "cuyahoga:snap0010",
     "pitch": "Built 1950. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
-    "qualifies": true,
+    "qualifies": false,
     "reasons": [
       {
         "evidence": {
@@ -1098,7 +1098,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -1107,7 +1107,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1950 (76 yrs old)",
-        "points": 12,
+        "points": 11,
       },
       {
         "evidence": {
@@ -1115,7 +1115,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -1124,10 +1124,10 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "living_area",
         "label": "2,000 sq ft (bigger than 53% nearby)",
-        "points": 6,
+        "points": 5,
       },
     ],
-    "score": 60,
+    "score": 54,
     "trigger": null,
   },
   {
@@ -1195,7 +1195,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
   {
     "home": "cuyahoga:snap0014",
     "pitch": "Built 1974. HVAC likely past its 18-yr life. A tune-up and safety check now beats a no-heat call in January.",
-    "qualifies": true,
+    "qualifies": false,
     "reasons": [
       {
         "evidence": {
@@ -1204,7 +1204,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -1212,7 +1212,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -1221,7 +1221,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "home_age",
         "label": "Built 1974 (52 yrs old)",
-        "points": 8,
+        "points": 7,
       },
       {
         "evidence": {
@@ -1230,10 +1230,10 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "living_area",
         "label": "2,440 sq ft (bigger than 74% nearby)",
-        "points": 8,
+        "points": 7,
       },
     ],
-    "score": 58,
+    "score": 53,
     "trigger": null,
   },
   {
@@ -1296,7 +1296,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "last_permit_age:hvac",
         "label": "HVAC likely past its 18-yr life",
-        "points": 32,
+        "points": 29,
       },
       {
         "evidence": {
@@ -1304,7 +1304,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         },
         "key": "owner_occupied",
         "label": "Owner lives here",
-        "points": 11,
+        "points": 10,
       },
       {
         "evidence": {
@@ -1325,7 +1325,7 @@ exports[`scoring determinism snapshot (spec 15) > hvac 1`] = `
         "points": 5,
       },
     ],
-    "score": 65,
+    "score": 59,
     "trigger": {
       "boost": 8,
       "date": "2026-10-10",
